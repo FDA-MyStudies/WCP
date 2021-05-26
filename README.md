@@ -1,5 +1,5 @@
 # My Studies Web Configuration Portal (WCP)
-The Web Configuration Portal is a web-based application that provides mechanisms to create and manage content for studies that can be made available to patients/participants via the mobile apps. 
+The Web Configuration Portal is a web-based application that provides mechanisms to create and manage content for studies that can be made available to patients/participants via the mobile apps..
 
 The WCP application is built on Java.
 

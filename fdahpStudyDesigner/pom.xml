@@ -6,7 +6,7 @@
 	<packaging>war</packaging>
 	<name>fdahpStudyDesigner</name>
 	<description>Studies Gateway Web Application</description>
-	<url>https://github.com/FDA-MyStudies</url>
+	<url>https://github.com/FDA-MyStudies/WCP</url>
 	<scm>
         <connection>scm:git:https://github.com/FDA-MyStudies/WCP</connection>
         <developerConnection>scm:git:https://github.com/FDA-MyStudies/WCP</developerConnection>

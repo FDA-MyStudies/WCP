@@ -5197,6 +5197,10 @@
                 id = 'heightPlaceholderId';
               }
               $('#' + id).val('');
+            }  else if (respType === '7') {
+              if (language === 'es') {
+                $('#dispalyText0').val('Sí');
+              }
             }
           }
 
@@ -5276,6 +5280,10 @@
                 id = 'heightPlaceholderId';
               }
               $('#' + id).val($('#mlPlaceholderText', htmlData).val());
+            } else if (respType === '7') {
+              if (language === 'es') {
+                $('#dispalyText0').val('Sí');
+              }
             }
           }
 
@@ -5396,6 +5404,7 @@
               $('#useStasticData').prop('disabled', true);
             }
           }
+          $('#dispalyText0').val('Yes');
           <c:if test="${actionTypeForFormStep == 'view'}">
           $('#questionStepId input,textarea ').prop('disabled', true);
           </c:if>

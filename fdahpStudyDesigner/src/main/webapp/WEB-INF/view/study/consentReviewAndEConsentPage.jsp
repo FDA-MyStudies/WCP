@@ -627,7 +627,7 @@
                                             NA -
                                         </div>
                                         <div id="learnMoreId" class="pp__learnmore">
-                                            <a href="javascript:void(0)" data-toggle="modal"
+                                            <a href="javascript:void(0)" data-toggle="modal" id="learnMoreText"
                                                onclick="previewLearnMore();">Learn more</a>
                                         </div>
                                         <div id="mainOverviewPanel" class="pp__ul mt-xlg">
@@ -1337,6 +1337,7 @@
   }
 
   function previewDataSharing() {
+    let language = $('#studyLanguage').val();
     var titleText = $("#titleId").val();
     var tagline_description = $("#taglineDescriptionId").val();
     var short_description = $("#shortDescriptionId").val();
@@ -1346,6 +1347,13 @@
     if (titleText == '' || titleText == null || typeof titleText == 'undefined') {
       titleText = ' -NA-';
     }
+
+    if (language === 'es') {
+      $("#learnMoreText").text('Aprende más');
+      $('#cancelButtonId').find('button').text('Cancelar');
+      $('#doneButtonId').find('button').text("Hecho");
+    }
+
     $("#titleModalId").text(titleText);
 
     if (tagline_description == '' || tagline_description == null || typeof tagline_description
@@ -1354,10 +1362,16 @@
     }
 
     $("#tagLineDescriptionModalId").text(tagline_description);
-    if (short_description != '' && short_description != null && typeof short_description
+    if (short_description !== '' && short_description != null && typeof short_description
         != 'undefined') {
-      short_description = 'Share my data with ' + short_description
-          + ' and qualified researchers worldwide';
+      if (language === 'es') {
+        short_description = 'Compartir mis datos con ' + short_description
+            + ' y otros investigadores calificados a nivel mundial';
+      } else {
+        short_description = 'Share my data with ' + short_description
+            + ' and qualified researchers worldwide';
+      }
+
       $("#accordionEllipsis").text(short_description);
       $("#accordionCollapse1").text(short_description);
       $("#accordianNA").hide();
@@ -1373,7 +1387,11 @@
 
     if (long_descriptionId != '' && long_descriptionId != null && typeof long_descriptionId
         != 'undefined') {
-      long_descriptionId = 'Only share my data with ' + long_descriptionId;
+      if (language === 'es') {
+        long_descriptionId = 'Solo compartir mis datos con ' + long_descriptionId;
+      } else {
+        long_descriptionId = 'Only share my data with ' + long_descriptionId;
+      }
       $("#accordion1Ellipsis").text(long_descriptionId);
       $("#accordion1Collapse2").text(long_descriptionId);
       $("#accordian1NA").hide();

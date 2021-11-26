@@ -7255,7 +7255,11 @@
                     id = 'heightPlaceholderId';
                   }
                   $('#' + id).val('');
-                }
+                } else if (respType === '7') {
+                	if (language === 'es') {
+                		$('#dispalyText0').val('Sí');
+					}
+				}
               }
 
               // if response type matches
@@ -7341,7 +7345,11 @@
                     id = 'heightPlaceholderId';
                   }
                   $('#' + id).val($('#mlPlaceholderText', htmlData).val());                  
-                }
+                } else if (respType === '7') {
+					if (language === 'es') {
+						$('#dispalyText0').val('Sí');
+					}
+				}
               }
 
             } else {   // for English Language
@@ -7375,7 +7383,6 @@
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
                     $(this).attr('disabled', false);
-                    console.log(this, this.nodeName);
                     if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
@@ -7451,6 +7458,7 @@
                 $('#' + id).val($('#' + id, htmlData).val());
                 $('#numericUnitId').val($('#numericUnitId', htmlData).val());
               }
+              $('#dispalyText0').val('Yes');
               <c:if test="${actionTypeForQuestionPage == 'view'}">
               $('#questionStepId input,textarea ').prop('disabled', true);
               </c:if>

@@ -1460,7 +1460,7 @@
                                         title="Enter the applicable units for the numeric input"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control"
+                                    <input type="text" class="form-control lang-specific"
                                            name="questionReponseTypeBo.unit" id="numericUnitId"
                                            value="${fn:escapeXml(questionsBo.questionReponseTypeBo.unit)}"
                                            maxlength="15">
@@ -5186,7 +5186,7 @@
               let id = '';
               if (respType === '8') {
                 id = 'numericPlaceholderId';
-                // $('#numericUnitId').val('');
+                $('#numericUnitId').val('');
               } else if (respType === '11') {
                 id = 'textPlaceholderId';
                 $('#validationExceptTextId').val('');
@@ -5261,7 +5261,7 @@
               let id = '';
               if (respType === '8') {
                 id = 'numericPlaceholderId';
-                // $('#numericUnitId').val($('#mlNumericUnitId', htmlData).val());
+                $('#numericUnitId').val($('#mlNumericUnitId', htmlData).val());
               } else if (respType === '11') {
                 id = 'textPlaceholderId';
                 $('#validationExceptTextId').val($('#mlExceptText', htmlData).val());
@@ -5372,7 +5372,7 @@
                 $('#useStasticData').prop('disabled', true);
               }
               id = 'numericPlaceholderId';
-              // $('#numericUnitId').val($('#numericUnitId', htmlData).val());
+              $('#numericUnitId').val($('#numericUnitId', htmlData).val());
             } else if (respType === '11') {
               id = 'textPlaceholderId';
               $('#validationExceptTextId').val($('#validationExceptTextId', htmlData).val());

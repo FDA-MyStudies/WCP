@@ -428,6 +428,7 @@ $(document).ready(function(){
 			  if ($('.pdfDiv').is(':hidden')) {
 				  $("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
 						  $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file")).focus();
+				  $('#doneResourceId').prop('disabled',false);
 				  return false;
 			  }
         	  if( $('#inlineRadio5').is(':checked') && isParticipantProp){

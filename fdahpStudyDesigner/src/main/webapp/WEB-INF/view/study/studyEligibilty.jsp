@@ -228,6 +228,7 @@
   }
   ;
   var eligibilityMechanism = '${eligibility.eligibilityMechanism}';
+  var isDisabledQAButton = false;
   //  	var lastEligibilityOpt = ${not empty lastEligibilityOpt && lastEligibilityOpt ne '1'};
   console.log("viewPermission:" + viewPermission);
   var reorder = true;
@@ -459,6 +460,7 @@
                 $('#forceContinueMsgId').show();
                 $('#addQaId').prop('disabled',
                     true);
+                isDisabledQAButton = true;
                 $(
                     '.viewIcon, .editIcon, .deleteIcon')
                 .addClass('cursor-none');
@@ -475,6 +477,7 @@
                 $('#forceContinueMsgId').hide();
                 $('#doneBut, #addQaId').prop(
                     'disabled', false);
+                isDisabledQAButton = false;
                 $('#spancomId').attr(
                     'data-original-title',
                     '');
@@ -773,6 +776,9 @@
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').attr('disabled', false);
+          if (isDisabledQAButton) {
+            $('#addQaId').attr('disabled', true);
+          }
           $('.sprites_icon').removeAttr('style');
           let mark = true;
           $('tbody tr', htmlData).each(function (index, value) {

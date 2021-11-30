@@ -425,6 +425,11 @@ $(document).ready(function(){
 			}
 		 $('#doneResourceId').prop('disabled',true);
           if( chkDaysValid(true) && isFromValid('#resourceForm')){
+			  if ($('.pdfDiv').is(':hidden')) {
+				  $("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
+						  $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file")).focus();
+				  return false;
+			  }
         	  if( $('#inlineRadio5').is(':checked') && isParticipantProp){
         		  var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Anchor Date is scheduled appropriately in the third party system.";
               	  bootbox.confirm({
@@ -1132,6 +1137,7 @@ function refreshAndFetchLanguageData(language) {
 				$('#inlineRadio2').prop('checked', true);
 				let pdfName=$('#mlPdfName', htmlData).val();
 				$('#pdf_name').text(pdfName);
+				$('#pdfName').val(pdfName);
 				if (pdfName==='') {
 					$('.pdfDiv').hide();
 					$('#uploadPdf').text('Upload PDF');

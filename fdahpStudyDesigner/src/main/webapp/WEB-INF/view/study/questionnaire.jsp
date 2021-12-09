@@ -3649,8 +3649,22 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             let studyLang=$('#studyLanguage').val();
             if (studyLang !== undefined && studyLang !== null && studyLang !== '' && studyLang !== 'en') {
               $(".add-steps-btn").addClass('cursor-none');
+              $('#shortTitleId, #branchingId').attr('disabled', true);
+              $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+                  '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
+                  '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor').attr(
+                  'disabled', true);
+              $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
+                  ' .signDropDown').addClass('cursor-none');
             } else {
               $(".add-steps-btn").removeClass('cursor-none');
+              $('#shortTitleId, #branchingId').attr('disabled', false);
+              $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+                  '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
+                  '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor').attr(
+                  'disabled', false);
+              $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
+                  ' .signDropDown').removeClass('cursor-none');
             }
             if (frequency_text == 'One time') {
               $("#oneTimeFreId").val(questionnaireFrequenceId);

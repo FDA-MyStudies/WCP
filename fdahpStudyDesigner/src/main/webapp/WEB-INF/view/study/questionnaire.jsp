@@ -4726,13 +4726,14 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('#shortTitleId, #branchingId').attr('disabled', true);
-          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+          // $('#shortTitleId, #branchingId').attr('disabled', true);
+          $('#shortTitleId, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
-              '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor').attr(
-              'disabled', true);
-          $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
-              ' .signDropDown').addClass('cursor-none');
+              '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor, ' +
+              '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
+              ' .signDropDown').addClass('ml-disabled');
+          // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
+          //     ' .signDropDown').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
           let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {
@@ -4841,13 +4842,14 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#shortTitleId, #branchingId').attr('disabled', false);
-          $('#schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+          // $('#shortTitleId, #branchingId').attr('disabled', false);
+          $('#shortTitleId, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
-              '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor').attr(
-              'disabled', false);
-          $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
-              ' .signDropDown').removeClass('cursor-none');
+              '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor,' +
+              '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
+              ' .signDropDown').removeClass('ml-disabled');
+          // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
+          //     ' .signDropDown').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());
           
           <c:if test="${actionType == 'view'}">

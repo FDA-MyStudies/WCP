@@ -2627,3 +2627,9 @@ a:focus {
 .note-center {
 	margin-top: 160px !important;
 }
+
+.ml-disabled {
+	cursor: not-allowed;
+	pointer-events: none;
+	opacity: 0.6!important;
+}

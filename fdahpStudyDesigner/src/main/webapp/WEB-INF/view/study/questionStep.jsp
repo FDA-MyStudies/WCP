@@ -7151,32 +7151,34 @@
             if (language !== 'en') {
               updateCompletionTicks(htmlData);
               $('.tit_wrapper').text($('#mlName', htmlData).val());
-              $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId').attr(
-                  'disabled', true);
-              $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
-              $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
+              $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
+					  '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
+					  '#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
+                  'ml-disabled');
+              // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
+              // $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
               $('#trailId, #removeUrl').addClass('cursor-none');
-              responseTypeId.addClass('ml-disabled').attr('disabled', true);
+              responseTypeId.addClass('ml-disabled');
               if ($('#allowHealthKit').prop('checked') === true) {
-                $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled').attr('disabled', true);
+                $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled');
               }
               if ($('#useStasticData').prop('checked') === true) {
-                $('#statShortNameId').attr('disabled', true);
-                $('[data-id="statTypeId"]').addClass('ml-disabled').attr('disabled', true);
-                $('[data-id="statFormula"]').addClass('ml-disabled').attr('disabled', true);
+                $('#statShortNameId').addClass('ml-disabled');
+                $('[data-id="statTypeId"]').addClass('ml-disabled');
+                $('[data-id="statFormula"]').addClass('ml-disabled');
               }
 
               if (responseTypeId.text().trim() === 'Date') {
-                $('#anchorTextId, #useAnchorDateId').attr('disabled', true);
+                $('#anchorTextId, #useAnchorDateId').addClass('ml-disabled');
               }
 
-              $('[name="questionReponseTypeBo.vertical"]').attr('disabled', true);
+              $('[name="questionReponseTypeBo.vertical"]').addClass('ml-disabled');
               let responseType = responseTypeId.text().trim();
               if (responseType !== '' && responseType !== 'Select') {
                 $('#' + responseType.replaceAll(' ', '')).find(
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
-                    $(this).attr('disabled', true);
+                    $(this).addClass('ml-disabled');
                     if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
@@ -7355,34 +7357,35 @@
             } else {   // for English Language
               updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-              $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId').attr(
-                  'disabled', false);
-              $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
-              $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
+				$('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
+						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
+						'#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
+						'ml-disabled');
+              // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
+              // $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
-              responseTypeId.removeClass('ml-disabled').attr('disabled', false);
+              responseTypeId.removeClass('ml-disabled');
               if ($('#allowHealthKit').prop('checked') === true) {
-                $('[data-id="healthkitDatatypeId"]').removeClass('ml-disabled').attr('disabled',
-                    false);
+                $('[data-id="healthkitDatatypeId"]').removeClass('ml-disabled');
               }
               if ($('#useStasticData').prop('checked') === true) {
-                $('#statShortNameId').attr('disabled', false);
-                $('[data-id="statTypeId"]').removeClass('ml-disabled').attr('disabled', false);
-                $('[data-id="statFormula"]').removeClass('ml-disabled').attr('disabled', false);
+                $('#statShortNameId').removeClass('ml-disabled');
+                $('[data-id="statTypeId"]').removeClass('ml-disabled');
+                $('[data-id="statFormula"]').removeClass('ml-disabled');
               }
 
               if (responseTypeId.text().trim() === 'Date') {
-                $('#anchorTextId, #useAnchorDateId').attr('disabled', false);
+                $('#anchorTextId, #useAnchorDateId').removeClass('ml-disabled');
               }
 
               // validationExceptTextId if this has property disabled do not enable
-              $('[name="questionReponseTypeBo.vertical"]').attr('disabled', false);
+              $('[name="questionReponseTypeBo.vertical"]').removeClass('ml-disabled');
               let responseType = responseTypeId.text().trim();
               if (responseType !== '' && responseType !== 'Select') {
                 $('#' + responseType.replaceAll(' ', '')).find(
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
-                    $(this).attr('disabled', false);
+                    $(this).removeClass('ml-disabled');
                     if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {

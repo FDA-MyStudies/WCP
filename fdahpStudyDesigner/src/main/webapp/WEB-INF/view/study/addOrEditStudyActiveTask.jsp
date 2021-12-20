@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 </head>
 <style>
-  .ml-disabled {
+  .ml-dropdown-disabled {
     background-color: #eee !important;
     opacity: 1;
     cursor: not-allowed;
@@ -452,11 +452,11 @@
           $('.remBtnDis, .addBtnDis').addClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('lang-specific')) {
-              $(this).attr('disabled', true);
+              $(this).addClass('ml-dropdown-disabled');
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').addClass('ml-disabled');
+                  $('[data-id=' + id + ']').addClass('ml-dropdown-disabled');
                 }
               }
             }
@@ -506,11 +506,11 @@
           $('.remBtnDis, .addBtnDis').removeClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('lang-specific')) {
-              $(this).attr('disabled', false);
+              $(this).removeClass('ml-dropdown-disabled');
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').removeClass('ml-disabled');
+                  $('[data-id=' + id + ']').removeClass('ml-dropdown-disabled');
                 }
               }
             }

@@ -425,7 +425,7 @@ $(document).ready(function(){
 			}
 		 $('#doneResourceId').prop('disabled',true);
           if( chkDaysValid(true) && isFromValid('#resourceForm')){
-			  if ($('.pdfDiv').is(':hidden')) {
+			  if ($('#inlineRadio2').prop('checked')===true && $('.pdfDiv').is(':hidden')) {
 				  $("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
 						  $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file")).focus();
 				  $('#doneResourceId').prop('disabled',false);

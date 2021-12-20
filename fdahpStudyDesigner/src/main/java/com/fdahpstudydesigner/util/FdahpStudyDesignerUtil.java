@@ -765,8 +765,8 @@ public class FdahpStudyDesignerUtil {
   public static String getRegExpression(
       String validCondition, String validCharacters, String exceptCharacters) {
     String regEx = "";
-    if ((validCharacters != null && StringUtils.isNotEmpty(validCharacters))
-        && (validCondition != null && StringUtils.isNotEmpty(validCondition))) {
+    if (((validCharacters != null) && StringUtils.isNotEmpty(validCharacters))
+        && ((validCondition != null) && StringUtils.isNotEmpty(validCondition))) {
       if (validCondition.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLOW)) {
         regEx += "[";
         if (validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)) {
@@ -782,20 +782,61 @@ public class FdahpStudyDesignerUtil {
             FdahpStudyDesignerConstants.SPECIALCHARACTERS)) {
           regEx += "^A-Za-z0-9";
         }
-        if (exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)) {
-          String[] exceptChar = exceptCharacters.split("\\|");
+        if ((exceptCharacters != null) && StringUtils.isNotEmpty(exceptCharacters)) {
+          String[] exceptChar = exceptCharacters.split("");
           StringBuilder except = new StringBuilder();
-          for (int i = 0; i < exceptChar.length; i++) {
-            except.append("^(?!.*" + exceptChar[i].trim().replace(" ", "") + ")");
+          StringBuilder escapeSplChar = new StringBuilder();
+          for (String element : exceptChar) {
+
+            for (int i = 0; i < element.length(); i++) {
+              if (!Character.isDigit(element.charAt(i))
+                  && !Character.isLetter(element.charAt(i))
+                  && !Character.isWhitespace(element.charAt(i))) {
+                if (element.charAt(i) == '|') {
+                  escapeSplChar.append(element.charAt(i));
+                } else {
+                  escapeSplChar.append("\\").append(element.charAt(i));
+                }
+
+              } else {
+                escapeSplChar.append(element.charAt(i));
+              }
+            }
           }
+          except.append("^(?!.*").append(escapeSplChar.toString().trim().replace(" ", "")).append(")");
+
           regEx = except + regEx + "]+";
         } else {
           regEx += "]+";
         }
       } else {
         if (validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)) {
-          if (exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)) {
-            regEx += "^(?:" + exceptCharacters.trim().replace(" ", "") + ")$";
+          if (StringUtils.isNotEmpty(exceptCharacters)) {
+            String[] exceptChar = exceptCharacters.split("");
+            StringBuilder except = new StringBuilder();
+            StringBuilder escapeSplChar = new StringBuilder();
+            for (String element : exceptChar) {
+
+              for (int i = 0; i < element.length(); i++) {
+
+                if (!Character.isDigit(element.charAt(i))
+                    && !Character.isLetter(element.charAt(i))
+                    && !Character.isWhitespace(element.charAt(i))) {
+                  if (element.charAt(i) == '|') {
+                    escapeSplChar.append(element.charAt(i));
+                  } else {
+                    escapeSplChar.append("\\").append(element.charAt(i));
+                  }
+
+                } else {
+                  escapeSplChar.append(element.charAt(i));
+                }
+              }
+            }
+            except.append("^(?:").append(escapeSplChar.toString().trim().replace(" ", ""))
+                .append(")$");
+
+            regEx = except + regEx;
           } else {
             regEx += "[.]";
           }
@@ -812,17 +853,17 @@ public class FdahpStudyDesignerUtil {
           regEx += "^([A-Za-z0-9 ]";
         }
         if (!validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.ALLCHARACTERS)) {
-          if (exceptCharacters != null && StringUtils.isNotEmpty(exceptCharacters)) {
+          if (StringUtils.isNotEmpty(exceptCharacters)) {
             String[] exceptChar = exceptCharacters.split("\\|");
             StringBuilder except = new StringBuilder();
             if (validCharacters.equalsIgnoreCase(FdahpStudyDesignerConstants.SPECIALCHARACTERS)) {
-              for (int i = 0; i < exceptChar.length; i++) {
-                except.append(exceptChar[i].trim().replace(" ", ""));
+              for (String element : exceptChar) {
+                except.append(element.trim().replace(" ", ""));
               }
               regEx += "|[" + except + "]*)+$";
             } else {
-              for (int i = 0; i < exceptChar.length; i++) {
-                except.append("|\\b(\\b" + exceptChar[i].trim().replace(" ", "") + "\\b)");
+              for (String element : exceptChar) {
+                except.append("|\\b(\\b").append(element.trim().replace(" ", "")).append("\\b)");
               }
               regEx += except + "*)+$";
             }

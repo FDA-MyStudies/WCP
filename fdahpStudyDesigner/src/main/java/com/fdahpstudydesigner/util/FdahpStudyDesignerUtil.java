@@ -34,7 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -58,7 +59,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FdahpStudyDesignerUtil {
 
   /* Read Properties file */
-  private static Logger logger = Logger.getLogger(FdahpStudyDesignerUtil.class.getName());
+  private static Logger logger = LogManager.getLogger(FdahpStudyDesignerUtil.class.getName());
   protected static final Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
 
   public static Date addDaysToDate(Date date, int days) {

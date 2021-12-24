@@ -74,7 +74,8 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -90,7 +91,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StudyDAOImpl implements StudyDAO {
 
-  private static Logger logger = Logger.getLogger(StudyDAOImpl.class.getName());
+  private static Logger logger = LogManager.getLogger(StudyDAOImpl.class.getName());
   @Autowired private AuditLogDAO auditLogDAO;
   HibernateTemplate hibernateTemplate;
   private Query query = null;

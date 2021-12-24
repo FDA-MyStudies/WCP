@@ -18,7 +18,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.mail.MailAuthenticationException;
 
 /**
@@ -29,7 +30,7 @@ import org.springframework.mail.MailAuthenticationException;
 public class Mail {
 
   /** */
-  private static Logger logger = Logger.getLogger(Mail.class.getName());
+  private static Logger logger = LogManager.getLogger(Mail.class.getName());
 
   private static final String SMTP_HOST_NAME = "smtp.gmail.com";
   private static final String SMTP_PORT = "465";

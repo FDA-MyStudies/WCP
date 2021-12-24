@@ -30,7 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.json.JSONArray;
@@ -46,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class StudyActiveTasksController {
 
-  private static Logger logger = Logger.getLogger(StudyActiveTasksController.class.getName());
+  private static Logger logger = LogManager.getLogger(StudyActiveTasksController.class.getName());
 
   @Autowired private StudyActiveTasksService studyActiveTasksService;
 

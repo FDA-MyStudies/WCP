@@ -43,7 +43,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -55,7 +56,7 @@ import org.springframework.stereotype.Repository;
 /** @author BTC */
 @Repository
 public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
-  private static Logger logger = Logger.getLogger(StudyQuestionnaireDAOImpl.class.getName());
+  private static Logger logger = LogManager.getLogger(StudyQuestionnaireDAOImpl.class.getName());
   @Autowired private AuditLogDAO auditLogDAO;
   HibernateTemplate hibernateTemplate;
   private Query query = null;

@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class LoginDAOImpl implements LoginDAO {
 
-  private static Logger logger = Logger.getLogger(LoginDAOImpl.class.getName());
+  private static Logger logger = LogManager.getLogger(LoginDAOImpl.class.getName());
   @Autowired private AuditLogDAO auditLogDAO;
   HibernateTemplate hibernateTemplate;
   private Query query = null;

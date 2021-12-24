@@ -7,7 +7,8 @@ import com.fdahpstudydesigner.util.SessionObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AuditLogDAOImpl implements AuditLogDAO {
 
-  private static Logger logger = Logger.getLogger(AuditLogDAOImpl.class);
+  private static Logger logger = LogManager.getLogger(AuditLogDAOImpl.class);
   HibernateTemplate hibernateTemplate;
 
   /**

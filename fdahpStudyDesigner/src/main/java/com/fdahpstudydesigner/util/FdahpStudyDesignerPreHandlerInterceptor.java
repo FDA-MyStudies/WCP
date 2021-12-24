@@ -7,7 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorAdapter {
 
   private static final Logger logger =
-      Logger.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
+      LogManager.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
 
   @Autowired private UsersService usersService;
 

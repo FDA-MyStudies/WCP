@@ -3,7 +3,8 @@ package com.fdahpstudydesigner.dao;
 import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
 
-  private static Logger logger = Logger.getLogger(DashBoardAndProfileDAOImpl.class);
+  private static Logger logger = LogManager.getLogger(DashBoardAndProfileDAOImpl.class);
   HibernateTemplate hibernateTemplate;
 
   private Transaction transaction = null;

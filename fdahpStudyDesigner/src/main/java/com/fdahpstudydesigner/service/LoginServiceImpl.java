@@ -19,7 +19,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService, UserDetailsService {
 
-  private static Logger logger = Logger.getLogger(LoginServiceImpl.class.getName());
+  private static Logger logger = LogManager.getLogger(LoginServiceImpl.class.getName());
 
   @Autowired private AuditLogDAO auditLogDAO;
 

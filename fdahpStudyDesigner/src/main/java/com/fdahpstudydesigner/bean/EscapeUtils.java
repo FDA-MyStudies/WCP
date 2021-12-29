@@ -5,10 +5,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EscapeUtils {
-  private static Logger logger = Logger.getLogger(EscapeUtils.class.getName());
+  private static Logger logger = LogManager.getLogger(EscapeUtils.class.getName());
 
   protected static final Map<Integer, String> m = new HashMap<>();
 

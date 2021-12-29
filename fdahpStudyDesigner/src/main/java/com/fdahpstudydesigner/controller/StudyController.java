@@ -56,7 +56,8 @@ import javax.servlet.http.HttpSession;
 import junit.framework.Test;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,7 +73,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class StudyController {
 
-  private static Logger logger = Logger.getLogger(StudyController.class.getName());
+  private static Logger logger = LogManager.getLogger(StudyController.class.getName());
 
   @Autowired private NotificationService notificationService;
 

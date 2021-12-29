@@ -3,11 +3,12 @@ package com.fdahpstudydesigner.util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** @author BTC */
 public class RequestWrapper extends HttpServletRequestWrapper {
-  private static Logger logger = Logger.getLogger(RequestWrapper.class);
+  private static Logger logger = LogManager.getLogger(RequestWrapper.class);
 
   public RequestWrapper(HttpServletRequest servletRequest) {
     super(servletRequest);

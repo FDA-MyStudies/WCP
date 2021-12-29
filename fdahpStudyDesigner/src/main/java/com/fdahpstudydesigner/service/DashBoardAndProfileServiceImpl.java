@@ -6,7 +6,8 @@ import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.DashBoardAndProfileDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.SessionObject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileService {
 
-  private static Logger logger = Logger.getLogger(DashBoardAndProfileServiceImpl.class);
+  private static Logger logger = LogManager.getLogger(DashBoardAndProfileServiceImpl.class);
 
   @Autowired private AuditLogDAO auditLogDAO;
 

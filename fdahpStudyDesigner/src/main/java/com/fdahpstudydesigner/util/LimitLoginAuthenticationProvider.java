@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,7 +35,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider {
 
-  private static Logger logger = Logger.getLogger(LimitLoginAuthenticationProvider.class.getName());
+  private static Logger logger = LogManager.getLogger(LimitLoginAuthenticationProvider.class.getName());
 
   @Autowired private AuditLogDAO auditLogDAO;
 

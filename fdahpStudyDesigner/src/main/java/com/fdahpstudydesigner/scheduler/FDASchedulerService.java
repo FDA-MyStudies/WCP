@@ -32,7 +32,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +48,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 // @Configuration
 @EnableScheduling
 public class FDASchedulerService {
-  private static Logger logger = Logger.getLogger(FDASchedulerService.class.getName());
+  private static Logger logger = LogManager.getLogger(FDASchedulerService.class.getName());
 
   private static final Map<?, ?> configMap = FdahpStudyDesignerUtil.getAppProperties();
 

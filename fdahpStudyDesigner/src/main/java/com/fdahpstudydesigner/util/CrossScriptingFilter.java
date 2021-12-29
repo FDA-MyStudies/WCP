@@ -9,11 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** @author BTC */
 public class CrossScriptingFilter implements Filter {
-  private static Logger logger = Logger.getLogger(CrossScriptingFilter.class);
+  private static Logger logger = LogManager.getLogger(CrossScriptingFilter.class);
 
   @Override
   public void destroy() {

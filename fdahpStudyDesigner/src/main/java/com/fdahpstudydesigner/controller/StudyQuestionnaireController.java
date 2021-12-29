@@ -38,7 +38,8 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,7 +56,7 @@ import org.springframework.web.servlet.ModelAndView;
 /** @author BTC */
 @Controller
 public class StudyQuestionnaireController {
-  private static Logger logger = Logger.getLogger(StudyQuestionnaireController.class.getName());
+  private static Logger logger = LogManager.getLogger(StudyQuestionnaireController.class.getName());
 
   @Autowired private StudyActiveTasksService studyActiveTasksService;
 

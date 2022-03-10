@@ -5101,11 +5101,11 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
               '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-              '#destinationStepId, #addLineChart').addClass('ml-disabled');
+              '#destinationStepId, #addLineChart').addClass('ml-disabled').attr('disabled', true);
           $('#trailId, .removeImageId').addClass('cursor-none');
           responseTypeId.addClass('ml-disabled');
           if ($('#allowHealthKit').prop('checked') === true) {
-            $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled').addClass('ml-disabled')
+            $('[data-id="healthkitDatatypeId"]').addClass('ml-disabled');
           }
           if ($('#addLineChart').prop('checked') === true) {
               $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled');
@@ -5118,16 +5118,16 @@
           }
 
           if (responseTypeId.text().trim() === 'Date') {
-            $('#anchorTextId, #useAnchorDateId').addClass('ml-disabled');
+            $('#anchorTextId, #useAnchorDateId').addClass('ml-disabled').attr('disabled', true);
           }
 
-          $('[name="questionReponseTypeBo.vertical"]').addClass('ml-disabled');
+          $('[name="questionReponseTypeBo.vertical"]').addClass('ml-disabled').attr('disabled', true);
           let responseType = responseTypeId.text().trim();
           if (responseType !== '' && responseType !== 'Select') {
             $('#' + responseType.replaceAll(' ', '')).find(
                 'select, input[type!=hidden], textarea').each(function () {
               if (!$(this).hasClass('lang-specific')) {
-                $(this).addClass('ml-disabled');
+                $(this).addClass('ml-disabled').attr('disabled', true);
                 if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                   let id = this.id;
                   if (id !== undefined && id !== '') {
@@ -5293,7 +5293,7 @@
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId,' +
               ' #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, ' +
               '#inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart')
-          .removeClass('ml-disabled');
+          .removeClass('ml-disabled').attr('disabled', false);
           $('#trailId, .removeImageId').removeAttr('style').removeClass('cursor-none');
           responseTypeId.removeClass('ml-disabled');
           if ($('#allowHealthKit').prop('checked') === true) {
@@ -5310,17 +5310,17 @@
           }
 
           if (responseTypeId.text().trim() === 'Date') {
-            $('#anchorTextId, #useAnchorDateId').removeClass('ml-disabled');
+            $('#anchorTextId, #useAnchorDateId').removeClass('ml-disabled').attr('disabled', false);
           }
 
           // validationExceptTextId if this has property disabled do not enable
-          $('[name="questionReponseTypeBo.vertical"]').removeClass('ml-disabled');
+          $('[name="questionReponseTypeBo.vertical"]').removeClass('ml-disabled').attr('disabled', false);
           let responseType = responseTypeId.text().trim();
           if (responseType !== '' && responseType !== 'Select') {
             $('#' + responseType.replaceAll(' ', '')).find(
                 'select, input[type!=hidden], textarea').each(function () {
               if (!$(this).hasClass('lang-specific')) {
-                $(this).removeClass('ml-disabled');
+                $(this).removeClass('ml-disabled').attr('disabled', false);
                 if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                   let id = this.id;
                   if (id !== undefined && id !== '') {

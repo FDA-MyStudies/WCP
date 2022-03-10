@@ -1134,7 +1134,7 @@
             updateCompletionTicks(htmlData);
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
-                $(this).addClass('ml-disabled');
+                $(this).addClass('ml-disabled').attr('disabled', true);
                 if (this.nodeName.toLowerCase() === 'select') {
                   let id = this.id;
                   if (id !== undefined && id !== '') {
@@ -1165,7 +1165,7 @@
             $('.tit_wrapper').text($('#customStudyName', htmlData).val());
             $('select, input[type!=hidden]').each(function () {
               if (!$(this).hasClass('langSpecific')) {
-                $(this).removeClass('ml-disabled');
+                $(this).removeClass('ml-disabled').attr('disabled', false);
                 if (this.nodeName.toLowerCase() === 'select') {
                   let id = this.id;
                   if (id !== undefined && id !== '') {

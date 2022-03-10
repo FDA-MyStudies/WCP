@@ -1544,7 +1544,7 @@
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('[name="shareDataPermissions"], #inlineRadio1, #inlineRadio2, [name="consentByLAR"],' +
-              ' [name="additionalSignatureRadio"]').addClass('ml-disabled');
+              ' [name="additionalSignatureRadio"]').addClass('ml-disabled').attr('disabled', true);
           $('.addbtn, .remBtn').addClass('cursor-none');
           if ($('#shareDataPermissionsYes').prop('checked') === true) {
 
@@ -1601,7 +1601,7 @@
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('[name="shareDataPermissions"], #inlineRadio1,#inlineRadio2, [name="consentByLAR"],' +
-              ' [name="additionalSignatureRadio"]').removeClass('ml-disabled');
+              ' [name="additionalSignatureRadio"]').removeClass('ml-disabled').attr('disabled', false);
           $('.addbtn, .remBtn').removeClass('cursor-none');
           if ($('#shareDataPermissionsYes').prop('checked') === true) {
             $('#titleId').val($('#titleId', htmlData).val());

@@ -452,7 +452,7 @@
           $('.remBtnDis, .addBtnDis').addClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('lang-specific')) {
-              $(this).addClass('ml-dropdown-disabled');
+              $(this).addClass('ml-dropdown-disabled').attr('disabled', true);
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {
@@ -506,7 +506,7 @@
           $('.remBtnDis, .addBtnDis').removeClass('cursor-none');
           $('select, input[type!=hidden]').each(function () {
             if (!$(this).hasClass('lang-specific')) {
-              $(this).removeClass('ml-dropdown-disabled');
+              $(this).removeClass('ml-dropdown-disabled').attr('disabled', false);
               if (this.nodeName.toLowerCase() === 'select') {
                 let id = this.id;
                 if (id !== undefined && id !== '') {

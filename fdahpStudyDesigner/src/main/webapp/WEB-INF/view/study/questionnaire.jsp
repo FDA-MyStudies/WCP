@@ -3665,6 +3665,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                   'disabled', false);
               $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
                   ' .signDropDown').removeClass('cursor-none');
+              if ($('#isLaunchStudy').prop('checked')) {
+                  $('#chooseDate').prop('disabled', true);
+                  $('#selectTime1').prop('disabled', true);
+              }
+              if ($('#isStudyLifeTime').prop('checked')) {
+                  $('#chooseEndDate').prop('disabled', true);
+              }
             }
             if (frequency_text == 'One time') {
               $("#oneTimeFreId").val(questionnaireFrequenceId);

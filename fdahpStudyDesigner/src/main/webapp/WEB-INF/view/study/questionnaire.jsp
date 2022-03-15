@@ -4855,6 +4855,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor,' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
               ' .signDropDown').removeClass('ml-disabled').attr('disabled', false);
+            if ($('#isLaunchStudy').prop('checked')) {
+                $('#chooseDate').prop('disabled', true);
+                $('#selectTime1').prop('disabled', true);
+            }
+            if ($('#isStudyLifeTime').prop('checked')) {
+                $('#chooseEndDate').prop('disabled', true);
+            }
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());

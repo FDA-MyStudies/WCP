@@ -3665,6 +3665,16 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                   'disabled', false);
               $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
                   ' .signDropDown').removeClass('cursor-none');
+                if ($('#isLaunchStudy').prop('checked')) {
+                    $('#chooseDate').prop('disabled', true);
+                    $('#selectTime1').prop('disabled', true);
+                    $('#onetimexdaysId').prop('disabled', true);
+                    $('#selectTime').prop('disabled', true);
+                }
+                if ($('#isStudyLifeTime').prop('checked')) {
+                    $('#chooseEndDate').prop('disabled', true);
+                    $('#onetimeydaysId').prop('disabled', true);
+                }
             }
             if (frequency_text == 'One time') {
               $("#oneTimeFreId").val(questionnaireFrequenceId);
@@ -4731,7 +4741,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor, ' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
-              ' .signDropDown').addClass('ml-disabled');
+              ' .signDropDown').addClass('ml-disabled').attr('disabled', true);
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
@@ -4847,7 +4857,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor,' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
-              ' .signDropDown').removeClass('ml-disabled');
+              ' .signDropDown').removeClass('ml-disabled').attr('disabled', false);
+            if ($('#isLaunchStudy').prop('checked')) {
+                $('#chooseDate').prop('disabled', true);
+                $('#selectTime1').prop('disabled', true);
+                $('#onetimexdaysId').prop('disabled', true);
+                $('#selectTime').prop('disabled', true);
+            }
+            if ($('#isStudyLifeTime').prop('checked')) {
+                $('#chooseEndDate').prop('disabled', true);
+                $('#onetimeydaysId').prop('disabled', true);
+            }
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());

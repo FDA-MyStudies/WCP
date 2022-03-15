@@ -733,7 +733,7 @@
           $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').addClass('ml-disabled');
+          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').addClass('ml-disabled').attr('disabled', true);
           $('.sprites_icon').css('pointer-events', 'none');
           let readyForComplete = true;
           $('#eligibilityItems option', htmlData).each(function (index, value) {
@@ -775,7 +775,7 @@
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').removeClass('ml-disabled');
+          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').removeClass('ml-disabled').attr('disabled', false);
           if (isDisabledQAButton) {
             $('#addQaId').attr('disabled', true);
           }

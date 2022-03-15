@@ -7154,7 +7154,7 @@
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 					  '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 					  '#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
-                  'ml-disabled');
+                  'ml-disabled').attr('disabled', true);
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
               // $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
               $('#trailId, #removeUrl').addClass('cursor-none');
@@ -7169,16 +7169,16 @@
               }
 
               if (responseTypeId.text().trim() === 'Date') {
-                $('#anchorTextId, #useAnchorDateId').addClass('ml-disabled');
+                $('#anchorTextId, #useAnchorDateId').addClass('ml-disabled').attr('disabled', true);
               }
 
-              $('[name="questionReponseTypeBo.vertical"]').addClass('ml-disabled');
+              $('[name="questionReponseTypeBo.vertical"]').addClass('ml-disabled').attr('disabled', true);
               let responseType = responseTypeId.text().trim();
               if (responseType !== '' && responseType !== 'Select') {
                 $('#' + responseType.replaceAll(' ', '')).find(
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
-                    $(this).addClass('ml-disabled');
+                    $(this).addClass('ml-disabled').attr('disabled', true);
                     if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {
@@ -7360,7 +7360,7 @@
 				$('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 						'#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
-						'ml-disabled');
+						'ml-disabled').attr('disabled', false);
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
               // $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
@@ -7375,17 +7375,17 @@
               }
 
               if (responseTypeId.text().trim() === 'Date') {
-                $('#anchorTextId, #useAnchorDateId').removeClass('ml-disabled');
+                $('#anchorTextId, #useAnchorDateId').removeClass('ml-disabled').attr('disabled', false);
               }
 
               // validationExceptTextId if this has property disabled do not enable
-              $('[name="questionReponseTypeBo.vertical"]').removeClass('ml-disabled');
+              $('[name="questionReponseTypeBo.vertical"]').removeClass('ml-disabled').attr('disabled', false);
               let responseType = responseTypeId.text().trim();
               if (responseType !== '' && responseType !== 'Select') {
                 $('#' + responseType.replaceAll(' ', '')).find(
                     'select, input[type!=hidden], textarea').each(function () {
                   if (!$(this).hasClass('lang-specific')) {
-                    $(this).removeClass('ml-disabled');
+                    $(this).removeClass('ml-disabled').attr('disabled', false);
                     if (this.nodeName !== undefined && this.nodeName.toLowerCase() === 'select') {
                       let id = this.id;
                       if (id !== undefined && id !== '') {

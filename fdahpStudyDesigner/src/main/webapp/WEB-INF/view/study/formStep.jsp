@@ -1028,7 +1028,8 @@
           $('td.sorting_1').addClass('sorting_disabled');
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').addClass("ml-disabled");
+          $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').addClass("ml-disabled");
+          $('#addQuestionId').attr('disabled', true);
           if ($('#repeatableYes').prop('checked') === true) {
             $('#repeatableText').val($('#mlText', htmlData).val());
           }
@@ -1071,7 +1072,8 @@
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#stepShortTitle, [name="skiappable"], #addQuestionId, [name="repeatable"]').removeClass("ml-disabled");
+          $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').removeClass("ml-disabled");
+            $('#addQuestionId').attr('disabled', false);
           $('#repeatableText').val($('#repeatableText', htmlData).val());
           if (isBranching) {
             $('[data-id="destinationStepId"]').removeClass("ml-disabled");

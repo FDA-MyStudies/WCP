@@ -145,7 +145,7 @@
 	       	</div>
            
             <div class="login-box">
-             <c:url value='/j_spring_security_check' var="fdaLink"/>
+             <c:url value='/login' var="fdaLink"/>
              <input type="hidden" id="fdaLink" value="${fdaLink}" >
              <form:form id="loginForm" data-toggle="validator" role="form" action="#"  name="loginForm" method="post" autocomplete="off">  
                     <div id="errMsg" class="error_msg">${errMsg}</div>
@@ -243,7 +243,7 @@
 			<div class="login-box">
 				<div class="lg-space-txt">FDA MyStudies Management Portal</div>
 				<div class="ll__border__bottom"></div>
-				<c:url value='/j_spring_security_check' var="fdaLink" />
+				<c:url value='/login' var="fdaLink" />
 				<input type="hidden" id="fdaLink" value="${fdaLink}">
 				<form:form id="loginForm" data-toggle="validator" role="form"
 					action="#" name="loginForm" method="post" autocomplete="off">

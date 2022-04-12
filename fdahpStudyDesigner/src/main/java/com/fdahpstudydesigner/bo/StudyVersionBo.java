@@ -23,7 +23,7 @@ import javax.persistence.Transient;
   @NamedQuery(
       name = "getStudyByCustomStudyId",
       query =
-          " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC LIMIT 1"),
+          " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC"),
   @NamedQuery(
       name = "getStudyVersionsByCustomStudyId",
       query =

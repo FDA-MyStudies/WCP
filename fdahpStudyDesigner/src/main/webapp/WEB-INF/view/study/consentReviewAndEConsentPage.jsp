@@ -841,7 +841,7 @@
       if ($("#typeOfCensent").val() == "New") {
         valid = maxLenValEditor();
       }
-      tinyMCE.triggerSave();
+        tinymce.triggerSave();
       if (valid) {
         if (id == "saveId") {
           $("#consentReviewFormId").parents("form").validator("destroy");
@@ -1022,7 +1022,7 @@
         entity_encoding: "raw",
         setup: function (ed) {
           ed.on('change', function (ed) {
-            if (tinyMCE.get(ed.target.id).getContent() != '') {
+            if (tinymce.get(ed.target.id).getContent() != '') {
               $('#newDocumentDivId').parent().removeClass("has-danger").removeClass("has-error");
               $('#newDocumentDivId').parent().find(".help-block").empty();
             }
@@ -1056,8 +1056,8 @@
         entity_encoding: "raw",
         setup: function (ed) {
           ed.on('change', function (ed) {
-            if (tinyMCE.get(ed.target.id).getContent() != '') {
-              console.log(tinyMCE.get(ed.target.id).getContent());
+            if (tinymce.get(ed.target.id).getContent() != '') {
+              console.log(tinymce.get(ed.target.id).getContent());
               $('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
               $('#learnMoreTextId').parent().find(".help-block").empty();
             }

@@ -449,7 +449,7 @@
         <c:if test="${not empty permission}">readonly: 1, </c:if>
         setup: function (ed) {
           ed.on('keypress change', function (ed) {
-            resetValidation($('#editor').val(tinyMCE.get("editor").getContent()).parents('form'));
+            resetValidation($('#editor').val(tinymce.get("editor").getContent()).parents('form'));
           });
         }
       });

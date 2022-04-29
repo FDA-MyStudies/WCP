@@ -618,7 +618,7 @@ $(document).ready(function(){
         setup : function(ed) {
             ed.on('keypress change', function(ed) {
             	resetValidation('.resetContentType');
-            	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form #richText'));
+            	resetValidation($('#'+ed.target.id).val(tinymce.get(ed.target.id).getContent()).parents('form #richText'));
             });
      	  },
      	 <c:if test="${actionOn eq 'view'}">readonly:1</c:if>

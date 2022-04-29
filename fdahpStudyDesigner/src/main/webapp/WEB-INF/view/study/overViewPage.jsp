@@ -436,7 +436,7 @@
         setup: function (ed) {
           ed.on('change', function (ed) {
             resetValidation(
-                $('#' + ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+                $('#' + ed.target.id).val(tinymce.get(ed.target.id).getContent()).parents('form'));
             $('#' + ed.target.id).trigger('change');
           });
         },
@@ -565,7 +565,7 @@
         setup: function (ed) {
           ed.on('change', function (ed) {
             resetValidation(
-                $('#' + ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+                $('#' + ed.target.id).val(tinymce.get(ed.target.id).getContent()).parents('form'));
             $('#' + ed.target.id).trigger('change');
           });
         }

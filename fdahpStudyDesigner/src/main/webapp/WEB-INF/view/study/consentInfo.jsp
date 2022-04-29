@@ -301,7 +301,7 @@
     //submit the form
     $("#doneId").on('click', function () {
       $("#doneId").prop('disabled', true);
-      tinyMCE.triggerSave();
+      tinymce.triggerSave();
       valid = maxLenValEditor();
       if (valid && isFromValid("#consentInfoFormId")) {
         var visualStepData = '';
@@ -536,7 +536,7 @@
       content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
       setup: function (ed) {
         ed.on('change', function (ed) {
-          if (tinyMCE.get(ed.target.id).getContent() != '') {
+          if (tinymce.get(ed.target.id).getContent() !== '') {
             $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
             $('#elaboratedRTE').parent().find(".help-block").empty();
           }

@@ -409,7 +409,7 @@ $(document).ready(function(){
 	});
 
 	if ($('#inlineRadio4').prop('checked')===true) {
-		$('[data-id="anchorDateId"]').addClass('cursor-none');
+		$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').addClass('cursor-none');
 	}
 	
 	    $('.daysMask').mask('000');
@@ -1098,7 +1098,7 @@ function refreshAndFetchLanguageData(language) {
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('[data-id="xSign"], [data-id="ySign"], [data-id="anchorDateId"]').prop('disabled', true).addClass('cursor-none');
+          $('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr('disabled', true).addClass('cursor-none');
           $('[name="textOrPdfParam"]').prop('disabled', true);
           let param = $('[name="resourceVisibilityParam"]');
           param.attr('disabled', true);

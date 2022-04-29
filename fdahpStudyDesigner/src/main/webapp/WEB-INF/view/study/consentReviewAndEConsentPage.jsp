@@ -372,6 +372,7 @@
                                         <div class="form-group ">
 											<textarea class="" rows="8" id="newDocumentDivId"
                                                       name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
+                                            <input type="hidden" id="consentType" value="${consentBo.consentDocType}">
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -1572,10 +1573,16 @@
             if (editor1 !== null)
               editor1.setContent($('#mlLearnMore', htmlData).val());
           }
-          $('#newDocumentDivId').val($('#mlConsentDocContent', htmlData).val());
           let editor2 = tinymce.get('newDocumentDivId');
-          if (editor2 !== null)
-            editor2.setContent($('#mlConsentDocContent', htmlData).val());
+          if ($('#consentType').val() === 'Auto' && $('#inlineRadio2').is(':checked')=== true) {
+              $('#newDocumentDivId').val('');
+              if (editor2 !== null)
+                  editor2.setContent('');
+          } else {
+              $('#newDocumentDivId').val($('#mlConsentDocContent', htmlData).val());
+              if (editor2 !== null)
+                  editor2.setContent($('#mlConsentDocContent', htmlData).val());
+          }
           $('#aggrementOfTheConsentId').val($('#mlAgreement', htmlData).val());
           $('.input-add-signature').val('');
           $('#signature0').val($('#mlSignature0', htmlData).val());
@@ -1619,10 +1626,13 @@
               tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'false');
             }
           }
-          let editor = tinymce.get('newDocumentDivId');
-          if (editor !== undefined && editor !== null)
-            editor.setContent($('#newDocumentDivId', htmlData).val());
-          $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
+          if ($('#consentType', htmlData).val() !== 'Auto') {
+              let editor = tinymce.get('newDocumentDivId');
+              if (editor !== undefined && editor !== null) {
+                  editor.setContent($('#newDocumentDivId', htmlData).val());
+              }
+              $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
+          }
           $('#aggrementOfTheConsentId').val($('#aggrementOfTheConsentId', htmlData).val());
           $('.input-add-signature').each(function(index) {
             $(this).val($('.input-add-signature', htmlData)[index].getAttribute('value'));

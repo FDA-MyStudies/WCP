@@ -5743,6 +5743,7 @@ public class StudyDAOImpl implements StudyDAO {
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
       session
           .createSQLQuery(
               "update studies_lang set allow_rejoin_text=:alertText where study_id=:studyId and lang_code=:language")
@@ -5750,6 +5751,7 @@ public class StudyDAOImpl implements StudyDAO {
           .setInteger("studyId", studyBo.getId())
           .setString("language", currLang)
           .executeUpdate();
+      transaction.commit();
       result = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {
       transaction.rollback();

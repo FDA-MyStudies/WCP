@@ -719,6 +719,7 @@
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
+  var isLiveStudy = '${liveStatus}';
   function refreshAndFetchLanguageData(language) {
     $.ajax({
       url: '/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}',
@@ -775,9 +776,15 @@
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').removeClass('ml-disabled').attr('disabled', false);
+          if (isLiveStudy) {
+              $('#inlineRadio1, #inlineRadio2, #inlineRadio3').addClass('ml-disabled').attr('disabled', true);
+          } else {
+              $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').removeClass('ml-disabled').attr('disabled', false);
+          }
           if (isDisabledQAButton) {
-            $('#addQaId').attr('disabled', true);
+              $('#addQaId').attr('disabled', true);
+          } else {
+              $('#addQaId').removeClass('ml-disabled').attr('disabled', false);
           }
           $('.sprites_icon').removeAttr('style');
           let mark = true;

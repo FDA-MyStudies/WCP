@@ -561,6 +561,30 @@
               $('#displayUnitStat').val($(id4, htmlData).val());
             }
           }
+
+            <c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}">
+            $('#shortTitleId').attr('disabled', true);
+            if (targetOption === '3') {
+                $('#identifierId1').attr('disabled', true);
+                $('#identifierId2').attr('disabled', true);
+                $('#identifierId3').attr('disabled', true);
+            } else {
+                $('#identifierId').attr('disabled', true);
+            }
+            </c:if>
+
+            <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1 || activeTaskBo.isDuplicate > 0}">
+            $('#schedule1').attr('disabled', true);
+            </c:if>
+
+            <c:if test="${empty anchorTypeList || activeTaskBo.isDuplicate > 0 || isAnchorQuestionnaire}">
+            $('#schedule2').attr('disabled', true);
+            </c:if>
+
+            <c:if test="${activeTaskBo.isDuplicate > 0}">
+            $('input[name="frequency"]').attr('disabled', true);
+            </c:if>
+
           <c:if test="${actionPage eq 'view'}">
           $(document).find('input,textarea').prop('disabled', true);
           </c:if>

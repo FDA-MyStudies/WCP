@@ -1644,6 +1644,10 @@
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
           }
+
+            <c:if test="${studyLiveStatus}">
+            $('input[name="shareDataPermissions"]').prop('disabled', true);
+            </c:if>
           if ('${permission}' == 'view') {
             $('input[name="consentDocType"]').attr('disabled', 'disabled');
             $('#consentReviewFormId input').prop('disabled', true);

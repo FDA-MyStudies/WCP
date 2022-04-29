@@ -592,9 +592,11 @@
           $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
           $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          let editor = tinymce.activeEditor;
-          if (editor!==undefined) {
-            editor.setContent($('#elaboratedLang', htmlData).val());
+          if (tinymce !== null && tinymce !== undefined) {
+              let editor = tinymce.activeEditor;
+              if (editor !== undefined) {
+                  editor.setContent($('#elaboratedLang', htmlData).val());
+              }
           }
           if ($('#inlineRadio1').prop('checked') === true) {
             let title = $('[data-id="consentItemTitleId"]');
@@ -619,9 +621,11 @@
           $('#briefSummary').val($('#briefSummary', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedRTE', htmlData).val());
           $('#displayTitle').val($('#displayTitle', htmlData).val());
-          let editor = tinymce.activeEditor;
-          if (editor!==undefined) {
-            editor.setContent($('#elaboratedRTE', htmlData).val());
+          if (tinymce !== null && tinymce !== undefined) {
+              let editor = tinymce.activeEditor;
+              if (editor !== undefined) {
+                  editor.setContent($('#elaboratedRTE', htmlData).val());
+              }
           }
           
           <c:if test="${actionPage eq 'view'}">

@@ -223,24 +223,27 @@
 
 				<!-- Gray Widget-->
 				<div class="edit-user-list-widget">
-					<span class="checkbox checkbox-inline"> <input
-						type="checkbox" class="chk" id="inlineCheckbox1" value="option1"
-						<c:if test="${fn:contains(permissions,7)}">checked</c:if>
-						<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+					<span class="checkbox checkbox-inline">
+						<input type="checkbox" class="chk" id="inlineCheckbox1" value="option1"
+							   <c:if test="${fn:contains(permissions,7)}"> checked </c:if>
+							   <c:if test="${actionPage eq 'VIEW_PAGE'}"> disabled </c:if>>
 						<label for="inlineCheckbox1"> Manage Users </label>
-					</span> <span class="pull-right"> <span
-						class="radio radio-info radio-inline p-45"> <input
+					</span>
+					<span class="pull-right">
+						<span
+							class="radio radio-info radio-inline p-45"> <input
 							type="radio" class="musr" id="inlineRadio1" value="0"
 							name="manageUsers"
 							<c:if test="${fn:contains(permissions,7)}">checked</c:if>
 							<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 							<label for="inlineRadio1"></label>
-					</span> <span class="radio radio-inline"> <input type="radio"
+						</span>
+						<span class="radio radio-inline"> <input type="radio"
 							class="musr" id="inlineRadio2" value="1" name="manageUsers"
 							<c:if test="${fn:contains(permissions,5)}">checked</c:if>
 							<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 							<label for="inlineRadio2"></label>
-					</span>
+						</span>
 					</span>
 				</div>
 
@@ -265,25 +268,27 @@
 				<!-- Gray Widget-->
 				<div class="edit-user-list-widget">
 					<span class="checkbox checkbox-inline"> <input
-						type="checkbox" id="inlineCheckbox3" class="chk" value="option1"
+						type="checkbox" id="inlineCheckbox3" value="option1"
 						<c:if test="${fn:contains(permissions,4)}">checked</c:if>
 						<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						<label for="inlineCheckbox3"> Manage App-Wide
 							Notifications </label>
-					</span> <span class="pull-right"> <span
-						class="radio radio-info radio-inline p-45"> <input
-							type="radio" id="inlineRadio5" class="mnotf" value="0"
-							name="manageNotifications"
-							<c:if test="${fn:contains(permissions,4)}">checked</c:if>
-							<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+					</span>
+					<span class="pull-right">
+						<span class="radio radio-info radio-inline p-45">
+							<input type="radio" id="inlineRadio5" class="mnotf" value="0"
+								   name="manageNotifications"
+								   <c:if test="${fn:contains(permissions,4)}">checked</c:if>
+								   <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 							<label for="inlineRadio5"></label>
-					</span> <span class="radio radio-inline"> <input type="radio"
+						</span>
+						<span class="radio radio-inline"> <input type="radio"
 							id="inlineRadio6" class="mnotf" value="1"
 							name="manageNotifications"
 							<c:if test="${fn:contains(permissions,6)}">checked</c:if>
 							<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 							<label for="inlineRadio6"></label>
-					</span>
+						</span>
 					</span>
 				</div>
 
@@ -398,7 +403,6 @@
     	<c:if test="${empty studyBOList && empty studyBOs}">
     		$('.addHide').hide();
     	</c:if>
-    	
     	$('#users').addClass('active');
     	
     	$('[data-toggle="tooltip"]').tooltip();	
@@ -412,16 +416,17 @@
            $('.changeView').prop('disabled',true);
            $('.changeView1').prop('disabled',true);
     	}
-    	var role = '${userBO.roleName}';
-    	if(role){
-    	   setStudySettingByRole(role);
-    	}
-    	
-    	$('#roleId').on('change', function() {
-		  var element = $(this).find('option:selected').text(); 
-		  setStudySettingByRole(element);
-		});
-    	
+
+		if ('${actionPage}' !== 'VIEW_PAGE') {
+			let role = '${userBO.roleName}';
+			if(role){
+				setStudySettingByRole(role);
+			}
+			$('#roleId').on('change', function() {
+				let element = $(this).find('option:selected').text();
+				setStudySettingByRole(element);
+			});
+		}
     	
    var countCall = 0;
    $(window).on('load',function(){
@@ -812,7 +817,7 @@
       	}
     }
     function setStudySettingByRole(element){
-      if(element == 'Org-level Admin'){
+      if(element === 'Org-level Admin'){
 		     $('#inlineCheckbox1').prop('checked', false);
 		     $('#inlineCheckbox3').prop('checked', false);
 		     $('.changeView1').prop('checked', false);
@@ -830,7 +835,6 @@
 		     $('#inlineCheckbox3').attr('disabled',false);
 		     $('#inlineCheckbox5').attr('disabled',false);
 		  }
-		  
     }
 </script>
 

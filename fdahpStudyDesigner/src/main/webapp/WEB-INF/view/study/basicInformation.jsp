@@ -944,6 +944,10 @@
           $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
+
+            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
+            $('#customStudyId, #appId, input[name="type"]').prop('disabled', true);
+            </c:if>
           
           <c:if test="${permission == 'view' }">
           $('#basicInfoFormId input,textarea').prop('disabled', true);

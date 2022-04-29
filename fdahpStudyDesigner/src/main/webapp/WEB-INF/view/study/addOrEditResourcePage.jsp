@@ -1167,7 +1167,7 @@ function refreshAndFetchLanguageData(language) {
           if (param.prop('checked')===true) {
             $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
             if($('#inlineRadio5').prop('checked')===true) {
-              $('[data-id="anchorDateId"]').removeClass('ml-disabled').prop('disabled', false);
+              $('[data-id="anchorDateId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#xdays, #ydays, #inlineRadio6').attr('disabled', false);
             }
             else if($('#inlineRadio6').prop('checked')===true) {

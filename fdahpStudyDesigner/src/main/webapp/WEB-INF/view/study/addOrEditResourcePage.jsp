@@ -14,6 +14,10 @@
     pointer-events: none;
   }
 
+  .loading #loader {
+	  visibility:hidden;
+  }
+
   .langSpecific{
 	  position: relative;
   }

@@ -11,6 +11,10 @@
     position: relative;
   }
 
+  .loading #loader {
+      visibility:hidden;
+  }
+
   .langSpecific > button::before{
     content: '';
     display: block;

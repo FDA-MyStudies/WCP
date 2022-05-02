@@ -1575,7 +1575,6 @@
           }
           let editor2 = tinymce.get('newDocumentDivId');
           if ($('#consentType').val() === 'Auto' && $('#inlineRadio2').is(':checked')=== true) {
-              $('#newDocumentDivId').val('');
               if (editor2 !== null)
                   editor2.setContent('');
           } else {
@@ -1626,12 +1625,17 @@
               tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'false');
             }
           }
+          let editor = tinymce.get('newDocumentDivId');
           if ($('#consentType', htmlData).val() !== 'Auto') {
-              let editor = tinymce.get('newDocumentDivId');
               if (editor !== undefined && editor !== null) {
                   editor.setContent($('#newDocumentDivId', htmlData).val());
               }
               $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
+          } else {
+              if (editor !== undefined && editor !== null) {
+                  editor.setContent('');
+              }
+              $('#newDocumentDivId').val('');
           }
           $('#aggrementOfTheConsentId').val($('#aggrementOfTheConsentId', htmlData).val());
           $('.input-add-signature').each(function(index) {

@@ -11,10 +11,6 @@
     position: relative;
   }
 
-  .loading #loader {
-      visibility:hidden;
-  }
-
   .langSpecific > button::before{
     content: '';
     display: block;
@@ -244,6 +240,7 @@
       refreshAndFetchLanguageData(currLang);
     }
 
+    $('#loader').hide();
     <c:if test="${actionPage eq 'view'}">
     $('#consentInfoFormId input,textarea').prop('disabled', true);
     $('#consentInfoFormId .elaborateClass').addClass('linkDis');
@@ -323,6 +320,7 @@
           var displayTitleText = $("#displayTitle").val();
           displayTitleText = replaceSpecialCharacters(displayTitleText);
           $("#displayTitle").val(displayTitleText);
+          $('#loader').show();
           $("#consentInfoFormId").submit();
 
         } else {
@@ -382,7 +380,7 @@
         consentInfo.displayTitle = displayTitleText;
       }
       consentInfo.type = "save";
-
+      $('#loader').show();
       var data = JSON.stringify(consentInfo);
       $.ajax({
         url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
@@ -409,12 +407,14 @@
             $('#alertMsg').show();
           }
           setTimeout(hideDisplayMessage, 4000);
+          $('#loader').hide();
         },
         error: function (xhr, status, error) {
           $(item).prop('disabled', false);
           $('#alertMsg').show();
           $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
           setTimeout(hideDisplayMessage, 4000);
+          $('#loader').hide();
         }
       });
     } else {
@@ -447,6 +447,7 @@
       },
       callback: function (result) {
         if (result) {
+          $('#loader').show();
           var a = document.createElement('a');
           a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
               + lang;
@@ -575,6 +576,7 @@
   })
 
   function refreshAndFetchLanguageData(language) {
+    $('#loader').show();
     $.ajax({
       url: '/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}',
       type: "GET",
@@ -610,6 +612,7 @@
           } else {
             $('#displayTitle').val($('#displayTitleLang', htmlData).val());
           }
+          $('#loader').hide();
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -635,6 +638,7 @@
           <c:if test="${actionPage eq 'view'}">
           $('#consentInfoFormId input,textarea').prop('disabled', true);
           </c:if>
+          $('#loader').hide();
         }
       }
     })

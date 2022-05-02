@@ -14,10 +14,6 @@
     pointer-events: none;
   }
 
-  .loading #loader {
-	  visibility:hidden;
-  }
-
   .langSpecific{
 	  position: relative;
   }
@@ -402,7 +398,7 @@
 $(document).ready(function(){
 	
 	//$('[data-id="anchorDateId"]').prop('disabled', true);
-	
+	$('#loader').hide();
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
@@ -454,6 +450,7 @@ $(document).ready(function(){
       			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
                          	var escaped = $('#richText').text(richText).html();
                          	tinymce.get('richText').setContent(escaped);
+							$('#loader').show();
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
       			    		$('#doneResourceId').prop('disabled',false);
@@ -479,6 +476,7 @@ $(document).ready(function(){
       			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
                          	var escaped = $('#richText').text(richText).html();
                          	tinymce.get('richText').setContent(escaped);
+							$('#loader').show();
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
       			    		$('#doneResourceId').prop('disabled',false);
@@ -490,6 +488,7 @@ $(document).ready(function(){
         		  var richText=tinymce.get('richText').getContent({ format: 'raw' });
                	  var escaped = $('#richText').text(richText).html();
                	  tinymce.get('richText').setContent(escaped);
+				  $('#loader').show();
    		   		  $('#resourceForm').submit(); 
         	  }
  		   }else{
@@ -550,7 +549,7 @@ $(document).ready(function(){
     		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please fill out this field."));
     	}
        	$('#saveResourceId').prop('disabled',false);
-    	  return false;
+    	return false;
        }else if(isValid){
     	   	var actionOn = '${fn:escapeXml(actionOn)}';
 	       	$('#resourceForm').validator('destroy');
@@ -561,7 +560,8 @@ $(document).ready(function(){
 	       		var escaped = $('#richText').text(richText).html();
 	         	tinymce.get('richText').setContent(escaped);
              }
-	       	$('#resourceForm').submit();
+		   $('#loader').show();
+		   $('#resourceForm').submit();
        }
       $('#saveResourceId').prop('disabled',false);
 	});
@@ -590,6 +590,7 @@ $(document).ready(function(){
 		    },
 		    callback: function(result) {
 		        if (result) {
+					$('#loader').show();
 		        	$('#resourceListForm').submit();
 		        }
 		    }
@@ -1088,6 +1089,7 @@ function refreshAndFetchLanguageData(language) {
 	let action = '${actionOn}';
 	let textOrPdfEn = '${resourceBO.textOrPdf}';
 	let isStudyProtocol = '${isstudyProtocol}';
+  $('#loader').show();
   $.ajax({
     url: '/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}',
     type: "GET",
@@ -1154,6 +1156,7 @@ function refreshAndFetchLanguageData(language) {
 				$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
 				$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
 			}
+			$('#loader').hide();
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -1207,6 +1210,7 @@ function refreshAndFetchLanguageData(language) {
 			<c:if test="${actionOn eq 'view'}">
 		 	$('#resourceForm input,textarea').prop('disabled', true);
 			</c:if>
+			$('#loader').hide();
         }
     }
   });

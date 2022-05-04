@@ -4871,7 +4871,23 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').removeClass('cursor-none');
           $('#titleId').val($('#titleId', htmlData).val());
-          
+
+            <c:if test="${not empty questionnaireBo.shortTitleDuplicate && (questionnaireBo.shortTitleDuplicate gt 0)}">
+            $('#shortTitleId').attr('disabled', true);
+            </c:if>
+
+            <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">
+            $('#schedule1').attr('disabled', true);
+            </c:if>
+
+            <c:if test="${empty anchorTypeList || questionnaireBo.shortTitleDuplicate > 0 || isAnchorQuestionnaire}">
+            $('#schedule2').attr('disabled', true);
+            </c:if>
+
+            <c:if test="${questionnaireBo.shortTitleDuplicate > 0 || isAnchorQuestionnaire}">
+            $('input[name="frequency"]').attr('disabled', true);
+            </c:if>
+
           <c:if test="${actionType == 'view'}">
           $(".blue-bg, .green-bg, .skyblue-bg").addClass('cursor-none');
           $('#branchingId').attr('disabled', true);

@@ -16,8 +16,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<app.dir.name>fdahpStudyDesigner</app.dir.name>
-		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
-		<spring.security.version>3.2.3.RELEASE</spring.security.version>
+		<org.springframework.version>5.3.18</org.springframework.version>
+		<spring.security.version>5.6.2</spring.security.version>
 	</properties>
 	<build>
 		<plugins>
@@ -85,12 +85,12 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
-			<version>4.4.6</version>
+			<version>4.4.15</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -124,6 +124,11 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
 		<!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA and 
 			iBatis. (depends on spring-core, spring-beans, spring-context, spring-tx) 
 			Define this if you need ORM (org.springframework.orm.*) -->
@@ -149,7 +154,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-instrument-tomcat</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>4.3.30.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -164,18 +169,22 @@
 		<dependency>
 			<groupId>org.springframework.webflow</groupId>
 			<artifactId>org.springframework.js</artifactId>
-			<version>2.0.4.RELEASE</version>
+			<version>2.0.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-portlet</artifactId>
 			<version>2.0.8</version>
 		</dependency>
-
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-			<version>2.2</version>
+			<version>3.3.0</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -188,13 +197,13 @@
 		<dependency>
 			<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
-			<version>1.5.3</version>
+			<version>1.6</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.17.1</version>
+			<version>2.17.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.sun.jmx</groupId>
@@ -218,7 +227,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
+			<version>4.13.2</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -226,7 +235,7 @@
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.1.2</version>
+			<version>1.2</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -255,115 +264,94 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.0</version>
+			<version>3.12.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.7</version>
+			<version>2.11.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.16</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>8.0.28</version>
 		</dependency>
 
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.2</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-			<version>1.2.2</version>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.3.3</version>
+			<version>1.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.3.2.GA</version>
+			<version>5.6.7.Final</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>javax.persistence</groupId>-->
+<!--			<artifactId>persistence-api</artifactId>-->
+<!--			<version>1.1</version>-->
+<!--			<type>jar</type>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
 
 		<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
-			<version>0.9.5.4</version>
+			<version>0.9.5.5</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.mchange/mchange-commons-java -->
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>mchange-commons-java</artifactId>
-			<version>0.2.11</version>
+			<version>0.2.20</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.8</version>
+			<version>1.7.36</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.8</version>
+			<version>1.7.36</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.4.0.GA</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.3.2.GA</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>ejb3-persistence</artifactId>
-			<version>3.3.2.Beta1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-api</artifactId>
-			<version>2.1.2</version>
+			<version>3.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-jsp</artifactId>
-			<version>2.1.2</version>
+			<version>3.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-core</artifactId>
-			<version>2.1.2</version>
+			<version>3.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -374,28 +362,28 @@
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-template</artifactId>
-			<version>2.2.2</version>
+			<version>3.0.8</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-request-api</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>xmlbeans-maven-plugin</artifactId>
-			<version>2.3.0</version>
+			<version>2.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-servlet</artifactId>
-			<version>2.1.2</version>
+			<version>3.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4</version>
+			<version>1.4.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ajaxtags</groupId>
@@ -406,24 +394,24 @@
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>
-			<version>3.0.1</version>
+			<version>3.5.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.6.8</version>
+			<version>1.9.9.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.14.2</version>
+			<version>1.14.3</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
-			<version>2.2.2</version>
+			<version>2.4</version>
 			<classifier>jdk15</classifier>
 			<type>jar</type>
 		</dependency>
@@ -442,13 +430,13 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
-			<version>1.9.11</version>
+			<version>1.9.13</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.11</version>
+			<version>1.9.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -476,12 +464,85 @@
 		<dependency>
 			<groupId>net.objecthunter</groupId>
 			<artifactId>exp4j</artifactId>
-			<version>0.4.7</version>
+			<version>0.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>com.udojava</groupId>
 			<artifactId>EvalEx</artifactId>
-			<version>1.12</version>
+			<version>2.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- H2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.210</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>3.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<version>1.5.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.22</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-ext</artifactId>
+			<version>1.7.36</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>${spring.security.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 	</dependencies>
 </project>

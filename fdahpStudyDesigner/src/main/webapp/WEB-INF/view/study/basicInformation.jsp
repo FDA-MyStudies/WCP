@@ -65,7 +65,7 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
+                    <button type="button" class="btn btn-default gray-btn cancelBut" id="cancel">Cancel</button>
                 </div>
                 <c:if test="${empty permission}">
                     <div class="dis-line form-group mb-none mr-sm">
@@ -394,6 +394,10 @@
 
 <script>
   $(document).ready(function () {
+    $('#loader').hide();
+    $('.commonCls').on('click', function () {
+        $('#loader').show();
+    })
     $('#removeUrl').css("visibility", "hidden");
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();
@@ -449,11 +453,41 @@
         <c:if test="${not empty permission}">readonly: 1, </c:if>
         setup: function (ed) {
           ed.on('keypress change', function (ed) {
-            resetValidation($('#editor').val(tinyMCE.get("editor").getContent()).parents('form'));
+            resetValidation($('#editor').val(tinymce.get("editor").getContent()).parents('form'));
           });
         }
       });
     }
+
+    $('#cancel').on('click',function(){
+        <c:if test="${permission ne 'view' }">
+        bootbox.confirm({
+            closeButton: false,
+            message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+            buttons: {
+                'cancel': {
+                    label: 'Cancel',
+                },
+                'confirm': {
+                    label: 'OK',
+                },
+            },
+            callback: function(result) {
+                if (result) {
+                    $('#loader').show();
+                    let a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+                    document.body.appendChild(a).click();
+                }
+            }
+        });
+        </c:if>
+        <c:if test="${permission eq 'view' }">
+        let a = document.createElement('a');
+        a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+        document.body.appendChild(a).click();
+        </c:if>
+    });
     // File Upload
     $("#uploadImgbtn").click(function () {
       $("#uploadImg").click();
@@ -528,6 +562,7 @@
                                       tinymce.get('editor').setContent(escaped);
 
                                       $("#buttonText").val('completed');
+                                      $('#loader').show();
                                       $("#basicInfoFormId").submit();
                                     }
                                   }
@@ -571,6 +606,7 @@
                       tinymce.get('editor').setContent(escaped);
 
                       $("#buttonText").val('completed');
+                      $('#loader').show();
                       $("#basicInfoFormId").submit();
                     }
                   }
@@ -626,6 +662,7 @@
                     var escaped = $('#editor').text(richText).html();
                     tinymce.get('editor').setContent(escaped);
                   }
+                  $('#loader').show();
                   $('#basicInfoFormId').submit();
                 } else {
                   $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
@@ -639,7 +676,7 @@
                     var escaped = $('#editor').text(richText).html();
                     tinymce.get('editor').setContent(escaped);
                   }
-
+                  $('#loader').show();
                   $('#basicInfoFormId').submit();
                 }
               });
@@ -655,7 +692,7 @@
                 var escaped = $('#editor').text(richText).html();
                 tinymce.get('editor').setContent(escaped);
               }
-
+              $('#loader').show();
               $('#basicInfoFormId').submit();
             }
           }
@@ -879,6 +916,7 @@
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);
+    $('#loader').show();
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
@@ -893,33 +931,39 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          $('.tit_wrapper').text($('#mlName', htmlData).val());
-          updateCompletionTicks(htmlData);
-          $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('langSpecific')) {
-              $(this).addClass('ml-disabled').attr('disabled', true);
-              if (this.nodeName.toLowerCase() === 'select') {
-                let id = this.id;
-                if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').addClass('cursor-none');
+            try {
+                $('.tit_wrapper').text($('#mlName', htmlData).val());
+                updateCompletionTicks(htmlData);
+                $('select, input[type!=hidden]').each(function () {
+                    if (!$(this).hasClass('langSpecific')) {
+                        $(this).addClass('ml-disabled').attr('disabled', true);
+                        if (this.nodeName.toLowerCase() === 'select') {
+                            let id = this.id;
+                            if (id !== undefined && id !== '') {
+                                $('[data-id=' + id + ']').addClass('cursor-none');
+                            }
+                        }
+                    }
+                });
+                $('#customStudyName').val($('input#mlName', htmlData).val());
+                $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
+                $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
+                $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
+                $('#removeUrl').addClass('cursor-none');
+                $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
+                    'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
+                $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
+                    'cursor-none');
+                $('#editor').val($('input#mlDescription', htmlData).val());
+                let tinyMce = tinymce.activeEditor;
+                if (tinyMce !== undefined) {
+                    tinyMce.setContent($('input#mlDescription', htmlData).val());
                 }
-              }
+                $('#loader').hide();
+            } catch (e) {
+                console.log("Error occurred : "+e);
+                $('#loader').hide();
             }
-          });
-          $('#customStudyName').val($('input#mlName', htmlData).val());
-          $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
-          $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
-          $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
-          $('#editor').val($('input#mlDescription', htmlData).val());
-          let tinyMce = tinymce.activeEditor;
-          if (tinyMce !== undefined) {
-            tinyMce.setContent($('input#mlDescription', htmlData).val());
-          }
-          $('#removeUrl').addClass('cursor-none');
-          $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
-              'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
-          $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
-              'cursor-none');
         } else {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           updateCompletionTicksForEnglish();
@@ -944,11 +988,16 @@
           $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').removeAttr(
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
+
+            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
+            $('#customStudyId, #appId, input[name="type"]').prop('disabled', true);
+            </c:if>
           
           <c:if test="${permission == 'view' }">
           $('#basicInfoFormId input,textarea').prop('disabled', true);
           $('#removeUrl').addClass('cursor-none');
           </c:if>
+          $('#loader').hide();
         }
       }
     });

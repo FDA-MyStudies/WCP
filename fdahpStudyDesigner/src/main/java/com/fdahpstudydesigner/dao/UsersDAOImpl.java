@@ -18,7 +18,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -504,7 +504,7 @@ public class UsersDAOImpl implements UsersDAO {
           userBO.setRoleName(null != obj[4] ? String.valueOf(obj[4]) : "");
           userBO.setEnabled(null != obj[5] ? (Boolean) obj[5] : false);
           userBO.setUserPassword(null != obj[6] ? String.valueOf(obj[6]) : "");
-          userBO.setEmailChanged(null != obj[7] ? (Boolean) obj[7] : false);
+          userBO.setEmailChanged(null != obj[7] && ((Byte) obj[7] != 0));
           userBO.setUserFullName(userBO.getFirstName() + " " + userBO.getLastName());
           userList.add(userBO);
         }

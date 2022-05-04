@@ -822,7 +822,7 @@ public class StudyController {
    * @param request , {@link HttpServletResponse}
    * @param response , {@link HttpServletResponse}
    */
-  @RequestMapping(value = "/adminStudies/deleteResourceInfo", method = RequestMethod.POST)
+  @RequestMapping(value = "/adminStudies/deleteResourceInfo.do", method = RequestMethod.POST)
   public void deleteResourceInfo(HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyController - deleteResourceInfo() - Starts");
     JSONObject jsonobject = new JSONObject();
@@ -5345,7 +5345,7 @@ public class StudyController {
    * @return
    */
   @RequestMapping(
-      value = "/adminStudies/studyPlatformValidationforActiveTask",
+      value = "/adminStudies/studyPlatformValidationforActiveTask.do",
       method = RequestMethod.POST)
   public void studyPlatformValidationforActiveTask(
       HttpServletRequest request, HttpServletResponse response) {
@@ -5401,7 +5401,7 @@ public class StudyController {
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView}
    */
-  @RequestMapping(value = "/adminStudies/updateStudyAction", method = RequestMethod.POST)
+  @RequestMapping(value = "/adminStudies/updateStudyAction.do", method = RequestMethod.POST)
   public ModelAndView updateStudyActionOnAction(
       HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyController - updateStudyActionOnAction() - Starts");
@@ -5483,7 +5483,7 @@ public class StudyController {
     return null;
   }
 
-  @RequestMapping(value = "/adminStudies/switchToLiveMode", method = RequestMethod.POST)
+  @RequestMapping(value = "/adminStudies/switchToLiveMode.do", method = RequestMethod.POST)
   public ModelAndView switchStudyToLiveMode(
       HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyController - switchStudyToLiveMode() - Starts");

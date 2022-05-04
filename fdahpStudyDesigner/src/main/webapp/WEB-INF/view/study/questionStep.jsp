@@ -7462,6 +7462,10 @@
                 $('#numericUnitId').val($('#numericUnitId', htmlData).val());
               }
               $('#dispalyText0').val('Yes');
+				$('#scaleStepId').attr('disabled', true);
+				<c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}">
+				$('#stepShortTitle').attr('disabled', true);
+				</c:if>
               <c:if test="${actionTypeForQuestionPage == 'view'}">
               $('#questionStepId input,textarea ').prop('disabled', true);
               </c:if>

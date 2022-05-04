@@ -1202,6 +1202,10 @@
                 $('#mlNo').prop('disabled', true);
               }
             }
+
+              <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'I')}">
+              $('input[name="platform"]').prop('disabled', true);
+              </c:if>
             
             <c:if test="${permission == 'view'}">
             $('#settingfoFormId input,textarea').prop('disabled', true);

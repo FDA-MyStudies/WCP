@@ -372,6 +372,7 @@
                                         <div class="form-group ">
 											<textarea class="" rows="8" id="newDocumentDivId"
                                                       name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
+                                            <input type="hidden" id="consentType" value="${consentBo.consentDocType}">
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -731,6 +732,10 @@
 <script type="text/javascript">
   $(document).ready(function () {
     //check the type of page action(view/edit)
+      $('#loader').hide();
+      $('.commonCls').on('click', function () {
+          $('#loader').show();
+      })
     if ('${permission}' == 'view') {
       $('input[name="consentDocType"]').attr('disabled', 'disabled');
       $('#consentReviewFormId input').prop('disabled', true);
@@ -841,7 +846,7 @@
       if ($("#typeOfCensent").val() == "New") {
         valid = maxLenValEditor();
       }
-      tinyMCE.triggerSave();
+        tinymce.triggerSave();
       if (valid) {
         if (id == "saveId") {
           $("#consentReviewFormId").parents("form").validator("destroy");
@@ -1022,7 +1027,7 @@
         entity_encoding: "raw",
         setup: function (ed) {
           ed.on('change', function (ed) {
-            if (tinyMCE.get(ed.target.id).getContent() != '') {
+            if (tinymce.get(ed.target.id).getContent() != '') {
               $('#newDocumentDivId').parent().removeClass("has-danger").removeClass("has-error");
               $('#newDocumentDivId').parent().find(".help-block").empty();
             }
@@ -1056,8 +1061,8 @@
         entity_encoding: "raw",
         setup: function (ed) {
           ed.on('change', function (ed) {
-            if (tinyMCE.get(ed.target.id).getContent() != '') {
-              console.log(tinyMCE.get(ed.target.id).getContent());
+            if (tinymce.get(ed.target.id).getContent() != '') {
+              console.log(tinymce.get(ed.target.id).getContent());
               $('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
               $('#learnMoreTextId').parent().find(".help-block").empty();
             }
@@ -1202,6 +1207,7 @@
       }
       var data = JSON.stringify(consentInfo);
       var pageName = 'consentreview';
+      $('#loader').show();
       $.ajax({
         url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
         type: "POST",
@@ -1211,6 +1217,7 @@
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
         success: function (data) {
+          $('#loader').hide();
           var message = data.message;
           $("#alertMsg").empty();
           if (message == "SUCCESS") {
@@ -1285,8 +1292,9 @@
       },
       callback: function (result) {
         if (result) {
-          var a = document.createElement('a');
-          a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
+          $('#loader').show();
+            const a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
           document.body.appendChild(a).click();
         } else {
           $(item).prop('disabled', false);
@@ -1295,6 +1303,7 @@
     });
     </c:if>
     <c:if test="${permission eq 'view'}">
+    $('#loader').show();
     var a = document.createElement('a');
     a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
     document.body.appendChild(a).click();
@@ -1527,6 +1536,7 @@
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);
+    $('#loader').show();
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
@@ -1538,6 +1548,7 @@
         language: language,
       },
       success: function (data) {
+        $('#loader').hide();
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
@@ -1572,10 +1583,15 @@
             if (editor1 !== null)
               editor1.setContent($('#mlLearnMore', htmlData).val());
           }
-          $('#newDocumentDivId').val($('#mlConsentDocContent', htmlData).val());
           let editor2 = tinymce.get('newDocumentDivId');
-          if (editor2 !== null)
-            editor2.setContent($('#mlConsentDocContent', htmlData).val());
+          if ($('#consentType').val() === 'Auto' && $('#inlineRadio2').is(':checked')=== true) {
+              if (editor2 !== null)
+                  editor2.setContent('');
+          } else {
+              $('#newDocumentDivId').val($('#mlConsentDocContent', htmlData).val());
+              if (editor2 !== null)
+                  editor2.setContent($('#mlConsentDocContent', htmlData).val());
+          }
           $('#aggrementOfTheConsentId').val($('#mlAgreement', htmlData).val());
           $('.input-add-signature').val('');
           $('#signature0').val($('#mlSignature0', htmlData).val());
@@ -1620,9 +1636,17 @@
             }
           }
           let editor = tinymce.get('newDocumentDivId');
-          if (editor !== undefined && editor !== null)
-            editor.setContent($('#newDocumentDivId', htmlData).val());
-          $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
+          if ($('#consentType', htmlData).val() !== 'Auto') {
+              if (editor !== undefined && editor !== null) {
+                  editor.setContent($('#newDocumentDivId', htmlData).val());
+              }
+              $('#newDocumentDivId').val($('#newDocumentDivId', htmlData).val());
+          } else {
+              if (editor !== undefined && editor !== null) {
+                  editor.setContent('');
+              }
+              $('#newDocumentDivId').val('');
+          }
           $('#aggrementOfTheConsentId').val($('#aggrementOfTheConsentId', htmlData).val());
           $('.input-add-signature').each(function(index) {
             $(this).val($('.input-add-signature', htmlData)[index].getAttribute('value'));
@@ -1644,6 +1668,10 @@
             $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
             $("#newDocumentDivId").val('');
           }
+
+            <c:if test="${studyLiveStatus}">
+            $('input[name="shareDataPermissions"]').prop('disabled', true);
+            </c:if>
           if ('${permission}' == 'view') {
             $('input[name="consentDocType"]').attr('disabled', 'disabled');
             $('#consentReviewFormId input').prop('disabled', true);

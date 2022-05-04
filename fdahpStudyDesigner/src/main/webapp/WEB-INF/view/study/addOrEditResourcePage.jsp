@@ -398,7 +398,10 @@
 $(document).ready(function(){
 	
 	//$('[data-id="anchorDateId"]').prop('disabled', true);
-	
+	$('#loader').hide();
+	$('.commonCls').on('click', function () {
+		$('#loader').show();
+	})
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
@@ -409,7 +412,7 @@ $(document).ready(function(){
 	});
 
 	if ($('#inlineRadio4').prop('checked')===true) {
-		$('[data-id="anchorDateId"]').addClass('cursor-none');
+		$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').addClass('cursor-none');
 	}
 	
 	    $('.daysMask').mask('000');
@@ -450,6 +453,7 @@ $(document).ready(function(){
       			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
                          	var escaped = $('#richText').text(richText).html();
                          	tinymce.get('richText').setContent(escaped);
+							$('#loader').show();
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
       			    		$('#doneResourceId').prop('disabled',false);
@@ -475,6 +479,7 @@ $(document).ready(function(){
       			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
                          	var escaped = $('#richText').text(richText).html();
                          	tinymce.get('richText').setContent(escaped);
+							$('#loader').show();
       	   		   		    $('#resourceForm').submit(); 
       			    	}else{
       			    		$('#doneResourceId').prop('disabled',false);
@@ -486,6 +491,7 @@ $(document).ready(function(){
         		  var richText=tinymce.get('richText').getContent({ format: 'raw' });
                	  var escaped = $('#richText').text(richText).html();
                	  tinymce.get('richText').setContent(escaped);
+				  $('#loader').show();
    		   		  $('#resourceForm').submit(); 
         	  }
  		   }else{
@@ -546,7 +552,7 @@ $(document).ready(function(){
     		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please fill out this field."));
     	}
        	$('#saveResourceId').prop('disabled',false);
-    	  return false;
+    	return false;
        }else if(isValid){
     	   	var actionOn = '${fn:escapeXml(actionOn)}';
 	       	$('#resourceForm').validator('destroy');
@@ -557,7 +563,8 @@ $(document).ready(function(){
 	       		var escaped = $('#richText').text(richText).html();
 	         	tinymce.get('richText').setContent(escaped);
              }
-	       	$('#resourceForm').submit();
+		   $('#loader').show();
+		   $('#resourceForm').submit();
        }
       $('#saveResourceId').prop('disabled',false);
 	});
@@ -586,6 +593,7 @@ $(document).ready(function(){
 		    },
 		    callback: function(result) {
 		        if (result) {
+					$('#loader').show();
 		        	$('#resourceListForm').submit();
 		        }
 		    }
@@ -618,7 +626,7 @@ $(document).ready(function(){
         setup : function(ed) {
             ed.on('keypress change', function(ed) {
             	resetValidation('.resetContentType');
-            	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form #richText'));
+            	resetValidation($('#'+ed.target.id).val(tinymce.get(ed.target.id).getContent()).parents('form #richText'));
             });
      	  },
      	 <c:if test="${actionOn eq 'view'}">readonly:1</c:if>
@@ -1084,6 +1092,7 @@ function refreshAndFetchLanguageData(language) {
 	let action = '${actionOn}';
 	let textOrPdfEn = '${resourceBO.textOrPdf}';
 	let isStudyProtocol = '${isstudyProtocol}';
+	$('#loader').show();
   $.ajax({
     url: '/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}',
     type: "GET",
@@ -1096,59 +1105,65 @@ function refreshAndFetchLanguageData(language) {
       let htmlData = document.createElement('html');
       htmlData.innerHTML = data;
         if (language !== 'en') {
-          updateCompletionTicks(htmlData);
-          $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('[data-id="xSign"], [data-id="ySign"], [data-id="anchorDateId"]').prop('disabled', true).addClass('cursor-none');
-          $('[name="textOrPdfParam"]').prop('disabled', true);
-          let param = $('[name="resourceVisibilityParam"]');
-          param.attr('disabled', true);
-          if (param.prop('checked')===true) {
-            $('#inlineRadio5, #inlineRadio6').attr('disabled', true);
-            if($('#inlineRadio5').prop('checked')===true) {
-              $('[data-id="anchorDateId"]').addClass('ml-disabled').prop('disabled', true);
-              $('#xdays, #ydays, #inlineRadio6').attr('disabled', true);
-            }
-            else if($('#inlineRadio6').prop('checked')===true) {
-              $('#StartDate, #EndDate').attr('disabled', true);
-            }
-          }
-          // setting data
-			if (isStudyProtocol !== 'isstudyProtocol') {
-				$('#resourceTitle').val($('#mlTitle', htmlData).val());
-			}
-			$('#comment').val($('#mlResourceText', htmlData).val());
-			let richText = $('#mlRichText', htmlData).val();
-			if (richText===undefined) {
-				richText = '';
-			}
-			$('#richText').val(richText);
-			if (tinymce.get('richText')!==undefined && tinymce.get('richText')!==null) {
-				tinymce.get('richText').setContent(richText);
-			}
-			if ($('#inlineRadio1').prop('checked')===true) {
-				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
-				$('.pdfDiv').hide();
-				$('#richEditor').removeClass('dis-none');
-				$('#inlineRadio1').prop('checked', true);
-			}
-			else if ($('#inlineRadio2').prop('checked')===true) {
-				$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
-				$('.pdfDiv').show();
-				$('#richEditor').addClass('dis-none');
-				$('#inlineRadio2').prop('checked', true);
-				let pdfName=$('#mlPdfName', htmlData).val();
-				$('#pdf_name').text(pdfName);
-				$('#pdfName').val(pdfName);
-				if (pdfName==='') {
+			try {
+				updateCompletionTicks(htmlData);
+				$('.tit_wrapper').text($('#mlName', htmlData).val());
+				$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr('disabled', true).addClass('cursor-none');
+				$('[name="textOrPdfParam"]').prop('disabled', true);
+				let param = $('[name="resourceVisibilityParam"]');
+				param.attr('disabled', true);
+				if (param.prop('checked') === true) {
+					$('#inlineRadio5, #inlineRadio6').attr('disabled', true);
+					if ($('#inlineRadio5').prop('checked') === true) {
+						$('[data-id="anchorDateId"]').addClass('ml-disabled').prop('disabled', true);
+						$('#xdays, #ydays, #inlineRadio6').attr('disabled', true);
+					} else if ($('#inlineRadio6').prop('checked') === true) {
+						$('#StartDate, #EndDate').attr('disabled', true);
+					}
+				}
+				// setting data
+				if (isStudyProtocol !== 'isstudyProtocol') {
+					$('#resourceTitle').val($('#mlTitle', htmlData).val());
+				}
+				$('#comment').val($('#mlResourceText', htmlData).val());
+				if ($('#inlineRadio1').prop('checked') === true) {
+					$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
 					$('.pdfDiv').hide();
-					$('#uploadPdf').text('Upload PDF');
-				}
-				else {
+					$('#richEditor').removeClass('dis-none');
+					$('#inlineRadio1').prop('checked', true);
+				} else if ($('#inlineRadio2').prop('checked') === true) {
+					$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
 					$('.pdfDiv').show();
-					$('#uploadPdf').text('Change PDF');
+					$('#richEditor').addClass('dis-none');
+					$('#inlineRadio2').prop('checked', true);
+					let pdfName = $('#mlPdfName', htmlData).val();
+					$('#pdf_name').text(pdfName);
+					$('#pdfName').val(pdfName);
+					if (pdfName === '') {
+						$('.pdfDiv').hide();
+						$('#uploadPdf').text('Upload PDF');
+					} else {
+						$('.pdfDiv').show();
+						$('#uploadPdf').text('Change PDF');
+					}
+					$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
+					$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
 				}
-				$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
-				$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
+				let richText = $('#mlRichText', htmlData).val();
+				if (typeof richText === "undefined") {
+					richText = '';
+				}
+				$('#richText').val(richText);
+				console.log(richText);
+				if ("undefined" != typeof richText && "undefined"!=typeof tinymce.get('richText') && tinymce.get('richText') !== null) {
+					console.log(tinymce.get('richText'));
+					tinymce.get('richText').setContent(richText);
+				}
+				$('#loader').hide();
+			} catch (e) {
+				console.log('Error occurred : '+e);
+				$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr('disabled', true).addClass('cursor-none');
+				$('#loader').hide();
 			}
         } else {
           updateCompletionTicksForEnglish();
@@ -1167,7 +1182,7 @@ function refreshAndFetchLanguageData(language) {
           if (param.prop('checked')===true) {
             $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
             if($('#inlineRadio5').prop('checked')===true) {
-              $('[data-id="anchorDateId"]').removeClass('ml-disabled').prop('disabled', false);
+              $('[data-id="anchorDateId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#xdays, #ydays, #inlineRadio6').attr('disabled', false);
             }
             else if($('#inlineRadio6').prop('checked')===true) {
@@ -1203,6 +1218,7 @@ function refreshAndFetchLanguageData(language) {
 			<c:if test="${actionOn eq 'view'}">
 		 	$('#resourceForm input,textarea').prop('disabled', true);
 			</c:if>
+			$('#loader').hide();
         }
     }
   });

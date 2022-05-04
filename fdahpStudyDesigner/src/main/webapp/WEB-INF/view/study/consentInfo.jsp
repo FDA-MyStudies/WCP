@@ -240,6 +240,10 @@
       refreshAndFetchLanguageData(currLang);
     }
 
+    $('#loader').hide();
+      $('.commonCls').on('click', function () {
+          $('#loader').show();
+      })
     <c:if test="${actionPage eq 'view'}">
     $('#consentInfoFormId input,textarea').prop('disabled', true);
     $('#consentInfoFormId .elaborateClass').addClass('linkDis');
@@ -301,7 +305,7 @@
     //submit the form
     $("#doneId").on('click', function () {
       $("#doneId").prop('disabled', true);
-      tinyMCE.triggerSave();
+      tinymce.triggerSave();
       valid = maxLenValEditor();
       if (valid && isFromValid("#consentInfoFormId")) {
         var visualStepData = '';
@@ -319,6 +323,7 @@
           var displayTitleText = $("#displayTitle").val();
           displayTitleText = replaceSpecialCharacters(displayTitleText);
           $("#displayTitle").val(displayTitleText);
+          $('#loader').show();
           $("#consentInfoFormId").submit();
 
         } else {
@@ -378,7 +383,7 @@
         consentInfo.displayTitle = displayTitleText;
       }
       consentInfo.type = "save";
-
+      $('#loader').show();
       var data = JSON.stringify(consentInfo);
       $.ajax({
         url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
@@ -405,12 +410,14 @@
             $('#alertMsg').show();
           }
           setTimeout(hideDisplayMessage, 4000);
+          $('#loader').hide();
         },
         error: function (xhr, status, error) {
           $(item).prop('disabled', false);
           $('#alertMsg').show();
           $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
           setTimeout(hideDisplayMessage, 4000);
+          $('#loader').hide();
         }
       });
     } else {
@@ -443,6 +450,7 @@
       },
       callback: function (result) {
         if (result) {
+          $('#loader').show();
           var a = document.createElement('a');
           a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}&language="
               + lang;
@@ -536,7 +544,7 @@
       content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
       setup: function (ed) {
         ed.on('change', function (ed) {
-          if (tinyMCE.get(ed.target.id).getContent() != '') {
+          if (tinymce.get(ed.target.id).getContent() !== '') {
             $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
             $('#elaboratedRTE').parent().find(".help-block").empty();
           }
@@ -571,6 +579,7 @@
   })
 
   function refreshAndFetchLanguageData(language) {
+    $('#loader').show();
     $.ajax({
       url: '/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}',
       type: "GET",
@@ -582,28 +591,36 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          updateCompletionTicks(data);
-          $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('#inlineRadio1').attr('disabled', true);
-          $('#inlineRadio2').attr('disabled', true);
-          $('#inlineRadio3').attr('disabled', true);
-          $('#inlineRadio4').attr('disabled', true);
-          $('.visualStepDiv').attr('disabled', true);
-          $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
-          $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
-          $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          let editor = tinymce.activeEditor;
-          if (editor!==undefined) {
-            editor.setContent($('#elaboratedLang', htmlData).val());
-          }
-          if ($('#inlineRadio1').prop('checked') === true) {
-            let title = $('[data-id="consentItemTitleId"]');
-            title.attr('disabled', true);
-            title.css('background-color', '#eee');
-            title.css('opacity', '1');
-          } else {
-            $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          }
+            try {
+                updateCompletionTicks(data);
+                $('.tit_wrapper').text($('#mlName', htmlData).val());
+                $('#inlineRadio1').attr('disabled', true);
+                $('#inlineRadio2').attr('disabled', true);
+                $('#inlineRadio3').attr('disabled', true);
+                $('#inlineRadio4').attr('disabled', true);
+                $('.visualStepDiv').attr('disabled', true);
+                $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
+                $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
+                $('#displayTitle').val($('#displayTitleLang', htmlData).val());
+                if ($('#inlineRadio1').prop('checked') === true) {
+                    let title = $('[data-id="consentItemTitleId"]');
+                    title.attr('disabled', true);
+                    title.css('background-color', '#eee');
+                    title.css('opacity', '1');
+                } else {
+                    $('#displayTitle').val($('#displayTitleLang', htmlData).val());
+                }
+                if (tinymce !== null && tinymce !== undefined) {
+                    let editor = tinymce.activeEditor;
+                    if (editor !== undefined) {
+                        editor.setContent($('#elaboratedLang', htmlData).val());
+                    }
+                }
+                $('#loader').hide();
+            } catch (e) {
+                console.log("Error occurred : "+e);
+                $('#loader').hide();
+            }
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -619,14 +636,17 @@
           $('#briefSummary').val($('#briefSummary', htmlData).val());
           $('#elaboratedRTE').val($('#elaboratedRTE', htmlData).val());
           $('#displayTitle').val($('#displayTitle', htmlData).val());
-          let editor = tinymce.activeEditor;
-          if (editor!==undefined) {
-            editor.setContent($('#elaboratedRTE', htmlData).val());
+          if (tinymce !== null && tinymce !== undefined) {
+              let editor = tinymce.activeEditor;
+              if (editor !== undefined) {
+                  editor.setContent($('#elaboratedRTE', htmlData).val());
+              }
           }
           
           <c:if test="${actionPage eq 'view'}">
           $('#consentInfoFormId input,textarea').prop('disabled', true);
           </c:if>
+          $('#loader').hide();
         }
       }
     })

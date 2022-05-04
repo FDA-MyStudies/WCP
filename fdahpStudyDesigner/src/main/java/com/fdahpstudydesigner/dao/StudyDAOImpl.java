@@ -84,7 +84,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /** @author BTC */
@@ -1832,6 +1832,7 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session
                 .getNamedQuery("getStudyByCustomStudyId")
+                .setMaxResults(1)
                 .setString("customStudyId", customStudyId);
         query.setMaxResults(1);
         studyVersionBo = (StudyVersionBo) query.uniqueResult();
@@ -2162,6 +2163,7 @@ public class StudyDAOImpl implements StudyDAO {
           query =
               session
                   .getNamedQuery("getStudyByCustomStudyId")
+                  .setMaxResults(1)
                   .setString("customStudyId", studyBo.getCustomStudyId());
           query.setMaxResults(1);
           studyVersionBo = (StudyVersionBo) query.uniqueResult();
@@ -4136,6 +4138,7 @@ public class StudyDAOImpl implements StudyDAO {
             query =
                 session
                     .getNamedQuery("getStudyByCustomStudyId")
+                    .setMaxResults(1)
                     .setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId);
             query.setMaxResults(1);
             studyVersionBo = (StudyVersionBo) query.uniqueResult();
@@ -4160,6 +4163,7 @@ public class StudyDAOImpl implements StudyDAO {
             query =
                 session
                     .getNamedQuery("getStudyByCustomStudyId")
+                    .setMaxResults(1)
                     .setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId);
             query.setMaxResults(1);
             studyVersionBo = (StudyVersionBo) query.uniqueResult();
@@ -5739,6 +5743,7 @@ public class StudyDAOImpl implements StudyDAO {
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
       session
           .createSQLQuery(
               "update studies_lang set allow_rejoin_text=:alertText where study_id=:studyId and lang_code=:language")
@@ -5746,6 +5751,7 @@ public class StudyDAOImpl implements StudyDAO {
           .setInteger("studyId", studyBo.getId())
           .setString("language", currLang)
           .executeUpdate();
+      transaction.commit();
       result = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {
       transaction.rollback();
@@ -5866,6 +5872,7 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session
                 .getNamedQuery("getStudyByCustomStudyId")
+                .setMaxResults(1)
                 .setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
         query.setMaxResults(1);
         studyVersionBo = (StudyVersionBo) query.uniqueResult();
@@ -7457,6 +7464,7 @@ public class StudyDAOImpl implements StudyDAO {
               query =
                   session
                       .getNamedQuery("getStudyByCustomStudyId")
+                      .setMaxResults(1)
                       .setString(
                           FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
               query.setMaxResults(1);

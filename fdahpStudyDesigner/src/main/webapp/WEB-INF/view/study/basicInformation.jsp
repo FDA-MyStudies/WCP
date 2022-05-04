@@ -65,7 +65,7 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
+                    <button type="button" class="btn btn-default gray-btn cancelBut" id="cancel">Cancel</button>
                 </div>
                 <c:if test="${empty permission}">
                     <div class="dis-line form-group mb-none mr-sm">
@@ -394,6 +394,7 @@
 
 <script>
   $(document).ready(function () {
+    $('#loader').hide();
     $('#removeUrl').css("visibility", "hidden");
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();
@@ -454,6 +455,36 @@
         }
       });
     }
+
+    $('#cancel').on('click',function(){
+        <c:if test="${permission ne 'view' }">
+        bootbox.confirm({
+            closeButton: false,
+            message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+            buttons: {
+                'cancel': {
+                    label: 'Cancel',
+                },
+                'confirm': {
+                    label: 'OK',
+                },
+            },
+            callback: function(result) {
+                if (result) {
+                    $('#loader').show();
+                    let a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+                    document.body.appendChild(a).click();
+                }
+            }
+        });
+        </c:if>
+        <c:if test="${permission eq 'view' }">
+        let a = document.createElement('a');
+        a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+        document.body.appendChild(a).click();
+        </c:if>
+    });
     // File Upload
     $("#uploadImgbtn").click(function () {
       $("#uploadImg").click();
@@ -528,6 +559,7 @@
                                       tinymce.get('editor').setContent(escaped);
 
                                       $("#buttonText").val('completed');
+                                      $('#loader').show();
                                       $("#basicInfoFormId").submit();
                                     }
                                   }
@@ -571,6 +603,7 @@
                       tinymce.get('editor').setContent(escaped);
 
                       $("#buttonText").val('completed');
+                      $('#loader').show();
                       $("#basicInfoFormId").submit();
                     }
                   }
@@ -626,6 +659,7 @@
                     var escaped = $('#editor').text(richText).html();
                     tinymce.get('editor').setContent(escaped);
                   }
+                  $('#loader').show();
                   $('#basicInfoFormId').submit();
                 } else {
                   $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
@@ -639,7 +673,7 @@
                     var escaped = $('#editor').text(richText).html();
                     tinymce.get('editor').setContent(escaped);
                   }
-
+                  $('#loader').show();
                   $('#basicInfoFormId').submit();
                 }
               });
@@ -655,7 +689,7 @@
                 var escaped = $('#editor').text(richText).html();
                 tinymce.get('editor').setContent(escaped);
               }
-
+              $('#loader').show();
               $('#basicInfoFormId').submit();
             }
           }
@@ -879,6 +913,7 @@
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);
+    $('#loader').show();
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
@@ -920,6 +955,7 @@
               'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
           $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
               'cursor-none');
+          $('#loader').hide();
         } else {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           updateCompletionTicksForEnglish();
@@ -953,6 +989,7 @@
           $('#basicInfoFormId input,textarea').prop('disabled', true);
           $('#removeUrl').addClass('cursor-none');
           </c:if>
+          $('#loader').hide();
         }
       }
     });

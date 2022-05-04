@@ -395,6 +395,9 @@
 <script>
   $(document).ready(function () {
     $('#loader').hide();
+    $('.commonCls').on('click', function () {
+        $('#loader').show();
+    })
     $('#removeUrl').css("visibility", "hidden");
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();
@@ -928,34 +931,39 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          $('.tit_wrapper').text($('#mlName', htmlData).val());
-          updateCompletionTicks(htmlData);
-          $('select, input[type!=hidden]').each(function () {
-            if (!$(this).hasClass('langSpecific')) {
-              $(this).addClass('ml-disabled').attr('disabled', true);
-              if (this.nodeName.toLowerCase() === 'select') {
-                let id = this.id;
-                if (id !== undefined && id !== '') {
-                  $('[data-id=' + id + ']').addClass('cursor-none');
+            try {
+                $('.tit_wrapper').text($('#mlName', htmlData).val());
+                updateCompletionTicks(htmlData);
+                $('select, input[type!=hidden]').each(function () {
+                    if (!$(this).hasClass('langSpecific')) {
+                        $(this).addClass('ml-disabled').attr('disabled', true);
+                        if (this.nodeName.toLowerCase() === 'select') {
+                            let id = this.id;
+                            if (id !== undefined && id !== '') {
+                                $('[data-id=' + id + ']').addClass('cursor-none');
+                            }
+                        }
+                    }
+                });
+                $('#customStudyName').val($('input#mlName', htmlData).val());
+                $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
+                $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
+                $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
+                $('#removeUrl').addClass('cursor-none');
+                $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
+                    'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
+                $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
+                    'cursor-none');
+                $('#editor').val($('input#mlDescription', htmlData).val());
+                let tinyMce = tinymce.activeEditor;
+                if (tinyMce !== undefined) {
+                    tinyMce.setContent($('input#mlDescription', htmlData).val());
                 }
-              }
+                $('#loader').hide();
+            } catch (e) {
+                console.log("Error occurred : "+e);
+                $('#loader').hide();
             }
-          });
-          $('#customStudyName').val($('input#mlName', htmlData).val());
-          $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
-          $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
-          $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
-          $('#editor').val($('input#mlDescription', htmlData).val());
-          let tinyMce = tinymce.activeEditor;
-          if (tinyMce !== undefined) {
-            tinyMce.setContent($('input#mlDescription', htmlData).val());
-          }
-          $('#removeUrl').addClass('cursor-none');
-          $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
-              'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
-          $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
-              'cursor-none');
-          $('#loader').hide();
         } else {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           updateCompletionTicksForEnglish();

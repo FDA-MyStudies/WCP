@@ -399,6 +399,9 @@ $(document).ready(function(){
 	
 	//$('[data-id="anchorDateId"]').prop('disabled', true);
 	$('#loader').hide();
+	$('.commonCls').on('click', function () {
+		$('#loader').show();
+	})
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
@@ -1123,14 +1126,6 @@ function refreshAndFetchLanguageData(language) {
 					$('#resourceTitle').val($('#mlTitle', htmlData).val());
 				}
 				$('#comment').val($('#mlResourceText', htmlData).val());
-				let richText = $('#mlRichText', htmlData).val();
-				if (richText === undefined) {
-					richText = '';
-				}
-				$('#richText').val(richText);
-				if (tinymce.get('richText') !== undefined && tinymce.get('richText') !== null) {
-					tinymce.get('richText').setContent(richText);
-				}
 				if ($('#inlineRadio1').prop('checked') === true) {
 					$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
 					$('.pdfDiv').hide();
@@ -1154,9 +1149,20 @@ function refreshAndFetchLanguageData(language) {
 					$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
 					$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
 				}
+				let richText = $('#mlRichText', htmlData).val();
+				if (typeof richText === "undefined") {
+					richText = '';
+				}
+				$('#richText').val(richText);
+				console.log(richText);
+				if ("undefined" != typeof richText && "undefined"!=typeof tinymce.get('richText') && tinymce.get('richText') !== null) {
+					console.log(tinymce.get('richText'));
+					tinymce.get('richText').setContent(richText);
+				}
 				$('#loader').hide();
 			} catch (e) {
 				console.log('Error occurred : '+e);
+				$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr('disabled', true).addClass('cursor-none');
 				$('#loader').hide();
 			}
         } else {

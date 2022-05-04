@@ -241,6 +241,9 @@
     }
 
     $('#loader').hide();
+      $('.commonCls').on('click', function () {
+          $('#loader').show();
+      })
     <c:if test="${actionPage eq 'view'}">
     $('#consentInfoFormId input,textarea').prop('disabled', true);
     $('#consentInfoFormId .elaborateClass').addClass('linkDis');
@@ -588,31 +591,36 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-          updateCompletionTicks(data);
-          $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('#inlineRadio1').attr('disabled', true);
-          $('#inlineRadio2').attr('disabled', true);
-          $('#inlineRadio3').attr('disabled', true);
-          $('#inlineRadio4').attr('disabled', true);
-          $('.visualStepDiv').attr('disabled', true);
-          $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
-          $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
-          $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          if (tinymce !== null && tinymce !== undefined) {
-              let editor = tinymce.activeEditor;
-              if (editor !== undefined) {
-                  editor.setContent($('#elaboratedLang', htmlData).val());
-              }
-          }
-          if ($('#inlineRadio1').prop('checked') === true) {
-            let title = $('[data-id="consentItemTitleId"]');
-            title.attr('disabled', true);
-            title.css('background-color', '#eee');
-            title.css('opacity', '1');
-          } else {
-            $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-          }
-          $('#loader').hide();
+            try {
+                updateCompletionTicks(data);
+                $('.tit_wrapper').text($('#mlName', htmlData).val());
+                $('#inlineRadio1').attr('disabled', true);
+                $('#inlineRadio2').attr('disabled', true);
+                $('#inlineRadio3').attr('disabled', true);
+                $('#inlineRadio4').attr('disabled', true);
+                $('.visualStepDiv').attr('disabled', true);
+                $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
+                $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
+                $('#displayTitle').val($('#displayTitleLang', htmlData).val());
+                if ($('#inlineRadio1').prop('checked') === true) {
+                    let title = $('[data-id="consentItemTitleId"]');
+                    title.attr('disabled', true);
+                    title.css('background-color', '#eee');
+                    title.css('opacity', '1');
+                } else {
+                    $('#displayTitle').val($('#displayTitleLang', htmlData).val());
+                }
+                if (tinymce !== null && tinymce !== undefined) {
+                    let editor = tinymce.activeEditor;
+                    if (editor !== undefined) {
+                        editor.setContent($('#elaboratedLang', htmlData).val());
+                    }
+                }
+                $('#loader').hide();
+            } catch (e) {
+                console.log("Error occurred : "+e);
+                $('#loader').hide();
+            }
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());

@@ -733,6 +733,9 @@
   $(document).ready(function () {
     //check the type of page action(view/edit)
       $('#loader').hide();
+      $('.commonCls').on('click', function () {
+          $('#loader').show();
+      })
     if ('${permission}' == 'view') {
       $('input[name="consentDocType"]').attr('disabled', 'disabled');
       $('#consentReviewFormId input').prop('disabled', true);

@@ -94,6 +94,7 @@
         <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
+        <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
             <div class="col-md-12 p-none">
@@ -389,10 +390,24 @@
         </div>
         <!-- End body tab section -->
     </form:form>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 
 <script>
+  var idleTime = 0;
   $(document).ready(function () {
     $('#loader').hide();
     $('.commonCls').on('click', function () {
@@ -634,84 +649,7 @@
       }
     });
     $('#saveId').click(function (e) {
-      $('#basicInfoFormId').validator('destroy').validator();
-      validateStudyId('', function (st) {
-        if (st) {
-          var studyCount = $('.customStudyClass').find('.help-block').children().length;
-          if (parseInt(studyCount) >= 1) {
-            return false;
-          } else if (!$('#customStudyName')[0].checkValidity()) {
-            $("#customStudyName").parent().addClass('has-error has-danger').find(
-                ".help-block").empty().append(
-                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                    "This is a required field."));
-            return false;
-          } else {
-            var appId = $('#appId').val();
-            if (null != appId && appId != '' && typeof appId != 'undefined') {
-              validateAppId('', function (valid) {
-                if (valid) {
-                  $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
-                      'disabled', false);
-                  $('#basicInfoFormId').validator('destroy');
-                  $("#buttonText").val('save');
-
-                  var richText = tinymce.get('editor').getContent({format: 'raw'});
-                  if (null != richText && richText != '' && typeof richText != 'undefined'
-                      && richText != '<p><br data-mce-bogus="1"></p>') {
-                    var escaped = $('#editor').text(richText).html();
-                    tinymce.get('editor').setContent(escaped);
-                  }
-                  $('#loader').show();
-                  $('#basicInfoFormId').submit();
-                } else {
-                  $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
-                      'disabled', false);
-                  $('#basicInfoFormId').validator('destroy');
-                  $("#buttonText").val('save');
-
-                  var richText = tinymce.get('editor').getContent({format: 'raw'});
-                  if (null != richText && richText != '' && typeof richText != 'undefined'
-                      && richText != '<p><br data-mce-bogus="1"></p>') {
-                    var escaped = $('#editor').text(richText).html();
-                    tinymce.get('editor').setContent(escaped);
-                  }
-                  $('#loader').show();
-                  $('#basicInfoFormId').submit();
-                }
-              });
-            } else {
-              $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled',
-                  false);
-              $('#basicInfoFormId').validator('destroy');
-              $("#buttonText").val('save');
-
-              var richText = tinymce.get('editor').getContent({format: 'raw'});
-              if (null != richText && richText != '' && typeof richText != 'undefined' && richText
-                  != '<p><br data-mce-bogus="1"></p>') {
-                var escaped = $('#editor').text(richText).html();
-                tinymce.get('editor').setContent(escaped);
-              }
-              $('#loader').show();
-              $('#basicInfoFormId').submit();
-            }
-          }
-        } else {
-          var studyCount = $('.customStudyClass').find('.help-block').children().length;
-          if (parseInt(studyCount) >= 1) {
-            return false;
-          } else {
-            $('#basicInfoFormId').validator('destroy').validator();
-            if (!$('#customStudyId')[0].checkValidity()) {
-              $("#customStudyId").parent().addClass('has-error has-danger').find(
-                  ".help-block").empty().append(
-                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                      "This is a required field."));
-              return false;
-            }
-          }
-        }
-      });
+        saveBasicInfoPage('manual');
     });
     $(".studyIdCls").blur(function () {
       validateStudyId('', function (val) {
@@ -726,7 +664,122 @@
       });
     });
 
+    setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 2) { // 5 minutes
+            if ($('#customStudyId').val() !== '' && $('#customStudyName').val() !== '') {
+                saveBasicInfoPage('auto');
+            }
+        }
+    }, 300000); // 5 minutes
+
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
+
+    // pop message after 15 minutes
+    if ($('#isAutoSaved').val() === 'true') {
+        $('#myModal').modal('show');
+        let i = 2;
+        setInterval(function () {
+            $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+            i+=1;
+        }, 60000);
+    }
   });
+
+  function saveBasicInfoPage(mode) {
+      $('#basicInfoFormId').validator('destroy').validator();
+      validateStudyId('', function (st) {
+          if (st) {
+              var studyCount = $('.customStudyClass').find('.help-block').children().length;
+              if (parseInt(studyCount) >= 1) {
+                  return false;
+              } else if (!$('#customStudyName')[0].checkValidity()) {
+                  $("#customStudyName").parent().addClass('has-error has-danger').find(
+                      ".help-block").empty().append(
+                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                          "This is a required field."));
+                  return false;
+              } else {
+                  var appId = $('#appId').val();
+                  if (null != appId && appId != '' && typeof appId != 'undefined') {
+                      validateAppId('', function (valid) {
+                          if (valid) {
+                              $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
+                                  'disabled', false);
+                              $('#basicInfoFormId').validator('destroy');
+                              $("#buttonText").val('save');
+
+                              var richText = tinymce.get('editor').getContent({format: 'raw'});
+                              if (null != richText && richText != '' && typeof richText != 'undefined'
+                                  && richText != '<p><br data-mce-bogus="1"></p>') {
+                                  var escaped = $('#editor').text(richText).html();
+                                  tinymce.get('editor').setContent(escaped);
+                              }
+                              $('#loader').show();
+                              if (mode === 'auto') {
+                                  $("#isAutoSaved").val('true');
+                              }
+                              $('#basicInfoFormId').submit();
+                          } else {
+                              $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
+                                  'disabled', false);
+                              $('#basicInfoFormId').validator('destroy');
+                              $("#buttonText").val('save');
+
+                              var richText = tinymce.get('editor').getContent({format: 'raw'});
+                              if (null != richText && richText != '' && typeof richText != 'undefined'
+                                  && richText != '<p><br data-mce-bogus="1"></p>') {
+                                  var escaped = $('#editor').text(richText).html();
+                                  tinymce.get('editor').setContent(escaped);
+                              }
+                              $('#loader').show();
+                              if (mode === 'auto') {
+                                  $("#isAutoSaved").val('true');
+                              }
+                              $('#basicInfoFormId').submit();
+                          }
+                      });
+                  } else {
+                      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled',
+                          false);
+                      $('#basicInfoFormId').validator('destroy');
+                      $("#buttonText").val('save');
+
+                      var richText = tinymce.get('editor').getContent({format: 'raw'});
+                      if (null != richText && richText != '' && typeof richText != 'undefined' && richText
+                          != '<p><br data-mce-bogus="1"></p>') {
+                          var escaped = $('#editor').text(richText).html();
+                          tinymce.get('editor').setContent(escaped);
+                      }
+                      $('#loader').show();
+                      if (mode === 'auto') {
+                          $("#isAutoSaved").val('true');
+                      }
+                      $('#basicInfoFormId').submit();
+                  }
+              }
+          } else {
+              var studyCount = $('.customStudyClass').find('.help-block').children().length;
+              if (parseInt(studyCount) >= 1) {
+                  return false;
+              } else {
+                  $('#basicInfoFormId').validator('destroy').validator();
+                  if (!$('#customStudyId')[0].checkValidity()) {
+                      $("#customStudyId").parent().addClass('has-error has-danger').find(
+                          ".help-block").empty().append(
+                          $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                              "This is a required field."));
+                      return false;
+                  }
+              }
+          }
+      });
+  }
 
   // Displaying images from file upload
   function readURL(input) {

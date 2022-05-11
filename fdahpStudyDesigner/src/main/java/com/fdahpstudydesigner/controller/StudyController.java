@@ -4310,6 +4310,8 @@ public class StudyController {
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
             map.addAttribute("language", language);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             return new ModelAndView("redirect:viewBasicInfo.do", map);
           }
         } else if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_PAUSED_ERR_MSG)) {
@@ -5906,6 +5908,7 @@ public class StudyController {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         }
         if (studyBo == null) {
           studyBo = new StudyBo();

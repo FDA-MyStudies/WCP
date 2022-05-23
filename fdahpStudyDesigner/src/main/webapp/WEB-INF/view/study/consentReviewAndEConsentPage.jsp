@@ -97,6 +97,7 @@
         <input type="hidden" id="mlSignature2" value="${studyLanguageBO.signatureThree}">
         <input type="hidden" id="mlConsentCompleted" value="${studyLanguageBO.consentCompleted}">
         <input type="hidden" id="studyLiveStatus" value="${studyLiveStatus}">
+         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <!-- End body tab section -->
         <div>
             <!--  Start top tab section-->
@@ -597,6 +598,19 @@
 
         <!-- End right Content here -->
     </form:form>
+     <div class="modal fade" id="myAutoModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -730,6 +744,7 @@
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+var idleTime = 0;
   $(document).ready(function () {
     //check the type of page action(view/edit)
       $('#loader').hide();
@@ -1081,198 +1096,227 @@
 
     //save review and E-consent data
     function saveConsentReviewAndEConsentInfo(item) {
-      //	if(item == "doneId"){
-      //$("#consentValidatorDiv").validator('validate');
-      //var customErrorLength = $("#consentValidatorDiv").find(".has-danger").length;
-
-      /* if(customErrorLength == 1){
-          resetValidation($("#consentValidatorDiv"));
-      } */
-      /* if(isFromValid("#consentReviewFormId")){
-          customErrorLength = 0;
-   }else{
-          customErrorLength = 1;
-      } */
-      /* 	}else{
-              customErrorLength = 0;
-          } */
-
-      //console.log("customErrorLength:"+customErrorLength);
-      //if(customErrorLength == 0){
-      var consentInfo = new Object();
-      var consentId = $("#consentId").val();
-      var studyId = $("#studyId").val();
-      var agreementCB = $("#agreementCB").val();
-      var fNameCB = $("#fNameCB").val();
-      var lNameCB = $("#lNameCB").val();
-      var eSignCB = $("#eSignCB").val();
-      var dateTimeCB = $("#dateTimeCB").val();
-      var consentDocumentContent = "";
-      var consentDocType = $('input[name="consentDocType"]:checked').val();
-
-      var shareDataPermissionsTxt = $('input[name="shareDataPermissions"]:checked').val();
-      var title_txt = $("#titleId").val();
-      var tagline_description = $("#taglineDescriptionId").val();
-      var short_description = $("#shortDescriptionId").val();
-      var long_description = $("#longDescriptionId").val();
-      var learn_more_text = tinymce.get('learnMoreTextId').getContent({format: 'raw'});
-      learn_more_text = replaceSpecialCharacters(learn_more_text);
-      var allow_Permission = $('input[name="allowWithoutPermission"]:checked').val();
-      var aggrement_of_theconsent = $("#aggrementOfTheConsentId").val();
-      var consentByLAR_val = $('input[name=consentByLAR]:checked').val();
-      var additionalSignature_val = $('input[name=additionalSignatureRadio]:checked').val();
-
-      var customArray = new Array();
-      if (null != additionalSignature_val && additionalSignature_val === 'Yes') {
-        $('.additional-signature-option').each(function () {
-          var id = $(this).attr("id");
-          var signatureVal = $('#signature' + id).val();
-
-          if (signatureVal != null && signatureVal != '' && typeof signatureVal != 'undefined') {
-            customArray.push(signatureVal);
-          }
-        })
-      }
-
-      if (consentDocType == "New") {
-        consentDocumentContent = tinymce.get('newDocumentDivId').getContent({format: 'raw'});
-        consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
-      }
-
-      if (item == "doneId") {
-        consentInfo.type = "completed";
-      } else {
-        consentInfo.type = "save";
-      }
-      if (null != consentId) {
-        consentInfo.id = consentId;
-      }
-      if (null != studyId) {
-        consentInfo.studyId = studyId;
-      }
-      if (null != consentDocType) {
-        consentInfo.consentDocType = consentDocType;
-      }
-      if (null != consentDocumentContent) {
-        consentInfo.consentDocContent = consentDocumentContent;
-      }
-      if (null != agreementCB) {
-        consentInfo.eConsentAgree = agreementCB;
-      }
-      if (null != fNameCB) {
-        consentInfo.eConsentFirstName = fNameCB;
-      }
-      if (null != lNameCB) {
-        consentInfo.eConsentLastName = lNameCB;
-      }
-      if (null != eSignCB) {
-        consentInfo.eConsentSignature = eSignCB;
-      }
-      if (null != dateTimeCB) {
-        consentInfo.eConsentDatetime = dateTimeCB;
-      }
-
-      if (null != shareDataPermissionsTxt) {
-        consentInfo.shareDataPermissions = shareDataPermissionsTxt;
-      }
-      if (null != title_txt) {
-        consentInfo.title = title_txt;
-      }
-      if (null != tagline_description) {
-        consentInfo.taglineDescription = tagline_description;
-      }
-      if (null != short_description) {
-        consentInfo.shortDescription = short_description;
-      }
-      if (null != long_description) {
-        consentInfo.longDescription = long_description;
-      }
-      if (null != learn_more_text) {
-        consentInfo.learnMoreText = learn_more_text;
-      }
-      if (null != allow_Permission) {
-        consentInfo.allowWithoutPermission = allow_Permission;
-      }
-      if (null != aggrement_of_theconsent) {
-        consentInfo.aggrementOfTheConsent = aggrement_of_theconsent;
-      }
-      if (null != consentByLAR_val) {
-        consentInfo.consentByLAR = consentByLAR_val;
-      }
-      if (null != additionalSignature_val) {
-        consentInfo.additionalSignature = additionalSignature_val;
-      }
-      if (null != customArray) {
-        consentInfo.signatures = customArray;
-      }
-      var data = JSON.stringify(consentInfo);
-      var pageName = 'consentreview';
-      $('#loader').show();
-      $.ajax({
-        url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
-        type: "POST",
-        datatype: "json",
-        data: {consentInfo: data, page: pageName, language: $('#studyLanguage').val()},
-        beforeSend: function (xhr, settings) {
-          xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-        },
-        success: function (data) {
-          $('#loader').hide();
-          var message = data.message;
-          $("#alertMsg").empty();
-          if (message == "SUCCESS") {
-            var consentId = data.consentId;
-            var studyId = data.studyId;
-            $("#consentId").val(consentId);
-            $("#studyId").val(studyId);
-            var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-            $("#newDocumentDivId").val('');
-            if (consentDocumentType == "New") {
-              $("#newDocumentDivId").val(consentDocumentContent);
-              tinymce.get('newDocumentDivId').setContent('');
-              tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
-            }
-            if (item == "doneId") {
-              var a = document.createElement('a');
-              let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-              a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="
-                  + lang;
-              document.body.appendChild(a).click();
-            } else {
-              $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
-              $(item).prop('disabled', false);
-              $('#alertMsg').show();
-              if ($('.fifthConsentReview').find('span').hasClass(
-                  'sprites-icons-2 tick pull-right mt-xs')) {
-                $('.fifthConsentReview').find('span').removeClass(
-                    'sprites-icons-2 tick pull-right mt-xs');
-              }
-            }
-          } else {
-            $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
-            $('#alertMsg').show();
-          }
-          setTimeout(hideDisplayMessage, 4000);
-        },
-        global: false
-      });
-      /* }else{
-         console.log("else....");
-         var slaCount = $('#menu1').find('.has-error.has-danger').length;
-      var qlaCount = $('#menu2').find('.has-error.has-danger').length;
-      var rlaCount = $('#menu3').find('.has-error.has-danger').length;
-      console.log("slaCount:"+slaCount);
-      console.log("qlaCount:"+qlaCount);
-      console.log("rlaCount:"+rlaCount);
-      if(parseInt(slaCount) >= 1){
-           $('.shareData a').tab('show');
-      }else if(parseInt(qlaCount) >= 1){
-           $('.consentReview a').tab('show');
-      }else if(parseInt(rlaCount) >= 1){
-           $('.econsentForm a').tab('show');
-      }
-      } */
+     autoSaveConsentReviewPage('manual','item');
     }
+     function autoSaveConsentReviewPage(mode,item){
+           //	if(item == "doneId"){
+           //$("#consentValidatorDiv").validator('validate');
+           //var customErrorLength = $("#consentValidatorDiv").find(".has-danger").length;
+
+           /* if(customErrorLength == 1){
+               resetValidation($("#consentValidatorDiv"));
+           } */
+           /* if(isFromValid("#consentReviewFormId")){
+               customErrorLength = 0;
+        }else{
+               customErrorLength = 1;
+           } */
+           /* 	}else{
+                   customErrorLength = 0;
+               } */
+
+           //console.log("customErrorLength:"+customErrorLength);
+           //if(customErrorLength == 0){
+           var consentInfo = new Object();
+           var consentId = $("#consentId").val();
+           var studyId = $("#studyId").val();
+           var agreementCB = $("#agreementCB").val();
+           var fNameCB = $("#fNameCB").val();
+           var lNameCB = $("#lNameCB").val();
+           var eSignCB = $("#eSignCB").val();
+           var dateTimeCB = $("#dateTimeCB").val();
+           var consentDocumentContent = "";
+           var consentDocType = $('input[name="consentDocType"]:checked').val();
+
+           var shareDataPermissionsTxt = $('input[name="shareDataPermissions"]:checked').val();
+           var title_txt = $("#titleId").val();
+           var tagline_description = $("#taglineDescriptionId").val();
+           var short_description = $("#shortDescriptionId").val();
+           var long_description = $("#longDescriptionId").val();
+           var learn_more_text = tinymce.get('learnMoreTextId').getContent({format: 'raw'});
+           learn_more_text = replaceSpecialCharacters(learn_more_text);
+           var allow_Permission = $('input[name="allowWithoutPermission"]:checked').val();
+           var aggrement_of_theconsent = $("#aggrementOfTheConsentId").val();
+           var consentByLAR_val = $('input[name=consentByLAR]:checked').val();
+           var additionalSignature_val = $('input[name=additionalSignatureRadio]:checked').val();
+
+           var customArray = new Array();
+           if (null != additionalSignature_val && additionalSignature_val === 'Yes') {
+             $('.additional-signature-option').each(function () {
+               var id = $(this).attr("id");
+               var signatureVal = $('#signature' + id).val();
+
+               if (signatureVal != null && signatureVal != '' && typeof signatureVal != 'undefined') {
+                 customArray.push(signatureVal);
+               }
+             })
+           }
+
+           if (consentDocType == "New") {
+             consentDocumentContent = tinymce.get('newDocumentDivId').getContent({format: 'raw'});
+             consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
+           }
+
+           if (item == "doneId") {
+             consentInfo.type = "completed";
+           } else {
+             consentInfo.type = "save";
+           }
+           if (null != consentId) {
+             consentInfo.id = consentId;
+           }
+           if (null != studyId) {
+             consentInfo.studyId = studyId;
+           }
+           if (null != consentDocType) {
+             consentInfo.consentDocType = consentDocType;
+           }
+           if (null != consentDocumentContent) {
+             consentInfo.consentDocContent = consentDocumentContent;
+           }
+           if (null != agreementCB) {
+             consentInfo.eConsentAgree = agreementCB;
+           }
+           if (null != fNameCB) {
+             consentInfo.eConsentFirstName = fNameCB;
+           }
+           if (null != lNameCB) {
+             consentInfo.eConsentLastName = lNameCB;
+           }
+           if (null != eSignCB) {
+             consentInfo.eConsentSignature = eSignCB;
+           }
+           if (null != dateTimeCB) {
+             consentInfo.eConsentDatetime = dateTimeCB;
+           }
+
+           if (null != shareDataPermissionsTxt) {
+             consentInfo.shareDataPermissions = shareDataPermissionsTxt;
+           }
+           if (null != title_txt) {
+             consentInfo.title = title_txt;
+           }
+           if (null != tagline_description) {
+             consentInfo.taglineDescription = tagline_description;
+           }
+           if (null != short_description) {
+             consentInfo.shortDescription = short_description;
+           }
+           if (null != long_description) {
+             consentInfo.longDescription = long_description;
+           }
+           if (null != learn_more_text) {
+             consentInfo.learnMoreText = learn_more_text;
+           }
+           if (null != allow_Permission) {
+             consentInfo.allowWithoutPermission = allow_Permission;
+           }
+           if (null != aggrement_of_theconsent) {
+             consentInfo.aggrementOfTheConsent = aggrement_of_theconsent;
+           }
+           if (null != consentByLAR_val) {
+             consentInfo.consentByLAR = consentByLAR_val;
+           }
+           if (null != additionalSignature_val) {
+             consentInfo.additionalSignature = additionalSignature_val;
+           }
+           if (null != customArray) {
+             consentInfo.signatures = customArray;
+           }
+           var data = JSON.stringify(consentInfo);
+           var pageName = 'consentreview';
+           $('#loader').show();
+           if (mode === 'auto') {
+           $("#isAutoSaved").val('true');
+            }
+           $.ajax({
+             url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
+             type: "POST",
+             datatype: "json",
+             data: {consentInfo: data, page: pageName, language: $('#studyLanguage').val()},
+             beforeSend: function (xhr, settings) {
+               xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+             },
+             success: function (data) {
+               $('#loader').hide();
+               var message = data.message;
+               $("#alertMsg").empty();
+               if (message == "SUCCESS") {
+                 var consentId = data.consentId;
+                 var studyId = data.studyId;
+                 $("#consentId").val(consentId);
+                 $("#studyId").val(studyId);
+                 var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+                 $("#newDocumentDivId").val('');
+                 if (consentDocumentType == "New") {
+                   $("#newDocumentDivId").val(consentDocumentContent);
+                   tinymce.get('newDocumentDivId').setContent('');
+                   tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
+                 }
+                 if (item == "doneId") {
+                   var a = document.createElement('a');
+                   let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                   a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="
+                       + lang;
+                   document.body.appendChild(a).click();
+                 } else {
+                   $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
+                   $(item).prop('disabled', false);
+                   $('#alertMsg').show();
+                   if ($('.fifthConsentReview').find('span').hasClass(
+                       'sprites-icons-2 tick pull-right mt-xs')) {
+                     $('.fifthConsentReview').find('span').removeClass(
+                         'sprites-icons-2 tick pull-right mt-xs');
+                   }
+                 }
+               } else {
+                 $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+                 $('#alertMsg').show();
+               }
+               setTimeout(hideDisplayMessage, 4000);
+             },
+             global: false
+           });
+           /* }else{
+              console.log("else....");
+              var slaCount = $('#menu1').find('.has-error.has-danger').length;
+           var qlaCount = $('#menu2').find('.has-error.has-danger').length;
+           var rlaCount = $('#menu3').find('.has-error.has-danger').length;
+           console.log("slaCount:"+slaCount);
+           console.log("qlaCount:"+qlaCount);
+           console.log("rlaCount:"+rlaCount);
+           if(parseInt(slaCount) >= 1){
+                $('.shareData a').tab('show');
+           }else if(parseInt(qlaCount) >= 1){
+                $('.consentReview a').tab('show');
+           }else if(parseInt(rlaCount) >= 1){
+                $('.econsentForm a').tab('show');
+           }
+           } */
+     }
+        setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 2) { // 5 minutes
+                    autoSaveConsentReviewPage('auto','item');
+            }
+        }, 3000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
+        // pop message after 15 minutes
+        if ($('#isAutoSaved').val() === 'true') {
+            $('#myAutoModal').modal('show');
+            let i = 2;
+            setInterval(function () {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }, 60000);
+        }
   });
 
   function goToBackPage(item) {

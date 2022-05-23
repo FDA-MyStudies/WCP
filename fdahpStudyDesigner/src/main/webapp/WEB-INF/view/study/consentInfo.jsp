@@ -39,6 +39,7 @@
         <input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+        <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <c:if test="${not empty consentInfoBo.id}">
             <input type="hidden" id="studyId" name="studyId"
                    value="${consentInfoBo.studyId}">
@@ -104,7 +105,7 @@
                 <div class="dis-line form-group mb-none">
                     <button type="button"
                             class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm"
-                            onclick="saveConsentInfo(this);">Save
+                            id='saveId' onclick="saveConsentInfo(this);">Save
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none">
@@ -228,9 +229,23 @@
         </div>
     </form:form>
     <!--  End body tab section -->
+     <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+var idleTime = 0;
   $(document).ready(function () {
     // Fancy Scroll Bar
 
@@ -340,99 +355,136 @@
   });
 
   function saveConsentInfo(item) {
-    var consentInfo = new Object();
-    var consentInfoId = $("#id").val();
-    var study_id = $("#studyId").val();
-    var consentType = $('input[name="consentItemType"]:checked').val();
-    var consentitemtitleid = $("#consentItemTitleId").val();
-    var displayTitleText = $("#displayTitle").val();
-    displayTitleText = replaceSpecialCharacters(displayTitleText);
-    var briefSummaryText = $("#briefSummary").val();
-    briefSummaryText = replaceSpecialCharacters(briefSummaryText);
-    var elaboratedText = tinymce.get('elaboratedRTE').getContent({format: 'raw'});
-    elaboratedText = replaceSpecialCharacters(elaboratedText);
-
-    var visual_step = $('input[name="visualStep"]:checked').val();
-
-    var valid = maxLenValEditor();
-
-    if (valid && (study_id != null && study_id != '' && typeof study_id != 'undefined')
-        && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText
-            != 'undefined')) {
-      $(item).prop('disabled', true);
-      if (null != consentInfoId) {
-        consentInfo.id = consentInfoId;
-      }
-      consentInfo.studyId = study_id;
-      if (null != consentType) {
-        consentInfo.consentItemType = consentType;
-      }
-      if (null != consentitemtitleid) {
-        consentInfo.consentItemTitleId = consentitemtitleid;
-      }
-      if (null != briefSummaryText) {
-        consentInfo.briefSummary = briefSummaryText;
-      }
-      if (null != elaboratedText) {
-        consentInfo.elaborated = elaboratedText;
-      }
-      if (null != visual_step) {
-        consentInfo.visualStep = visual_step;
-      }
-      if (null != displayTitleText) {
-        consentInfo.displayTitle = displayTitleText;
-      }
-      consentInfo.type = "save";
-      $('#loader').show();
-      var data = JSON.stringify(consentInfo);
-      $.ajax({
-        url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
-        type: "POST",
-        datatype: "json",
-        data: {
-          consentInfo: data,
-          language: $('#currentLanguage').val()
-        },
-        beforeSend: function (xhr, settings) {
-          xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-        },
-        success: function (data) {
-          var message = data.message;
-          if (message == "SUCCESS") {
-            $('.fifthConsent').find('span').remove();
-            var consentInfoId = data.consentInfoId;
-            $("#id").val(consentInfoId);
-            $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
-            $(item).prop('disabled', false);
-            $('#alertMsg').show();
-          } else {
-            $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
-            $('#alertMsg').show();
-          }
-          setTimeout(hideDisplayMessage, 4000);
-          $('#loader').hide();
-        },
-        error: function (xhr, status, error) {
-          $(item).prop('disabled', false);
-          $('#alertMsg').show();
-          $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
-          setTimeout(hideDisplayMessage, 4000);
-          $('#loader').hide();
-        }
-      });
-    } else {
-      $(item).prop('disabled', false);
-      if (valid) {
-        $(".consentTitle").parent().addClass('has-error has-danger');
-        $(".consentTitle").parent().find(".help-block").empty().append(
-            $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                "This is a required field."));
-        setTimeout(hideDisplayMessage, 4000);
-      }
-
-    }
+    autoSaveConsentInfo('manual', item);
   }
+      setInterval(function () {
+          idleTime += 1;
+          if (idleTime > 2) { // 5 minutes
+                  autoSaveConsentInfo('auto', '#saveId');
+          }
+      }, 3000); // 5 minutes
 
+      $(this).mousemove(function (e) {
+          idleTime = 0;
+      });
+      $(this).keypress(function (e) {
+          idleTime = 0;
+      });
+
+      // pop message after 15 minutes
+      if ($('#isAutoSaved').val() === 'true') {
+          $('#myModal').modal('show');
+          let i = 2;
+          setInterval(function () {
+              $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+              i+=1;
+          }, 60000);
+      }
+   function autoSaveConsentInfo(mode,item){
+   var consentInfo = new Object();
+       var consentInfoId = $("#id").val();
+       var study_id = $("#studyId").val();
+       var consentType = $('input[name="consentItemType"]:checked').val();
+       var consentitemtitleid = $("#consentItemTitleId").val();
+       var displayTitleText = $("#displayTitle").val();
+       displayTitleText = replaceSpecialCharacters(displayTitleText);
+       var briefSummaryText = $("#briefSummary").val();
+       briefSummaryText = replaceSpecialCharacters(briefSummaryText);
+       var elaboratedText = tinymce.get('elaboratedRTE').getContent({format: 'raw'});
+       elaboratedText = replaceSpecialCharacters(elaboratedText);
+
+       var visual_step = $('input[name="visualStep"]:checked').val();
+
+       var valid = maxLenValEditor();
+
+       if (valid && (study_id != null && study_id != '' && typeof study_id != 'undefined')
+           && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText
+               != 'undefined')) {
+         $(item).prop('disabled', true);
+         if (null != consentInfoId) {
+           consentInfo.id = consentInfoId;
+         }
+         consentInfo.studyId = study_id;
+         if (null != consentType) {
+           consentInfo.consentItemType = consentType;
+         }
+         if (null != consentitemtitleid) {
+           consentInfo.consentItemTitleId = consentitemtitleid;
+         }
+         if (null != briefSummaryText) {
+           consentInfo.briefSummary = briefSummaryText;
+         }
+         if (null != elaboratedText) {
+           consentInfo.elaborated = elaboratedText;
+         }
+         if (null != visual_step) {
+           consentInfo.visualStep = visual_step;
+         }
+         if (null != displayTitleText) {
+           consentInfo.displayTitle = displayTitleText;
+         }
+         consentInfo.type = "save";
+         $('#loader').show();
+         if (mode === 'auto') {
+         $("#isAutoSaved").val('true');
+          }
+         var data = JSON.stringify(consentInfo);
+         $.ajax({
+           url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
+           type: "POST",
+           datatype: "json",
+           data: {
+             consentInfo: data,
+             language: $('#currentLanguage').val()
+           },
+           beforeSend: function (xhr, settings) {
+             xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+           },
+           success: function (data) {
+             var message = data.message;
+             if (message == "SUCCESS") {
+               $('.fifthConsent').find('span').remove();
+               var consentInfoId = data.consentInfoId;
+               $("#id").val(consentInfoId);
+               $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
+               $(item).prop('disabled', false);
+               $('#alertMsg').show();
+                var isAutoSaved = data.isAutoSaved;
+                      if (isAutoSaved === 'true') {
+                          $('#myModal').modal('show');
+                          let i = 2;
+                          setInterval(function () {
+                              $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                              i+=1;
+                          }, 60000);
+                      }
+             } else {
+               $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+               $('#alertMsg').show();
+             }
+             setTimeout(hideDisplayMessage, 4000);
+             $('#loader').hide();
+           },
+           error: function (xhr, status, error) {
+             $(item).prop('disabled', false);
+             $('#alertMsg').show();
+             $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+             setTimeout(hideDisplayMessage, 4000);
+             $('#loader').hide();
+           }
+         });
+       } else {
+         $(item).prop('disabled', false);
+         if (valid) {
+           $(".consentTitle").parent().addClass('has-error has-danger');
+           $(".consentTitle").parent().find(".help-block").empty().append(
+               $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                   "This is a required field."));
+           setTimeout(hideDisplayMessage, 4000);
+         }
+
+       }
+   }
   function goToBackPage(item) {
     let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
     <c:if test="${actionPage ne 'view'}">

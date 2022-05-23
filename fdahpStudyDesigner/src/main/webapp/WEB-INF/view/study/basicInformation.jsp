@@ -671,7 +671,7 @@
                 saveBasicInfoPage('auto');
             }
         }
-    }, 300000); // 5 minutes
+    }, 3000); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;

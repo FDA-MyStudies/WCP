@@ -551,6 +551,8 @@ public class StudyActiveTasksController {
                   .getSession()
                   .setAttribute(sessionStudyCount + "sucMsg", "Active task updated successfully.");
               map.addAttribute("language", language);
+              String isAutoSaved = request.getParameter("isAutoSaved");
+              map.addAttribute("isAutoSaved", isAutoSaved);
               return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
 
             } else {
@@ -908,6 +910,7 @@ public class StudyActiveTasksController {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           if (studyBo != null) {
             activeTaskListBos =
@@ -922,6 +925,8 @@ public class StudyActiveTasksController {
               }
             }
             map.addAttribute("languageList", langMap);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
           }
           map.addAttribute("activeTaskListBos", activeTaskListBos);
           map.addAttribute("studyBo", studyBo);
@@ -1142,6 +1147,7 @@ public class StudyActiveTasksController {
           this.setStudyLangData(studyId, language, map);
         }
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 

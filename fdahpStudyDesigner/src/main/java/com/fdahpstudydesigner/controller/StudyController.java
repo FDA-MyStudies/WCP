@@ -348,6 +348,7 @@ public class StudyController {
             map.addAttribute("languageList", langMap);
           }
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
 
           map.addAttribute("anchorTypeList", anchorTypeList);
           request
@@ -1126,6 +1127,7 @@ public class StudyController {
         map.addAttribute("checklist", checklist);
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         mav = new ModelAndView("checklist", map);
       }
     } catch (Exception e) {
@@ -1265,7 +1267,7 @@ public class StudyController {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
-
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 
@@ -1422,6 +1424,7 @@ public class StudyController {
 
           String language = request.getParameter("language");
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             String result =
                 studyService.syncQuestionDataInLanguageTables(
@@ -1569,6 +1572,7 @@ public class StudyController {
             this.setStudyLangData(studyId, currLang, map);
           }
           map.addAttribute("currLanguage", currLang);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           map.addAttribute("consentInfoLangList", consentInfoLangList);
           map.addAttribute("markAsComplete", markAsComplete);
           map.addAttribute(FdahpStudyDesignerConstants.CONSENT_INFO_LIST, consentInfoList);
@@ -1769,6 +1773,7 @@ public class StudyController {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           map.addAttribute("consentInfoLangBO", consentInfoLangBO);
         }
         map.addAttribute("_S", sessionStudyCount);
@@ -1907,7 +1912,7 @@ public class StudyController {
                 "consentInfoLangList", consentInfoLangBOList != null ? consentInfoLangBOList : "");
           }
           map.addAttribute("currLanguage", language);
-
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
           Map<String, String> langMap = new HashMap<>();
@@ -2265,6 +2270,7 @@ public class StudyController {
           studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
           String language = request.getParameter("language");
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             NotificationLangBO notificationLangBO = null;
@@ -2514,6 +2520,7 @@ public class StudyController {
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute("currLanguage", language);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           map.addAttribute(
               "studyPageLanguageList",
               studyPageLanguageBOS != null
@@ -2829,6 +2836,8 @@ public class StudyController {
             resourceBundle.getString("participant.property.datasource").split(",");
         map = new ModelMap();
         map.addAttribute("languageList", langMap);
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        map.addAttribute("isAutoSaved", isAutoSaved);
         map.addAttribute("participantProperties", participantPropertiesBO);
         map.addAttribute("dataType", dataType);
         map.addAttribute("dataSource", dataSource);
@@ -2932,6 +2941,7 @@ public class StudyController {
       map.addAttribute("languageList", langMap);
       map.addAttribute("participantProperties", participantPropertiesBO);
       map.addAttribute("currLanguage", language);
+      map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
       map.addAttribute("dataType", dataType);
       map.addAttribute("dataSource", dataSource);
       map.addAttribute("actionType", actionType);
@@ -3917,6 +3927,8 @@ public class StudyController {
                 studyService.saveOrUpdateComprehensionTestQuestion(
                     comprehensionTestQuestionBo, language);
           }
+          String isAutoSaved = request.getParameter("isAutoSaved");
+         jsonobject.put("isAutoSaved", isAutoSaved);
         }
         if (addComprehensionTestQuestionBo != null) {
           jsonobject.put("questionId", addComprehensionTestQuestionBo.getId());
@@ -3996,6 +4008,8 @@ public class StudyController {
           }
         }
       }
+      String isAutoSaved = request.getParameter("isAutoSaved");
+      jsonobject.put("isAutoSaved", isAutoSaved);
       jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
       response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
       out = response.getWriter();
@@ -4095,6 +4109,8 @@ public class StudyController {
           }
         }
       }
+     String isAutoSaved = request.getParameter("isAutoSaved");
+      jsonobj.put("isAutoSaved", isAutoSaved);
       jsonobj.put(FdahpStudyDesignerConstants.MESSAGE, message);
       jsonobj.put(FdahpStudyDesignerConstants.STUDY_ID, studyId);
       jsonobj.put(FdahpStudyDesignerConstants.CONSENT_ID, consentId);
@@ -4203,6 +4219,8 @@ public class StudyController {
                     "Failed to update checklist.");
           }
         }
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        map.addAttribute("isAutoSaved", isAutoSaved);
         mav = new ModelAndView("redirect:getChecklist.do", map);
       }
     } catch (Exception e) {
@@ -4408,6 +4426,8 @@ public class StudyController {
                       propMap.get("save.comprehensiontest.success.message"));
             }
             map.addAttribute("language", language);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do", map);
           } else {
             request
@@ -4489,6 +4509,8 @@ public class StudyController {
           }
           map.addAttribute("_S", sessionStudyCount);
           map.addAttribute("language", language);
+          String isAutoSaved = request.getParameter("isAutoSaved");
+          map.addAttribute("isAutoSaved", isAutoSaved);
           mav = new ModelAndView("redirect:/adminStudies/consentListPage.do", map);
         }
       }
@@ -4635,6 +4657,8 @@ public class StudyController {
         }
         map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("language", language);
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        map.addAttribute("isAutoSaved", isAutoSaved);
         if (("save").equalsIgnoreCase(buttonText)) {
           request
               .getSession()
@@ -4757,6 +4781,8 @@ public class StudyController {
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
             map.addAttribute("language", currentLanguage);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
           }
         } else {
@@ -4839,6 +4865,8 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
           } else {
             request
@@ -4937,6 +4965,8 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + "eligibilityId", eligibilityTestBo.getEligibilityId());
             map.put("language", language);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             mav = new ModelAndView("redirect:viewStudyEligibiltyTestQusAns.do", map);
           } else {
             request
@@ -5159,6 +5189,8 @@ public class StudyController {
         }
         map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("language", language);
+       String isAutoSaved = request.getParameter("isAutoSaved");
+       map.addAttribute("isAutoSaved", isAutoSaved);
         if ("save".equalsIgnoreCase(buttonType)
             && !FdahpStudyDesignerConstants.ADDORCOPY.equals(actionPage)) {
           request
@@ -5252,6 +5284,8 @@ public class StudyController {
                     sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
                     propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
             map.addAttribute("language", language);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             return new ModelAndView("redirect:overviewStudyPages.do", map);
           }
         } else {
@@ -6073,6 +6107,7 @@ public class StudyController {
             this.setStudyLangData(studyId, currLang, map);
           }
           map.addAttribute("currLanguage", currLang);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           /*
            * Get the active user list whom are not yet added to the particular study
            */
@@ -6357,6 +6392,7 @@ public class StudyController {
             this.setStudyLangData(studyId, currLang, map);
           }
           map.addAttribute("currLanguage", currLang);
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         }
 
         map.addAttribute("eligibilityTestLangList", eligibilityTestLangList);
@@ -6490,6 +6526,7 @@ public class StudyController {
               this.setStudyLangData(studyId, language, map);
             }
             map.addAttribute("currLanguage", language);
+            map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
             eligibilityTest = studyService.viewEligibilityTestQusAnsById(eligibilityTestId);
           }
 

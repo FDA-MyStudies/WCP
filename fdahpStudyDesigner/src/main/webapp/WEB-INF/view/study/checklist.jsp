@@ -14,6 +14,7 @@
             <input type="hidden" name="checklistId" value="${checklist.checklistId}">
             <input type="hidden" id="actionBut" name="actionBut">
             <input type="hidden" name="language" id="studyLanguage" value="${currLanguage}" />
+            <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -149,12 +150,26 @@
       </div>
    </div>
             <!--  End body tab section -->
- </form:form>   
+ </form:form>
+  <div class="modal fade" id="myModal" role="dialog">
+         <div class="modal-dialog modal-lg">
+             <!-- Modal content-->
+             <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                 <div class="modal-header cust-hdr pt-lg">
+                     <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title pl-lg text-center">
+                         <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                     </h4>
+                 </div>
+             </div>
+         </div>
+     </div>
         
 </div>
         <!-- End right Content here -->
 
 <script type="text/javascript">
+var idleTime = 0;
 $(document).ready(function(){
 	    $(".menuNav li").removeClass('active');
 	    $(".nine").addClass('active'); 
@@ -164,8 +179,7 @@ $(document).ready(function(){
 	    </c:if>
 		
 		$('#saveChecklistId').click(function() {
-			 $('#actionBut').val('save');
-		     $('#checklistForm').submit();
+			autoSaveCheckListPage('manual');
 		});
 
   let currLang = $('#studyLanguage').val();
@@ -193,8 +207,40 @@ $(document).ready(function(){
 					    }
 				    });
 		});
-});
+		setInterval(function () {
+                idleTime += 1;
+                if (idleTime > 2) { // 5 minutes
 
+                        autoSaveCheckListPage('auto');
+
+                }
+            }, 3000); // 5 minutes
+
+            $(this).mousemove(function (e) {
+                idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+                idleTime = 0;
+            });
+
+            // pop message after 15 minutes
+            if ($('#isAutoSaved').val() === 'true') {
+                $('#myModal').modal('show');
+                let i = 2;
+                setInterval(function () {
+                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                    i+=1;
+                }, 60000);
+            }
+});
+function autoSaveCheckListPage(mode){
+ $('#actionBut').val('save');
+ $('#loader').show();
+ if (mode === 'auto') {
+  $("#isAutoSaved").val('true');
+   }
+	$('#checklistForm').submit();
+}
 function refreshAndFetchLanguageData(language) {
   $.ajax({
     url: '/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}',

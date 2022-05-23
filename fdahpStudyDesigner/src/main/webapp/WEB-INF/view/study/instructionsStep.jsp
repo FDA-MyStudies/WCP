@@ -111,6 +111,7 @@
             <input type="hidden" id="mlTitle" value="${instructionsLangBO.instructionTitle}">
             <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+             <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <div class="col-md-6 pl-none">
                 <div class="gray-xs-f mb-xs">
                     Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span
@@ -186,9 +187,23 @@
         </div>
     </form:form>
     <!--  End body tab section -->
+    <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+  var idleTime = 0;
   $(document).ready(function () {
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
@@ -227,21 +242,46 @@
         }
       });
     });
+    setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 2) { // 5 minutes
+                    autoSaveInstructionStepPage('auto');
+            }
+        }, 3000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
+        // pop message after 15 minutes
+        if ($('#isAutoSaved').val() === 'true') {
+            $('#myModal').modal('show');
+            let i = 2;
+            setInterval(function () {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }, 60000);
+        }
   });
 
   function saveIns() {
-    $("body").addClass("loading");
-    $("#saveId").attr("disabled", true);
-    validateShortTitle('', function (val) {
-      if (val) {
-        saveInstruction();
-      } else {
-        $("#saveId").attr("disabled", false);
-        $("body").removeClass("loading");
-      }
-    });
+   autoSaveInstructionStepPage('manual');
   }
-
+  function autoSaveInstructionStepPage(mode){
+      $("body").addClass("loading");
+      $("#saveId").attr("disabled", true);
+      validateShortTitle('', function (val) {
+        if (val) {
+          saveInstruction();
+        } else {
+          $("#saveId").attr("disabled", false);
+          $("body").removeClass("loading");
+        }
+      });
+  }
   function validateShortTitle(item, callback) {
     var shortTitle = $("#shortTitleId").val();
     var questionnaireId = $("#questionnaireId").val();

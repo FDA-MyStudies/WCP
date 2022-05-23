@@ -160,6 +160,7 @@
                            value="${fn:escapeXml(actionType)}">
                     <input type="hidden" id="actionButtonType" name="actionButtonType"
                            value="">
+                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                     <input type="hidden" id="preShortTitleId"
                            value="${fn:escapeXml(participantProperties.shortTitle)}"/>
                     <input type="hidden" id="participantId"
@@ -363,7 +364,19 @@
         </div>
     </div>
 </div>
-
+ <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- Modal -->
 <div id="infoModel">
     <div>
@@ -398,6 +411,7 @@
 
   var dataVal = "";
   var propType = "";
+  var idleTime = 0;
   $(document).ready(function () {
     $('#doneId').click(function (e) {
       $('.required-attr').prop('required', true);
@@ -556,29 +570,57 @@
   });
 
   $("#saveId").click(function () {
-    $('.required-attr').prop('required', false);
-    if (isFromValid("#participantPropertiesFormId")) {
-      $("#actionButtonType").val('save');
-      $("#short-title-id").val($("#shortTitleId").val());
-      $("#prePropertyType").val($('input[name="typeOfProperty"]:checked').val());
-
-      if ($('#inlineCheckbox1').is(':checked')) {
-        $("#preUseAsAnchorDate").val(true);
-      } else {
-        $("#preUseAsAnchorDate").val(false);
-      }
-
-      if ($('#inlineCheckbox2').is(':checked')) {
-        $("#preRefreshedValue").val(true);
-      } else {
-        $("#preRefreshedValue").val(false);
-      }
-
-      $('#participantPropertiesFormId').submit();
-      showSucMsg("Content saved as draft.");
-    }
+    autoSaveParticipantPropertyPage('manual');
   });
 
+  setInterval(function () {
+              idleTime += 1;
+              if (idleTime > 2) { // 5 minutes
+                      autoSaveParticipantPropertyPage('auto');
+              }
+          }, 3000); // 5 minutes
+
+          $(this).mousemove(function (e) {
+              idleTime = 0;
+          });
+          $(this).keypress(function (e) {
+              idleTime = 0;
+          });
+
+          // pop message after 15 minutes
+          if ($('#isAutoSaved').val() === 'true') {
+              $('#myModal').modal('show');
+              let i = 2;
+              setInterval(function () {
+                  $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                  i+=1;
+              }, 60000);
+          }
+ function autoSaveParticipantPropertyPage(mode){
+      $('.required-attr').prop('required', false);
+          if (isFromValid("#participantPropertiesFormId")) {
+            $("#actionButtonType").val('save');
+            $("#short-title-id").val($("#shortTitleId").val());
+            $("#prePropertyType").val($('input[name="typeOfProperty"]:checked').val());
+
+            if ($('#inlineCheckbox1').is(':checked')) {
+              $("#preUseAsAnchorDate").val(true);
+            } else {
+              $("#preUseAsAnchorDate").val(false);
+            }
+
+            if ($('#inlineCheckbox2').is(':checked')) {
+              $("#preRefreshedValue").val(true);
+            } else {
+              $("#preRefreshedValue").val(false);
+            }
+            if (mode === 'auto') {
+            $("#isAutoSaved").val('true');
+             }
+            $('#participantPropertiesFormId').submit();
+            showSucMsg("Content saved as draft.");
+          }
+     }
   function validateShortTitle(item, callback) {
     var shortTitle = $("#shortTitleId").val();
     var thisAttr = $("#shortTitleId");

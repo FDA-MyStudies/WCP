@@ -166,6 +166,7 @@
                 type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
                 value="${questionsBo.isShorTitleDuplicate}"/>
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+             <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
             <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                 <%--				ml data fields--%>
@@ -2635,9 +2636,23 @@
     </div>
     </div>
 </form:form>
+   <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+ var idleTime = 0;
   $(document).ready(function () {
 
     let currLang = $('#studyLanguage').val();
@@ -2974,38 +2989,9 @@
       }
     });
     $("#saveId").on('click', function (e) {
-      $("body").addClass("loading");
-      validateTheQuestionshortTitle('', function (val) {
-        if (val) {
-          var statShortName = $("#statShortNameId").val();
-          if (statShortName != '' && statShortName != null && typeof statShortName != 'undefined') {
-            validateStatsShorTitle('', function (val) {
-              if (val) {
-                saveQuestionStepQuestionnaire();
-              } else {
-                $("body").removeClass("loading");
-              }
-            });
-          } else {
-            var resType = $("#rlaResonseType").val();
-            if (resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker'
-                || resType == 'Text Choice') {
-              validateForUniqueValue('', resType, function (val) {
-                if (val) {
-                  saveQuestionStepQuestionnaire();
-                } else {
-                  $("body").removeClass("loading");
-                }
-              });
-            } else {
-              saveQuestionStepQuestionnaire();
-            }
-          }
-        } else {
-          $("body").removeClass("loading");
-        }
-      });
+    autoSaveFormQuestionPage('manual');
     });
+
     $("#statShortNameId").blur(function () {
       validateStatsShorTitle('', function (val) {
       });
@@ -3702,7 +3688,65 @@
         && typeof valicationCharacterValue != 'undefined') {
       addRegEx(valicationCharacterValue);
     }
+    setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 2) { // 5 minutes
+
+                    autoSaveFormQuestionPage('auto');
+
+            }
+        }, 3000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
+        // pop message after 15 minutes
+        if ($('#isAutoSaved').val() === 'true') {
+            $('#myModal').modal('show');
+            let i = 2;
+            setInterval(function () {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }, 60000);
+        }
   });
+    function autoSaveFormQuestionPage(mode){
+      $("body").addClass("loading");
+          validateTheQuestionshortTitle('', function (val) {
+            if (val) {
+              var statShortName = $("#statShortNameId").val();
+              if (statShortName != '' && statShortName != null && typeof statShortName != 'undefined') {
+                validateStatsShorTitle('', function (val) {
+                  if (val) {
+                    saveQuestionStepQuestionnaire();
+                  } else {
+                    $("body").removeClass("loading");
+                  }
+                });
+              } else {
+                var resType = $("#rlaResonseType").val();
+                if (resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker'
+                    || resType == 'Text Choice') {
+                  validateForUniqueValue('', resType, function (val) {
+                    if (val) {
+                      saveQuestionStepQuestionnaire();
+                    } else {
+                      $("body").removeClass("loading");
+                    }
+                  });
+                } else {
+                  saveQuestionStepQuestionnaire();
+                }
+              }
+            } else {
+              $("body").removeClass("loading");
+            }
+          });
+    }
 
   function addRegEx(value) {
     $("#validationExceptTextId").unbind("keyup blur");

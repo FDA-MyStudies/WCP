@@ -52,6 +52,7 @@
 		<input type="hidden" id="mlTextOrPdf" value="${resourceLangBO.textOrPdf}">
 		<input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
 		<input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+		 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
 
 		<div class="right-content-head">
 			<div class="text-right">
@@ -382,6 +383,19 @@
 			</div>
 		</div>
 	</form:form>
+	 <div class="modal fade" id="myAutoModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 <form:form
@@ -395,6 +409,7 @@
 	<input type="hidden" value="${resourceBO.pdfUrl}" name="fileName" />
 </form:form>
 <script type="text/javascript">
+var idleTime = 0;
 $(document).ready(function(){
 	
 	//$('[data-id="anchorDateId"]').prop('disabled', true);
@@ -537,36 +552,8 @@ $(document).ready(function(){
 		  resetValidation('#resourceForm');
 	 });
 	  
-	$('#saveResourceId').click(function() {
-		 $('#saveResourceId').prop('disabled',true);
-		   	$("#resourceTitle").parent().find(".help-block").empty();
-	   		$('#resourceForm').validator('destroy').validator();
-	   		var isValid = true;
-	   		var anchorList = "${anchorTypeList}";
-			 var length = anchorList.length;
-	   if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
-		   isValid = chkDaysValid(false);
-	   }
-       if(!$('#resourceTitle')[0].checkValidity()){
-    	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
-    		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please fill out this field."));
-    	}
-       	$('#saveResourceId').prop('disabled',false);
-    	return false;
-       }else if(isValid){
-    	   	var actionOn = '${fn:escapeXml(actionOn)}';
-	       	$('#resourceForm').validator('destroy');
-	       	$("#actionOn").val(actionOn);
-	       	$("#buttonText").val('save');
-	       	var richText=tinymce.get('richText').getContent({ format: 'raw' });
-	       	if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
-	       		var escaped = $('#richText').text(richText).html();
-	         	tinymce.get('richText').setContent(escaped);
-             }
-		   $('#loader').show();
-		   $('#resourceForm').submit();
-       }
-      $('#saveResourceId').prop('disabled',false);
+	$('#saveResourceId').click(function(e) {
+	     autoSaveResourcePage('manual');
 	});
 	
 	 pdfUrlName = $('#pdfUrl').val();
@@ -1044,7 +1031,68 @@ $(document).ready(function(){
 			}
 			$('.selectpicker').selectpicker('refresh');
 	}); 
+	 
+	    setInterval(function () {
+	        idleTime += 1;
+	        if (idleTime > 2) { // 5 minutes
+
+	                autoSaveResourcePage('auto');
+
+	        }
+	    }, 3000); // 5 minutes
+
+	    $(this).mousemove(function (e) {
+	        idleTime = 0;
+	    });
+	    $(this).keypress(function (e) {
+	        idleTime = 0;
+	    });
+
+	    // pop message after 15 minutes
+	    if ($('#isAutoSaved').val() === 'true') {
+	        $('#myAutoModal').modal('show');
+	        let i = 2;
+	        setInterval(function () {
+	            $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+	            i+=1;
+	        }, 60000);
+	    }
 });
+
+function  autoSaveResourcePage(mode){
+	 $('#saveResourceId').prop('disabled',true);
+	   	$("#resourceTitle").parent().find(".help-block").empty();
+		$('#resourceForm').validator('destroy').validator();
+		var isValid = true;
+		var anchorList = "${anchorTypeList}";
+		 var length = anchorList.length;
+if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
+	   isValid = chkDaysValid(false);
+}
+if(!$('#resourceTitle')[0].checkValidity()){
+	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
+		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please fill out this field."));
+	}
+	$('#saveResourceId').prop('disabled',false);
+	return false;
+}else if(isValid){
+	   	var actionOn = '${fn:escapeXml(actionOn)}';
+    	$('#resourceForm').validator('destroy');
+    	$("#actionOn").val(actionOn);
+    	$("#buttonText").val('save');
+    	var richText=tinymce.get('richText').getContent({ format: 'raw' });
+    	if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
+    		var escaped = $('#richText').text(richText).html();
+      	tinymce.get('richText').setContent(escaped);
+      }
+	   $('#loader').show();
+	   if (mode === 'auto') {
+           $("#isAutoSaved").val('true');
+       }
+	   $('#resourceForm').submit();
+}
+$('#saveResourceId').prop('disabled',false);
+}
 function chkDaysValid(clickDone){
 	var x = $("#xdays").val();
 	var y = $("#ydays").val();

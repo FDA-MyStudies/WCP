@@ -115,6 +115,7 @@
 
             <input type="hidden" id="currentLanguage" name="currentLanguage"
                    value="${currLanguage}">
+                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <c:if test="${not empty comprehensionQuestionBo.id}">
                 <input type="hidden" id="studyId" name="studyId"
                        value="${comprehensionQuestionBo.studyId}">
@@ -325,10 +326,23 @@
             </div>
         </div>
     </form:form>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+var idleTime = 0;
   $(document).ready(
       function () {
     	  $(".menuNav li").removeClass('active');
@@ -366,18 +380,49 @@
         $("#saveId").on(
             "click",
             function () {
-              $(".right-content-body").parents("form").validator(
-                  "destroy");
-              $(".right-content-body").parents("form")
-              .validator();
-              saveComrehensionTestQuestion();
+             autoSaveComprehensionQuestionPage('manual');
             });
         if ($('.ans-opts').length > 2) {
           $(".remBtnDis").removeClass("hide");
         } else {
           $(".remBtnDis").addClass("hide");
         }
+                              setInterval(function () {
+                                  idleTime += 1;
+                                  if (idleTime > 2) { // 5 minutes
+                                          autoSaveComprehensionQuestionPage('auto');
+                                  }
+                              }, 3000); // 5 minutes
+
+                              $(this).mousemove(function (e) {
+                                  idleTime = 0;
+                              });
+                              $(this).keypress(function (e) {
+                                  idleTime = 0;
+                              });
+
+                              // pop message after 15 minutes
+                              if ($('#isAutoSaved').val() === 'true') {
+                                  $('#myModal').modal('show');
+                                  let i = 2;
+                                  setInterval(function () {
+                                      $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                                      i+=1;
+                                  }, 60000);
+                              }
       });
+      function autoSaveComprehensionQuestionPage(mode){
+       $(".right-content-body").parents("form").validator(
+                        "destroy");
+                    $(".right-content-body").parents("form")
+                    .validator();
+                       if (mode === 'auto') {
+                       $("#isAutoSaved").val('true');
+                       }
+                    saveComrehensionTestQuestion(mode);
+      }
+
+
   var ansCount = $(".ans-opts").length - 1;
 
   function addAns() {
@@ -472,7 +517,7 @@
     </c:if>
   }
 
-  function saveComrehensionTestQuestion() {
+  function saveComrehensionTestQuestion(mode) {
     var comprehensionTestQuestion = new Object();
     var testQuestionId = $("#id").val();
     var studyId = $("#studyId").val();
@@ -503,6 +548,9 @@
         && questiontext != null && questiontext != ''
         && typeof questiontext != 'undefined') {
       formData.append("language", $('#currentLanguage').val());
+      if (mode === 'auto') {
+      $("#isAutoSaved").val('true');
+       }
       formData.append("comprehenstionQuestionInfo", JSON
       .stringify(comprehensionTestQuestion));
       $

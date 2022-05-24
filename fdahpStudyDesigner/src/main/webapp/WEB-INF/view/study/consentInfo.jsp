@@ -426,16 +426,17 @@ var idleTime = 0;
          consentInfo.type = "save";
          $('#loader').show();
          if (mode === 'auto') {
-         $("#isAutoSaved").val('true');
-          }
+             $("#isAutoSaved").val('true');
+         }
          var data = JSON.stringify(consentInfo);
          $.ajax({
            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
            type: "POST",
            datatype: "json",
            data: {
-             consentInfo: data,
-             language: $('#currentLanguage').val()
+               consentInfo: data,
+               language: $('#currentLanguage').val(),
+               isAutoSaved : $("#isAutoSaved").val()
            },
            beforeSend: function (xhr, settings) {
              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

@@ -275,6 +275,9 @@
       $("#saveId").attr("disabled", true);
       validateShortTitle('', function (val) {
         if (val) {
+            if (mode === 'auto') {
+                $('#isAutoSaved').val('true');
+            }
           saveInstruction();
         } else {
           $("#saveId").attr("disabled", false);
@@ -381,7 +384,8 @@
         datatype: "json",
         data: {
           instructionsInfo: data,
-          language: $('#studyLanguage').val()
+          language: $('#studyLanguage').val(),
+          isAutoSaved : $('#isAutoSaved').val()
         },
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN",
@@ -389,7 +393,7 @@
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
             $("#preShortTitleId").val(shortTitle);
             var instructionId = data.instructionId;
             var stepId = data.stepId;
@@ -411,6 +415,15 @@
                   'sprites-icons-2 tick pull-right mt-xs');
             }
             $("body").removeClass("loading");
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 2;
+                setInterval(function () {
+                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                    i+=1;
+                }, 60000);
+                $("#isAutoSaved").val('false');
+            }
           } else {
             $("#alertMsg").removeClass('s-box').addClass(
                 'e-box').text("Something went Wrong");

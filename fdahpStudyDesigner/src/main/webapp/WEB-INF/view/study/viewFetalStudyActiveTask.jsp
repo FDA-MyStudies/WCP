@@ -22,7 +22,7 @@
     <input type="hidden" id="mlDisplayUnitStat" value="${activeTaskLangBO.displayUnitStat}">
     <input type="hidden" value="${actionPage}" id="actionPage" name="actionPage">
     <input type="hidden" value="${currentPage}" id="currentPageId" name="currentPage">
-     <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
     <div class="pt-lg">
         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters
             max)</small><span class="requiredStar"> *</span><span
@@ -884,6 +884,7 @@
         });
 
         $('#saveId').click(function (e) {
+         $('#isAutoSavedParent').val('false');
          autoSaveFetalStudyActiveTaskPage('manual');
         });
         $("#shortTitleId").blur(function () {
@@ -1057,8 +1058,10 @@
                                  $('#activeContentFormId').validator('destroy');
                                  $("#buttonText").val('save');
                                  if (mode === 'auto') {
-                                 $("#isAutoSaved").val('true');
-                                  }
+                                     $("#isAutoSaved").val('true');
+                                 } else {
+                                     $("#isAutoSaved").val('false');
+                                 }
                                  document.activeContentFormId.submit();
                                }
                              });
@@ -1081,8 +1084,10 @@
                              $('#activeContentFormId').validator('destroy');
                              $("#buttonText").val('save');
                              if (mode === 'auto') {
-                             $("#isAutoSaved").val('true');
-                              }
+                                 $("#isAutoSaved").val('true');
+                             } else {
+                                 $("#isAutoSaved").val('false');
+                             }
                              document.activeContentFormId.submit();
                            } else {
                              $("body").removeClass('loading');

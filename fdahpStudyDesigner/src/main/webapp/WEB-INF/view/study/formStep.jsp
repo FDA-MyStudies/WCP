@@ -654,8 +654,11 @@ var idleTime = 0;
   $("body").addClass("loading");
       validateShortTitle('', function (val) {
         if (val) {
+          if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+          }
           var repeatable = $('input[name="repeatable"]:checked').val();
-          if (repeatable == "Yes") {
+          if (repeatable === "Yes") {
             validateRepeatableQuestion('', function (valid) {
               if (!valid) {
                 saveFormStepQuestionnaire();
@@ -664,10 +667,7 @@ var idleTime = 0;
               }
             });
           } else {
-          if (mode === 'auto') {
-          $("#isAutoSaved").val('true');
-           }
-            saveFormStepQuestionnaire();
+              saveFormStepQuestionnaire();
           }
         } else {
           $("body").removeClass("loading");
@@ -733,14 +733,15 @@ var idleTime = 0;
         datatype: "json",
         data: {
           questionnaireStepInfo: data,
-          language: $('#studyLanguage').val()
+          language: $('#studyLanguage').val(),
+          isAutoSaved : $('#isAutoSaved').val()
         },
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
 
             $("#preShortTitleId").val(shortTitle);
 
@@ -770,6 +771,15 @@ var idleTime = 0;
             $("body").removeClass("loading");
             if (callback)
               callback(true);
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 2;
+                setInterval(function () {
+                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                    i+=1;
+                }, 60000);
+                $("#isAutoSaved").val('false');
+            }
           } else {
             var errMsg = data.errMsg;
             if (errMsg != '' && errMsg != null && typeof errMsg != 'undefined') {

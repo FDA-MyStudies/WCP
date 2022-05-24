@@ -623,19 +623,23 @@ var idleTime = 0;
           url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
           type: "POST",
           datatype: "json",
-          data: {consentInfo: data, page: pageName, language:$('#studyLanguage').val()},
+          data: {
+              consentInfo: data,
+              page: pageName,
+              language:$('#studyLanguage').val(),
+              isAutoSaved : $('#isAutoSaved').val()
+          },
           beforeSend: function (xhr, settings) {
             xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
           },
           success: function (data) {
             var message = data.message;
-            if (message == "SUCCESS") {
+            if (message === "SUCCESS") {
               var consentId = data.consentId;
-
               $("#consentId").val(consentId);
               $("#addQuestionId").attr("disabled", false);
               $("#addHelpNote").hide();
-              if (type != "save") {
+              if (type !== "save") {
                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
                 document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+lang;
                 document.comprehensionInfoForm.submit();
@@ -649,6 +653,15 @@ var idleTime = 0;
                   $('.fifthComre').find('span').removeClass(
                       'sprites-icons-2 tick pull-right mt-xs');
                 }
+              }
+              if (data.isAutoSaved === 'true') {
+                  $('#myModal').modal('show');
+                  let i = 2;
+                  setInterval(function () {
+                      $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                      i+=1;
+                  }, 60000);
+                  $("#isAutoSaved").val('false');
               }
             } else {
               $("body").removeClass("loading");

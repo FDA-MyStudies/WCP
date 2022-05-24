@@ -3718,6 +3718,9 @@
       $("body").addClass("loading");
           validateTheQuestionshortTitle('', function (val) {
             if (val) {
+                if (mode === 'auto') {
+                    $('#isAutoSaved').val('true');
+                }
               var statShortName = $("#statShortNameId").val();
               if (statShortName != '' && statShortName != null && typeof statShortName != 'undefined') {
                 validateStatsShorTitle('', function (val) {
@@ -4316,6 +4319,7 @@
         short_title != null && short_title != '' && typeof short_title != 'undefined') {
       formData.append("questionInfo", JSON.stringify(questionsBo));
       formData.append("language", $('#studyLanguage').val());
+      formData.append("isAutoSaved", $('#isAutoSaved').val());
 
       var data = JSON.stringify(questionsBo);
       $.ajax({
@@ -4330,7 +4334,7 @@
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
             $("body").removeClass("loading");
             $("#preShortTitleId").val(short_title);
             var questionId = data.questionId;
@@ -4354,6 +4358,15 @@
                 'sprites-icons-2 tick pull-right mt-xs')) {
               $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
+            }
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 2;
+                setInterval(function () {
+                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                    i+=1;
+                }, 60000);
+                $("#isAutoSaved").val('false');
             }
           } else {
             var errMsg = data.errMsg;

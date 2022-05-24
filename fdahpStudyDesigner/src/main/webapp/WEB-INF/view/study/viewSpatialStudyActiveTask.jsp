@@ -2199,6 +2199,7 @@ var idleTime = 0;
     });
 
     $('#saveId').click(function (e) {
+     $('#isAutoSavedParent').val('false');
      autoSaveSpatialStudyActivityPage('manual');
     });
 
@@ -2313,8 +2314,10 @@ var idleTime = 0;
                          $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
                          $("#buttonText").val('save');
                          if (mode === 'auto') {
-                         $("#isAutoSaved").val('true');
-                          }
+                             $("#isAutoSaved").val('true');
+                         } else {
+                             $('#isAutoSaved').val('false');
+                         }
                          document.activeContentFormId.submit();
                        }
                      })
@@ -2334,8 +2337,10 @@ var idleTime = 0;
                      $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
                      $("#buttonText").val('save');
                      if (mode === 'auto') {
-                     $("#isAutoSaved").val('true');
-                      }
+                         $("#isAutoSaved").val('true');
+                     } else {
+                         $("#isAutoSaved").val('false');
+                     }
                      document.activeContentFormId.submit();
                    }
                  })

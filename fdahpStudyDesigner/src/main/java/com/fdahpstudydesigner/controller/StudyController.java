@@ -3927,8 +3927,6 @@ public class StudyController {
                 studyService.saveOrUpdateComprehensionTestQuestion(
                     comprehensionTestQuestionBo, language);
           }
-          String isAutoSaved = request.getParameter("isAutoSaved");
-         jsonobject.put("isAutoSaved", isAutoSaved);
         }
         if (addComprehensionTestQuestionBo != null) {
           jsonobject.put("questionId", addComprehensionTestQuestionBo.getId());
@@ -3942,6 +3940,8 @@ public class StudyController {
                 customStudyId);
           }
         }
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        jsonobject.put("isAutoSaved", isAutoSaved);
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");

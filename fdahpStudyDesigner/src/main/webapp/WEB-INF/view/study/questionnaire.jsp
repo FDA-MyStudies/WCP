@@ -2915,6 +2915,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 	      validateShortTitle('', function (val) {
 	        if (val) {
 	          if (isFromValid("#contentFormId")) {
+                  if (mode === 'auto') {
+                      $('#isAutoSaved').val('true');
+                  }
 	            doneQuestionnaire(this, 'save', function (val) {
 	              if (val) {
 	                showSucMsg("Content saved as draft.");
@@ -3655,13 +3658,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do?_S=${param._S}",
         type: "POST",
         datatype: "json",
-        data: {questionnaireScheduleInfo: data, language: $('#studyLanguage').val()},
+        data: {
+            questionnaireScheduleInfo: data,
+            language: $('#studyLanguage').val(),
+            isAutoSaved : $('#isAutoSaved').val()
+        },
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
             $("#preShortTitleId").val(short_title);
             var questionnaireId = data.questionnaireId;
             var questionnaireFrequenceId = data.questionnaireFrequenceId;
@@ -3737,6 +3744,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             frequencey = frequency_text;
             if (callback)
               callback(true);
+            if ($('#isAutoSaved').val() === 'true') {
+                $('#myAutoModal').modal('show');
+                let i = 2;
+                setInterval(function () {
+                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                    i+=1;
+                }, 60000);
+                $("#isAutoSaved").val('false');
+            }
           } else {
             $("body").removeClass("loading");
             var errMsg = data.errMsg;

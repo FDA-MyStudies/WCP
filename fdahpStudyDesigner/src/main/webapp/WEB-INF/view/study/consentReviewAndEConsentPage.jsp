@@ -1096,7 +1096,7 @@ var idleTime = 0;
 
     //save review and E-consent data
     function saveConsentReviewAndEConsentInfo(item) {
-     autoSaveConsentReviewPage('manual','item');
+        autoSaveConsentReviewPage('manual', item);
     }
      function autoSaveConsentReviewPage(mode,item){
            //	if(item == "doneId"){
@@ -1157,7 +1157,7 @@ var idleTime = 0;
              consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
            }
 
-           if (item == "doneId") {
+           if (item === "doneId") {
              consentInfo.type = "completed";
            } else {
              consentInfo.type = "save";
@@ -1227,13 +1227,18 @@ var idleTime = 0;
            var pageName = 'consentreview';
            $('#loader').show();
            if (mode === 'auto') {
-           $("#isAutoSaved").val('true');
-            }
+               $("#isAutoSaved").val('true');
+           }
            $.ajax({
              url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
              type: "POST",
              datatype: "json",
-             data: {consentInfo: data, page: pageName, language: $('#studyLanguage').val()},
+             data: {
+                 consentInfo: data,
+                 page: pageName,
+                 language: $('#studyLanguage').val(),
+                 isAutoSaved : $('#isAutoSaved').val()
+             },
              beforeSend: function (xhr, settings) {
                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
              },
@@ -1253,7 +1258,7 @@ var idleTime = 0;
                    tinymce.get('newDocumentDivId').setContent('');
                    tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
                  }
-                 if (item == "doneId") {
+                 if (item === "doneId") {
                    var a = document.createElement('a');
                    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
                    a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}&language="
@@ -1267,6 +1272,15 @@ var idleTime = 0;
                        'sprites-icons-2 tick pull-right mt-xs')) {
                      $('.fifthConsentReview').find('span').removeClass(
                          'sprites-icons-2 tick pull-right mt-xs');
+                   }
+                   if ($('#isAutoSaved').val() === 'true') {
+                       $('#myAutoModal').modal('show');
+                       let i = 2;
+                       setInterval(function () {
+                           $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                           i+=1;
+                       }, 60000);
+                       $("#isAutoSaved").val('false');
                    }
                  }
                } else {
@@ -1297,7 +1311,7 @@ var idleTime = 0;
         setInterval(function () {
             idleTime += 1;
             if (idleTime > 2) { // 5 minutes
-                    autoSaveConsentReviewPage('auto','item');
+                autoSaveConsentReviewPage('auto','saveId');
             }
         }, 3000); // 5 minutes
 

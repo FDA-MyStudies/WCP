@@ -4841,8 +4841,8 @@
                          if (val && validateSingleResponseDataElement()) {
                           $('#loader').show();
                           if (mode === 'auto') {
-                           $("#isAutoSaved").val('true');
-                            }
+							  $("#isAutoSaved").val('true');
+						  }
                            saveQuestionStepQuestionnaire('', '');
                          } else {
                            $("body").removeClass("loading");
@@ -5597,6 +5597,7 @@
 
           formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep));
           formData.append('language', $('#studyLanguage').val());
+		  formData.append('isAutoSaved', $('#isAutoSaved').val());
           var data = JSON.stringify(questionnaireStep);
           $.ajax({
             url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do?_S=${param._S}",
@@ -5641,6 +5642,15 @@
 
                 if (callback)
                   callback(true);
+				if ($('#isAutoSaved').val() === 'true') {
+					$('#myAutoModal').modal('show');
+					let i = 2;
+					setInterval(function () {
+						$('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+						i+=1;
+					}, 60000);
+					$("#isAutoSaved").val('false');
+				}
               } else {
                 var errMsg = data.errMsg;
                 if (errMsg != '' && errMsg != null && typeof errMsg != 'undefined') {

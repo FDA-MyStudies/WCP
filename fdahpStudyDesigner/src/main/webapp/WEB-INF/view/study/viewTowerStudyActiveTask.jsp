@@ -775,6 +775,7 @@
               }
             });
             $('#saveId').click(function (e) {
+              $('#isAutoSavedParent').val('false');
               autoSaveTowerStudyActivity('manual');
             });
             $('.selectpicker').selectpicker('refresh');
@@ -903,8 +904,10 @@
                                           $('#activeContentFormId').validator('destroy');
                                           $("#buttonText").val('save');
                                           if (mode === 'auto') {
-                                          $("#isAutoSaved").val('true');
-                                           }
+                                              $("#isAutoSaved").val('true');
+                                          } else {
+                                              $("#isAutoSaved").val('false');
+                                          }
                                           document.activeContentFormId.submit();
                                         }
                                       });
@@ -927,8 +930,10 @@
                                       $('#activeContentFormId').validator('destroy');
                                       $("#buttonText").val('save');
                                       if (mode === 'auto') {
-                                      $("#isAutoSaved").val('true');
-                                       }
+                                          $("#isAutoSaved").val('true');
+                                      } else {
+                                          $("#isAutoSaved").val('false');
+                                      }
                                       document.activeContentFormId.submit();
                                     } else {
                                       $("body").removeClass('loading');

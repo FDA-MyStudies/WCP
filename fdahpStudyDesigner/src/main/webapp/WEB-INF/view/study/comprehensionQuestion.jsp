@@ -411,15 +411,15 @@ var idleTime = 0;
                                   }, 60000);
                               }
       });
-      function autoSaveComprehensionQuestionPage(mode){
-       $(".right-content-body").parents("form").validator(
-                        "destroy");
-                    $(".right-content-body").parents("form")
-                    .validator();
-                       if (mode === 'auto') {
-                       $("#isAutoSaved").val('true');
-                       }
-                    saveComrehensionTestQuestion(mode);
+      function autoSaveComprehensionQuestionPage(mode) {
+          $(".right-content-body").parents("form").validator(
+              "destroy");
+          $(".right-content-body").parents("form")
+              .validator();
+          if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+          }
+          saveComrehensionTestQuestion(mode);
       }
 
 
@@ -549,10 +549,11 @@ var idleTime = 0;
         && typeof questiontext != 'undefined') {
       formData.append("language", $('#currentLanguage').val());
       if (mode === 'auto') {
-      $("#isAutoSaved").val('true');
-       }
+          $("#isAutoSaved").val('true');
+      }
       formData.append("comprehenstionQuestionInfo", JSON
       .stringify(comprehensionTestQuestion));
+      formData.append("isAutoSaved", $("#isAutoSaved").val());
       $
       .ajax({
         url: "/fdahpStudyDesigner/adminStudies/saveComprehensionTestQuestion.do?_S=${param._S}",
@@ -573,6 +574,15 @@ var idleTime = 0;
             $("#alertMsg").removeClass('e-box').addClass(
                 's-box').text("Content saved as draft");
             $('#alertMsg').show();
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 2;
+                setInterval(function () {
+                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                    i+=1;
+                }, 60000);
+                $("#isAutoSaved").val('false');
+            }
           } else {
             var errMsg = data.errMsg;
             if (errMsg != '' && errMsg != null

@@ -1313,7 +1313,7 @@ var idleTime = 0;
             if (idleTime > 2) { // 5 minutes
                 autoSaveConsentReviewPage('auto','saveId');
             }
-        }, 3000); // 5 minutes
+        }, 300000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;

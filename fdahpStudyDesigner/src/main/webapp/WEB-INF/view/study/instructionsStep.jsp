@@ -247,7 +247,7 @@
             if (idleTime > 2) { // 5 minutes
                     autoSaveInstructionStepPage('auto');
             }
-        }, 3000); // 5 minutes
+        }, 300000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;

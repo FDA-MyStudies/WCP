@@ -1039,7 +1039,7 @@ $(document).ready(function(){
 	                autoSaveResourcePage('auto');
 
 	        }
-	    }, 3000); // 5 minutes
+	    }, 300000); // 5 minutes
 
 	    $(this).mousemove(function (e) {
 	        idleTime = 0;

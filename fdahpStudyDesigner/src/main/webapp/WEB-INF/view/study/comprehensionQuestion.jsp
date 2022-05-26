@@ -387,29 +387,29 @@ var idleTime = 0;
         } else {
           $(".remBtnDis").addClass("hide");
         }
-                              setInterval(function () {
-                                  idleTime += 1;
-                                  if (idleTime > 2) { // 5 minutes
-                                          autoSaveComprehensionQuestionPage('auto');
-                                  }
-                              }, 3000); // 5 minutes
+        setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 2) { // 5 minutes
+        autoSaveComprehensionQuestionPage('auto');
+         }
+         }, 300000); // 5 minutes
 
-                              $(this).mousemove(function (e) {
-                                  idleTime = 0;
-                              });
-                              $(this).keypress(function (e) {
-                                  idleTime = 0;
-                              });
+          $(this).mousemove(function (e) {
+          idleTime = 0;
+          });
+          $(this).keypress(function (e) {
+           idleTime = 0;
+            });
 
-                              // pop message after 15 minutes
-                              if ($('#isAutoSaved').val() === 'true') {
-                                  $('#myModal').modal('show');
-                                  let i = 2;
-                                  setInterval(function () {
-                                      $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                                      i+=1;
-                                  }, 60000);
-                              }
+            // pop message after 15 minutes
+           if ($('#isAutoSaved').val() === 'true') {
+           $('#myModal').modal('show');
+           let i = 2;
+          setInterval(function () {
+          $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+           i+=1;
+           }, 60000);
+           }
       });
       function autoSaveComprehensionQuestionPage(mode) {
           $(".right-content-body").parents("form").validator(

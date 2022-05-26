@@ -2988,7 +2988,7 @@
         }
       }
     });
-    $("#saveId").on('click', function (e) {
+    $("#saveId").on("click", function (e) {
     autoSaveFormQuestionPage('manual');
     });
 
@@ -3691,11 +3691,9 @@
     setInterval(function () {
             idleTime += 1;
             if (idleTime > 2) { // 5 minutes
-
                     autoSaveFormQuestionPage('auto');
-
             }
-        }, 3000); // 5 minutes
+        }, 300000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -3715,16 +3713,17 @@
         }
   });
     function autoSaveFormQuestionPage(mode){
+    debugger
       $("body").addClass("loading");
           validateTheQuestionshortTitle('', function (val) {
             if (val) {
-                if (mode === 'auto') {
-                    $('#isAutoSaved').val('true');
-                }
               var statShortName = $("#statShortNameId").val();
               if (statShortName != '' && statShortName != null && typeof statShortName != 'undefined') {
                 validateStatsShorTitle('', function (val) {
                   if (val) {
+                   if (mode === 'auto') {
+                   $("#isAutoSaved").val('true');
+                    }
                     saveQuestionStepQuestionnaire();
                   } else {
                     $("body").removeClass("loading");
@@ -3736,12 +3735,18 @@
                     || resType == 'Text Choice') {
                   validateForUniqueValue('', resType, function (val) {
                     if (val) {
+                     if (mode === 'auto') {
+                     $("#isAutoSaved").val('true');
+                     }
                       saveQuestionStepQuestionnaire();
                     } else {
                       $("body").removeClass("loading");
                     }
                   });
                 } else {
+                if (mode === 'auto') {
+                $("#isAutoSaved").val('true');
+                 }
                   saveQuestionStepQuestionnaire();
                 }
               }

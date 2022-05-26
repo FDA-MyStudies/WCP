@@ -512,7 +512,6 @@ var idleTime = 0;
           }
         }
       });
-
     });
     $("#stepShortTitle").blur(function () {
       validateShortTitle('', function (val) {
@@ -627,7 +626,7 @@ var idleTime = 0;
             if (idleTime > 2) { // 5 minutes
                     autoSaveFormStep('auto');
             }
-        }, 3000); // 5 minutes
+        }, 300000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -661,12 +660,18 @@ var idleTime = 0;
           if (repeatable === "Yes") {
             validateRepeatableQuestion('', function (valid) {
               if (!valid) {
+              if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+               }
                 saveFormStepQuestionnaire();
               } else {
                 $("body").removeClass("loading");
               }
             });
           } else {
+          if (mode === 'auto') {
+          $("#isAutoSaved").val('true');
+           }
               saveFormStepQuestionnaire();
           }
         } else {
@@ -771,7 +776,7 @@ var idleTime = 0;
             $("body").removeClass("loading");
             if (callback)
               callback(true);
-            if (data.isAutoSaved === 'true') {
+           if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 2;
                 setInterval(function () {

@@ -1937,6 +1937,8 @@ public class StudyQuestionnaireController {
                       customStudyId);
                 }
               }
+              String isAutoSaved = request.getParameter("isAutoSaved");
+              jsonobject.put("isAutoSaved", isAutoSaved);
             }
           }
         }
@@ -2707,6 +2709,8 @@ public class StudyQuestionnaireController {
                 customStudyId);
           }
         }
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        jsonobject.put("isAutoSaved", isAutoSaved);
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");

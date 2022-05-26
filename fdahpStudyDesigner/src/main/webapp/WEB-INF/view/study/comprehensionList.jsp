@@ -392,7 +392,7 @@ var idleTime = 0;
             if (idleTime > 2) { // 5 minutes
                     autoSaveComprehensionList('auto');
             }
-        }, 300000); // 5 minutes
+        }, 60000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;

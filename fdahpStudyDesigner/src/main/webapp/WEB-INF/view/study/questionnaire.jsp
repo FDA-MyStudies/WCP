@@ -2891,7 +2891,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         if (idleTime > 2) { // 5 minutes
                 autoSaveQuestionnaire('auto');
         }
-    }, 300000); // 5 minutes
+    }, 60000); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;

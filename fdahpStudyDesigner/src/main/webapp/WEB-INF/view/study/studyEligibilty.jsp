@@ -863,6 +863,9 @@
             if (mode === 'auto') {
                 $("#isAutoSaved").val('true');
             }
+            else{
+            $("#isAutoSaved").val('false');
+            }
             $('#eleFormId').submit();
         } else {
             if (isFromValid('#eleFormId')) {

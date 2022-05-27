@@ -1035,9 +1035,7 @@ $(document).ready(function(){
 	    setInterval(function () {
 	        idleTime += 1;
 	        if (idleTime > 2) { // 5 minutes
-
 	                autoSaveResourcePage('auto');
-
 	        }
 	    }, 60000); // 5 minutes
 
@@ -1088,6 +1086,9 @@ if(!$('#resourceTitle')[0].checkValidity()){
 	   $('#loader').show();
 	   if (mode === 'auto') {
            $("#isAutoSaved").val('true');
+       }
+       else{
+       $("#isAutoSaved").val('false');
        }
 	   $('#resourceForm').submit();
 }

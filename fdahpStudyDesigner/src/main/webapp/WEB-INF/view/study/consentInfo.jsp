@@ -428,6 +428,9 @@ var idleTime = 0;
          if (mode === 'auto') {
              $("#isAutoSaved").val('true');
          }
+         else{
+         $("#isAutoSaved").val('false');
+         }
          var data = JSON.stringify(consentInfo);
          $.ajax({
            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",

@@ -617,6 +617,9 @@
             if (mode === 'auto') {
             $("#isAutoSaved").val('true');
              }
+             else{
+             $("#isAutoSaved").val('false');
+             }
             $('#participantPropertiesFormId').submit();
             showSucMsg("Content saved as draft.");
           }
@@ -654,6 +657,15 @@
               $(thisAttr).parent().find(".help-block")
               .empty();
               callback(true);
+              if (data.isAutoSaved === 'true') {
+              $('#myModal').modal('show');
+              let i = 2;
+              setInterval(function () {
+              $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+               i+=1;
+              }, 60000);
+               $("#isAutoSaved").val('false');
+               }
             } else {
               $(thisAttr).val('');
               $(thisAttr).parent().addClass("has-danger")

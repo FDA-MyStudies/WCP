@@ -317,6 +317,9 @@
                               if (mode === 'auto') {
                                $("#isAutoSaved").val('true');
                                 }
+                                else{
+                                $("#isAutoSaved").val('false');
+                                }
                               $(
                                   '#studyEligibiltyTestFormId')
                               .submit();

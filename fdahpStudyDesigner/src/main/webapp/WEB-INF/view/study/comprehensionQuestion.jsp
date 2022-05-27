@@ -419,6 +419,9 @@ var idleTime = 0;
           if (mode === 'auto') {
               $("#isAutoSaved").val('true');
           }
+          else{
+          $("#isAutoSaved").val('false');
+          }
           saveComrehensionTestQuestion(mode);
       }
 

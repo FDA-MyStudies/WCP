@@ -724,6 +724,9 @@
                               if (mode === 'auto') {
                                   $("#isAutoSaved").val('true');
                               }
+                              else{
+                              $("#isAutoSaved").val('false');
+                              }
                               $('#basicInfoFormId').submit();
                           } else {
                               $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
@@ -740,6 +743,9 @@
                               $('#loader').show();
                               if (mode === 'auto') {
                                   $("#isAutoSaved").val('true');
+                              }
+                              else{
+                              $("#isAutoSaved").val('false');
                               }
                               $('#basicInfoFormId').submit();
                           }
@@ -760,6 +766,9 @@
                       if (mode === 'auto') {
                           $("#isAutoSaved").val('true');
                       }
+                       else{
+                       $("#isAutoSaved").val('false');
+                       }
                       $('#basicInfoFormId').submit();
                   }
               }

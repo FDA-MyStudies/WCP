@@ -40,6 +40,7 @@
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/removeSelectedLanguage.do?_S=${param._S}"
             id="removeLangFormId">
@@ -706,12 +707,10 @@ var idleTime = 0;
     
     setInterval(function () {
         idleTime += 1;
-        if (idleTime > 2) { // 5 minutes
-           // if ($('#customStudyId').val() !== '' && $('#customStudyName').val() !== '') {
+        if (idleTime > 3) { // 5 minutes
                 saveSettingAndAdminsPage('auto');
-            //}
         }
-    }, 60000); // 5 minutes
+    }, 10000); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;
@@ -725,9 +724,14 @@ var idleTime = 0;
         $('#myAutoModal').modal('show');
         let i = 2;
         setInterval(function () {
-            $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-            i+=1;
-        }, 60000);
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+            console.log(i);
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+        }, 500);
     }
   });
 

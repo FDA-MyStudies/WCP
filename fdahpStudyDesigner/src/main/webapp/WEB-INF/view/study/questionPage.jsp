@@ -82,6 +82,7 @@
 </script>
 <!-- Start right Content here -->
 <div id="questionPage" class="col-sm-10 col-rc white-bg p-none">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 <!-- Start top tab section-->
 <div class="right-content-head">
     <div class="text-right">
@@ -3690,10 +3691,10 @@
     }
     setInterval(function () {
             idleTime += 1;
-            if (idleTime > 2) { // 5 minutes
+            if (idleTime > 3) { // 5 minutes
                     autoSaveFormQuestionPage('auto');
             }
-        }, 60000); // 5 minutes
+        }, 10000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -3701,16 +3702,6 @@
         $(this).keypress(function (e) {
             idleTime = 0;
         });
-
-        // pop message after 15 minutes
-        if ($('#isAutoSaved').val() === 'true') {
-            $('#myModal').modal('show');
-            let i = 2;
-            setInterval(function () {
-                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                i+=1;
-            }, 60000);
-        }
   });
     function autoSaveFormQuestionPage(mode){
     debugger
@@ -4364,13 +4355,18 @@
               $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
             }
+            // pop message after 15 minutes
             if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 2;
-                setInterval(function () {
-                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                    i+=1;
-                }, 60000);
+        setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+        }, 500);
                 $("#isAutoSaved").val('false');
             }
           } else {

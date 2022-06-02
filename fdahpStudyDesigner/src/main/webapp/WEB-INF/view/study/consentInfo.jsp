@@ -32,6 +32,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}"
             name="consentInfoFormId" id="consentInfoFormId" method="post"
@@ -352,34 +353,28 @@ var idleTime = 0;
         $("#doneId").prop('disabled', false);
       }
     });
+
+          setInterval(function () {
+              idleTime += 1;
+              if (idleTime > 3) { // 5 minutes
+                      autoSaveConsentInfo('auto', '#saveId');
+              }
+
+          }, 10000); // 5 minutes
+
+          $(this).mousemove(function (e) {
+              idleTime = 0;
+          });
+          $(this).keypress(function (e) {
+              idleTime = 0;
+          });
   });
 
   function saveConsentInfo(item) {
     autoSaveConsentInfo('manual', item);
   }
-      setInterval(function () {
-          idleTime += 1;
-          if (idleTime > 2) { // 5 minutes
-                  autoSaveConsentInfo('auto', '#saveId');
-          }
-      }, 60000); // 5 minutes
 
-      $(this).mousemove(function (e) {
-          idleTime = 0;
-      });
-      $(this).keypress(function (e) {
-          idleTime = 0;
-      });
 
-      // pop message after 15 minutes
-      if ($('#isAutoSaved').val() === 'true') {
-          $('#myModal').modal('show');
-          let i = 2;
-          setInterval(function () {
-              $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-              i+=1;
-          }, 60000);
-      }
    function autoSaveConsentInfo(mode,item){
    var consentInfo = new Object();
        var consentInfoId = $("#id").val();
@@ -453,14 +448,21 @@ var idleTime = 0;
                $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
                $(item).prop('disabled', false);
                $('#alertMsg').show();
+               // pop message after 15 minutes
                 var isAutoSaved = data.isAutoSaved;
                       if (isAutoSaved === 'true') {
                           $('#myModal').modal('show');
                           let i = 2;
-                          setInterval(function () {
-                              $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                              i+=1;
-                          }, 60000);
+                 setInterval(function () {
+                 if (i===16) {
+                 console.log(i);
+                  $('#backToLoginPage').submit();
+                  } else {
+                  $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                   i+=1;
+                  }
+                 }, 500);
+               $("#isAutoSaved").val('false');
                       }
              } else {
                $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");

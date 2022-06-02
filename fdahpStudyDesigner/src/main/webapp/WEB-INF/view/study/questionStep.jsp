@@ -90,6 +90,7 @@
 <!-- Start right Content here -->
 <div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
+	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<div class="right-content-head">
 		<div class="text-right">
 			<div class="black-md-f dis-line pull-left line34">
@@ -4808,10 +4809,10 @@
         }
           setInterval(function () {
                   idleTime += 1;
-                  if (idleTime > 2) { // 5 minutes
+                  if (idleTime > 3) { // 5 minutes
                           autoSaveQuestionStep('auto');
                   }
-              }, 60000); // 5 minutes
+              }, 10000); // 5 minutes
 
               $(this).mousemove(function (e) {
                   idleTime = 0;
@@ -4819,16 +4820,6 @@
               $(this).keypress(function (e) {
                   idleTime = 0;
               });
-
-              // pop message after 15 minutes
-              if ($('#isAutoSaved').val() === 'true') {
-                  $('#myAutoModal').modal('show');
-                  let i = 2;
-                  setInterval(function () {
-                      $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                      i+=1;
-                  }, 60000);
-              }
       });
         function autoSaveQuestionStep(mode){
            	  $("body").addClass("loading");
@@ -5642,13 +5633,18 @@
 
                 if (callback)
                   callback(true);
+                   // pop message after 15 minutes
 				if ($('#isAutoSaved').val() === 'true') {
 					$('#myAutoModal').modal('show');
 					let i = 2;
-					setInterval(function () {
-						$('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-						i+=1;
-					}, 60000);
+        setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+        }, 500);
 					$("#isAutoSaved").val('false');
 				}
               } else {

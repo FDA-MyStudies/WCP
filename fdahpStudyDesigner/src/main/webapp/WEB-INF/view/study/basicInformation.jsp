@@ -666,7 +666,7 @@
 
     setInterval(function () {
         idleTime += 1;
-        if (idleTime > 2) { // 5 minutes
+        if (idleTime > 3) { // 5 minutes
             if ($('#customStudyId').val() !== '' && $('#customStudyName').val() !== '') {
                 saveBasicInfoPage('auto');
             }

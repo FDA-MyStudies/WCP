@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
 </head>
 <div class="changeContent">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}"
             name="activeContentFormId" id="activeContentFormId" method="post" role="form">
@@ -963,10 +964,10 @@
         });
                     setInterval(function () {
                         idleTime += 1;
-                        if (idleTime > 2) { // 5 minutes
+                        if (idleTime > 3) { // 5 minutes
                                 autoSaveFetalStudyActiveTaskPage('auto');
                         }
-                    }, 60000); // 5 minutes
+                    }, 10000); // 5 minutes
 
                     $(this).mousemove(function (e) {
                         idleTime = 0;
@@ -979,10 +980,15 @@
                     if ($('#isAutoSaved').val() === 'true') {
                         $('#myModal').modal('show');
                         let i = 2;
-                        setInterval(function () {
-                            $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                            i+=1;
-                        }, 60000);
+                      setInterval(function () {
+                      if (i===16) {
+                      console.log(i);
+                      $('#backToLoginPage').submit();
+                      } else {
+                      $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                       i+=1;
+                       }
+                      }, 500);
                     }
       });
    function autoSaveFetalStudyActiveTaskPage(mode){

@@ -38,6 +38,7 @@
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<form:form
 		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
 		data-toggle="validator" id="resourceForm" role="form" method="post"
@@ -1034,10 +1035,10 @@ $(document).ready(function(){
 	 
 	    setInterval(function () {
 	        idleTime += 1;
-	        if (idleTime > 2) { // 5 minutes
+	        if (idleTime > 3) { // 5 minutes
 	                autoSaveResourcePage('auto');
 	        }
-	    }, 60000); // 5 minutes
+	    }, 10000); // 5 minutes
 
 	    $(this).mousemove(function (e) {
 	        idleTime = 0;
@@ -1050,10 +1051,14 @@ $(document).ready(function(){
 	    if ($('#isAutoSaved').val() === 'true') {
 	        $('#myAutoModal').modal('show');
 	        let i = 2;
-	        setInterval(function () {
-	            $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-	            i+=1;
-	        }, 60000);
+        setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+        }, 500);
 	    }
 });
 

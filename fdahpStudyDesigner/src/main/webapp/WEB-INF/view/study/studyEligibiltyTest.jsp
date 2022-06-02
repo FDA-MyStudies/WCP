@@ -31,6 +31,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyEligibiltyTestQusAns.do?_S=${param._S}"
             name="studyEligibiltyTestFormId" id="studyEligibiltyTestFormId"
@@ -278,10 +279,10 @@
             });
         setInterval(function () {
             idleTime += 1;
-            if (idleTime > 2) { // 5 minutes
+            if (idleTime > 3) { // 5 minutes
                 	saveEligibilityTestPage('auto');
             }
-        }, 60000); // 5 minutes
+        }, 10000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -294,10 +295,14 @@
         if ($('#isAutoSaved').val() === 'true') {
             $('#myModal').modal('show');
             let i = 2;
-            setInterval(function () {
+        setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
                 $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
                 i+=1;
-            }, 60000);
+            }
+        }, 500);
         }
       });
 

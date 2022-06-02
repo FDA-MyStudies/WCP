@@ -57,6 +57,7 @@
 </head>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
@@ -623,10 +624,10 @@ var idleTime = 0;
     $('[data-toggle="tooltip"]').tooltip();
       setInterval(function () {
             idleTime += 1;
-            if (idleTime > 2) { // 5 minutes
+            if (idleTime > 3) { // 5 minutes
                     autoSaveFormStep('auto');
             }
-        }, 60000); // 5 minutes
+        }, 10000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -635,15 +636,7 @@ var idleTime = 0;
             idleTime = 0;
         });
 
-        // pop message after 15 minutes
-        if ($('#isAutoSaved').val() === 'true') {
-            $('#myModal').modal('show');
-            let i = 2;
-            setInterval(function () {
-                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                i+=1;
-            }, 60000);
-        }
+
   });
 
   function saveFormStep() {
@@ -776,13 +769,18 @@ var idleTime = 0;
             $("body").removeClass("loading");
             if (callback)
               callback(true);
+              // pop message after 15 minutes
            if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 2;
-                setInterval(function () {
-                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                    i+=1;
-                }, 60000);
+            setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+            }, 500);
                 $("#isAutoSaved").val('false');
             }
           } else {

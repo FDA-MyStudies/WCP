@@ -59,6 +59,7 @@
 </script>
 <!-- Start right Content here -->
 <!-- ============================================================== -->
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 <form:form
         action="/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}"
         name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
@@ -389,10 +390,10 @@ var idleTime = 0;
     });
     setInterval(function () {
             idleTime += 1;
-            if (idleTime > 2) { // 5 minutes
+            if (idleTime > 3) { // 5 minutes
                     autoSaveComprehensionList('auto');
             }
-        }, 60000); // 5 minutes
+        }, 10000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -400,16 +401,6 @@ var idleTime = 0;
         $(this).keypress(function (e) {
             idleTime = 0;
         });
-
-        // pop message after 15 minutes
-        if ($('#isAutoSaved').val() === 'true') {
-            $('#myModal').modal('show');
-            let i = 2;
-            setInterval(function () {
-                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                i+=1;
-            }, 60000);
-        }
 
     $("#saveId").click(function () {
        autoSaveComprehensionList('manual');
@@ -654,13 +645,18 @@ var idleTime = 0;
                       'sprites-icons-2 tick pull-right mt-xs');
                 }
               }
+              // pop message after 15 minutes
               if (data.isAutoSaved === 'true') {
                   $('#myModal').modal('show');
                   let i = 2;
-                  setInterval(function () {
-                      $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                      i+=1;
-                  }, 60000);
+        setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+        }, 500);
                   $("#isAutoSaved").val('false');
               }
             } else {

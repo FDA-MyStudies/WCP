@@ -134,6 +134,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
@@ -2888,10 +2889,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     
     setInterval(function () {
         idleTime += 1;
-        if (idleTime > 2) { // 5 minutes
+        if (idleTime > 3) { // 5 minutes
                 autoSaveQuestionnaire('auto');
         }
-    }, 60000); // 5 minutes
+    }, 10000); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;
@@ -2899,16 +2900,6 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     $(this).keypress(function (e) {
         idleTime = 0;
     });
-
-    // pop message after 15 minutes
-    if ($('#isAutoSaved').val() === 'true') {
-        $('#myAutoModal').modal('show');
-        let i = 2;
-        setInterval(function () {
-            $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-            i+=1;
-        }, 60000);
-    }
   });
   function autoSaveQuestionnaire(mode){
 	     var table = $('#content').DataTable();
@@ -3744,13 +3735,18 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             frequencey = frequency_text;
             if (callback)
               callback(true);
+              // pop message after 15 minutes
             if ($('#isAutoSaved').val() === 'true') {
                 $('#myAutoModal').modal('show');
                 let i = 2;
-                setInterval(function () {
-                    $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                    i+=1;
-                }, 60000);
+        setInterval(function () {
+            if (i===16) {
+                $('#backToLoginPage').submit();
+            } else {
+                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                i+=1;
+            }
+        }, 500);
                 $("#isAutoSaved").val('false');
             }
           } else {

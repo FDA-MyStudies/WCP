@@ -671,7 +671,7 @@
                 saveBasicInfoPage('auto');
             }
         }
-    }, 2500); // 5 minutes
+    }, 75000); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;
@@ -692,7 +692,7 @@
                 $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
                 i+=1;
             }
-        }, 500);
+        }, 15000);
     }
   });
 

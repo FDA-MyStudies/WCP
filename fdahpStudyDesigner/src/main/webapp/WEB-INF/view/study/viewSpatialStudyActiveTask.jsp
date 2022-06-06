@@ -1704,7 +1704,7 @@ var idleTime = 0;
                   if (idleTime > 3) { // 5 minutes
                           autoSaveSpatialStudyActivityPage('auto');
                   }
-              }, 10000); // 5 minutes
+              }, 75000); // 5 minutes
 
               $(this).mousemove(function (e) {
                   idleTime = 0;
@@ -1717,14 +1717,15 @@ var idleTime = 0;
               if ($('#isAutoSaved').val() === 'true') {
                   $('#myModal').modal('show');
                   let i = 2;
-        setInterval(function () {
+      let lastSavedInterval = setInterval(function () {
             if (i===16) {
                 $('#backToLoginPage').submit();
+                clearInterval(lastSavedInterval);
             } else {
                 $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
                 i+=1;
             }
-        }, 500);
+        }, 15000);
               }
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang

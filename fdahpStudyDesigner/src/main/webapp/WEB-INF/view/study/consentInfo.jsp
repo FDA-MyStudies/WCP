@@ -106,7 +106,7 @@
                 <div class="dis-line form-group mb-none">
                     <button type="button"
                             class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm"
-                            id='saveId' onclick="saveConsentInfo(this);">Save
+                            id="saveId" onclick="saveConsentInfo(this);">Save
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none">
@@ -360,7 +360,7 @@ var idleTime = 0;
                       autoSaveConsentInfo('auto', '#saveId');
               }
 
-          }, 10000); // 5 minutes
+          }, 75000); // 5 minutes
 
           $(this).mousemove(function (e) {
               idleTime = 0;
@@ -450,18 +450,19 @@ var idleTime = 0;
                $('#alertMsg').show();
                // pop message after 15 minutes
                 var isAutoSaved = data.isAutoSaved;
-                      if (isAutoSaved === 'true') {
-                          $('#myModal').modal('show');
-                          let i = 2;
-                 setInterval(function () {
+                 if (isAutoSaved === 'true') {
+                 $('#myModal').modal('show');
+                 let i = 2;
+                let lastSavedInterval = setInterval(function () {
                  if (i===16) {
-                 console.log(i);
                   $('#backToLoginPage').submit();
+                  clearInterval(lastSavedInterval);
                   } else {
                   $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                  idleTime = 0;
                    i+=1;
                   }
-                 }, 500);
+                 }, 15000);
                $("#isAutoSaved").val('false');
                       }
              } else {

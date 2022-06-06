@@ -3694,7 +3694,7 @@
             if (idleTime > 3) { // 5 minutes
                     autoSaveFormQuestionPage('auto');
             }
-        }, 10000); // 5 minutes
+        }, 75000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -3704,7 +3704,6 @@
         });
   });
     function autoSaveFormQuestionPage(mode){
-    debugger
       $("body").addClass("loading");
           validateTheQuestionshortTitle('', function (val) {
             if (val) {
@@ -4359,14 +4358,16 @@
             if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 2;
-        setInterval(function () {
+        let lastSavedInterval = setInterval(function () {
             if (i===16) {
                 $('#backToLoginPage').submit();
+                clearInterval(lastSavedInterval);
             } else {
                 $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                idleTime = 0;
                 i+=1;
             }
-        }, 500);
+        }, 15000);
                 $("#isAutoSaved").val('false');
             }
           } else {

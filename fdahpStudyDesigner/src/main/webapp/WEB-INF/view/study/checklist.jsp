@@ -159,7 +159,7 @@
                  <div class="modal-header cust-hdr pt-lg">
                      <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                      <h4 class="modal-title pl-lg text-center">
-                         <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                         <b id="autoSavedMessage">Last saved now</b>
                      </h4>
                  </div>
              </div>
@@ -224,20 +224,26 @@ $(document).ready(function(){
                 idleTime = 0;
             });
 
-            // pop message after 15 minutes
-            if ($('#isAutoSaved').val() === 'true') {
-                $('#myModal').modal('show');
-                let i = 2;
+    // pop message after 15 minutes
+    if ($('#isAutoSaved').val() === 'true') {
+        $('#myModal').modal('show');
+        let i = 1;
         let lastSavedInterval = setInterval(function () {
-            if (i===16) {
-                $('#backToLoginPage').submit();
-                 clearInterval(lastSavedInterval);
+            if (i === 16) {
+                if ($('#myModal').hasClass('in')) {
+                    $('#backToLoginPage').submit();
+                }
+                clearInterval(lastSavedInterval);
             } else {
-                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
+                if (i === 1) {
+                    $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                } else {
+                    $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                }
                 i+=1;
             }
         }, 15000);
-            }
+    }
 });
 function autoSaveCheckListPage(mode){
  $('#actionBut').val('save');

@@ -439,7 +439,7 @@
                 <div class="modal-header cust-hdr pt-lg">
                     <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title pl-lg text-center">
-                        <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                        <b id="autoSavedMessage">Last saved now</b>
                     </h4>
                 </div>
             </div>
@@ -719,20 +719,26 @@ var idleTime = 0;
         idleTime = 0;
     });
 
-    // pop message after 15 minutes
-    if ($('#isAutoSaved').val() === 'true') {
-        $('#myAutoModal').modal('show');
-        let i = 2;
-       let lastSavedInterval = setInterval(function () {
-            if (i===16) {
-                $('#backToLoginPage').submit();
-                clearInterval(lastSavedInterval);
-            } else {
-                $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                i+=1;
-            }
-        }, 15000);
-    }
+      // pop message after 15 minutes
+      if ($('#isAutoSaved').val() === 'true') {
+          $('#myAutoModal').modal('show');
+          let i = 1;
+          let lastSavedInterval = setInterval(function () {
+              if (i === 16) {
+                  if ($('#myAutoModal').hasClass('in')) {
+                      $('#backToLoginPage').submit();
+                  }
+                  clearInterval(lastSavedInterval);
+              } else {
+                  if (i === 1) {
+                      $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                  } else {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  }
+                  i+=1;
+              }
+          }, 15000);
+      }
   });
 
   function checkRadioRequired() {

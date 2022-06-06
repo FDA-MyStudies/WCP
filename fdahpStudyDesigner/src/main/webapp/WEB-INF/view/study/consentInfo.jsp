@@ -237,7 +237,7 @@
                     <div class="modal-header cust-hdr pt-lg">
                         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title pl-lg text-center">
-                            <b id="autoSavedMessage">Last saved was 1 minute ago</b>
+                            <b id="autoSavedMessage">Last saved now</b>
                         </h4>
                     </div>
                 </div>
@@ -368,6 +368,9 @@ var idleTime = 0;
           $(this).keypress(function (e) {
               idleTime = 0;
           });
+      tinymce.get('elaboratedRTE').on('keydown', function () {
+          idleTime = 0;
+      });
   });
 
   function saveConsentInfo(item) {
@@ -451,20 +454,25 @@ var idleTime = 0;
                // pop message after 15 minutes
                 var isAutoSaved = data.isAutoSaved;
                  if (isAutoSaved === 'true') {
-                 $('#myModal').modal('show');
-                 let i = 2;
-                let lastSavedInterval = setInterval(function () {
-                 if (i===16) {
-                  $('#backToLoginPage').submit();
-                  clearInterval(lastSavedInterval);
-                  } else {
-                  $('#autoSavedMessage').text('Last saved was '+i+' minutes ago');
-                  idleTime = 0;
-                   i+=1;
-                  }
-                 }, 15000);
-               $("#isAutoSaved").val('false');
-                      }
+                     $('#myModal').modal('show');
+                     let i = 1;
+                     let lastSavedInterval = setInterval(function () {
+                         if (i === 16) {
+                             if ($('#myModal').hasClass('in')) {
+                                 $('#backToLoginPage').submit();
+                             }
+                             clearInterval(lastSavedInterval);
+                         } else {
+                             if (i === 1) {
+                                 $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                             } else {
+                                 $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                             }
+                             i += 1;
+                         }
+                     }, 15000);
+                     $("#isAutoSaved").val('false');
+                 }
              } else {
                $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
                $('#alertMsg').show();

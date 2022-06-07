@@ -516,9 +516,9 @@
              setInterval(function () {
                  idleTime += 1;
                  if (idleTime > 3) { // 5 minutes
-                    if($('#datetimepicker').val() !== '' && $('#timepicker1').val() !== ''){
+                    if($('#notificationText').val() !== ''){
                          autoSaveNotificationPage('auto');
-}
+                  }
                  }
              }, 75000); // 5 minutes
 

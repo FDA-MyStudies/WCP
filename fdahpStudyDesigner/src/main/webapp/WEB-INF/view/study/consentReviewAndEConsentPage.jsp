@@ -1029,15 +1029,14 @@ var idleTime = 0;
     function createNewConsentDocument() {
       tinymce.init({
         selector: "#newDocumentDivId",
-        theme: "modern",
-        skin: "lightgray",
-        height: 180,
+        theme: "silver",
+        skin: "custom-grey",
+        height: 300,
+        branding : false,
         plugins: [
-          "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
-          "save contextmenu directionality paste"
+            "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
         ],
-        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
-        menubar: false,
+        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
         toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         entity_encoding: "raw",
@@ -1063,15 +1062,14 @@ var idleTime = 0;
     function newLearnMoreConsentDocument() {
       tinymce.init({
         selector: "#learnMoreTextId",
-        theme: "modern",
-        skin: "lightgray",
-        height: 180,
+        theme: "silver",
+        skin: "custom-grey",
+        height: 300,
+        branding : false,
         plugins: [
-          "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
-          "save contextmenu directionality paste"
+            "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
         ],
-        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
-        menubar: false,
+        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
         toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         entity_encoding: "raw",

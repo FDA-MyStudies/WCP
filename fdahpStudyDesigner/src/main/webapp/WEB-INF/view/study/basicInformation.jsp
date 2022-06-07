@@ -454,15 +454,14 @@
     if ($("#editor").length > 0) {
       tinymce.init({
         selector: "#editor",
-        theme: "modern",
-        skin: "lightgray",
-        height: 180,
+        theme: "silver",
+        skin: "custom-grey",
+        height: 300,
+        branding : false,
         plugins: [
-          "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
-          "save contextmenu directionality paste"
+          "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
         ],
         toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
-        menubar: false,
         toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         <c:if test="${not empty permission}">readonly: 1, </c:if>

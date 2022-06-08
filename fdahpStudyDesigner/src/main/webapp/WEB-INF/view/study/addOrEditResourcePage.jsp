@@ -600,15 +600,16 @@ $(document).ready(function(){
     if($("#richText").length > 0){
     tinymce.init({
         selector: "#richText",
-		theme: "silver",
-		skin: "custom-grey",
-		height: 300,
-		branding : false,
-		plugins: [
-			"advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
-		],
-		toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
-		toolbar_items_size: 'small',
+        theme: "modern",
+        skin: "lightgray",
+        height:150,
+        plugins: [
+            "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
+            "save contextmenu directionality paste"
+        ],
+        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
+        menubar: false,
+        toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         setup : function(ed) {
             ed.on('keypress change', function(ed) {

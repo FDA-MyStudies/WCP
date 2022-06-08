@@ -520,7 +520,7 @@
                          autoSaveNotificationPage('auto');
                   }
                  }
-             }, 75000); // 5 minutes
+             }, 240000); // 5 minutes
 
              $(this).mousemove(function (e) {
                  idleTime = 0;
@@ -547,7 +547,7 @@
 					 }
 					 i+=1;
 				 }
-			 }, 15000);
+			 }, 60000);
 		 }
      });
 

@@ -1038,7 +1038,7 @@ $(document).ready(function(){
 	        if (idleTime > 3) { // 5 minutes
 	                autoSaveResourcePage('auto');
 	        }
-	    }, 75000); // 5 minutes
+	    }, 240000); // 5 minutes
 
 	    $(this).mousemove(function (e) {
 	        idleTime = 0;
@@ -1068,7 +1068,7 @@ $(document).ready(function(){
 				}
 				i+=1;
 			}
-		}, 15000);
+		}, 60000);
 	}
 });
 

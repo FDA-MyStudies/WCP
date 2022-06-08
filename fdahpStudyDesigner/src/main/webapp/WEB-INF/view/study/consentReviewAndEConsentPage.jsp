@@ -1293,7 +1293,7 @@ var idleTime = 0;
                                  idleTime = 0;
                                  i+=1;
                              }
-                         }, 15000);
+                         }, 60000);
                          $("#isAutoSaved").val('false');
                      }
                  }
@@ -1327,7 +1327,7 @@ var idleTime = 0;
             if (idleTime > 3) { // 5 minutes
                 autoSaveConsentReviewPage('auto','saveId');
             }
-        }, 75000); // 5 minutes
+        }, 240000); // 5 minutes
 
       $(this).mousemove(function (e) {
           idleTime = 0;

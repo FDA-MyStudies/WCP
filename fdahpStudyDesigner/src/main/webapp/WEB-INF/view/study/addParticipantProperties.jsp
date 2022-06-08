@@ -578,7 +578,7 @@
               if (idleTime > 3) { // 5 minutes
                       autoSaveParticipantPropertyPage('auto');
               }
-          }, 75000); // 5 minutes
+          }, 240000); // 5 minutes
 
           $(this).mousemove(function (e) {
               idleTime = 0;
@@ -605,7 +605,7 @@
               }
               i+=1;
           }
-      }, 15000);
+      }, 60000);
   }
  function autoSaveParticipantPropertyPage(mode){
       $('.required-attr').prop('required', false);

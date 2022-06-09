@@ -1038,7 +1038,7 @@ $(document).ready(function(){
 	        if (idleTime > 3) { // 5 minutes
 	                autoSaveResourcePage('auto');
 	        }
-	    }, 240000); // 5 minutes
+	    }, 226000); // 5 minutes
 
 	    $(this).mousemove(function (e) {
 	        idleTime = 0;
@@ -1055,7 +1055,8 @@ $(document).ready(function(){
 		$('#myAutoModal').modal('show');
 		let i = 1;
 		let lastSavedInterval = setInterval(function () {
-			if (i === 16) {
+			if (i === 15) {
+			$('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
 				if ($('#myAutoModal').hasClass('in')) {
 					$('#backToLoginPage').submit();
 				}

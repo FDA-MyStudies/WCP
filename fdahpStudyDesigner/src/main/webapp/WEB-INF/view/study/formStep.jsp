@@ -627,7 +627,7 @@ var idleTime = 0;
             if (idleTime > 3) { // 5 minutes
                     autoSaveFormStep('auto');
             }
-        }, 240000); // 5 minutes
+        }, 226000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -774,7 +774,8 @@ var idleTime = 0;
                $('#myModal').modal('show');
                let i = 1;
                let lastSavedInterval = setInterval(function () {
-                   if (i === 16) {
+                   if (i === 15) {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
                        if ($('#myModal').hasClass('in')) {
                            $('#backToLoginPage').submit();
                        }

@@ -31,6 +31,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyEligibiltyTestQusAns.do?_S=${param._S}"
             name="studyEligibiltyTestFormId" id="studyEligibiltyTestFormId"
@@ -111,6 +112,7 @@
                    value="${eligibilityTest.sequenceNo}"/>
             <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
             <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+             <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                 <%-- <input type="hidden" id="lastEligibilityOptId" name="lastEligibilityOpt" value="${lastEligibilityOpt}" /> --%>
             <div class=" col-lg-4 col-md-5 pl-none">
                 <div class="gray-xs-f mb-xs">
@@ -193,10 +195,24 @@
             <div class="clearfix"></div>
         </div>
     </form:form>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved now</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+  var idleTime = 0;
   var isValid = false;
   var oldShortTitle = "${fn:escapeXml(eligibilityTest.shortTitle)}";
   $(document)
@@ -259,57 +275,103 @@
             });
         $("#saveId")
         .click(function () {
-              $(this).prop("disabled", true);
-              validateShortTitle(
-                  "#shortTitleId",
-                  function (val) {
-                    if (val) {
-                      if (chkValidChoosedOption()) {
-                        $(
-                            '#studyEligibiltyTestFormId')
-                        .validator(
-                            'destroy');
-                        $('#type').val(
-                            'save');
-                        $(
-                            '#studyEligibiltyTestFormId')
-                        .submit();
-                      } else {
-                        $('#saveId')
-                        .prop(
-                            "disabled",
-                            false);
-                      }
-                    } else {
-                      if ($(
-                          '#shortTitleId')
-                      .val()) {
-                        $(
-                            '#shortTitleId')
-                        .parent()
-                        .addClass(
-                            'has-error has-danger')
-                        .find(
-                            ".help-block")
-                        .empty()
-                        .append(
-                            $(
-                                "<ul><li> </li></ul>")
-                            .attr(
-                                "class",
-                                "list-unstyled")
-                            .text(
-                                "This is a required field."));
-                      }
-                      $('#saveId').prop(
-                          "disabled",
-                          false);
-                      return false;
-                    }
-                  });
-          $('.fourth').find('span').remove();
+             saveEligibilityTestPage('manual');
             });
+        setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+                	saveEligibilityTestPage('auto');
+            }
+        }, 226000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
+          // pop message after 15 minutes
+          if ($('#isAutoSaved').val() === 'true') {
+              $('#myModal').modal('show');
+              let i = 1;
+              let lastSavedInterval = setInterval(function () {
+                  if (i === 15) {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                      if ($('#myModal').hasClass('in')) {
+                          $('#backToLoginPage').submit();
+                      }
+                      clearInterval(lastSavedInterval);
+                  } else {
+                      if (i === 1) {
+                          $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                      } else {
+                          $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                      }
+                      i+=1;
+                  }
+              }, 60000);
+          }
       });
+
+      function saveEligibilityTestPage(mode){
+       $(this).prop("disabled", true);
+                    validateShortTitle(
+                        "#shortTitleId",
+                        function (val) {
+                          if (val) {
+                            if (chkValidChoosedOption()) {
+                              $(
+                                  '#studyEligibiltyTestFormId')
+                              .validator(
+                                  'destroy');
+                              $('#type').val(
+                                  'save');
+                              if (mode === 'auto') {
+                               $("#isAutoSaved").val('true');
+                                }
+                                else{
+                                $("#isAutoSaved").val('false');
+                                }
+                              $(
+                                  '#studyEligibiltyTestFormId')
+                              .submit();
+                            } else {
+                              $('#saveId')
+                              .prop(
+                                  "disabled",
+                                  false);
+                            }
+                          } else {
+                            if ($(
+                                '#shortTitleId')
+                            .val()) {
+                              $(
+                                  '#shortTitleId')
+                              .parent()
+                              .addClass(
+                                  'has-error has-danger')
+                              .find(
+                                  ".help-block")
+                              .empty()
+                              .append(
+                                  $(
+                                      "<ul><li> </li></ul>")
+                                  .attr(
+                                      "class",
+                                      "list-unstyled")
+                                  .text(
+                                      "This is a required field."));
+                            }
+                            $('#saveId').prop(
+                                "disabled",
+                                false);
+                            return false;
+                          }
+                        });
+                $('.fourth').find('span').remove();
+
+      }
 
   function validateShortTitle(item, callback) {
     var thisAttr = item;

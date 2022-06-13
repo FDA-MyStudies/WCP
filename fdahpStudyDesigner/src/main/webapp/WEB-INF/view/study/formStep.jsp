@@ -57,6 +57,7 @@
 </head>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
@@ -157,6 +158,7 @@
                        value="${questionnairesStepsBo.stepId}">
                 <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
                 <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+                 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                 <input
                         type="hidden" name="questionnairesId" id="questionnairesId"
                         value="${questionnaireId}"> <input type="hidden"
@@ -374,9 +376,23 @@
             </div>
         </div>
     </form:form>
+     <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved now</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+var idleTime = 0;
   $(document).ready(function () {
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
@@ -497,7 +513,6 @@
           }
         }
       });
-
     });
     $("#stepShortTitle").blur(function () {
       validateShortTitle('', function (val) {
@@ -607,37 +622,63 @@
       $('[data-toggle="tooltip"]').tooltip();
     }
     $('[data-toggle="tooltip"]').tooltip();
+      setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+                    autoSaveFormStep('auto');
+            }
+        }, 226000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
+
   });
 
   function saveFormStep() {
-    $("body").addClass("loading");
-    validateShortTitle('', function (val) {
-      if (val) {
-        var repeatable = $('input[name="repeatable"]:checked').val();
-        if (repeatable == "Yes") {
-          validateRepeatableQuestion('', function (valid) {
-            if (!valid) {
-              saveFormStepQuestionnaire();
-            } else {
-              $("body").removeClass("loading");
-            }
-          });
-        } else {
-          saveFormStepQuestionnaire();
-        }
-      } else {
-        $("body").removeClass("loading");
-        var slaCount = $('#sla').find('.has-error.has-danger').length;
-        var flaCount = $('#fla').find('.has-error.has-danger').length;
-        if (parseInt(slaCount) >= 1) {
-          $('.stepLevel a').tab('show');
-        } else if (parseInt(flaCount) >= 1) {
-          $('.formLevel a').tab('show');
-        }
-      }
-    });
+    autoSaveFormStep('manual');
   }
-
+  function autoSaveFormStep(mode){
+  $("body").addClass("loading");
+      validateShortTitle('', function (val) {
+        if (val) {
+          if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+          }
+          var repeatable = $('input[name="repeatable"]:checked').val();
+          if (repeatable === "Yes") {
+            validateRepeatableQuestion('', function (valid) {
+              if (!valid) {
+              if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+               }
+                saveFormStepQuestionnaire();
+              } else {
+                $("body").removeClass("loading");
+              }
+            });
+          } else {
+          if (mode === 'auto') {
+          $("#isAutoSaved").val('true');
+           }
+              saveFormStepQuestionnaire();
+          }
+        } else {
+          $("body").removeClass("loading");
+          var slaCount = $('#sla').find('.has-error.has-danger').length;
+          var flaCount = $('#fla').find('.has-error.has-danger').length;
+          if (parseInt(slaCount) >= 1) {
+            $('.stepLevel a').tab('show');
+          } else if (parseInt(flaCount) >= 1) {
+            $('.formLevel a').tab('show');
+          }
+        }
+      });
+  }
   function addNewQuestion(questionId) {
     $("#questionId").val(questionId);
     $("#actionTypeForFormStep").val('add');
@@ -690,14 +731,15 @@
         datatype: "json",
         data: {
           questionnaireStepInfo: data,
-          language: $('#studyLanguage').val()
+          language: $('#studyLanguage').val(),
+          isAutoSaved : $('#isAutoSaved').val()
         },
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
 
             $("#preShortTitleId").val(shortTitle);
 
@@ -727,6 +769,29 @@
             $("body").removeClass("loading");
             if (callback)
               callback(true);
+              // pop message after 15 minutes
+           if (data.isAutoSaved === 'true') {
+               $('#myModal').modal('show');
+               let i = 1;
+               let lastSavedInterval = setInterval(function () {
+                   if (i === 15) {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                       if ($('#myModal').hasClass('in')) {
+                           $('#backToLoginPage').submit();
+                       }
+                       clearInterval(lastSavedInterval);
+                   } else {
+                       if (i === 1) {
+                           $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                       } else {
+                           $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                       }
+                       idleTime = 0;
+                       i += 1;
+                   }
+               }, 60000);
+               $("#isAutoSaved").val('false');
+            }
           } else {
             var errMsg = data.errMsg;
             if (errMsg != '' && errMsg != null && typeof errMsg != 'undefined') {

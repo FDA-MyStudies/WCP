@@ -620,6 +620,7 @@ public class StudyQuestionnaireController {
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (StringUtils.isEmpty(formId)) {
           formId = (String) request.getSession().getAttribute(sessionStudyCount + "formId");
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
@@ -835,6 +836,7 @@ public class StudyQuestionnaireController {
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           boolean isExists =
@@ -1110,6 +1112,7 @@ public class StudyQuestionnaireController {
           this.setStudyLangData(studyId, language, map);
         }
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (StringUtils.isEmpty(instructionId)) {
           instructionId =
               (String) request.getSession().getAttribute(sessionStudyCount + "instructionId");
@@ -1292,6 +1295,8 @@ public class StudyQuestionnaireController {
         }
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        map.addAttribute("isAutoSaved", isAutoSaved);
         if (StringUtils.isEmpty(questionnaireId)) {
           questionnaireId =
               (String) request.getSession().getAttribute(sessionStudyCount + "questionnaireId");
@@ -1560,6 +1565,7 @@ public class StudyQuestionnaireController {
           this.setStudyLangData(studyId, language, map);
         }
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (StringUtils.isEmpty(questionId)) {
           questionId = (String) request.getSession().getAttribute(sessionStudyCount + "questionId");
           request.getSession().setAttribute(sessionStudyCount + "questionId", questionId);
@@ -1931,6 +1937,8 @@ public class StudyQuestionnaireController {
                       customStudyId);
                 }
               }
+              String isAutoSaved = request.getParameter("isAutoSaved");
+              jsonobject.put("isAutoSaved", isAutoSaved);
             }
           }
         }
@@ -2029,6 +2037,8 @@ public class StudyQuestionnaireController {
                 customStudyId);
           }
         }
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        jsonobject.put("isAutoSaved", isAutoSaved);
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");
@@ -2120,6 +2130,8 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("_S", sessionStudyCount);
           map.addAttribute("language", language);
+          String isAutoSaved = request.getParameter("isAutoSaved");
+          map.addAttribute("isAutoSaved", isAutoSaved);
           mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
         } else {
           request
@@ -2203,6 +2215,8 @@ public class StudyQuestionnaireController {
                       "Form Step updated successfully.");
               map.addAttribute("_S", sessionStudyCount);
               map.addAttribute("language", language);
+              String isAutoSaved = request.getParameter("isAutoSaved");
+              map.addAttribute("isAutoSaved", isAutoSaved);
               mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
             } else {
               request
@@ -2423,6 +2437,7 @@ public class StudyQuestionnaireController {
           addQuestionnaireBo =
               studyQuestionnaireService.saveOrUpdateQuestionnaire(
                   questionnaireBo, sesObj, customStudyId, language);
+          
           if (addQuestionnaireBo != null) {
             if (questionnaireBo.getId() != null) {
               request
@@ -2451,6 +2466,8 @@ public class StudyQuestionnaireController {
                   customStudyId);
             }
             map.addAttribute("_S", sessionStudyCount);
+            String isAutoSaved = request.getParameter("isAutoSaved");
+            map.addAttribute("isAutoSaved", isAutoSaved);
             mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do", map);
           } else {
             request
@@ -2558,6 +2575,8 @@ public class StudyQuestionnaireController {
                   "Question Step updated successfully.");
           map.addAttribute("_S", sessionStudyCount);
           map.addAttribute("language", language);
+          String isAutoSaved = request.getParameter("isAutoSaved");
+          map.addAttribute("isAutoSaved", isAutoSaved);
           mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
         } else {
           request
@@ -2690,6 +2709,8 @@ public class StudyQuestionnaireController {
                 customStudyId);
           }
         }
+        String isAutoSaved = request.getParameter("isAutoSaved");
+        jsonobject.put("isAutoSaved", isAutoSaved);
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");
@@ -2917,6 +2938,8 @@ public class StudyQuestionnaireController {
           if (addQuestionnairesStepsBo.getQuestionsBo() != null) {
             jsonobject.put("questionId", addQuestionnairesStepsBo.getQuestionsBo().getId());
           }
+          String isAutoSaved = request.getParameter("isAutoSaved");
+          jsonobject.put("isAutoSaved", isAutoSaved);
           if (addQuestionnairesStepsBo.getQuestionReponseTypeBo() != null) {
             jsonobject.put(
                 "questionResponseId",
@@ -3563,6 +3586,7 @@ public class StudyQuestionnaireController {
           map.addAttribute("questionnaireLangBOS", questionnaireLangBOS);
         }
         map.addAttribute("currLanguage", language);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         map.addAttribute("languageList", langMap);
         map.addAttribute("permission", permission);
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);

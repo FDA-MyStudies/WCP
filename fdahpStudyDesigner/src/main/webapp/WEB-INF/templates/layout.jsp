@@ -81,7 +81,7 @@
 
 
 <!-- Vendor -->
-<script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>
+<script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.6.0.min.js"></script>
 <script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
 <script
 	src="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
 </head>
 <div class="changeContent">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}"
             name="activeContentFormId" id="activeContentFormId" method="post" role="form">
@@ -22,6 +23,7 @@
     <input type="hidden" id="mlDisplayUnitStat" value="${activeTaskLangBO.displayUnitStat}">
     <input type="hidden" value="${actionPage}" id="actionPage" name="actionPage">
     <input type="hidden" value="${currentPage}" id="currentPageId" name="currentPage">
+    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
     <div class="pt-lg">
         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters
             max)</small><span class="requiredStar"> *</span><span
@@ -525,8 +527,22 @@
         </c:forEach>
         </c:if>
         </form:form>
+         <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                        <div class="modal-header cust-hdr pt-lg">
+                            <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title pl-lg text-center">
+                                <b id="autoSavedMessage">Last saved now</b>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
     <script>
+    var idleTime = 0;
       var shortTitleFlag = true;
       var shortTitleStatFlag = true;
       var durationFlag = true;
@@ -865,114 +881,12 @@
             }
             showErrMsg("Please fill in all mandatory fields.");
             $('.contentClass a').tab('show');
-          }
+            }
         });
-        $('#saveId').click(function (e) {
-          $("body").addClass('loading');
-          var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-          if (shortTitleCount >= 1) {
-            showErrMsg("Please fill in all mandatory fields.");
-            $('.contentClass a').tab('show');
-            $("body").removeClass('loading');
-            return false;
-          } else if (!$('#shortTitleId')[0].checkValidity()) {
-            $("#shortTitleId").parent().addClass('has-error has-danger').find(
-                ".help-block").empty().append(
-                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                    "This is a required field."));
-            showErrMsg("Please fill in all mandatory fields.");
-            $('.contentClass a').tab('show');
-            $("body").removeClass('loading');
-            return false;
-          } else {
-            validateShortTitleId('', function (st) {
-              if (st) {
-                if (!durationFlag) {
-                  $('#inputClockId').parent().addClass('has-error has-danger').find(
-                      ".help-block").empty().append(
-                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                          "Please select a non-zero Duration value."));
-                  $('#inputClockId').focus();
-                  showErrMsg("Please fill in all mandatory fields.");
-                  $('.contentClass a').tab('show');
-                  $("body").removeClass('loading');
-                  return false;
-                } else {
-                  //Please fill out this field.
-                  var statShortTitleCount = $('.statShortTitleClass').find(
-                      '.help-block').children().length;
-                  var errorstatShortTitle = $('.statShortTitleClass').find(
-                      '.help-block').children().text();
-                  if (statShortTitleCount >= 1 && errorstatShortTitle
-                      != "Please fill out this field.") {
-                    var statId = $('.shortTitleStatCls').attr('id');
-                    if (statId && statId == 'identifierId')
-                      $('#identifierId').focus();
-                    else
-                      $('#static').focus();
 
-                    showErrMsg("Please fill in all mandatory fields.");
-                    $('.contentClass a').tab('show');
-                    $("body").removeClass('loading');
-                    return false;
-                  } else {
-                    var statShort = '';
-                    var staticShortStat = $('#static').val();
-                    var dynaminShortStat = $('#identifierId').val();
-                    if (staticShortStat)
-                      statShort = '#static';
-                    if (dynaminShortStat)
-                      statShort = '#identifierId';
-                    if (statShort) {
-                      validateShortTitleStatId('', statShort, function (st) {
-                        if (st) {
-                          $('#inputClockId').parent().find(".help-block").empty();
-                          var dt = new Date();
-                          $('#inputClockId').datetimepicker({
-                            format: 'HH:mm',
-                            minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00,
-                                00),
-                            maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-                          });
-                          doneActiveTask(this, 'save', function (val) {
-                            if (val) {
-                              $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-                              $('#activeContentFormId').validator('destroy');
-                              $("#buttonText").val('save');
-                              document.activeContentFormId.submit();
-                            }
-                          });
-                        } else {
-                          $("body").removeClass('loading');
-                        }
-                      });
-                    } else {
-                      $("body").removeClass('loading');
-                      $('#inputClockId').parent().find(".help-block").empty();
-                      var dt = new Date();
-                      $('#inputClockId').datetimepicker({
-                        format: 'HH:mm',
-                        minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
-                        maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-                      });
-                      doneActiveTask(this, 'save', function (val) {
-                        if (val) {
-                          $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-                          $('#activeContentFormId').validator('destroy');
-                          $("#buttonText").val('save');
-                          document.activeContentFormId.submit();
-                        } else {
-                          $("body").removeClass('loading');
-                        }
-                      });
-                    }
-                  }
-                }
-              } else {
-                $("body").removeClass('loading');
-              }
-            });
-          }
+        $('#saveId').click(function (e) {
+         $('#isAutoSavedParent').val('false');
+         autoSaveFetalStudyActiveTaskPage('manual');
         });
         $("#shortTitleId").blur(function () {
           validateShortTitleId('', function (val) {
@@ -1048,8 +962,159 @@
             }
           }
         });
-      });
+                    setInterval(function () {
+                        idleTime += 1;
+                        if (idleTime > 3) { // 5 minutes
+                                autoSaveFetalStudyActiveTaskPage('auto');
+                        }
+                    }, 226000); // 5 minutes
 
+                    $(this).mousemove(function (e) {
+                        idleTime = 0;
+                    });
+                    $(this).keypress(function (e) {
+                        idleTime = 0;
+                    });
+
+          // pop message after 15 minutes
+          if ($('#isAutoSaved').val() === 'true') {
+              $('#myModal').modal('show');
+              let i = 1;
+              let lastSavedInterval = setInterval(function () {
+                  if (i === 15) {
+                  $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                      if ($('#myModal').hasClass('in')) {
+                          $('#backToLoginPage').submit();
+                      }
+                      clearInterval(lastSavedInterval);
+                  } else {
+                      if (i === 1) {
+                          $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                      } else {
+                          $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                      }
+                      i+=1;
+                  }
+              }, 60000);
+          }
+      });
+   function autoSaveFetalStudyActiveTaskPage(mode){
+             $("body").addClass('loading');
+             var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+             if (shortTitleCount >= 1) {
+               showErrMsg("Please fill in all mandatory fields.");
+               $('.contentClass a').tab('show');
+               $("body").removeClass('loading');
+               return false;
+             } else if (!$('#shortTitleId')[0].checkValidity()) {
+               $("#shortTitleId").parent().addClass('has-error has-danger').find(
+                   ".help-block").empty().append(
+                   $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                       "This is a required field."));
+               showErrMsg("Please fill in all mandatory fields.");
+               $('.contentClass a').tab('show');
+               $("body").removeClass('loading');
+               return false;
+             } else {
+               validateShortTitleId('', function (st) {
+                 if (st) {
+                   if (!durationFlag) {
+                     $('#inputClockId').parent().addClass('has-error has-danger').find(
+                         ".help-block").empty().append(
+                         $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                             "Please select a non-zero Duration value."));
+                     $('#inputClockId').focus();
+                     showErrMsg("Please fill in all mandatory fields.");
+                     $('.contentClass a').tab('show');
+                     $("body").removeClass('loading');
+                     return false;
+                   } else {
+                     //Please fill out this field.
+                     var statShortTitleCount = $('.statShortTitleClass').find(
+                         '.help-block').children().length;
+                     var errorstatShortTitle = $('.statShortTitleClass').find(
+                         '.help-block').children().text();
+                     if (statShortTitleCount >= 1 && errorstatShortTitle
+                         != "Please fill out this field.") {
+                       var statId = $('.shortTitleStatCls').attr('id');
+                       if (statId && statId == 'identifierId')
+                         $('#identifierId').focus();
+                       else
+                         $('#static').focus();
+
+                       showErrMsg("Please fill in all mandatory fields.");
+                       $('.contentClass a').tab('show');
+                       $("body").removeClass('loading');
+                       return false;
+                     } else {
+                       var statShort = '';
+                       var staticShortStat = $('#static').val();
+                       var dynaminShortStat = $('#identifierId').val();
+                       if (staticShortStat)
+                         statShort = '#static';
+                       if (dynaminShortStat)
+                         statShort = '#identifierId';
+                       if (statShort) {
+                         validateShortTitleStatId('', statShort, function (st) {
+                           if (st) {
+                             $('#inputClockId').parent().find(".help-block").empty();
+                             var dt = new Date();
+                             $('#inputClockId').datetimepicker({
+                               format: 'HH:mm',
+                               minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00,
+                                   00),
+                               maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+                             });
+                             doneActiveTask(this, 'save', function (val) {
+                               if (val) {
+                                 $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+                                 $('#activeContentFormId').validator('destroy');
+                                 $("#buttonText").val('save');
+                                 if (mode === 'auto') {
+                                     $("#isAutoSaved").val('true');
+                                 } else {
+                                     $("#isAutoSaved").val('false');
+                                 }
+                                 document.activeContentFormId.submit();
+                               }
+                             });
+                           } else {
+                             $("body").removeClass('loading');
+                           }
+                         });
+                       } else {
+                         $("body").removeClass('loading');
+                         $('#inputClockId').parent().find(".help-block").empty();
+                         var dt = new Date();
+                         $('#inputClockId').datetimepicker({
+                           format: 'HH:mm',
+                           minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+                           maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+                         });
+                         doneActiveTask(this, 'save', function (val) {
+                           if (val) {
+                             $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+                             $('#activeContentFormId').validator('destroy');
+                             $("#buttonText").val('save');
+                             if (mode === 'auto') {
+                                 $("#isAutoSaved").val('true');
+                             } else {
+                                 $("#isAutoSaved").val('false');
+                             }
+                             document.activeContentFormId.submit();
+                           } else {
+                             $("body").removeClass('loading');
+                           }
+                         });
+                       }
+                     }
+                   }
+                 } else {
+                   $("body").removeClass('loading');
+                 }
+               });
+             }
+   }
       function validateShortTitleId(item, callback) {
         console.log("validateShortTitleId");
         var shortTitle = $("#shortTitleId").val();

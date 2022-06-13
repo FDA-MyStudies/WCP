@@ -31,6 +31,7 @@
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
             data-toggle="validator" role="form" id="overViewFormId" method="post"
@@ -84,6 +85,7 @@
         <input type="hidden" value="" id="buttonText" name="buttonText">
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="mlMediaLink" value="${mlMediaLink}"/>
+         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <select id="overviewPages" style="display: none">
             <c:forEach items="${studyPageLanguageList}" var="overviewPage">
                 <option id='${overviewPage.title}'
@@ -354,6 +356,19 @@
         </div>
         <!-- End Study Section-->
     </form:form>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved now</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <!-- End right Content here -->
 
@@ -361,6 +376,7 @@
 <script>
 
   var totalSavedPages = ${studyPageBos.size()};
+  var idleTime = 0;
   $(document).ready(function () {
 
     <c:if test="${user eq 'logout_login_user'}">
@@ -596,13 +612,12 @@
     });
     $('.submitEle').click(function (e) {
       $('#actTy').remove();
-      $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value',
-          $(this).attr('actType')).attr('id', 'actTy').appendTo('#overViewFormId');
-      if ($(this).attr('actType') == 'save') {
-        e.preventDefault();
-        $('#overViewFormId').validator('destroy');
-        $('#overViewFormId').submit();
-      }
+                $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value',
+                    $(this).attr('actType')).attr('id', 'actTy').appendTo('#overViewFormId');
+                if ($(this).attr('actType') == 'save') {
+                  e.preventDefault();
+                  autoSaveOverviewPage('manual');
+                }
     });
     $("#completedId").on('click', function (e) {
       e.preventDefault();
@@ -711,8 +726,54 @@
         $(this).removeAttr('required', 'required');
       }
     });
-  });
 
+     setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+                    autoSaveOverviewPage('auto');
+            }
+        }, 226000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
+      // pop message after 15 minutes
+      if ($('#isAutoSaved').val() === 'true') {
+          $('#myModal').modal('show');
+          let i = 1;
+          let lastSavedInterval = setInterval(function () {
+              if (i === 15) {
+              $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  if ($('#myModal').hasClass('in')) {
+                      $('#backToLoginPage').submit();
+                  }
+                  clearInterval(lastSavedInterval);
+              } else {
+                  if (i === 1) {
+                      $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                  } else {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  }
+                  i+=1;
+              }
+          }, 60000);
+      }
+  });
+    function autoSaveOverviewPage(mode){
+    $('#overViewFormId').validator('destroy');
+                       if (mode === 'auto') {
+                       $("#isAutoSaved").val('true');
+                       }
+                       else{
+                       $("#isAutoSaved").val('false');
+                       }
+                      $('#overViewFormId').submit();
+
+    }
   // Displaying images from file upload
   function readURL(input) {
     if (input.files && input.files[0]) {

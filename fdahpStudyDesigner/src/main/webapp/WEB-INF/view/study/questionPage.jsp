@@ -82,6 +82,7 @@
 </script>
 <!-- Start right Content here -->
 <div id="questionPage" class="col-sm-10 col-rc white-bg p-none">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 <!-- Start top tab section-->
 <div class="right-content-head">
     <div class="text-right">
@@ -166,6 +167,7 @@
                 type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
                 value="${questionsBo.isShorTitleDuplicate}"/>
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+             <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
             <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                 <%--				ml data fields--%>
@@ -2635,9 +2637,23 @@
     </div>
     </div>
 </form:form>
+   <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved now</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+ var idleTime = 0;
   $(document).ready(function () {
 
     let currLang = $('#studyLanguage').val();
@@ -2973,39 +2989,10 @@
         }
       }
     });
-    $("#saveId").on('click', function (e) {
-      $("body").addClass("loading");
-      validateTheQuestionshortTitle('', function (val) {
-        if (val) {
-          var statShortName = $("#statShortNameId").val();
-          if (statShortName != '' && statShortName != null && typeof statShortName != 'undefined') {
-            validateStatsShorTitle('', function (val) {
-              if (val) {
-                saveQuestionStepQuestionnaire();
-              } else {
-                $("body").removeClass("loading");
-              }
-            });
-          } else {
-            var resType = $("#rlaResonseType").val();
-            if (resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker'
-                || resType == 'Text Choice') {
-              validateForUniqueValue('', resType, function (val) {
-                if (val) {
-                  saveQuestionStepQuestionnaire();
-                } else {
-                  $("body").removeClass("loading");
-                }
-              });
-            } else {
-              saveQuestionStepQuestionnaire();
-            }
-          }
-        } else {
-          $("body").removeClass("loading");
-        }
-      });
+    $("#saveId").on("click", function (e) {
+    autoSaveFormQuestionPage('manual');
     });
+
     $("#statShortNameId").blur(function () {
       validateStatsShorTitle('', function (val) {
       });
@@ -3702,7 +3689,62 @@
         && typeof valicationCharacterValue != 'undefined') {
       addRegEx(valicationCharacterValue);
     }
+    setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+                    autoSaveFormQuestionPage('auto');
+            }
+        }, 226000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
   });
+    function autoSaveFormQuestionPage(mode){
+      $("body").addClass("loading");
+          validateTheQuestionshortTitle('', function (val) {
+            if (val) {
+              var statShortName = $("#statShortNameId").val();
+              if (statShortName != '' && statShortName != null && typeof statShortName != 'undefined') {
+                validateStatsShorTitle('', function (val) {
+                  if (val) {
+                   if (mode === 'auto') {
+                   $("#isAutoSaved").val('true');
+                    }
+                    saveQuestionStepQuestionnaire();
+                  } else {
+                    $("body").removeClass("loading");
+                  }
+                });
+              } else {
+                var resType = $("#rlaResonseType").val();
+                if (resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker'
+                    || resType == 'Text Choice') {
+                  validateForUniqueValue('', resType, function (val) {
+                    if (val) {
+                     if (mode === 'auto') {
+                     $("#isAutoSaved").val('true');
+                     }
+                      saveQuestionStepQuestionnaire();
+                    } else {
+                      $("body").removeClass("loading");
+                    }
+                  });
+                } else {
+                if (mode === 'auto') {
+                $("#isAutoSaved").val('true');
+                 }
+                  saveQuestionStepQuestionnaire();
+                }
+              }
+            } else {
+              $("body").removeClass("loading");
+            }
+          });
+    }
 
   function addRegEx(value) {
     $("#validationExceptTextId").unbind("keyup blur");
@@ -4272,6 +4314,7 @@
         short_title != null && short_title != '' && typeof short_title != 'undefined') {
       formData.append("questionInfo", JSON.stringify(questionsBo));
       formData.append("language", $('#studyLanguage').val());
+      formData.append("isAutoSaved", $('#isAutoSaved').val());
 
       var data = JSON.stringify(questionsBo);
       $.ajax({
@@ -4286,7 +4329,7 @@
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
             $("body").removeClass("loading");
             $("#preShortTitleId").val(short_title);
             var questionId = data.questionId;
@@ -4310,6 +4353,29 @@
                 'sprites-icons-2 tick pull-right mt-xs')) {
               $('.seventhQuestionnaires').find('span').removeClass(
                   'sprites-icons-2 tick pull-right mt-xs');
+            }
+            // pop message after 15 minutes
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 1;
+                let lastSavedInterval = setInterval(function () {
+                    if (i === 15) {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        if ($('#myModal').hasClass('in')) {
+                            $('#backToLoginPage').submit();
+                        }
+                        clearInterval(lastSavedInterval);
+                    } else {
+                        if (i === 1) {
+                            $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                        } else {
+                            $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        }
+                        idleTime = 0;
+                        i += 1;
+                    }
+                }, 60000);
+                $("#isAutoSaved").val('false');
             }
           } else {
             var errMsg = data.errMsg;

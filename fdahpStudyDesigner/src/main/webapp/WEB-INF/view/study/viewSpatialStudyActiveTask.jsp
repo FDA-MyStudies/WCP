@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
 </head>
 <div class="changeContent">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}"
             name="activeContentFormId" id="activeContentFormId" method="post"
@@ -16,6 +17,7 @@
                value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
         <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+        <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <input type="hidden" value="" id="buttonText" name="buttonText">
         <input type="hidden" value="${actionPage}" id="actionPage"
                name="actionPage">
@@ -1669,8 +1671,22 @@
             </div>
         </div>
     </form:form>
+     <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved now</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <script>
+var idleTime = 0;
   $(document).ready(function () {
     var taskId = $('#taskContentId').val();
     if (taskId) {
@@ -1683,7 +1699,41 @@
             'A max of x runs will be displayed in each view of the chart.');
       }
     }
+              setInterval(function () {
+                  idleTime += 1;
+                  if (idleTime > 3) { // 5 minutes
+                          autoSaveSpatialStudyActivityPage('auto');
+                  }
+              }, 226000); // 5 minutes
 
+              $(this).mousemove(function (e) {
+                  idleTime = 0;
+              });
+              $(this).keypress(function (e) {
+                  idleTime = 0;
+              });
+
+      // pop message after 15 minutes
+      if ($('#isAutoSaved').val() === 'true') {
+          $('#myModal').modal('show');
+          let i = 1;
+          let lastSavedInterval = setInterval(function () {
+              if (i === 15) {
+                   $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  if ($('#myModal').hasClass('in')) {
+                      $('#backToLoginPage').submit();
+                  }
+                  clearInterval(lastSavedInterval);
+              } else {
+                  if (i === 1) {
+                      $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                  } else {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  }
+                  i+=1;
+              }
+          }, 60000);
+      }
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
         !== 'en') {
@@ -2158,148 +2208,163 @@
         $('.contentClass a').tab('show');
         showErrMsg("Please fill in all mandatory fields.");
       }
+
     });
 
     $('#saveId').click(function (e) {
-      $("body").addClass('loading');
-      $("#saveId").attr("disabled", true);
-      var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-      if (shortTitleCount >= 1) {
-        showErrMsg("Please fill in all mandatory fields.");
-        $('.contentClass a').tab('show');
-        $("body").removeClass('loading');
-        $("#saveId").attr("disabled", false);
-        return false;
-      } else if (!$('#shortTitleId')[0].checkValidity()) {
-        $("#shortTitleId").parent().addClass('has-error has-danger').find(
-            ".help-block").empty().append(
-            $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                "This is a required field."));
-        showErrMsg("Please fill in all mandatory fields.");
-        $('.contentClass a').tab('show');
-        $("body").removeClass('loading');
-        $("#saveId").attr("disabled", false);
-        return false;
-      } else {
-        validateShortTitleId('', function (st) {
-          if (st) {
-            var scoreStat = $('#Score_spatial_stat_id').is(":checked");
-            var gameStat = $('#Number_of_Games_spatial_stat_id').is(":checked");
-            var failureStat = $('#Number_of_Failures_spatial_stat_id').is(":checked");
-            var dbStatExist = true;
-            var statShortVal1 = '', statShortVal2 = '', statShortVal3 = '';
-            var statShortId1 = '', statShortId2 = '', statShortId3 = '';
-            var dbShortVal1 = '', dbShortVal2 = '', dbShortVal3 = '';
-            var dbShortId1 = '', dbShortId2 = '', dbShortId3 = '';
-            var statisticsData = $('.shortTitleStatCls').attr('id');
-            if (statisticsData) {
-              var count = statisticsData.indexOf('identifier');
-              if (count == -1) {
-                dbStatExist = false;
-              }
-            }
-            if (dbStatExist) {
-              if (scoreStat) {
-                statShortId1 = "identifierId1";
-                dbShortVal1 = $('#dbidentifierId1').val();
-                dbShortId1 = $('#dbidentifierId1').attr("title");
-                statShortVal1 = $('#identifierId1').val();
-              }
-              if (gameStat) {
-                statShortId2 = "identifierId2";
-                dbShortVal2 = $('#dbidentifierId2').val();
-                dbShortId2 = $('#dbidentifierId2').attr("title");
-                statShortVal2 = $('#identifierId2').val();
-              }
-              if (failureStat) {
-                statShortId3 = "identifierId3";
-                dbShortVal3 = $('#dbidentifierId3').val();
-                dbShortId3 = $('#dbidentifierId3').attr("title");
-                //alert("dbShortId3"+dbShortId3);
-                statShortVal3 = $('#identifierId3').val();
-              }
-            } else {
-              if (scoreStat) {
-                statShortId1 = "static1";
-                statShortVal1 = $('#static1').val();
-              }
-              if (gameStat) {
-                statShortId2 = "static2";
-                statShortVal2 = $('#static2').val();
-              }
-              if (failureStat) {
-                //alert("1");
-                statShortId3 = "static3";
-                statShortVal3 = $('#static3').val();
-              }
-            }
-            var jsonArray = new Array();
-            if (scoreStat) {
-              var statObj = new Object();
-              statObj.id = statShortId1;
-              statObj.dbVal = dbShortVal1;
-              statObj.idVal = statShortVal1;
-              if (dbShortId1)
-                statObj.idname = dbShortId1;
-              jsonArray.push(statObj);
-            }
-            if (gameStat) {
-              var statObj = new Object();
-              statObj.id = statShortId2;
-              statObj.dbVal = dbShortVal2;
-              statObj.idVal = statShortVal2;
-              if (dbShortId2)
-                statObj.idname = dbShortId2;
-              jsonArray.push(statObj);
-            }
-            if (failureStat) {
-              var statObj = new Object();
-              statObj.id = statShortId3;
-              statObj.dbVal = dbShortVal3;
-              statObj.idVal = statShortVal3;
-              if (dbShortId3)
-                statObj.idname = dbShortId3;
-              jsonArray.push(statObj);
-            }
-            if (jsonArray.length > 0) {
-              saveValidateStatisticsIds(jsonArray, function (val) {
-                if (val) {
-                  $("#saveId").attr("disabled", false);
-                  $("body").removeClass('loading');
-                  doneActiveTask(this, 'save', function (val) {
-                    if (val) {
-                      $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
-                      $("#buttonText").val('save');
-                      document.activeContentFormId.submit();
-                    }
-                  })
-                } else {
-                  // alert("Not");
-                  $("#saveId").attr("disabled", false);
-                  $("body").removeClass('loading');
-                  showErrMsg("Please fill in all mandatory fields.");
-                  $('.contentClass a').tab('show');
-                }
-              });
-            } else {
-              $("#saveId").attr("disabled", false);
-              $("body").removeClass('loading');
-              doneActiveTask(this, 'save', function (val) {
-                if (val) {
-                  $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
-                  $("#buttonText").val('save');
-                  document.activeContentFormId.submit();
-                }
-              })
-            }
-          } else {
-            $("body").removeClass('loading');
-            $("#saveId").attr("disabled", false);
-          }
-        });
-      }
+     $('#isAutoSavedParent').val('false');
+     autoSaveSpatialStudyActivityPage('manual');
     });
 
+     function autoSaveSpatialStudyActivityPage(mode){
+         $("body").addClass('loading');
+         $("#saveId").attr("disabled", true);
+         var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+         if (shortTitleCount >= 1) {
+           showErrMsg("Please fill in all mandatory fields.");
+           $('.contentClass a').tab('show');
+           $("body").removeClass('loading');
+           $("#saveId").attr("disabled", false);
+           return false;
+         } else if (!$('#shortTitleId')[0].checkValidity()) {
+           $("#shortTitleId").parent().addClass('has-error has-danger').find(
+               ".help-block").empty().append(
+               $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                   "This is a required field."));
+           showErrMsg("Please fill in all mandatory fields.");
+           $('.contentClass a').tab('show');
+           $("body").removeClass('loading');
+           $("#saveId").attr("disabled", false);
+           return false;
+         } else {
+           validateShortTitleId('', function (st) {
+             if (st) {
+               var scoreStat = $('#Score_spatial_stat_id').is(":checked");
+               var gameStat = $('#Number_of_Games_spatial_stat_id').is(":checked");
+               var failureStat = $('#Number_of_Failures_spatial_stat_id').is(":checked");
+               var dbStatExist = true;
+               var statShortVal1 = '', statShortVal2 = '', statShortVal3 = '';
+               var statShortId1 = '', statShortId2 = '', statShortId3 = '';
+               var dbShortVal1 = '', dbShortVal2 = '', dbShortVal3 = '';
+               var dbShortId1 = '', dbShortId2 = '', dbShortId3 = '';
+               var statisticsData = $('.shortTitleStatCls').attr('id');
+               if (statisticsData) {
+                 var count = statisticsData.indexOf('identifier');
+                 if (count == -1) {
+                   dbStatExist = false;
+                 }
+               }
+               if (dbStatExist) {
+                 if (scoreStat) {
+                   statShortId1 = "identifierId1";
+                   dbShortVal1 = $('#dbidentifierId1').val();
+                   dbShortId1 = $('#dbidentifierId1').attr("title");
+                   statShortVal1 = $('#identifierId1').val();
+                 }
+                 if (gameStat) {
+                   statShortId2 = "identifierId2";
+                   dbShortVal2 = $('#dbidentifierId2').val();
+                   dbShortId2 = $('#dbidentifierId2').attr("title");
+                   statShortVal2 = $('#identifierId2').val();
+                 }
+                 if (failureStat) {
+                   statShortId3 = "identifierId3";
+                   dbShortVal3 = $('#dbidentifierId3').val();
+                   dbShortId3 = $('#dbidentifierId3').attr("title");
+                   //alert("dbShortId3"+dbShortId3);
+                   statShortVal3 = $('#identifierId3').val();
+                 }
+               } else {
+                 if (scoreStat) {
+                   statShortId1 = "static1";
+                   statShortVal1 = $('#static1').val();
+                 }
+                 if (gameStat) {
+                   statShortId2 = "static2";
+                   statShortVal2 = $('#static2').val();
+                 }
+                 if (failureStat) {
+                   //alert("1");
+                   statShortId3 = "static3";
+                   statShortVal3 = $('#static3').val();
+                 }
+               }
+               var jsonArray = new Array();
+               if (scoreStat) {
+                 var statObj = new Object();
+                 statObj.id = statShortId1;
+                 statObj.dbVal = dbShortVal1;
+                 statObj.idVal = statShortVal1;
+                 if (dbShortId1)
+                   statObj.idname = dbShortId1;
+                 jsonArray.push(statObj);
+               }
+               if (gameStat) {
+                 var statObj = new Object();
+                 statObj.id = statShortId2;
+                 statObj.dbVal = dbShortVal2;
+                 statObj.idVal = statShortVal2;
+                 if (dbShortId2)
+                   statObj.idname = dbShortId2;
+                 jsonArray.push(statObj);
+               }
+               if (failureStat) {
+                 var statObj = new Object();
+                 statObj.id = statShortId3;
+                 statObj.dbVal = dbShortVal3;
+                 statObj.idVal = statShortVal3;
+                 if (dbShortId3)
+                   statObj.idname = dbShortId3;
+                 jsonArray.push(statObj);
+               }
+               if (jsonArray.length > 0) {
+                 saveValidateStatisticsIds(jsonArray, function (val) {
+                   if (val) {
+                     $("#saveId").attr("disabled", false);
+                     $("body").removeClass('loading');
+                     doneActiveTask(this, 'save', function (val) {
+                       if (val) {
+                         $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+                         $("#buttonText").val('save');
+                         if (mode === 'auto') {
+                             $("#isAutoSaved").val('true');
+                         } else {
+                             $('#isAutoSaved').val('false');
+                         }
+                         document.activeContentFormId.submit();
+                       }
+                     })
+                   } else {
+                     // alert("Not");
+                     $("#saveId").attr("disabled", false);
+                     $("body").removeClass('loading');
+                     showErrMsg("Please fill in all mandatory fields.");
+                     $('.contentClass a').tab('show');
+                   }
+                 });
+               } else {
+                 $("#saveId").attr("disabled", false);
+                 $("body").removeClass('loading');
+                 doneActiveTask(this, 'save', function (val) {
+                   if (val) {
+                     $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+                     $("#buttonText").val('save');
+                     if (mode === 'auto') {
+                         $("#isAutoSaved").val('true');
+                     } else {
+                         $("#isAutoSaved").val('false');
+                     }
+                     document.activeContentFormId.submit();
+                   }
+                 })
+               }
+             } else {
+               $("body").removeClass('loading');
+               $("#saveId").attr("disabled", false);
+             }
+           });
+         }
+     }
     $('.selectpicker').selectpicker('refresh');
     $('[data-toggle="tooltip"]').tooltip();
     $('input').on('drop', function () {

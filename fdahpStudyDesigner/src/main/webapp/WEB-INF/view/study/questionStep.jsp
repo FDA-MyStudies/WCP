@@ -90,6 +90,7 @@
 <!-- Start right Content here -->
 <div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
+	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<div class="right-content-head">
 		<div class="text-right">
 			<div class="black-md-f dis-line pull-left line34">
@@ -221,6 +222,7 @@
 					value="${questionnairesStepsBo.questionsBo.anchorDateId}" /> <input
 					type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
 					value="${questionnairesStepsBo.isShorTitleDuplicate}" />
+					<input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
 				<div id="sla" class="tab-pane fade in active mt-xlg">
 					<div class="row">
 						<div class="col-md-6 pl-none">
@@ -3520,10 +3522,24 @@
 				</div>
 			</div>
 	</form:form>
+	<div class="modal fade" id="myAutoModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved now</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 <!-- End right Content here -->
 <script type="text/javascript">
+    var idleTime = 0;
       $(document).ready(function () {
 
         if ($('#useAnchorDateId').is(':checked')) {
@@ -3991,42 +4007,7 @@
           }
         });
         $("#saveId").on("click", function () {
-          $("body").addClass("loading");
-          validateQuestionShortTitle('', function (val) {
-            if (val) {
-              var statShortName = $("#statShortNameId").val();
-              if (statShortName != '' && statShortName != null && typeof statShortName
-                  != 'undefined') {
-                validateStatsShorTitle('', function (val) {
-                  if (val && validateSingleResponseDataElement()) {
-                    saveQuestionStepQuestionnaire('', '');
-                  } else {
-                    $("body").removeClass("loading");
-                  }
-                });
-              } else {
-                var resType = $("#rlaResonseType").val();
-                if (resType == 'Text Scale' || resType == 'Image Choice' || resType
-                    == 'Value Picker' || resType == 'Text Choice') {
-                  validateForUniqueValue('', resType, function (val) {
-                    if (val) {
-                      saveQuestionStepQuestionnaire('', '');
-                    } else {
-                      $("body").removeClass("loading");
-                    }
-                  });
-                } else {
-                  if (validateSingleResponseDataElement()) {
-                    saveQuestionStepQuestionnaire('', '');
-                  } else {
-                    $("body").removeClass("loading");
-                  }
-                }
-              }
-            } else {
-              $("body").removeClass("loading");
-            }
-          });
+          autoSaveQuestionStep('manual');
         });
         $("#statShortNameId").blur(function () {
           validateStatsShorTitle('', function (val) {
@@ -4826,9 +4807,70 @@
             && typeof valicationCharacterValue != 'undefined') {
           addRegEx(valicationCharacterValue);
         }
+          setInterval(function () {
+                  idleTime += 1;
+                  if (idleTime > 3) { // 5 minutes
+                          autoSaveQuestionStep('auto');
+                  }
+              }, 226000); // 5 minutes
 
+              $(this).mousemove(function (e) {
+                  idleTime = 0;
+              });
+              $(this).keypress(function (e) {
+                  idleTime = 0;
+              });
       });
-
+        function autoSaveQuestionStep(mode){
+           	  $("body").addClass("loading");
+                 validateQuestionShortTitle('', function (val) {
+                   if (val) {
+                     var statShortName = $("#statShortNameId").val();
+                     if (statShortName != '' && statShortName != null && typeof statShortName
+                         != 'undefined') {
+                       validateStatsShorTitle('', function (val) {
+                         if (val && validateSingleResponseDataElement()) {
+                          $('#loader').show();
+                          if (mode === 'auto') {
+							  $("#isAutoSaved").val('true');
+						  }
+                           saveQuestionStepQuestionnaire('', '');
+                         } else {
+                           $("body").removeClass("loading");
+                         }
+                       });
+                     } else {
+                       var resType = $("#rlaResonseType").val();
+                       if (resType == 'Text Scale' || resType == 'Image Choice' || resType
+                           == 'Value Picker' || resType == 'Text Choice') {
+                         validateForUniqueValue('', resType, function (val) {
+                           if (val) {
+                            $('#loader').show();
+                            if (mode === 'auto') {
+                             $("#isAutoSaved").val('true');
+                             }
+                             saveQuestionStepQuestionnaire('', '');
+                           } else {
+                             $("body").removeClass("loading");
+                           }
+                         });
+                       } else {
+                         if (validateSingleResponseDataElement()) {
+                          $('#loader').show();
+                          if (mode === 'auto') {
+                          $("#isAutoSaved").val('true');
+                           }
+                           saveQuestionStepQuestionnaire('', '');
+                         } else {
+                           $("body").removeClass("loading");
+                         }
+                       }
+                     }
+                   } else {
+                     $("body").removeClass("loading");
+                   }
+                 });
+             }
       function addRegEx(value) {
         $("#validationExceptTextId").unbind("keyup blur");
         if (value == "alphabets") {
@@ -5546,6 +5588,7 @@
 
           formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep));
           formData.append('language', $('#studyLanguage').val());
+		  formData.append('isAutoSaved', $('#isAutoSaved').val());
           var data = JSON.stringify(questionnaireStep);
           $.ajax({
             url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do?_S=${param._S}",
@@ -5590,6 +5633,29 @@
 
                 if (callback)
                   callback(true);
+                   // pop message after 15 minutes
+				  if ($('#isAutoSaved').val() === 'true') {
+					  $('#myAutoModal').modal('show');
+					  let i = 1;
+					  let lastSavedInterval = setInterval(function () {
+						  if (i === 15) {
+						  $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+							  if ($('#myAutoModal').hasClass('in')) {
+								  $('#backToLoginPage').submit();
+							  }
+							  clearInterval(lastSavedInterval);
+						  } else {
+							  if (i === 1) {
+								  $('#autoSavedMessage').text('Last saved was 1 minute ago');
+							  } else {
+								  $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+							  }
+							  idleTime = 0;
+							  i+=1;
+						  }
+					  }, 60000);
+					  $("#isAutoSaved").val('false');
+				  }
               } else {
                 var errMsg = data.errMsg;
                 if (errMsg != '' && errMsg != null && typeof errMsg != 'undefined') {

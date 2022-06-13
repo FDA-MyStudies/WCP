@@ -40,6 +40,7 @@
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/removeSelectedLanguage.do?_S=${param._S}"
             id="removeLangFormId">
@@ -66,6 +67,7 @@
         <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
+         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <select id="langDeletableMap" style="display: none">
             <c:forEach items="${langDeletableMap}" var="langEntry">
                 <option id='lang_${langEntry.key}' value="${langEntry.value}"></option>
@@ -430,8 +432,19 @@
         <!-- End body tab section -->
 
     </form:form>
-
-
+     <div class="modal fade" id="myAutoModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved now</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 
@@ -546,8 +559,9 @@
     </div>
 </div>
 <script>
+var idleTime = 0;
   $(document).ready(function () {
-
+	  $('#loader').hide();
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
       $('#currentLanguage').val(currLang);
@@ -669,7 +683,7 @@
     });
 
     $("#saveId").click(function () {
-      platformTypeValidation('save');
+    	saveSettingAndAdminsPage('manual');
     });
 
     var allowRejoin = '${studyBo.allowRejoin}';
@@ -690,6 +704,42 @@
     $("#infoIconId").hover(function () {
       $('#myModal').modal('show');
     });
+    
+    setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+                saveSettingAndAdminsPage('auto');
+        }
+    }, 226000); // 5 minutes
+
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
+
+      // pop message after 15 minutes
+      if ($('#isAutoSaved').val() === 'true') {
+          $('#myAutoModal').modal('show');
+          let i = 1;
+          let lastSavedInterval = setInterval(function () {
+              if (i === 15) {
+              $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  if ($('#myAutoModal').hasClass('in')) {
+                      $('#backToLoginPage').submit();
+                  }
+                  clearInterval(lastSavedInterval);
+              } else {
+                  if (i === 1) {
+                      $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                  } else {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                  }
+                  i+=1;
+              }
+          }, 60000);
+      }
   });
 
   function checkRadioRequired() {
@@ -719,8 +769,12 @@
       }
     }
   }
+  
+  function saveSettingAndAdminsPage(mode){
+	  platformTypeValidation('save', mode);
+  }
 
-  function platformTypeValidation(buttonText) {
+  function platformTypeValidation(buttonText, mode) {
     var platformNames = '';
     $("input:checkbox[name=platform]:checked").each(function () {
       platformNames = platformNames + $(this).val();
@@ -751,6 +805,12 @@
             $('#completedId').removeAttr('disabled');
             bootbox.alert(errorMessage);
           } else {
+            if (mode === 'auto') {
+                $("#isAutoSaved").val('true');
+            }
+            else{
+            $("#isAutoSaved").val('false');
+            }
             submitButton(buttonText);
           }
         },
@@ -763,6 +823,12 @@
         global: false
       });
     } else {
+       if (mode === 'auto') {
+           $("#isAutoSaved").val('true');
+       }
+        else{
+        $("#isAutoSaved").val('false');
+        }
       submitButton(buttonText);
     }
   }

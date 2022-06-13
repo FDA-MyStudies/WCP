@@ -31,6 +31,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do?_S=${param._S}"
             name="basicInfoFormId" id="basicInfoFormId" method="post"
@@ -111,6 +112,7 @@
             <input type="hidden" id="mlTitle" value="${instructionsLangBO.instructionTitle}">
             <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+             <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <div class="col-md-6 pl-none">
                 <div class="gray-xs-f mb-xs">
                     Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span
@@ -186,9 +188,23 @@
         </div>
     </form:form>
     <!--  End body tab section -->
+    <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                    <div class="modal-header cust-hdr pt-lg">
+                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title pl-lg text-center">
+                            <b id="autoSavedMessage">Last saved now</b>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+  var idleTime = 0;
   $(document).ready(function () {
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
@@ -227,21 +243,39 @@
         }
       });
     });
+    setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+                    autoSaveInstructionStepPage('auto');
+            }
+        }, 226000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
   });
 
   function saveIns() {
-    $("body").addClass("loading");
-    $("#saveId").attr("disabled", true);
-    validateShortTitle('', function (val) {
-      if (val) {
-        saveInstruction();
-      } else {
-        $("#saveId").attr("disabled", false);
-        $("body").removeClass("loading");
-      }
-    });
+   autoSaveInstructionStepPage('manual');
   }
-
+  function autoSaveInstructionStepPage(mode){
+      $("body").addClass("loading");
+      $("#saveId").attr("disabled", true);
+      validateShortTitle('', function (val) {
+        if (val) {
+            if (mode === 'auto') {
+                $('#isAutoSaved').val('true');
+            }
+          saveInstruction();
+        } else {
+          $("#saveId").attr("disabled", false);
+          $("body").removeClass("loading");
+        }
+      });
+  }
   function validateShortTitle(item, callback) {
     var shortTitle = $("#shortTitleId").val();
     var questionnaireId = $("#questionnaireId").val();
@@ -341,7 +375,8 @@
         datatype: "json",
         data: {
           instructionsInfo: data,
-          language: $('#studyLanguage').val()
+          language: $('#studyLanguage').val(),
+          isAutoSaved : $('#isAutoSaved').val()
         },
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN",
@@ -349,7 +384,7 @@
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
             $("#preShortTitleId").val(shortTitle);
             var instructionId = data.instructionId;
             var stepId = data.stepId;
@@ -371,6 +406,29 @@
                   'sprites-icons-2 tick pull-right mt-xs');
             }
             $("body").removeClass("loading");
+            // pop message after 15 minutes
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 1;
+                let lastSavedInterval = setInterval(function () {
+                    if (i === 15) {
+                    $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        if ($('#myModal').hasClass('in')) {
+                            $('#backToLoginPage').submit();
+                        }
+                        clearInterval(lastSavedInterval);
+                    } else {
+                        if (i === 1) {
+                            $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                        } else {
+                            $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        }
+                        idleTime = 0;
+                        i += 1;
+                    }
+                }, 60000);
+                $("#isAutoSaved").val('false');
+            }
           } else {
             $("#alertMsg").removeClass('s-box').addClass(
                 'e-box').text("Something went Wrong");

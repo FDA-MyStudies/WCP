@@ -134,6 +134,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
@@ -249,6 +250,7 @@
                            value="${fn:escapeXml(studyBo.name)}"/>
                     <input type="hidden" name="formId" id="formId" value="">
                     <input type="hidden" name="questionId" id="questionId" value="">
+                     <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                     <!-- <input type="hidden" id="actionType" name="actionType"> -->
                     <input type="hidden" id="actionTypeForQuestionPage"
                            name="actionTypeForQuestionPage">
@@ -1599,6 +1601,19 @@
         </div>
     </div>
     <!--  End body tab section -->
+     <div class="modal fade" id="myAutoModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved now</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 <!-- Modal -->
@@ -1713,7 +1728,7 @@ $('.cursor-display').removeClass('cursor-none');
   $('span.addBtnDis').remove();
   $('span.remBtnDis').remove();
 </c:if> */
-
+var idleTime = 0;
   var count = 0;
   var customCount = 0;
   var frequencey = "${questionnaireBo.frequency}";
@@ -2663,42 +2678,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       });
     });
     $("#saveId").click(function () {
-      var table = $('#content').DataTable();
-      validateShortTitle('', function (val) {
-        if (val) {
-          if (isFromValid("#contentFormId")) {
-            doneQuestionnaire(this, 'save', function (val) {
-              if (val) {
-                showSucMsg("Content saved as draft.");
-              } else {
-                var slaCount = $('#contentTab').find('.has-error.has-danger').length;
-                var flaCount = $('#schedule').find('.has-error.has-danger').length;
-                if (parseInt(slaCount) >= 1) {
-                  $('.contentqusClass a').tab('show');
-                } else if (parseInt(flaCount) >= 1) {
-                  $('.scheduleQusClass a').tab('show');
-                }
-              }
-            });
-          } else {
-            var slaCount = $('#contentTab').find('.has-error.has-danger').length;
-            var flaCount = $('#schedule').find('.has-error.has-danger').length;
-            if (parseInt(slaCount) >= 1) {
-              $('.contentqusClass a').tab('show');
-            } else if (parseInt(flaCount) >= 1) {
-              $('.scheduleQusClass a').tab('show');
-            }
-          }
-        } else {
-          var slaCount = $('#contentTab').find('.has-error.has-danger').length;
-          var flaCount = $('#schedule').find('.has-error.has-danger').length;
-          if (parseInt(slaCount) >= 1) {
-            $('.contentqusClass a').tab('show');
-          } else if (parseInt(flaCount) >= 1) {
-            $('.scheduleQusClass a').tab('show');
-          }
-        }
-      });
+     autoSaveQuestionnaire('manual');
     });
     $("#days").on('change', function () {
 
@@ -2906,9 +2886,62 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       var element = $(this).find('option:selected').text();
       setAnchorDropdown(frequency_text, element);
     });
+    
+    setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+                autoSaveQuestionnaire('auto');
+        }
+    }, 226000); // 5 minutes
 
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
   });
-
+  function autoSaveQuestionnaire(mode){
+	     var table = $('#content').DataTable();
+	      validateShortTitle('', function (val) {
+	        if (val) {
+	          if (isFromValid("#contentFormId")) {
+                  if (mode === 'auto') {
+                      $('#isAutoSaved').val('true');
+                  }
+	            doneQuestionnaire(this, 'save', function (val) {
+	              if (val) {
+	                showSucMsg("Content saved as draft.");
+	              } else {
+	                var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+	                var flaCount = $('#schedule').find('.has-error.has-danger').length;
+	                if (parseInt(slaCount) >= 1) {
+	                  $('.contentqusClass a').tab('show');
+	                } else if (parseInt(flaCount) >= 1) {
+	                  $('.scheduleQusClass a').tab('show');
+	                }
+	              }
+	            });
+	          } else {
+	            var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+	            var flaCount = $('#schedule').find('.has-error.has-danger').length;
+	            if (parseInt(slaCount) >= 1) {
+	              $('.contentqusClass a').tab('show');
+	            } else if (parseInt(flaCount) >= 1) {
+	              $('.scheduleQusClass a').tab('show');
+	            }
+	          }
+	        } else {
+	          var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+	          var flaCount = $('#schedule').find('.has-error.has-danger').length;
+	          if (parseInt(slaCount) >= 1) {
+	            $('.contentqusClass a').tab('show');
+	          } else if (parseInt(flaCount) >= 1) {
+	            $('.scheduleQusClass a').tab('show');
+	          }
+	        }
+	      });
+  }
   function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -3616,13 +3649,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do?_S=${param._S}",
         type: "POST",
         datatype: "json",
-        data: {questionnaireScheduleInfo: data, language: $('#studyLanguage').val()},
+        data: {
+            questionnaireScheduleInfo: data,
+            language: $('#studyLanguage').val(),
+            isAutoSaved : $('#isAutoSaved').val()
+        },
         beforeSend: function (xhr, settings) {
           xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
         },
         success: function (data) {
           var message = data.message;
-          if (message == "SUCCESS") {
+          if (message === "SUCCESS") {
             $("#preShortTitleId").val(short_title);
             var questionnaireId = data.questionnaireId;
             var questionnaireFrequenceId = data.questionnaireFrequenceId;
@@ -3698,6 +3735,28 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             frequencey = frequency_text;
             if (callback)
               callback(true);
+              // pop message after 15 minutes
+              if ($('#isAutoSaved').val() === 'true') {
+                  $('#myAutoModal').modal('show');
+                  let i = 1;
+                  let lastSavedInterval = setInterval(function () {
+                      if (i === 15) {
+                        $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                          if ($('#myAutoModal').hasClass('in')) {
+                              $('#backToLoginPage').submit();
+                          }
+                          clearInterval(lastSavedInterval);
+                      } else {
+                          if (i === 1) {
+                              $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                          } else {
+                              $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                          }
+                          idleTime = 0;
+                          i+=1;
+                      }
+                  }, 60000);
+              }
           } else {
             $("body").removeClass("loading");
             var errMsg = data.errMsg;

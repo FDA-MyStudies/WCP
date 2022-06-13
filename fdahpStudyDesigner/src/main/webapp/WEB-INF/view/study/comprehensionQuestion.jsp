@@ -31,6 +31,7 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
+    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateComprehensionTestQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}"
             name="comprehensionFormId" id="comprehensionFormId" method="post"
@@ -115,6 +116,7 @@
 
             <input type="hidden" id="currentLanguage" name="currentLanguage"
                    value="${currLanguage}">
+                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <c:if test="${not empty comprehensionQuestionBo.id}">
                 <input type="hidden" id="studyId" name="studyId"
                        value="${comprehensionQuestionBo.studyId}">
@@ -325,10 +327,23 @@
             </div>
         </div>
     </form:form>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved now</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+var idleTime = 0;
   $(document).ready(
       function () {
     	  $(".menuNav li").removeClass('active');
@@ -366,18 +381,42 @@
         $("#saveId").on(
             "click",
             function () {
-              $(".right-content-body").parents("form").validator(
-                  "destroy");
-              $(".right-content-body").parents("form")
-              .validator();
-              saveComrehensionTestQuestion();
+             autoSaveComprehensionQuestionPage('manual');
             });
         if ($('.ans-opts').length > 2) {
           $(".remBtnDis").removeClass("hide");
         } else {
           $(".remBtnDis").addClass("hide");
         }
+        setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+        autoSaveComprehensionQuestionPage('auto');
+         }
+         }, 226000); // 5 minutes
+
+          $(this).mousemove(function (e) {
+          idleTime = 0;
+          });
+          $(this).keypress(function (e) {
+           idleTime = 0;
+            });
       });
+      function autoSaveComprehensionQuestionPage(mode) {
+          $(".right-content-body").parents("form").validator(
+              "destroy");
+          $(".right-content-body").parents("form")
+              .validator();
+          if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+          }
+          else{
+          $("#isAutoSaved").val('false');
+          }
+          saveComrehensionTestQuestion(mode);
+      }
+
+
   var ansCount = $(".ans-opts").length - 1;
 
   function addAns() {
@@ -472,7 +511,7 @@
     </c:if>
   }
 
-  function saveComrehensionTestQuestion() {
+  function saveComrehensionTestQuestion(mode) {
     var comprehensionTestQuestion = new Object();
     var testQuestionId = $("#id").val();
     var studyId = $("#studyId").val();
@@ -503,8 +542,12 @@
         && questiontext != null && questiontext != ''
         && typeof questiontext != 'undefined') {
       formData.append("language", $('#currentLanguage').val());
+      if (mode === 'auto') {
+          $("#isAutoSaved").val('true');
+      }
       formData.append("comprehenstionQuestionInfo", JSON
       .stringify(comprehensionTestQuestion));
+      formData.append("isAutoSaved", $("#isAutoSaved").val());
       $
       .ajax({
         url: "/fdahpStudyDesigner/adminStudies/saveComprehensionTestQuestion.do?_S=${param._S}",
@@ -525,6 +568,28 @@
             $("#alertMsg").removeClass('e-box').addClass(
                 's-box').text("Content saved as draft");
             $('#alertMsg').show();
+            // pop message after 15 minutes
+            if (data.isAutoSaved === 'true') {
+                $('#myModal').modal('show');
+                let i = 1;
+                let lastSavedInterval = setInterval(function () {
+                    if (i === 15) {
+                    $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        if ($('#myModal').hasClass('in')) {
+                            $('#backToLoginPage').submit();
+                        }
+                        clearInterval(lastSavedInterval);
+                    } else {
+                        if (i === 1) {
+                            $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                        } else {
+                            $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        }
+                        i += 1;
+                    }
+                }, 60000);
+                $("#isAutoSaved").val('false');
+            }
           } else {
             var errMsg = data.errMsg;
             if (errMsg != '' && errMsg != null

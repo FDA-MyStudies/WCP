@@ -139,8 +139,6 @@
         </div>
     </div>
     <!--  End body tab section -->
-
-
 </div>
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/viewActiveTask.do?_S=${param._S}"
@@ -293,11 +291,10 @@
   }
 
   function markAsCompleted() {
-    let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
-    $('#completeInfoForm').append(input);
-    $("#completeInfoForm").submit();
+        let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
+          $('#completeInfoForm').append(input);
+          $("#completeInfoForm").submit();
   }
-
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);

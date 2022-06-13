@@ -59,6 +59,7 @@
 </script>
 <!-- Start right Content here -->
 <!-- ============================================================== -->
+<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 <form:form
         action="/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}"
         name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
@@ -212,6 +213,19 @@
         <input type="hidden" id="studyId" name="studyId" value="${studyId}">
     </c:if>
 </form:form>
+<div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
+                <div class="modal-header cust-hdr pt-lg">
+                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title pl-lg text-center">
+                        <b id="autoSavedMessage">Last saved now</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 <form:form
         action="/fdahpStudyDesigner/adminStudies/comprehensionQuestionPage.do?_S=${param._S}"
         name="comprehenstionQuestionForm" id="comprehenstionQuestionForm"
@@ -221,9 +235,11 @@
     <input type="hidden" name="actionType" id="actionType">
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
 </form:form>
 <!-- End right Content here -->
 <script type="text/javascript">
+var idleTime = 0;
   $(document).ready(function () {
     $(".menuNav li").removeClass('active');
     $(".fifthComre").addClass('active');
@@ -372,20 +388,32 @@
         $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
       }
     });
+    setInterval(function () {
+            idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+                    autoSaveComprehensionList('auto');
+            }
+        }, 226000); // 5 minutes
+
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+
     $("#saveId").click(function () {
-      $("#comprehensionTestMinimumScore").trigger('blur');
-      $("#comprehensionTestMinimumScore").parents("form").validator("destroy");
-      $("#comprehensionTestMinimumScore").parents("form").validator();
-      $("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass(
-          "has-error");
-      $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
-      saveConsent('save');
+       autoSaveComprehensionList('manual');
     });
     if (document.getElementById("markAsCompleteBtnId") != null && document.getElementById(
         "markAsCompleteBtnId").disabled) {
       $('[data-toggle="tooltip"]').tooltip();
     }
+
+
   });
+
+
 
   function deleteComprehensionQuestion(questionId) {
     bootbox.confirm("Are you sure you want to delete this question?", function (result) {
@@ -523,7 +551,18 @@
       }
     }
   }
-
+  function autoSaveComprehensionList(mode){
+    $("#comprehensionTestMinimumScore").trigger('blur');
+          $("#comprehensionTestMinimumScore").parents("form").validator("destroy");
+          $("#comprehensionTestMinimumScore").parents("form").validator();
+          $("#comprehensionTestMinimumScore").parent().removeClass("has-danger").removeClass(
+              "has-error");
+          $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
+          if (mode === 'auto') {
+          $("#isAutoSaved").val('true');
+           }
+          saveConsent('save');
+  }
   function saveConsent(type) {
     var consentId = $("#consentId").val();
     var minimumScore = $("#comprehensionTestMinimumScore").val();
@@ -575,19 +614,23 @@
           url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
           type: "POST",
           datatype: "json",
-          data: {consentInfo: data, page: pageName, language:$('#studyLanguage').val()},
+          data: {
+              consentInfo: data,
+              page: pageName,
+              language:$('#studyLanguage').val(),
+              isAutoSaved : $('#isAutoSaved').val()
+          },
           beforeSend: function (xhr, settings) {
             xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
           },
           success: function (data) {
             var message = data.message;
-            if (message == "SUCCESS") {
+            if (message === "SUCCESS") {
               var consentId = data.consentId;
-
               $("#consentId").val(consentId);
               $("#addQuestionId").attr("disabled", false);
               $("#addHelpNote").hide();
-              if (type != "save") {
+              if (type !== "save") {
                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
                 document.comprehensionInfoForm.action = "/fdahpStudyDesigner/adminStudies/comprehensionTestMarkAsCompleted.do?_S=${param._S}&language="+lang;
                 document.comprehensionInfoForm.submit();
@@ -601,6 +644,28 @@
                   $('.fifthComre').find('span').removeClass(
                       'sprites-icons-2 tick pull-right mt-xs');
                 }
+              }
+              // pop message after 15 minutes
+              if (data.isAutoSaved === 'true') {
+                  $('#myModal').modal('show');
+                  let i = 1;
+                  let lastSavedInterval = setInterval(function () {
+                      if (i === 15) {
+                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                          if ($('#myModal').hasClass('in')) {
+                              $('#backToLoginPage').submit();
+                          }
+                          clearInterval(lastSavedInterval);
+                      } else {
+                          if (i === 1) {
+                              $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                          } else {
+                              $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                          }
+                          i+=1;
+                      }
+                  }, 60000);
+                  $("#isAutoSaved").val('false');
               }
             } else {
               $("body").removeClass("loading");

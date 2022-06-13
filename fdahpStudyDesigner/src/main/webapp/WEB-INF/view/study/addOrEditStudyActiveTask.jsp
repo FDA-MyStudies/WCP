@@ -54,6 +54,7 @@
         <input type="hidden" id="mlDisplayUnitStat3" value="${activeTaskLangBO.displayUnitStat3}">
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+        <input type="hidden" id="isAutoSavedParent" value="${isAutoSaved}"/>
 
         <%--		 english data--%>
         <input type="hidden" id="enDisplayText" value="${fn:escapeXml(activeTaskBo.displayName)}">
@@ -285,9 +286,10 @@
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
           let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          let isAutoSaved = $('#isAutoSavedParent').val();
           $(".changeContent").load(
               "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}&language="
-              + lang, {
+              + lang+'&isAutoSaved='+isAutoSaved, {
                 noncache: new Date().getTime(),
                 typeOfActiveTask: typeOfActiveTask,
                 activeTaskInfoId: activeTaskInfoId,

@@ -2633,3 +2633,51 @@ a:focus {
 	pointer-events: none;
 	opacity: 0.6!important;
 }
+
+#autoSavedMessage{
+width:257px;
+}
+
+#myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+position:relative !important;
+right:-14px !important;
+margin-top:6% !important;
+}
+
+#myAutoModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+position:relative !important;
+right:-14px !important;
+margin-top:6% !important;
+}
+
+.flr_modal{
+float:right !important;
+}
+
+.grey_txt{
+color:grey;
+font-size:15px;
+font-weight:500;
+}
+
+.blue_text{
+color:#007CBA !important;
+font-size:15px;
+font-weight:500;
+}
+
+.timerPos{
+position:relative;
+top:-2px;
+right:2px !important;
+}
+
+.bold_txt{
+font-weight:900 !important;
+color:#007cba !important;
+font-size:15px;
+ }
+
+#timeOutMessage{
+width:257px;
+}

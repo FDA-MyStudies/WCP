@@ -216,19 +216,21 @@
             </div>
         </div>
     </form:form>
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <!-- Modal content-->
-            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
-                <div class="modal-header cust-hdr pt-lg">
-                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title pl-lg text-center">
-                        <b id="autoSavedMessage">Last saved now</b>
-                    </h4>
-                </div>
-            </div>
-        </div>
-    </div>
+
+     <div class="modal fade" id="myModal" role="dialog">
+         <div class="modal-dialog modal-sm flr_modal">
+             <!-- Modal content-->
+             <div class="modal-content">
+                 <div class="modal-body">
+                   <div id="autoSavedMessage" class="text-right">
+                     <div class="blue_text">Last saved now</div>
+                     <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                     </div>
+                   </div>
+                 </div>
+             </div>
+         </div>
+
 </div>
 <form:form
         action="/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}"
@@ -304,7 +306,7 @@
                     if (idleTime > 3) { // 5 minutes
                         saveStudyEligibilityPage('auto', 'save');
                     }
-                }, 226000); // 5 minutes
+                }, 75000); // 5 minutes
 
                 $(this).mousemove(function (e) {
                     idleTime = 0;
@@ -317,22 +319,27 @@
                 if ($('#isAutoSaved').val() === 'true') {
                     $('#myModal').modal('show');
                     let i = 1;
+                    let j = 14;
                     let lastSavedInterval = setInterval(function () {
-                        if (i === 15) {
-                        $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                        if ((i === 15) || (j === 0)) {
+                       // $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
                             if ($('#myModal').hasClass('in')) {
                                 $('#backToLoginPage').submit();
                             }
                             clearInterval(lastSavedInterval);
                         } else {
-                            if (i === 1) {
-                                $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                           if ((i === 1) || (j === 14)) {
+                               // $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                               $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
                             } else {
-                                $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                               // $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
                             }
                             i+=1;
+                            j-=1;
                         }
-                    }, 60000);
+                    }, 15000);
                 }
                 if (viewPermission == 'view') {
                     reorder = false;

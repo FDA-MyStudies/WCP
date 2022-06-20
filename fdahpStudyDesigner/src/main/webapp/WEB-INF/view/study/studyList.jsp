@@ -63,7 +63,25 @@
 <form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
   <input type="hidden" id="studyId" name="studyId">
 </form:form>
+<form:form
+             action="/fdahpStudyDesigner/sessionOut.do"
+              id="backToLoginPage"
+              name="backToLoginPage"
+              method="post">
+</form:form>
+
+<div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                    <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 <script>
+var idleTime = 0;
        $(document).ready(function() {
     	 $('.studyClass').addClass('active');
          $('[data-toggle="tooltip"]').tooltip();
@@ -137,7 +155,41 @@
              "searching": false, 
              "pageLength": 10 
          } );
-         
+
+        setInterval(function () {
+              idleTime += 1;
+               if (idleTime > 3) { // 5 minutes
+               timeOutFunction();
+                }
+                }, 75000);
+
+                $(this).mousemove(function (e) {
+                  idleTime = 0;
+                });
+                $(this).keypress(function (e) {
+                 idleTime = 0;
+                 });
+
+                 function timeOutFunction() {
+                 $('#myModal').modal('show');
+                  let i = 14;
+                  let timeOutInterval = setInterval(function () {
+                  if (i === 0) {
+                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                  if ($('#myModal').hasClass('in')) {
+                  $('#backToLoginPage').submit();
+                    }
+                    clearInterval(timeOutInterval);
+                     } else {
+                     if (i === 14) {
+                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 14 minutes');
+                      } else {
+                      $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                        }
+                        i-=1;
+                         }
+                       }, 15000);
+                     }
         });
        $('.copyStudyClass').on('click',function(){
       	 var form= document.createElement('form');

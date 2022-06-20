@@ -25,6 +25,44 @@
   .langSpecific > button{
     padding-left: 30px;
   }
+
+  #autoSavedMessage{
+  width:257px;
+  }
+
+  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+  position:relative !important;
+  right:-14px !important;
+  margin-top:6% !important;
+  }
+
+  .flr_modal{
+  float:right !important;
+  }
+
+  .grey_txt{
+  color:grey;
+  font-size:15px;
+  font-weight:500;
+  }
+
+  .blue_text{
+  color:#007CBA !important;
+  font-size:15px;
+  font-weight:500;
+  }
+
+  .timerPos{
+  position:relative;
+  top:-2px;
+  right:2px !important;
+  }
+
+  .bold_txt{
+  font-weight:900 !important;
+  color:#007cba !important;
+  font-size:15px;
+   }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -328,14 +366,15 @@
         </div>
     </form:form>
     <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
-            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
-                <div class="modal-header cust-hdr pt-lg">
-                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title pl-lg text-center">
-                        <b id="autoSavedMessage">Last saved now</b>
-                    </h4>
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div id="autoSavedMessage" class="text-right">
+                    <div class="blue_text">Last saved now</div>
+                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -393,7 +432,7 @@ var idleTime = 0;
         if (idleTime > 3) { // 5 minutes
         autoSaveComprehensionQuestionPage('auto');
          }
-         }, 226000); // 5 minutes
+         }, 75000); // 5 minutes
 
           $(this).mousemove(function (e) {
           idleTime = 0;
@@ -572,22 +611,25 @@ var idleTime = 0;
             if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 1;
+                let j =14;
                 let lastSavedInterval = setInterval(function () {
-                    if (i === 15) {
-                    $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                   if ((i === 15) || (j === 0)) {
+                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
                         if ($('#myModal').hasClass('in')) {
                             $('#backToLoginPage').submit();
                         }
                         clearInterval(lastSavedInterval);
                     } else {
-                        if (i === 1) {
-                            $('#autoSavedMessage').text('Last saved was 1 minute ago');
+                         if ((i === 1) || (j === 14)) {
+                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
                         } else {
-                            $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
                         }
+                        idleTime = 0;
                         i += 1;
+                        j-=1;
                     }
-                }, 60000);
+                }, 15000);
                 $("#isAutoSaved").val('false');
             }
           } else {

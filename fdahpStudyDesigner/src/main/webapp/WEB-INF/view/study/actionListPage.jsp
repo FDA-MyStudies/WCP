@@ -17,6 +17,38 @@
 #spec-tooltip .tooltip-inner {
 	min-width: 430px !important;
 }
+
+#myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+position:relative !important;
+right:-14px !important;
+margin-top:6% !important;
+}
+
+.flr_modal{
+float:right !important;
+}
+
+.blue_text{
+color:#007CBA !important;
+font-size:15px;
+font-weight:500;
+}
+
+.timerPos{
+position:relative;
+top:-2px;
+right:2px !important;
+}
+
+.bold_txt{
+font-weight:900 !important;
+color:#007cba !important;
+font-size:15px;
+ }
+
+#timeOutMessage{
+width:257px;
+}
 </style>
 </head>
 
@@ -175,6 +207,16 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm flr_modal">
+                <!-- Modal content-->
+                <div class="modal-content">
+                        <div class="modal-body">
+                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                        </div>
+                    </div>
+                </div>
+    </div>
 </div>
 <form:form
 	action="/fdahpStudyDesigner/adminStudies/updateStudyAction.do?_S=${param._S}"
@@ -187,7 +229,14 @@
 	action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}"
 	name="studyListInfoForm" id="studyListInfoForm" method="post">
 </form:form>
+<form:form
+             action="/fdahpStudyDesigner/sessionOut.do"
+              id="backToLoginPage"
+              name="backToLoginPage"
+              method="post">
+</form:form>
 <script type="text/javascript">
+var idleTime = 0;
 	$(document).ready(function() {
 		$(".menuNav li").removeClass('active');
 		$(".tenth").addClass('active');
@@ -206,7 +255,41 @@
 		if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
 			refreshAndFetchLanguageData(currLang);
 		}
-		
+
+		setInterval(function () {
+              idleTime += 1;
+               if (idleTime > 3) { // 5 minutes
+               timeOutFunction();
+                }
+                }, 75000);
+
+                $(this).mousemove(function (e) {
+                  idleTime = 0;
+                });
+                $(this).keypress(function (e) {
+                 idleTime = 0;
+                 });
+
+                 function timeOutFunction() {
+                 $('#myModal').modal('show');
+                  let i = 14;
+                  let timeOutInterval = setInterval(function () {
+                  if (i === 0) {
+                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                  if ($('#myModal').hasClass('in')) {
+                  $('#backToLoginPage').submit();
+                    }
+                    clearInterval(timeOutInterval);
+                     } else {
+                     if (i === 14) {
+                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 14 minutes');
+                      } else {
+                      $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                        }
+                        i-=1;
+                         }
+                       }, 15000);
+                     }
 	});
 	$('input[type="radio"]').change(function() {
 		var studyId = "${studyBo.id}";

@@ -49,6 +49,16 @@
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
 </head>
+<style>
+#myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: 5px !important;
+    margin-top: 6% !important;
+}
+.flr_modal{
+float:right !important;
+}
+</style>
 <body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
      <form:form action="" name="studyListForm" id="studyListForm" method="post">
@@ -57,6 +67,12 @@
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
+	<form:form
+                 action="/fdahpStudyDesigner/sessionOut.do"
+                  id="backToLoginPage"
+                  name="backToLoginPage"
+                  method="post">
+    </form:form>
     <div id="lg-container" class="lg-container">
         
         <!-- Login Left Section-->
@@ -188,6 +204,16 @@
     </div>
     
     <!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                 <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                 </div>
+            </div>
+        </div>
+</div>
 <div class="modal fade" id="termsModal" role="dialog">
    <div class="modal-dialog modal-lg">
       <!-- Modal content-->
@@ -242,6 +268,7 @@
     <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>
+    var idleTime = 0;
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -303,6 +330,41 @@
       	var year = new Date().getFullYear();
     	var copyRightText= 'Copyright © '+year+' FDA';
     	document.getElementById("copyright").innerHTML = copyRightText;
+
+    	setInterval(function () {
+              idleTime += 1;
+               if (idleTime > 3) { // 5 minutes
+               timeOutFunction();
+                }
+                }, 75000);
+
+                $(this).mousemove(function (e) {
+                  idleTime = 0;
+                });
+                $(this).keypress(function (e) {
+                 idleTime = 0;
+                 });
+
+                 function timeOutFunction() {
+                 $('#myModal').modal('show');
+                  let i = 14;
+                  let timeOutInterval = setInterval(function () {
+                  if (i === 0) {
+                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                  if ($('#myModal').hasClass('in')) {
+                  $('#backToLoginPage').submit();
+                    }
+                    clearInterval(timeOutInterval);
+                     } else {
+                     if (i === 14) {
+                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 14 minutes');
+                      } else {
+                      $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                        }
+                        i-=1;
+                         }
+                       }, 15000);
+                     }
     });
     <c:if test="${param.action eq 'landing'}">
     /* function noBack() { 

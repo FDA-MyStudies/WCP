@@ -3,29 +3,7 @@ package com.fdahpstudydesigner.service;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
-import com.fdahpstudydesigner.bo.Checklist;
-import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
-import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
-import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
-import com.fdahpstudydesigner.bo.ConsentBo;
-import com.fdahpstudydesigner.bo.ConsentInfoBo;
-import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
-import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
-import com.fdahpstudydesigner.bo.EligibilityBo;
-import com.fdahpstudydesigner.bo.EligibilityTestBo;
-import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
-import com.fdahpstudydesigner.bo.NotificationBO;
-import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
-import com.fdahpstudydesigner.bo.ReferenceTablesBo;
-import com.fdahpstudydesigner.bo.ResourceBO;
-import com.fdahpstudydesigner.bo.ResourcesLangBO;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudyLanguageBO;
-import com.fdahpstudydesigner.bo.StudyPageBo;
-import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
-import com.fdahpstudydesigner.bo.StudyPermissionBO;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
-import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +42,8 @@ public interface StudyService {
   public List<StudyPermissionBO> getAddedUserListToStudy(Integer studyId, Integer userId);
 
   public List<StudyBo> getAllStudyList();
+
+  List<VersionInfo> getVersionInfoList();
 
   public Checklist getchecklistInfo(Integer studyId);
 
@@ -260,4 +240,6 @@ public interface StudyService {
   ResourcesLangBO getResourceLangInfo(String resourceInfoId, String language);
 
   Map<String, Boolean> isLanguageDeletable(String customStudyId);
+
+  String forceUpgradeApp(String appId, String androidUpdateType, String iosUpdateType);
 }

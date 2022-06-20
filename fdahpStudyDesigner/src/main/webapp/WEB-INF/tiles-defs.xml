@@ -337,6 +337,12 @@
 
     <!-- Notification Ends -->
 
+    <!-- App Section Starts -->
+    <definition name="appListPage" extends="base.definition">
+        <put-attribute name="body"
+                       value="/WEB-INF/view/apps/appsListPage.jsp"/>
+    </definition>
+
     <!-- MyAccount Starts -->
 
     <definition name="myAccount" extends="base.definition">

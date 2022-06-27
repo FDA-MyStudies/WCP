@@ -58,6 +58,10 @@
 .flr_modal{
 float:right !important;
 }
+.lg-icons{
+padding-top:20px !important;
+
+}
 </style>
 <body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
@@ -103,8 +107,8 @@ float:right !important;
 	                <div class="lg-space-title">
 	                    <span>Welcome,</span><span>${sessionObject.firstName}</span>
 	                </div>
-	                <div class='lg-icons'> 
-	                   <ul class="lg-icons-list"> 
+	                <div class='lg-icons'>
+	                   <ul class="lg-icons-list">
 	                    <li class="studyListId">
 	                        <a class='studies-g' href='javascript:void(0)'></a>
 	                        <div class='studyList'>Studies<br><span>&nbsp;</span></div>
@@ -120,7 +124,11 @@ float:right !important;
 	                   <li class="userListId">
 	                        <a class='user-g' href='javascript:void(0)'></a>
 	                        <div>Users<br><span>&nbsp;</span></div>
-	                    </li> 
+	                    </li>
+	                    <li class="appClass">
+	                       <a href='javascript:void(0)' id="appSection"></a>
+	                      <div>App Force Update<br><span>&nbsp;</span></div>
+	                    </li>
 	                    <li class="myAccountId">
 	                        <a class='account-g' href='javascript:void(0)'></a>
 	                        <div>My Account<br><span>&nbsp;</span></div>
@@ -182,7 +190,13 @@ float:right !important;
                                 <img class="mt-xlg" src="../images/icons/user-w.png">
                             </a>
                             <div>Users<br><span>&nbsp;</span></div>
-                        </li> 
+                        </li>
+                        <li id="appSection">
+                        <a class='' href='javascript:void(0)'>
+                         <img class="mt-xlg" src="../images/icons/upgrade-w.png">
+                         </a>
+                         <div>App Force Update<br><span>&nbsp;</span></div>
+                         </li>
                         <li class="myAccountId">
                             <a class='' href='javascript:void(0)'>
                                 <img class="mt-xlg" src="../images/icons/account-w.png">
@@ -302,7 +316,6 @@ float:right !important;
     	 $(".notificationListId").unbind();
     	 </c:if>
     	 
-    	 
     	 $(".studyListId").click(function(){	
     		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/studyList.do";
     		document.studyListForm.submit();
@@ -312,7 +325,12 @@ float:right !important;
     		document.studyListForm.action="/fdahpStudyDesigner/adminUsersView/getUserList.do";
     		document.studyListForm.submit();
     	 });
-    	 
+
+         $('#appSection').click(function(){
+        document.studyListForm.action="/fdahpStudyDesigner/adminApps/getAppsList.do";
+        document.studyListForm.submit();
+         });
+
     	 $(".notificationListId").click(function(){	
      		document.studyListForm.action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
      		document.studyListForm.submit();
@@ -356,8 +374,8 @@ float:right !important;
                     }
                     clearInterval(timeOutInterval);
                      } else {
-                     if (i === 14) {
-                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 14 minutes');
+                     if (i === 1) {
+                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
                       } else {
                       $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
                         }

@@ -36,7 +36,11 @@
          right:-14px !important;
          margin-top:6% !important;
     }
-
+  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+      position: relative !important;
+      right: -14px !important;
+      margin-top: 6% !important;
+  }
       .flr_modal{
       float:right !important;
       }
@@ -44,13 +48,13 @@
       .grey_txt{
       color:grey;
       font-size:15px;
-       font-weight:500;
+      font-weight:500;
       }
 
       .blue_text{
       color:#007CBA !important;
       font-size:15px;
-      font-weight:600 !important;
+      font-weight:500 !important;
       }
 
        .timerPos{
@@ -283,6 +287,18 @@
             </div>
         </div>
 
+        	<div class="modal fade" id="timeOutModal" role="dialog">
+                    <div class="modal-dialog modal-sm flr_modal">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                                <div class="modal-body">
+                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+
+
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
@@ -396,8 +412,13 @@ var idleTime = 0;
 
           setInterval(function () {
               idleTime += 1;
-              if (idleTime > 3) { // 5 minutes
-                      autoSaveConsentInfo('auto', '#saveId');
+              if (idleTime > 3) {
+              <c:if test="${actionPage ne 'view'}">
+              autoSaveConsentInfo('auto', '#saveId');
+              </c:if>
+              <c:if test="${actionPage eq 'view'}">
+               timeOutFunction();
+              </c:if>
               }
           }, 75000); // 5 minutes
 
@@ -410,12 +431,35 @@ var idleTime = 0;
       tinymce.get('elaboratedRTE').on('keydown', function () {
           idleTime = 0;
       });
+
+                       function timeOutFunction() {
+                       $('#timeOutModal').modal('show');
+                        let i = 14;
+                        let timeOutInterval = setInterval(function () {
+                        if (i === 0) {
+                        $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                        if ($('#timeOutModal').hasClass('in')) {
+                        $('#backToLoginPage').submit();
+                          }
+                          clearInterval(timeOutInterval);
+                           } else {
+                           if (i === 1) {
+                          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                            } else {
+                            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                              }
+                              idleTime = 0;
+                              i-=1;
+                               }
+                             }, 15000);
+                           }
+
+
   });
 
   function saveConsentInfo(item) {
     autoSaveConsentInfo('manual', item);
   }
-
 
    function autoSaveConsentInfo(mode,item){
    var consentInfo = new Object();
@@ -506,8 +550,12 @@ var idleTime = 0;
                          } else {
                              if ((i === 1) || (j === 14)) {
                                 $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                             } else {
-                                $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
+                             }
+                             else if ((i === 14) || (j === 1)) {
+                             $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>');
+                             }
+                             else {
+                             $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
                              }
                              idleTime = 0;
                              i += 1;
@@ -644,11 +692,12 @@ var idleTime = 0;
       theme: "silver",
       skin: "custom-grey",
       height: 300,
+      min_height: 100,
       branding : false,
       plugins: [
           "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
       ],
-      toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
+      toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect | fontselect",
       toolbar_items_size: 'small',
       content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
       setup: function (ed) {

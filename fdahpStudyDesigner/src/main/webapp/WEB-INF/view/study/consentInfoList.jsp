@@ -351,8 +351,8 @@ var idleTime = 0;
              }
              clearInterval(timeOutInterval);
               } else {
-              if (i === 14) {
-             $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 14 minutes');
+              if (i === 1) {
+             $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
                } else {
                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
                  }

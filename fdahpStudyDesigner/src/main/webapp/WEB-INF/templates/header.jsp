@@ -40,7 +40,7 @@
                 <li id="users"><a href="javascript:void(0)" id="usersSection">Users</a></li>
                 </c:if>
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
-                    <li class="appClass"><a href="javascript:void(0)" id="appSection" >App Force Upgrade</a></li>
+                    <li class="appClass"><a href="javascript:void(0)" id="appSection" >App Force Update</a></li>
                 </c:if>
               </ul>
               

@@ -16,6 +16,12 @@
     margin-top:6% !important;
     }
 
+    #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+      position:relative !important;
+      right:-14px !important;
+      margin-top:6% !important;
+      }
+
     .flr_modal{
     float:right !important;
     }
@@ -1724,6 +1730,17 @@
                 </div>
             </div>
         </div>
+
+                <div class="modal fade" id="timeOutModal" role="dialog">
+                                    <div class="modal-dialog modal-sm flr_modal">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                                <div class="modal-body">
+                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                                </div>
+                                            </div>
+                                   </div>
+                            </div>
 </div>
 <script>
 var idleTime = 0;
@@ -1741,8 +1758,13 @@ var idleTime = 0;
     }
               setInterval(function () {
                   idleTime += 1;
-                  if (idleTime > 3) { // 5 minutes
+                  if (idleTime > 3) {
+                          <c:if test="${actionPage ne 'view'}">
                           autoSaveSpatialStudyActivityPage('auto');
+                           </c:if>
+                          <c:if test="${actionPage eq 'view'}">
+                              timeOutFunction();
+                          </c:if>
                   }
               }, 75000); // 5 minutes
 
@@ -1753,6 +1775,27 @@ var idleTime = 0;
                   idleTime = 0;
               });
 
+       function timeOutFunction() {
+        $('#timeOutModal').modal('show');
+         let i = 14;
+         let timeOutInterval = setInterval(function () {
+          if (i === 0) {
+           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+            if ($('#timeOutModal').hasClass('in')) {
+              $('#backToLoginPage').submit();
+           }
+            clearInterval(timeOutInterval);
+              } else {
+                if (i === 1) {
+              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                } else {
+                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+               }
+                idleTime = 0;
+                i-=1;
+                 }
+                 }, 15000);
+                 }
       // pop message after 15 minutes
       if ($('#isAutoSaved').val() === 'true') {
           $('#myModal').modal('show');
@@ -1768,7 +1811,11 @@ var idleTime = 0;
               } else {
                   if ((i === 1) || (j === 14)) {
                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                  } else {
+                  }
+                  else if ((i === 14) || (j === 1)) {
+                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+                  }
+                  else {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
                   }
                   i+=1;

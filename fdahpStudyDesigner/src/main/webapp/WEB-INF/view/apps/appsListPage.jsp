@@ -12,6 +12,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <head>
     <meta charset="UTF-8">
+    <style>  
+	body { height: 100vh !important; }    
+    </style>
 </head>
 <div
         class="col-xs-12 col-sm-12 col-md-12 col-lg-12 grayeef2f5-bg p-none">

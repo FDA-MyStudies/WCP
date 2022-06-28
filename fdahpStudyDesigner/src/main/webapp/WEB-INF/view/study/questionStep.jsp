@@ -58,8 +58,8 @@
       
   .ui-sortable tr:hover {
     background:#fff !important;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 6px #fff;
+    box-shadow: inset 0 0 6px #fff;
   }
  
   .table>tbody>tr.ui-sortable-handle>td {
@@ -2242,6 +2242,32 @@
 											var="questionResponseSubType" varStatus="subtype">
 											<!-- Section Start -->
                       <tr> <td>
+
+                        <div class="panel panel-default">
+                          <input type="hidden" name="">
+                          <div class="panel-heading">
+                              <div class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapse0" aria-expanded="true">
+                                      <div class="text-left dis-inline">
+                                        <div class="gray-choice-f mb-xs mt-md">
+                                          Text Choices <span class="ml-xs sprites_v3 filled-tooltip"
+                                            data-toggle="tooltip"
+                                            title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                        </div>
+                                        
+                                      </div>
+                                      <div class="text-right dis-inline pull-right">
+                                        
+                                          <span class="ml-lg imageBg"><img class="arrow"
+                                                                          src="../fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                          <div id="collapse0" class="panel-collapse collapse in">
+                            <div class="panel-body pt-none">
+
 											<div class="mt-xlg text-choice" id="${subtype.index}">
 												<div class="col-md-3 pl-none">
 													<div class="gray-xs-f mb-xs">
@@ -2338,7 +2364,8 @@
 															onclick='removeTextChoice(this);'></span>
 													</div>
 												</div>
-											</div></td></tr> 
+											</div> </div>
+                    </div></div></td></tr> 
 											<!-- Section End -->
 										</c:forEach>
 									</c:when>
@@ -2371,7 +2398,7 @@
                                   <div class="text-right dis-inline pull-right">
                                     
                                       <span class="ml-lg imageBg"><img class="arrow"
-                                                                      src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                                                      src="../fdahpStudyDesigner/images/icons/slide-down.png"/></span>
                                   </div>
                               </a>
                           </div>
@@ -2504,7 +2531,7 @@
                                     <div class="text-right dis-inline pull-right">
                                       
                                         <span class="ml-lg imageBg"><img class="arrow"
-                                                                        src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                                                        src="../fdahpStudyDesigner/images/icons/slide-down.png"/></span>
                                     </div>
                                 </a>
                             </div>
@@ -6174,7 +6201,7 @@
                 + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
               + "  </div> </div>"
              + "<div class='text-right dis-inline pull-right'> "
-                + "  <span class='ml-lg imageBg'><img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
+                + "  <span class='ml-lg imageBg'><img class='arrow' src='../fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
             + "  </div> "
         + "  </a> "
     + " </div> "

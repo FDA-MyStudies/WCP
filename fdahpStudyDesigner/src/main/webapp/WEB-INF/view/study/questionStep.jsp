@@ -2248,7 +2248,7 @@
                           <div class="panel-heading">
                               <div class="panel-title">
                                   <a data-toggle="collapse" data-parent="#accordion"
-                                    href="${subtype.index}" aria-expanded="true">
+                                    href="#collapse0" aria-expanded="true">
                                       <div class="text-left dis-inline">
                                         <div class="gray-choice-f mb-xs mt-md">
                                           Text Choices <span class="ml-xs sprites_v3 filled-tooltip"
@@ -2265,7 +2265,7 @@
                                   </a>
                               </div>
                           </div>
-                          <div id="${subtype.index}" class="panel-collapse collapse in">
+                          <div id="collapse0" class="panel-collapse collapse in">
                             <div class="panel-body pt-none">
 
 											<div class="mt-xlg" >

@@ -2241,7 +2241,7 @@
 											items="${questionnairesStepsBo.questionResponseSubTypeList}"
 											var="questionResponseSubType" varStatus="subtype">
 											<!-- Section Start -->
-                      <tr> <td>
+                      <tr class=" text-choice" id="${subtype.index}"> <td>
 
                         <div class="panel panel-default">
                           <input type="hidden" name="">
@@ -2268,7 +2268,7 @@
                           <div id="collapse0" class="panel-collapse collapse in">
                             <div class="panel-body pt-none">
 
-											<div class="mt-xlg text-choice" id="${subtype.index}">
+											<div class="mt-xlg" >
 												<div class="col-md-3 pl-none">
 													<div class="gray-xs-f mb-xs">
 												Display Text (1 to 100 characters)<span
@@ -2381,7 +2381,7 @@
 
                   <!-- Start panel-->
                   
-                  <tr><td><div class="panel panel-default">
+                  <tr class="text-choice otherOptionChecked" id="0"><td><div class="panel panel-default">
                       <input type="hidden" name="">
                       <div class="panel-heading">
                           <div class="panel-title">
@@ -2407,7 +2407,7 @@
                     <div class="panel-body pt-none">
 
                         <!-- Section Start -->
-                        <div class="mt-xlg text-choice otherOptionChecked" id="0">
+                        <div class="mt-xlg" >
                           <div class="col-md-3 pl-none">
                             <div class="gray-xs-f mb-xs">
                             Display Text (1 to 100 characters)<span

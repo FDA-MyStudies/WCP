@@ -2281,6 +2281,10 @@
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
+						                              <input type="text"
+						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+						                                id="displayTextChoicesequenceNumber${subtype.index}"
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}">															
 														<div class="help-block with-errors red-txt"></div>
 													</div>
 												</div>

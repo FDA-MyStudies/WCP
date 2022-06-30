@@ -190,6 +190,7 @@
                       } else {
                       $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
                         }
+                        idleTime = 0;
                         i-=1;
                          }
                        }, 15000);

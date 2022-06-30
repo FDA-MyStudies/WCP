@@ -746,6 +746,7 @@
                     else {
                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
                     }
+                    idleTime = 0;
                     i+=1;
                     j-=1;
                 }

@@ -2232,7 +2232,7 @@
 									data-toggle="tooltip"
 									title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
 							</div> -->
-              <table class="table TextChoiceContainer" id="diagnosis_list"><tbody>
+              <table class="table TextChoiceContainer order_sequenceNumber" id="diagnosis_list"><tbody>
 				
 								<c:choose>
 									<c:when
@@ -2241,17 +2241,20 @@
 											items="${questionnairesStepsBo.questionResponseSubTypeList}"
 											var="questionResponseSubType" varStatus="subtype">
 											<!-- Section Start -->
-                      <tr class=" text-choice" id="${subtype.index}"> <td>
-
-                        <div class="panel panel-default">
-                          <input type="hidden" name="">
+                      
+                      <tr class=" text-choice" id="${subtype.index}">
+                       
+                        <td>  <div class="panel panel-default">
+                          <!-- <input type="hidden" name=""> -->
+                          
                           <div class="panel-heading">
                               <div class="panel-title">
                                   <a data-toggle="collapse" data-parent="#accordion"
-                                    href="#collapse0" aria-expanded="true">
+                                    href="#collapse${subtype.index}" aria-expanded="true">
+                                 
                                       <div class="text-left dis-inline">
                                         <div class="gray-choice-f mb-xs mt-md">
-                                          Text Choices <span class="ml-xs sprites_v3 filled-tooltip"
+                                          Text Choices <span class="priority">1</span> <span class="ml-xs sprites_v3 filled-tooltip"
                                             data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                         </div>
@@ -2260,12 +2263,12 @@
                                       <div class="text-right dis-inline pull-right">
                                         
                                           <span class="ml-lg imageBg"><img class="arrow"
-                                                                          src="../fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                                                          src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
                                       </div>
                                   </a>
                               </div>
                           </div>
-                          <div id="collapse0" class="panel-collapse collapse in">
+                          <div id="collapse${subtype.index}" class="panel-collapse collapse in">
                             <div class="panel-body pt-none">
 
 											<div class="mt-xlg" >
@@ -2281,10 +2284,13 @@
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
-						                              <input type="text"
+						                             <input type="text" 
 						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
 						                                id="displayTextChoicesequenceNumber${subtype.index}"
-						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}">															
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}">
+
+                                            <!-- <input type="text" name="sort${subtype.index}" value="${subtype.index}"> -->
+                                            
 														<div class="help-block with-errors red-txt"></div>
 													</div>
 												</div>
@@ -2385,15 +2391,17 @@
 
                   <!-- Start panel-->
                   
-                  <tr class="text-choice otherOptionChecked" id="0"><td><div class="panel panel-default">
-                      <input type="hidden" name="">
+                  <tr class="text-choice otherOptionChecked" id="0">
+                    <td>
+                      <div class="panel panel-default">
+                    <input type="hidden" name="">
                       <div class="panel-heading">
                           <div class="panel-title">
                               <a data-toggle="collapse" data-parent="#accordion"
                                 href="#collapse" aria-expanded="true">
                                   <div class="text-left dis-inline">
                                     <div class="gray-choice-f mb-xs mt-md">
-                                      Text Choices <span class="ml-xs sprites_v3 filled-tooltip"
+                                      Text Choices <span class="priority">2</span> <span class="ml-xs sprites_v3 filled-tooltip"
                                         data-toggle="tooltip"
                                         title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                     </div>
@@ -2402,7 +2410,7 @@
                                   <div class="text-right dis-inline pull-right">
                                     
                                       <span class="ml-lg imageBg"><img class="arrow"
-                                                                      src="../fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                                                      src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
                                   </div>
                               </a>
                           </div>
@@ -2517,7 +2525,8 @@
 						
 
                       <!-- Start panel-->
-                      <tr class="text-choice otherOptionChecked1"  id="1"> <td>
+                      <tr class="text-choice otherOptionChecked1"  id="1">       
+                         <td>
                       <div class="panel panel-default" >
                         <input type="hidden" name="">
                         <div class="panel-heading">
@@ -2526,7 +2535,7 @@
                                   href="#collapse1" aria-expanded="true">
                                     <div class="text-left dis-inline">
                                       <div class="gray-choice-f mb-xs mt-md">
-                                        Text Choices 1<span class="ml-xs sprites_v3 filled-tooltip"
+                                        Text Choices  <span class="priority">3</span> <span class="ml-xs sprites_v3 filled-tooltip"
                                           data-toggle="tooltip"
                                           title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                       </div>
@@ -2535,7 +2544,7 @@
                                     <div class="text-right dis-inline pull-right">
                                       
                                         <span class="ml-lg imageBg"><img class="arrow"
-                                                                        src="../fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                                                        src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
                                     </div>
                                 </a>
                             </div>
@@ -3703,20 +3712,34 @@
         renumber_table(tableID);
         }
     });
-  
-  });
-  
-  //Renumber table rows
-  function renumber_table(tableID) {
+
+    //Renumber table rows
+    function renumber_table(tableID) {
     $(tableID + " tr").each(function() {
       count = $(this).parent().children().index($(this)) + 1;
       $(this).find('.priority').html(count);
     });
   }
-  
-  
+   //sequence number set table rows
+  var sortOrder = [];
+      var $sortableTable  = $(".order_sequenceNumber tbody");
+      
+      $sortableTable.sortable({
+          start: function(event, element){
+              $.map($('[id^=displayTextChoicesequenceNumber]', $sortableTable), function(element){
+                  sortOrder.push(element.value);
+              });
+          },
+          stop: function(event, element) {
+              $.each($('tr [id^=displayTextChoicesequenceNumber]', $sortableTable), function(index, element){
+                  element.value = sortOrder[index];
+              });
+          }
+      });
+
+  });
   </script>
-  
+
 
 
 <script type="text/javascript">
@@ -6205,7 +6228,7 @@
                 + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
               + "  </div> </div>"
              + "<div class='text-right dis-inline pull-right'> "
-                + "  <span class='ml-lg imageBg'><img class='arrow' src='../fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
+                + "  <span class='ml-lg imageBg'><img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
             + "  </div> "
         + "  </a> "
     + " </div> "

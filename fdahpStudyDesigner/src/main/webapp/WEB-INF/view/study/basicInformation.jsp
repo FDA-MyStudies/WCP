@@ -96,7 +96,7 @@
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="mlFullName" value="${studyLanguageBO.fullName}"/>
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
-        <input type="hidden" id="mlDescription" value="${studyLanguageBO.description}"/>
+        <textarea style="display: none;" id="mlDescription">${studyLanguageBO.description}</textarea>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
@@ -1079,10 +1079,10 @@
                     'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
                 $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
                     'cursor-none');
-                $('#editor').val($('input#mlDescription', htmlData).val());
+                $('#editor').val($('#mlDescription', htmlData).val());
                 let tinyMce = tinymce.activeEditor;
                 if (tinyMce !== undefined) {
-                    tinyMce.setContent($('input#mlDescription', htmlData).val());
+                    tinyMce.setContent($('#mlDescription', htmlData).val());
                 }
                 $('#loader').hide();
             } catch (e) {

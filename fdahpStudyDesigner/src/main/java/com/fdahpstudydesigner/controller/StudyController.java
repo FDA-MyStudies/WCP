@@ -307,17 +307,19 @@ public class StudyController {
               String filteredText = resourceBO.getRichText().replace(QUOTE, QUOTE_MARK);
               resourceBO.setRichText(filteredText);
             }
-            if (StringUtils.isNotBlank(resourceBO.getResourceText()) &&
-                    resourceBO.getResourceText().contains(QUOTE)) {
-              String filteredText = resourceBO.getResourceText().replace(QUOTE, QUOTE_MARK);
-              resourceBO.setResourceText(filteredText);
-            }
           }
           map.addAttribute("resourceBO", resourceBO);
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-            map.addAttribute(
-                "resourceLangBO", studyService.getResourceLangInfo(resourceInfoId, language));
+            ResourcesLangBO resourcesLangBO = studyService.getResourceLangInfo(resourceInfoId, language);
+            map.addAttribute("resourceLangBO", resourcesLangBO);
+            if (resourcesLangBO != null) {
+              if (StringUtils.isNotBlank(resourcesLangBO.getRichText()) &&
+                      resourcesLangBO.getRichText().contains(QUOTE)) {
+                String filteredText = resourcesLangBO.getRichText().replace(QUOTE, QUOTE_MARK);
+                resourcesLangBO.setRichText(filteredText);
+              }
+            }
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON, action);
@@ -1766,7 +1768,7 @@ public class StudyController {
             this.setStudyLangData(studyId, language, map);
             if (StringUtils.isNotBlank(consentInfoLangBO.getElaborated())
                     && consentInfoLangBO.getElaborated().contains(QUOTE)) {
-              String filteredText = consentInfoBo.getElaborated().replace(QUOTE, QUOTE_MARK);
+              String filteredText = consentInfoLangBO.getElaborated().replace(QUOTE, QUOTE_MARK);
               consentInfoLangBO.setElaborated(filteredText);
             }
           }
@@ -1904,6 +1906,19 @@ public class StudyController {
           String language = request.getParameter("language");
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             this.setStudyLangData(studyId, language, map);
+            StudyLanguageBO studyLanguageBO = (StudyLanguageBO) map.getAttribute("studyLanguageBO");
+            if (studyLanguageBO != null) {
+              if (StringUtils.isNotBlank(studyLanguageBO.getLearnMoreText())
+                      && studyLanguageBO.getLearnMoreText().contains(QUOTE)) {
+                String filteredText = studyLanguageBO.getLearnMoreText().replace(QUOTE, QUOTE_MARK);
+                studyLanguageBO.setLearnMoreText(filteredText);
+              }
+              if (StringUtils.isNotBlank(studyLanguageBO.getConsentDocContent())
+                      && studyLanguageBO.getConsentDocContent().contains(QUOTE)) {
+                String filteredText = studyLanguageBO.getConsentDocContent().replace(QUOTE, QUOTE_MARK);
+                studyLanguageBO.setConsentDocContent(filteredText);
+              }
+            }
             List<ConsentInfoLangBO> consentInfoLangBOList =
                 studyService.getConsentInfoLangByStudyId(Integer.parseInt(studyId), language);
             map.addAttribute(

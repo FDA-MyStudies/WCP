@@ -89,7 +89,7 @@
 		<!--  Start top tab section-->
 		<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 		<input type="hidden" id="mlTitle" value="${resourceLangBO.title}">
-		<input type="hidden" id="mlRichText" value="${resourceLangBO.richText}">
+		<textarea style="display: none;" id="mlRichText">${resourceLangBO.richText}</textarea>
 		<input type="hidden" id="mlResourceText" value="${resourceLangBO.resourceText}">
 		<input type="hidden" id="mlPdfName" value="${resourceLangBO.pdfName}">
 		<input type="hidden" id="mlPdfUrl" value="${resourceLangBO.pdfUrl}">

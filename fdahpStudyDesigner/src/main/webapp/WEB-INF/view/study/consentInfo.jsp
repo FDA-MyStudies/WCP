@@ -94,7 +94,7 @@
         <input type="hidden" id="type" name="type" value="complete"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="briefSummaryLang" value="${consentInfoLangBO.briefSummary}">
-        <input type="hidden" id="elaboratedLang" value="${consentInfoLangBO.elaborated}">
+        <textarea style="display: none" id="elaboratedLang">${consentInfoLangBO.elaborated}</textarea>
         <input type="hidden" id="displayTitleLang" value="${consentInfoLangBO.displayTitle}">
         <div class="right-content-head" style="z-index: 999;">
             <div class="text-right">

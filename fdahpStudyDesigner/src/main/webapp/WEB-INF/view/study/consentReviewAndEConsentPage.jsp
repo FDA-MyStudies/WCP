@@ -133,8 +133,8 @@
         <input type="hidden" id="mlTagline" value="${studyLanguageBO.taglineDescription}">
         <input type="hidden" id="mlShortDesc" value="${studyLanguageBO.shortDescription}">
         <input type="hidden" id="mlLongDesc" value="${studyLanguageBO.longDescription}">
-        <input type="hidden" id="mlLearnMore" value="${studyLanguageBO.learnMoreText}">
-        <input type="hidden" id="mlConsentDocContent" value="${studyLanguageBO.consentDocContent}">
+        <textarea style="display: none" id="mlLearnMore">${studyLanguageBO.learnMoreText}</textarea>
+        <textarea style="display: none" id="mlConsentDocContent">${studyLanguageBO.consentDocContent}</textarea>
         <input type="hidden" id="mlAgreement" value="${studyLanguageBO.agreementOfConsent}">
         <input type="hidden" id="mlSignature0" value="${studyLanguageBO.signatureOne}">
         <input type="hidden" id="mlSignature1" value="${studyLanguageBO.signatureTwo}">
@@ -1731,7 +1731,10 @@ var idleTime = 0;
               $('#shortDescriptionId').prop('disabled', false);
               $('#longDescriptionId').prop('disabled', false);
               $('#learnMoreTextId').prop('disabled', false).change();
-              tinymce.get('learnMoreTextId').getBody().setAttribute('contenteditable', 'true');
+              let body = tinymce.get('learnMoreTextId').getBody();
+              if (body != undefined) {
+                  body.setAttribute('contenteditable', 'true')
+              }
             }
             let editor1 = tinymce.get('learnMoreTextId');
             if (editor1 !== null)

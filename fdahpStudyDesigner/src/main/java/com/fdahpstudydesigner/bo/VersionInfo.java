@@ -24,10 +24,10 @@ public class VersionInfo implements Serializable {
     private String iosVersion;
 
     @Column(name = "android_force_update")
-    private Boolean androidForceUpgrade;
+    private Boolean androidForceUpgrade = false;
 
     @Column(name = "ios_force_update")
-    private Boolean iosForceUpgrade;
+    private Boolean iosForceUpgrade = false;
 
     @Column(name = "app_id")
     private String appId;

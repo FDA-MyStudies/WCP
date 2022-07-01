@@ -65,7 +65,6 @@
                         <td>${app.androidVersion}</td>
                         <td>
                             <select id="androidUpdateType_${loop.index}" class="selectpicker updateType" name="androidForceUpgrade">
-                                <option value=''>-select-</option>
                                 <c:forEach items="${updateTypes}" var="updateType">
                                     <option value="${updateType.key}" ${app.androidForceUpgrade eq updateType.value ? 'selected' : ''}>${updateType.key}</option>
                                 </c:forEach>
@@ -75,7 +74,6 @@
                         <td>
 
                             <select id="iosUpdateType_${loop.index}" class="selectpicker updateType" name="iosForceUpgrade">
-                                <option value=''>-select-</option>
                                 <c:forEach items="${updateTypes}" var="updateType">
                                     <option value="${updateType.key}" ${app.iosForceUpgrade eq updateType.value ? 'selected' : ''}>${updateType.key}</option>
                                 </c:forEach>

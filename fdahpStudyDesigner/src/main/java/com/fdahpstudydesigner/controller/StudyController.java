@@ -48,6 +48,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class StudyController {
 
   private static Logger logger = LogManager.getLogger(StudyController.class.getName());
+  private final String QUOTE = "&quot;";
+  private final String QUOTE_MARK = "'";
 
   @Autowired private NotificationService notificationService;
 
@@ -299,6 +301,18 @@ public class StudyController {
           }
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+          if (resourceBO != null) {
+            if (StringUtils.isNotBlank(resourceBO.getRichText()) &&
+                    resourceBO.getRichText().contains(QUOTE)) {
+              String filteredText = resourceBO.getRichText().replace(QUOTE, QUOTE_MARK);
+              resourceBO.setRichText(filteredText);
+            }
+            if (StringUtils.isNotBlank(resourceBO.getResourceText()) &&
+                    resourceBO.getResourceText().contains(QUOTE)) {
+              String filteredText = resourceBO.getResourceText().replace(QUOTE, QUOTE_MARK);
+              resourceBO.setResourceText(filteredText);
+            }
+          }
           map.addAttribute("resourceBO", resourceBO);
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
@@ -1737,6 +1751,11 @@ public class StudyController {
         }
         if ((consentInfoId != null) && !consentInfoId.isEmpty()) {
           consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
+          if (StringUtils.isNotBlank(consentInfoBo.getElaborated())
+                  && consentInfoBo.getElaborated().contains(QUOTE)) {
+            String filteredText = consentInfoBo.getElaborated().replace(QUOTE, QUOTE_MARK);
+            consentInfoBo.setElaborated(filteredText);
+          }
           map.addAttribute("consentInfoBo", consentInfoBo);
 
           String language = request.getParameter("language");
@@ -1745,6 +1764,11 @@ public class StudyController {
             consentInfoLangBO =
                 studyService.getConsentInfoLangById(consentInfoBo.getId(), language);
             this.setStudyLangData(studyId, language, map);
+            if (StringUtils.isNotBlank(consentInfoLangBO.getElaborated())
+                    && consentInfoLangBO.getElaborated().contains(QUOTE)) {
+              String filteredText = consentInfoBo.getElaborated().replace(QUOTE, QUOTE_MARK);
+              consentInfoLangBO.setElaborated(filteredText);
+            }
           }
           map.addAttribute("currLanguage", language);
           map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
@@ -1904,6 +1928,14 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
             map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
+            if (StringUtils.isNotBlank(consentBo.getLearnMoreText()) && consentBo.getLearnMoreText().contains(QUOTE)) {
+              String filteredText = consentBo.getLearnMoreText().replace(QUOTE, QUOTE_MARK);
+              consentBo.setLearnMoreText(filteredText);
+            }
+            if (StringUtils.isNotBlank(consentBo.getConsentDocContent()) && consentBo.getConsentDocContent().contains(QUOTE)) {
+              String filteredText = consentBo.getConsentDocContent().replace(QUOTE, QUOTE_MARK);
+              consentBo.setConsentDocContent(filteredText);
+            }
           }
 
           String permission =
@@ -5971,6 +6003,10 @@ public class StudyController {
 
         map.addAttribute("categoryList", categoryList);
         map.addAttribute("dataPartnerList", dataPartnerList);
+        if (StringUtils.isNotBlank(studyBo.getDescription()) && studyBo.getDescription().contains(QUOTE)) {
+          String filteredText = studyBo.getDescription().replace(QUOTE, QUOTE_MARK);
+          studyBo.setDescription(filteredText);
+        }
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("createStudyId", "true");
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);

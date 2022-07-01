@@ -2681,3 +2681,7 @@ font-size:15px;
 #timeOutMessage{
 width:257px;
 }
+
+.dominate{
+	z-index: 1301 !important;
+}

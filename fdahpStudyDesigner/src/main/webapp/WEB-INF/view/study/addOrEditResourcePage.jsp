@@ -427,7 +427,7 @@
 			</div>
 		</div>
 	</form:form>
-    <div class="modal fade" id="myAutoModal" role="dialog">
+    <div class="modal fade dominate" id="myAutoModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
             <div class="modal-content">

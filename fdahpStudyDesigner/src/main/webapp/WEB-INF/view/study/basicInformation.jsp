@@ -395,7 +395,7 @@
         </div>
         <!-- End body tab section -->
     </form:form>
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade dominate" id="myModal" role="dialog" style="z-index: 1301 !important;">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
             <div class="modal-content">

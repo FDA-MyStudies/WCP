@@ -273,7 +273,7 @@
     </form:form>
     <!--  End body tab section -->
 
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade dominate" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
             <div class="modal-content">

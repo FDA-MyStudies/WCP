@@ -702,6 +702,9 @@
         tinymce.get('editor').on('keydown', function () {
             idleTime = 0;
         });
+        tinymce.get('editor').on('mousemove', function () {
+            idleTime = 0;
+        });
                       function timeOutFunction() {
                                 $('#timeOutModal').modal('show');
                                  let i = 14;
@@ -768,6 +771,7 @@
                           "This is a required field."));
                   return false;
               } else {
+                  let sourceCode = $('textarea.tox-textarea').val();
                   var appId = $('#appId').val();
                   if (null != appId && appId != '' && typeof appId != 'undefined') {
                       validateAppId('', function (valid) {
@@ -776,7 +780,15 @@
                                   'disabled', false);
                               $('#basicInfoFormId').validator('destroy');
                               $("#buttonText").val('save');
-
+                              if (mode === 'auto') {
+                                  $("#isAutoSaved").val('true');
+                                  if (sourceCode !== undefined) {
+                                      $('button[title="Save"]').trigger('click');
+                                  }
+                              }
+                              else{
+                                  $("#isAutoSaved").val('false');
+                              }
                               var richText = tinymce.get('editor').getContent({format: 'raw'});
                               if (null != richText && richText != '' && typeof richText != 'undefined'
                                   && richText != '<p><br data-mce-bogus="1"></p>') {
@@ -784,12 +796,6 @@
                                   tinymce.get('editor').setContent(escaped);
                               }
                               $('#loader').show();
-                              if (mode === 'auto') {
-                                  $("#isAutoSaved").val('true');
-                              }
-                              else{
-                                  $("#isAutoSaved").val('false');
-                              }
                               $('#basicInfoFormId').submit();
                           } else {
                               $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
@@ -797,6 +803,15 @@
                               $('#basicInfoFormId').validator('destroy');
                               $("#buttonText").val('save');
 
+                              if (mode === 'auto') {
+                                  $("#isAutoSaved").val('true');
+                                  if (sourceCode !== undefined) {
+                                      $('button[title="Save"]').trigger('click');
+                                  }
+                              }
+                              else{
+                                  $("#isAutoSaved").val('false');
+                              }
                               var richText = tinymce.get('editor').getContent({format: 'raw'});
                               if (null != richText && richText != '' && typeof richText != 'undefined'
                                   && richText != '<p><br data-mce-bogus="1"></p>') {
@@ -804,12 +819,6 @@
                                   tinymce.get('editor').setContent(escaped);
                               }
                               $('#loader').show();
-                              if (mode === 'auto') {
-                                  $("#isAutoSaved").val('true');
-                              }
-                              else{
-                              $("#isAutoSaved").val('false');
-                              }
                               $('#basicInfoFormId').submit();
                           }
                       });

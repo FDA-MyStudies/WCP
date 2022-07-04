@@ -1208,7 +1208,7 @@ var idleTime = 0;
              })
            }
 
-           if (consentDocType == "New") {
+           if (consentDocType === "New") {
              consentDocumentContent = tinymce.get('newDocumentDivId').getContent({format: 'raw'});
              consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
            }
@@ -1279,12 +1279,23 @@ var idleTime = 0;
            if (null != customArray) {
              consentInfo.signatures = customArray;
            }
+         $('#loader').show();
+         // debugger
+         let sourceCode = $('textarea.tox-textarea').val();
+         if (mode === 'auto') {
+             $("#isAutoSaved").val('true');
+             if (sourceCode !== undefined) {
+                 $('button[title="Save"]').trigger('click');
+                 if ($('.shareData').hasClass('active')) {
+                     consentInfo.learnMoreText = sourceCode;
+                 } else {
+                     consentDocumentContent = tinymce.get('newDocumentDivId').getContent();
+                     consentInfo.consentDocContent = consentDocumentContent;
+                 }
+             }
+         }
            var data = JSON.stringify(consentInfo);
            var pageName = 'consentreview';
-           $('#loader').show();
-           if (mode === 'auto') {
-               $("#isAutoSaved").val('true');
-           }
            $.ajax({
              url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
              type: "POST",
@@ -1355,7 +1366,7 @@ var idleTime = 0;
                                  i+=1;
                                  j-=1;
                              }
-                         }, 15000);
+                         }, 1000);
                          $("#isAutoSaved").val('false');
                      }
                  }
@@ -1394,7 +1405,7 @@ var idleTime = 0;
                     timeOutFunction();
                 </c:if>
             }
-        }, 75000); // 5 minutes
+        }, 2500); // 5 minutes
 
       $(this).mousemove(function (e) {
           idleTime = 0;
@@ -1403,6 +1414,15 @@ var idleTime = 0;
           idleTime = 0;
       });
       tinymce.get('newDocumentDivId').on('keydown', function () {
+          idleTime = 0;
+      });
+      tinymce.get('newDocumentDivId').on('mousemove', function () {
+          idleTime = 0;
+      });
+      tinymce.get('learnMoreTextId').on('keydown', function () {
+          idleTime = 0;
+      });
+      tinymce.get('learnMoreTextId').on('mousemove', function () {
           idleTime = 0;
       });
 
@@ -1425,7 +1445,7 @@ var idleTime = 0;
                idleTime = 0;
                i-=1;
                 }
-                }, 15000);
+                }, 1000);
                 }
   });
 

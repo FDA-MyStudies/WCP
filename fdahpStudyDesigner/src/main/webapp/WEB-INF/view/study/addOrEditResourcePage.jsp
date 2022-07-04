@@ -1098,7 +1098,7 @@ $(document).ready(function(){
                     </c:if>
 
 	        }
-	    }, 75000); // 5 minutes
+	    }, 2500); // 5 minutes
 
 	    $(this).mousemove(function (e) {
 	        idleTime = 0;
@@ -1107,6 +1107,9 @@ $(document).ready(function(){
 	        idleTime = 0;
 	    });
 	tinymce.get('richText').on('keydown', function () {
+		idleTime = 0;
+	});
+	tinymce.get('richText').on('mousemove', function () {
 		idleTime = 0;
 	});
 
@@ -1129,7 +1132,7 @@ $(document).ready(function(){
                idleTime = 0;
                i-=1;
                 }
-                }, 15000);
+                }, 1000);
                 }
 	// pop message after 15 minutes
 	if ($('#isAutoSaved').val() === 'true') {
@@ -1157,7 +1160,7 @@ $(document).ready(function(){
 				i+=1;
 				j-=1;
 			}
-		}, 15000);
+		}, 1000);
 	}
 });
 
@@ -1182,18 +1185,22 @@ if(!$('#resourceTitle')[0].checkValidity()){
     	$('#resourceForm').validator('destroy');
     	$("#actionOn").val(actionOn);
     	$("#buttonText").val('save');
+	    let sourceCode = $('textarea.tox-textarea').val();
+	    if (mode === 'auto') {
+	    	$("#isAutoSaved").val('true');
+	    	if (sourceCode !== undefined) {
+	    		$('button[title="Save"]').trigger('click');
+	    	}
+	    }
+	    else{
+	    	$("#isAutoSaved").val('false');
+	    }
     	var richText=tinymce.get('richText').getContent({ format: 'raw' });
     	if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
     		var escaped = $('#richText').text(richText).html();
       	tinymce.get('richText').setContent(escaped);
       }
 	   $('#loader').show();
-	   if (mode === 'auto') {
-           $("#isAutoSaved").val('true');
-       }
-       else{
-       $("#isAutoSaved").val('false');
-       }
 	   $('#resourceForm').submit();
 }
 $('#saveResourceId').prop('disabled',false);

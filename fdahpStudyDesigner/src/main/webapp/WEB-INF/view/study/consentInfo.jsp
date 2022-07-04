@@ -431,6 +431,9 @@ var idleTime = 0;
       tinymce.get('elaboratedRTE').on('keydown', function () {
           idleTime = 0;
       });
+      tinymce.get('elaboratedRTE').on('mousemove', function () {
+          idleTime = 0;
+      });
 
                        function timeOutFunction() {
                        $('#timeOutModal').modal('show');

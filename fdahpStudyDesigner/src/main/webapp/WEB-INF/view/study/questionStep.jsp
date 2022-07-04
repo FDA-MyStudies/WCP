@@ -2295,10 +2295,17 @@ input[type=button] {
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
-						                             <input type="text" 
+						                             <input type="hidden" 
 						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
 						                                id="displayTextChoicesequenceNumber${subtype.index}"
-						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}">
+						                                
+						                                <c:if test="${empty questionResponseSubType.sequenceNumber}">
+						                                value="${subtype.index}"
+						                                </c:if>
+						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+						                                </c:if>					                                
+						                                >
 
                                             <!-- <input type="text" name="sort${subtype.index}" value="${subtype.index}"> -->
                                             

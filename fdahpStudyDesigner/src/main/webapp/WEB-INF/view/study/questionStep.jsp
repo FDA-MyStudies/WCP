@@ -6260,7 +6260,10 @@ input[type=button] {
             "   <div class='form-group mb-none'>" +
             "   <input type='text' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
             + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
-            + "'  maxlength='100' required>" +
+            + "'  maxlength='100' required>" 
+    		+
+            "  <input type='hidden' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber${subtype.index}' value='"+ choiceCount +"'>"
+            +
             "      <div class='help-block with-errors red-txt'></div>" +
             "   </div>" +
             "</div>" +

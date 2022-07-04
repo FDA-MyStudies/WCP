@@ -506,11 +506,16 @@ var idleTime = 0;
          }
          consentInfo.type = "save";
          $('#loader').show();
+         let sourceCode = $('textarea.tox-textarea').val();
          if (mode === 'auto') {
              $("#isAutoSaved").val('true');
+             if (sourceCode !== undefined) {
+                 $('button[title="Save"]').trigger('click');
+                 consentInfo.elaborated = sourceCode;
+             }
          }
          else{
-         $("#isAutoSaved").val('false');
+             $("#isAutoSaved").val('false');
          }
          var data = JSON.stringify(consentInfo);
          $.ajax({

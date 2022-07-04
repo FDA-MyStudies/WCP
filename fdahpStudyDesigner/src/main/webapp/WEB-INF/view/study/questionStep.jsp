@@ -68,6 +68,14 @@
 .panel {
     margin-bottom: 10px !important;
 }
+
+input[type=button] {
+    -webkit-appearance: button;
+    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+}
+
     </style>
 </head>
 <script type="text/javascript">
@@ -2254,8 +2262,11 @@
                                  
                                       <div class="text-left dis-inline">
                                         <div class="gray-choice-f mb-xs mt-md">
-                                          Text Choices <span class="priority">1</span> <span class="ml-xs sprites_v3 filled-tooltip"
-                                            data-toggle="tooltip"
+                                          Text Choices   <input type="button" 
+                                          name="" id="displayTextChoicesequenceNumber${subtype.index}"
+                                          value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}">
+
+                                          <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                         </div>
                                         
@@ -2401,8 +2412,8 @@
                                 href="#collapse" aria-expanded="true">
                                   <div class="text-left dis-inline">
                                     <div class="gray-choice-f mb-xs mt-md">
-                                      Text Choices <span class="priority">2</span> <span class="ml-xs sprites_v3 filled-tooltip"
-                                        data-toggle="tooltip"
+                                      Text Choices 
+                                       <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                         title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                     </div>
                                     
@@ -2535,8 +2546,8 @@
                                   href="#collapse1" aria-expanded="true">
                                     <div class="text-left dis-inline">
                                       <div class="gray-choice-f mb-xs mt-md">
-                                        Text Choices  <span class="priority">3</span> <span class="ml-xs sprites_v3 filled-tooltip"
-                                          data-toggle="tooltip"
+                                        Text Choices   
+                                        <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                           title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                       </div>
                                       
@@ -3680,7 +3691,7 @@
       <!-- jQuery -->
       <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script> -->
       <!-- jQuery UI CSS -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+     
       
 <script type="text/javascript">
   

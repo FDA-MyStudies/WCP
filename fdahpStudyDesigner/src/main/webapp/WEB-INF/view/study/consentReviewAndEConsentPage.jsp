@@ -1366,7 +1366,7 @@ var idleTime = 0;
                                  i+=1;
                                  j-=1;
                              }
-                         }, 1000);
+                         }, 15000);
                          $("#isAutoSaved").val('false');
                      }
                  }
@@ -1405,7 +1405,7 @@ var idleTime = 0;
                     timeOutFunction();
                 </c:if>
             }
-        }, 2500); // 5 minutes
+        }, 75000); // 5 minutes
 
       $(this).mousemove(function (e) {
           idleTime = 0;
@@ -1445,7 +1445,7 @@ var idleTime = 0;
                idleTime = 0;
                i-=1;
                 }
-                }, 1000);
+                }, 15000);
                 }
   });
 

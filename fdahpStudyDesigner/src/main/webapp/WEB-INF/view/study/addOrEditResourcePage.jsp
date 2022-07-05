@@ -1098,7 +1098,7 @@ $(document).ready(function(){
                     </c:if>
 
 	        }
-	    }, 2500); // 5 minutes
+	    }, 75000); // 5 minutes
 
 	    $(this).mousemove(function (e) {
 	        idleTime = 0;
@@ -1132,7 +1132,7 @@ $(document).ready(function(){
                idleTime = 0;
                i-=1;
                 }
-                }, 1000);
+                }, 15000);
                 }
 	// pop message after 15 minutes
 	if ($('#isAutoSaved').val() === 'true') {
@@ -1160,7 +1160,7 @@ $(document).ready(function(){
 				i+=1;
 				j-=1;
 			}
-		}, 1000);
+		}, 15000);
 	}
 });
 

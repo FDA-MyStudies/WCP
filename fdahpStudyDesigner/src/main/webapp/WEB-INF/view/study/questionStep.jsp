@@ -2262,9 +2262,17 @@ input[type=button] {
                                  
                                       <div class="text-left dis-inline">
                                         <div class="gray-choice-f mb-xs mt-md">
-                                          Text Choices   <input type="button" 
-                                          name="" id="displayTextChoicesequenceNumber${subtype.index}"
-                                          value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}">
+                                          Text Choices 
+                                           <input type="button" class="reset_val"
+                                          name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                           id="displayTextChoicesequenceNumber${subtype.index}"
+                                          <c:if test="${empty questionResponseSubType.sequenceNumber}">
+						                                value="${subtype.index+1}"
+						                                </c:if>
+						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+						                                </c:if>					                                
+						                                >
 
                                           <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
@@ -3756,6 +3764,19 @@ input[type=button] {
       });
 
   });
+
+
+
+  function delete_reset1()   {
+        jQuery(this).closest('.text-choice').remove();
+  $('.text-choice').each(function(i){
+     //$(this).find('span.m').html('Row ' + (i+1));
+     $(this).find('.reset_val').val('' + (i+1));
+  });
+
+      }
+      
+
   </script>
 
 
@@ -6371,6 +6392,7 @@ input[type=button] {
             }
           }
         }
+        delete_reset1();
       }
 
       var imageCount = $('.image-choice').length;

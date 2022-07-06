@@ -2303,7 +2303,7 @@ input[type=button] {
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
-						                             <input type="hidden" 
+						                             <input type="text"  class="reset_val"
 						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
 						                                id="displayTextChoicesequenceNumber${subtype.index}"
 						                                
@@ -6263,7 +6263,11 @@ input[type=button] {
           + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
-              + "    Text Choices "+ choiceCount +" <span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
+              + "    Text Choices "
+              +"  <input type='button'  class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' "
+              + " id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
+              
+              +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
                 + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
               + "  </div> </div>"
              + "<div class='text-right dis-inline pull-right'> "
@@ -6283,7 +6287,7 @@ input[type=button] {
             + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
             + "'  maxlength='100' required>" 
     		+
-            "  <input type='hidden' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber${subtype.index}' value='"+ choiceCount +"'>"
+            "  <input type='hidden' class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber${subtype.index}' value='"+ choiceCount +"'>"
             +
             "      <div class='help-block with-errors red-txt'></div>" +
             "   </div>" +

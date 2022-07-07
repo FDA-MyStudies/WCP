@@ -45,6 +45,34 @@
       .langSpecific > button {
         padding-left: 30px;
       }
+
+      
+  .ui-sortable tr {
+    cursor:pointer;
+  }
+      
+  .ui-sortable tr:hover {
+    background:#fff !important;
+    -webkit-box-shadow: inset 0 0 6px #fff;
+    box-shadow: inset 0 0 6px #fff;
+  }
+ 
+  .table>tbody>tr.ui-sortable-handle>td {
+    padding: 5px 0px !important;
+}
+.panel {
+    margin-bottom: 10px !important;
+}
+
+input[type=button] {
+    -webkit-appearance: button;
+    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+}
+
+
+
     </style>
 </head>
 <script type="text/javascript">
@@ -2016,18 +2044,52 @@
                                           data-toggle="tooltip"
                                           title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span>
                     </div>
+
+
+                    <table class="table TextChoiceContainer order_sequenceNumber" id="diagnosis_list"><tbody>
                     <div class="TextChoiceContainer">
                         <c:choose>
                             <c:when
                                     test="${questionsBo.responseType eq 6 && fn:length(questionsBo.questionResponseSubTypeList) gt 1}">
                                 <c:forEach items="${questionsBo.questionResponseSubTypeList}"
                                            var="questionResponseSubType" varStatus="subtype">
-                                    <!-- Section Start -->
-                                    <div class="text-choice mt-xlg" id="${subtype.index}">
-                                        <input type="hidden" class="form-control"
-                                               id="textChoiceSubTypeValueId${subtype.index}"
-                                               name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId"
-                                               value="${questionResponseSubType.responseSubTypeValueId}">
+                                   
+                                           		<!-- Section Start -->
+                      
+                      <tr class=" text-choice" id="${subtype.index}">
+                       
+                        <td>  <div class="panel panel-default">
+                          <!-- <input type="hidden" name=""> -->
+                          
+                          <div class="panel-heading">
+                              <div class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapse${subtype.index}" aria-expanded="true">
+                                 
+                                      <div class="text-left dis-inline">
+                                        <div class="gray-choice-f mb-xs mt-md">
+                                          Text Choices 
+                                           
+
+                                          <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                            title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                        </div>
+                                        
+                                      </div>
+                                      <div class="text-right dis-inline pull-right">
+                                        
+                                          <span class="ml-lg imageBg"><img class="arrow"
+                                                                          src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                          <div id="collapse${subtype.index}" class="panel-collapse collapse in">
+                            <div class="panel-body pt-none">
+
+
+                                    <div class="mt-xlg" id="${subtype.index}">
+                                        
                                         <div class="col-md-3 pl-none">
                                             <div class="gray-xs-f mb-xs">
                                                 Display Text (1 to 100 characters)<span
@@ -2097,7 +2159,7 @@
                                                                   maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 pl-none">
+                                            <div class="col-md-2 pl-none pt-xlg">
 													<span class="addBtnDis addbtn align-span-center top6"
                                                           onclick='addTextChoice();'>+</span> <span
                                                     class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
@@ -2106,14 +2168,52 @@
                                         </div>
                                     </div>
                                     <!-- Section End -->
+                                  </div>
+                                </div></div></td></tr> 
+
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
+
+
+                              <tr class="text-choice otherOptionChecked" id="0">
+                                <td>
+                                  <div class="panel panel-default">
+                                <input type="hidden" name="">
+                                  <div class="panel-heading">
+                                      <div class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion"
+                                            href="#collapse_0" aria-expanded="true">
+                                              <div class="text-left dis-inline">
+                                                <div class="gray-choice-f mb-xs mt-md">
+                                                  Text Choices 
+                                                  <input type="button"  class="reset_val"
+                                            name="questionResponseSubTypeList[0].sequenceNumber"
+                                            id="displayTextChoicesequenceNumber0" value="0">
+            
+                                                   <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                                    title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                                </div>
+                                                
+                                              </div>
+                                              <div class="text-right dis-inline pull-right">
+                                                
+                                                  <span class="ml-lg imageBg"><img class="arrow"
+                                                                                  src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  </div>
+                            <div id="collapse_0" class="panel-collapse collapse in">
+                                <div class="panel-body pt-none">
+
+
+
                                 <!-- Section Start -->
-                                <div class="text-choice mt-xlg" id="0">
+                                <div class="mt-xlg">
                                     <div class="col-md-3 pl-none">
                                         <div class="gray-xs-f mb-xs">
-                                            Display Text (1 to 100 characters)<span
+                                           Display Text (1 to 100 characters)<span
                                                 class="requiredStar">*</span>
                                         </div>
                                         <div class="form-group mb-none">
@@ -2177,7 +2277,7 @@
                                                               maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 pl-none">
+                                        <div class="col-md-2 pl-none pt-xlg">
 												<span class="addBtnDis addbtn mr-sm align-span-center top6"
                                                       onclick='addTextChoice();'>+</span> <span
                                                 class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
@@ -2186,10 +2286,48 @@
                                     </div>
                                 </div>
                                 <!-- Section End -->
-                                <div class="text-choice mt-xlg" id="1">
+                              </div>
+                            </div></div></td></tr> 
+                          <!-- End panel-->
+
+
+
+   <!-- Start panel-->
+   <tr class="text-choice otherOptionChecked1"  id="1">       
+    <td>
+ <div class="panel panel-default" >
+   <input type="hidden" name="">
+   <div class="panel-heading">
+       <div class="panel-title">
+           <a data-toggle="collapse" data-parent="#accordion"
+             href="#collapse_1" aria-expanded="true">
+               <div class="text-left dis-inline">
+                 <div class="gray-choice-f mb-xs mt-md">
+                   Text Choices   
+                   <input type="button"  class="reset_val"
+           name="questionResponseSubTypeList[1].sequenceNumber"
+           id="displayTextChoicesequenceNumber1" value="1">
+                   <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                     title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                 </div>
+                 
+               </div>
+               <div class="text-right dis-inline pull-right">
+                 
+                   <span class="ml-lg imageBg"><img class="arrow"
+                                                   src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+               </div>
+           </a>
+       </div>
+   </div>
+   <div id="collapse_1" class="panel-collapse collapse in">
+       <div class="panel-body pt-none">
+
+
+                                <div class="mt-xlg" >
                                     <div class="col-md-3 pl-none">
                                         <div class="gray-xs-f mb-xs">
-                                            Display Text (1 to 100 characters)<span
+                                          Display Text (1 to 100 characters)<span
                                                 class="requiredStar">*</span>
                                         </div>
                                         <div class="form-group mb-none">
@@ -2253,7 +2391,7 @@
                                                               maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 pl-none">
+                                        <div class="col-md-2 pl-none pt-xlg">
 												<span class="addBtnDis addbtn mr-sm align-span-center top6"
                                                       onclick='addTextChoice();'>+</span> <span
                                                 class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
@@ -2262,9 +2400,17 @@
                                     </div>
                                 </div>
                                 <!-- Section End -->
+                              </div>
+                            </div>
+                          </div> </td>
+                          </tr> 
+                          <!-- End panel-->
+
                             </c:otherwise>
                         </c:choose>
-                    </div>
+                      </tbody></table> 
+
+                      
                     <div class="clearfix"></div>
                     <div class="checkbox checkbox-inline gray-xs-f mb-xs">
                         <input type="checkbox" name="questionReponseTypeBo.otherType"
@@ -2652,6 +2798,90 @@
     </div>
 </div>
 <!-- End right Content here -->
+
+
+
+<!-- End right Content here -->
+
+      <!-- jQuery -->
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script> -->
+      <!-- jQuery UI CSS -->
+     
+      
+      <script type="text/javascript">
+  
+        $(document).ready(function() {
+            //Helper function to keep table row from collapsing when being sorted
+          var fixHelperModified = function(e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function(index)
+            {
+              $(this).width($originals.eq(index).width())
+             
+            }); 
+            return $helper;
+            // alert('step 1');
+            delete_reset1();
+          // }; alert('step 2');
+        
+          //Make diagnosis table sortable
+          $("#diagnosis_list tbody").sortable({
+              helper: fixHelperModified,
+            stop: function(event,ui) {renumber_table('#diagnosis_list')}
+          }).disableSelection();
+        
+        
+          //Delete button in table rows
+          // $('table').on('click','.btn-delete',function() {
+          //   tableID = '#' + $(this).closest('table').attr('id');
+          //   r = confirm('Delete this item?');
+          //   if(r) {
+          //     $(this).closest('tr').remove();
+          //     renumber_table(tableID);
+          //     }
+          // });
+      
+         // Renumber table rows
+        //   function renumber_table(tableID) {
+        //   $(tableID + " tr").each(function() {
+        //     count = $(this).parent().children().index($(this)) + 1;
+        //     $(this).find('.priority').html(count);
+        //   });
+        // }
+         //sequence number set table rows
+        var sortOrder = [];
+            var $sortableTable  = $(".order_sequenceNumber tbody");
+            
+            $sortableTable.sortable({
+                start: function(event, element){
+                    $.map($('[id^=displayTextChoicesequenceNumber]', $sortableTable), function(element){
+                        sortOrder.push(element.value);
+                    });
+                },
+                stop: function(event, element) {
+                    $.each($('tr [id^=displayTextChoicesequenceNumber]', $sortableTable), function(index, element){
+                        element.value = sortOrder[index];
+                    });
+                }
+            });
+      
+        });
+      
+      
+      
+        function delete_reset1()   {
+              jQuery(this).closest('.text-choice').remove();
+        $('.text-choice').each(function(i){
+           //$(this).find('span.m').html('Row ' + (i+1));
+           $(this).find('.reset_val').val('' + (i+1));
+        });
+      
+            }
+            
+      
+        </script>
+
 <script type="text/javascript">
  var idleTime = 0;
   $(document).ready(function () {
@@ -4612,7 +4842,25 @@
   function addTextChoice() {
     let choiceCount = $('.text-choice').length;
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
-    var newTextChoice = "<div class='text-choice mt-xlg' id='" + choiceCount + "'>" +
+    var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''><td><div class='clearfix'></div><div class='panel panel-default'><div class='panel-heading'><div class='panel-title'>" 
+          + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
+            + " <div class='text-left dis-inline'>"
+             +  " <div class='gray-choice-f mb-xs mt-md'>"
+              + "    Text Choices "
+              +"  <input type='button'  class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' "
+              + " id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
+              
+              +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
+                + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
+              + "  </div> </div>"
+             + "<div class='text-right dis-inline pull-right'> "
+                + "  <span class='ml-lg imageBg'><img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
+            + "  </div> "
+        + "  </a> "
+    + " </div> "
+ + " </div> "
+ + " <div id='collapse"+ choiceCount +"' class='panel-collapse collapse in'><div class='panel-body pt-none'> "
+    + "<div class='mt-xlg'>" +
         "<div class='col-md-3 pl-none'>" +
         "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
         +
@@ -4663,13 +4911,13 @@
         + "' maxlength='150'></textarea>" +
         "   </div>" +
         "</div>" +
-        "<div class='col-md-2 pl-none'>" +
+        "<div class='col-md-2 pl-none pt-xlg'>" +
         "	 <span class='addBtnDis addbtn align-span-center top6' onclick='addTextChoice();'>+</span>"
         +
         "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm' onclick='removeTextChoice(this);'></span>        "
         +
         " </div></div>" +
-        "</div>";
+        "</div></div></div></div></td></tr><div class='clearfix'></div>";
     $(".text-choice:last").after(newTextChoice);
     $('.selectpicker').selectpicker('refresh');
     $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
@@ -4697,6 +4945,7 @@
         $(".remBtnDis").addClass("hide");
       }
     }
+    delete_reset1();
   }
 
   var imageCount = $('.image-choice').length;

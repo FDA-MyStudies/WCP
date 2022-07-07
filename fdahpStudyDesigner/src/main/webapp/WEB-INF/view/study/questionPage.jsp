@@ -71,7 +71,9 @@ input[type=button] {
     border: none !important;
 }
 
-
+.table>tbody>tr>td {
+    padding: 5px 0px !important;
+}
 
     </style>
 </head>
@@ -2039,11 +2041,11 @@ input[type=button] {
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="gray-choice-f mb-xs">
+                    <!-- <div class="gray-choice-f mb-xs">
                         Text Choices<span class="ml-xs sprites_v3 filled-tooltip"
                                           data-toggle="tooltip"
                                           title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span>
-                    </div>
+                    </div> -->
 
 
                     <table class="table TextChoiceContainer order_sequenceNumber" id="diagnosis_list"><tbody>
@@ -2070,7 +2072,16 @@ input[type=button] {
                                         <div class="gray-choice-f mb-xs mt-md">
                                           Text Choices 
                                            
-
+                                          <input type="button" class="reset_val"
+                                          name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                           id="displayTextChoicesequenceNumber${subtype.index}"
+                                          <c:if test="${empty questionResponseSubType.sequenceNumber}">
+						                                value="${subtype.index+1}"
+						                                </c:if>
+						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+						                                </c:if>					                                
+						                                >
                                           <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                         </div>
@@ -2102,6 +2113,19 @@ input[type=button] {
                                                        id="displayTextChoiceText${subtype.index}"
                                                        value="${fn:escapeXml(questionResponseSubType.text)}"
                                                        maxlength="100">
+
+                                                       <input type="hidden"  class="reset_val"
+                                                       name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                                       id="displayTextChoicesequenceNumber${subtype.index}"
+                                                       
+                                                       <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                                                       value="${subtype.index+1}"
+                                                       </c:if>
+                                                       <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                                                       value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                                                       </c:if>					                                
+                                                       >
+
                                                 <div class="help-block with-errors red-txt"></div>
                                             </div>
                                         </div>
@@ -2223,6 +2247,11 @@ input[type=button] {
                                                    id="displayTextChoiceText0"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}"
                                                    maxlength="100">
+
+                                                   <input type="text"  class="reset_val"
+                                                   name="questionResponseSubTypeList[0].sequenceNumber"
+                                                   id="displayTextChoicesequenceNumber0" value="0">
+
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -2292,34 +2321,36 @@ input[type=button] {
 
 
 
-   <!-- Start panel-->
-   <tr class="text-choice otherOptionChecked1"  id="1">       
-    <td>
- <div class="panel panel-default" >
-   <input type="hidden" name="">
-   <div class="panel-heading">
-       <div class="panel-title">
-           <a data-toggle="collapse" data-parent="#accordion"
-             href="#collapse_1" aria-expanded="true">
-               <div class="text-left dis-inline">
-                 <div class="gray-choice-f mb-xs mt-md">
-                   Text Choices   
-                   <input type="button"  class="reset_val"
-           name="questionResponseSubTypeList[1].sequenceNumber"
-           id="displayTextChoicesequenceNumber1" value="1">
-                   <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                     title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
-                 </div>
-                 
-               </div>
-               <div class="text-right dis-inline pull-right">
-                 
-                   <span class="ml-lg imageBg"><img class="arrow"
-                                                   src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
-               </div>
-           </a>
-       </div>
-   </div>
+                    <!-- Start panel-->
+                    <tr class="text-choice otherOptionChecked1"  id="1">       
+                      <td>
+                  <div class="panel panel-default" >
+                    <input type="hidden" name="">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                              href="#collapse_1" aria-expanded="true">
+                                <div class="text-left dis-inline">
+                                  <div class="gray-choice-f mb-xs mt-md">
+                                    Text Choices   
+                                    
+                                    <input type="button"  class="reset_val"
+                            name="questionResponseSubTypeList[1].sequenceNumber"
+                            id="displayTextChoicesequenceNumber1" value="1">
+
+                                    <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                      title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                  </div>
+                                  
+                                </div>
+                                <div class="text-right dis-inline pull-right">
+                                  
+                                    <span class="ml-lg imageBg"><img class="arrow"
+                                                                    src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
    <div id="collapse_1" class="panel-collapse collapse in">
        <div class="panel-body pt-none">
 
@@ -2337,6 +2368,11 @@ input[type=button] {
                                                    id="displayTextChoiceText1"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}"
                                                    maxlength="100">
+
+                                                   <input type="text"  class="reset_val"
+                                                   name="questionResponseSubTypeList[1].sequenceNumber"
+                                                   id="displayTextChoicesequenceNumber1" value="1">
+
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -2822,8 +2858,9 @@ input[type=button] {
             }); 
             return $helper;
             // alert('step 1');
-            delete_reset1();
-          // }; alert('step 2');
+            // delete_reset1();
+          }; 
+          //alert('step 2');
         
           //Make diagnosis table sortable
           $("#diagnosis_list tbody").sortable({
@@ -4865,10 +4902,13 @@ input[type=button] {
         "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group mb-none'>" +
-        "   <input type='text' class='form-control TextChoiceRequired lang-specific' name='questionResponseSubTypeList["
+        "   <input type='hidden' class='form-control TextChoiceRequired lang-specific' name='questionResponseSubTypeList["
         + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
-        + "'  maxlength='100' required>" +
-        "      <div class='help-block with-errors red-txt'></div>" +
+        + "'  maxlength='100' required>" 
+
+        + "  <input type='text' class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
+        
+        + "      <div class='help-block with-errors red-txt'></div>" +
         "   </div>" +
         "</div>" +
         "<div class='col-md-3 pl-none'>" +

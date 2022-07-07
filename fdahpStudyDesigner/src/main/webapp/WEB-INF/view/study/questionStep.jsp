@@ -76,6 +76,10 @@ input[type=button] {
     border: none !important;
 }
 
+.table>tbody>tr>td {
+    padding: 5px 0px !important;
+}
+
     </style>
 </head>
 <script type="text/javascript">
@@ -2246,8 +2250,8 @@ input[type=button] {
 
 
 
-              <div class="panel panel-default">
-                <!-- <input type="hidden" name=""> -->
+              <!-- <div class="panel panel-default">
+             
                 
                 <div class="panel-heading">
                     <div class="panel-title">
@@ -2286,7 +2290,7 @@ input[type=button] {
              
              
             </div> </div>
-          </div></div>
+          </div></div> -->
 
 <!--------------------------- test end -->
 
@@ -2353,7 +2357,7 @@ input[type=button] {
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
-						                             <input type="text"  class="reset_val"
+						                             <input type="hidden"  class="reset_val"
 						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
 						                                id="displayTextChoicesequenceNumber${subtype.index}"
 						                                
@@ -3789,8 +3793,9 @@ input[type=button] {
       }); 
       return $helper;
       // alert('step 1');
-      delete_reset1();
-    // }; alert('step 2');
+      // delete_reset1();
+     };
+      // alert('step 2');
   
     //Make diagnosis table sortable
     $("#diagnosis_list tbody").sortable({
@@ -6353,11 +6358,10 @@ input[type=button] {
             "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
             +
             "   <div class='form-group mb-none'>" +
-            "   <input type='text' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
+            "   <input type='hidden' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
             + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
             + "'  maxlength='100' required>" 
-    		+
-            "  <input type='text' class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
+    		+ "  <input type='text' class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
             +
             "      <div class='help-block with-errors red-txt'></div>" +
             "   </div>" +

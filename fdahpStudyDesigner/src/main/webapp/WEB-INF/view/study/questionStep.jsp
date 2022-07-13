@@ -80,6 +80,24 @@ input[type=button] {
     padding: 5px 0px !important;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.index1 {
+    cursor: not-allowed;
+    border: none;
+    background: whitesmoke;
+    width: 10%;
+    outline: none;
+}
     </style>
 </head>
 <script type="text/javascript">
@@ -2305,7 +2323,20 @@ input[type=button] {
 											<!-- Section Start -->
                       
                       <tr class=" text-choice" id="${subtype.index}">
-                       
+                        <!-- <td class="index">1</td>
+                        <td>
+
+                        <input type="text" class="index1 reset_val"
+                        name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                         id="displayTextChoicesequenceNumber${subtype.index}"
+                        <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                          value="${subtype.index+1}"
+                          </c:if>
+                          <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                          value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                          </c:if>					                                
+                          >
+                        </td> -->
                         <td>  <div class="panel panel-default">
                           <!-- <input type="hidden" name=""> -->
                           
@@ -2317,16 +2348,17 @@ input[type=button] {
                                       <div class="text-left dis-inline">
                                         <div class="gray-choice-f mb-xs mt-md">
                                           Text Choices 
-                                           <input type="button" class="reset_val"
+                                          <input type="number" class="index1 reset_val"
                                           name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                            id="displayTextChoicesequenceNumber${subtype.index}"
                                           <c:if test="${empty questionResponseSubType.sequenceNumber}">
-						                                value="${subtype.index+1}"
-						                                </c:if>
-						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
-						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
-						                                </c:if>					                                
-						                                >
+                                            value="${subtype.index+1}"
+                                            </c:if>
+                                            <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                                            value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                                            </c:if>					                                
+                                            >
+                                         
 
                                           <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
@@ -2357,7 +2389,7 @@ input[type=button] {
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
-						                             <input type="hidden"  class="reset_val"
+						                             <!-- <input type="text"  class="index1 reset_val"
 						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
 						                                id="displayTextChoicesequenceNumber${subtype.index}"
 						                                
@@ -2367,7 +2399,7 @@ input[type=button] {
 						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
 						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
 						                                </c:if>					                                
-						                                >
+						                                > -->
 
                                             <!-- <input type="text" name="sort${subtype.index}" value="${subtype.index}"> -->
                                             
@@ -2472,6 +2504,9 @@ input[type=button] {
                   <!-- Start panel-->
                   
                   <tr class="text-choice otherOptionChecked" id="0">
+                    <!-- <td class="index">1</td>
+                    <td> <input type="text" class="index1 reset_val"  value="1" /> </td> -->
+
                     <td>
                       <div class="panel panel-default">
                     <input type="hidden" name="">
@@ -2482,9 +2517,9 @@ input[type=button] {
                                   <div class="text-left dis-inline">
                                     <div class="gray-choice-f mb-xs mt-md">
                                       Text Choices 
-                                      <input type="button"  class="reset_val"
-                                name="questionResponseSubTypeList[0].sequenceNumber"
-                                id="displayTextChoicesequenceNumber0" value="0">
+                                     
+                                      <input type="number" class="index1 reset_val" name="questionResponseSubTypeList[0].sequenceNumber"
+                                      id="displayTextChoicesequenceNumber0" value="0" />
 
                                        <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                         title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
@@ -2517,10 +2552,7 @@ input[type=button] {
                                 value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}"
                                 maxlength="100">
 
-                                <input type="text"  class="reset_val"
-                                name="questionResponseSubTypeList[0].sequenceNumber"
-                                id="displayTextChoicesequenceNumber0" value="0">
-                              <div class="help-block with-errors red-txt"></div>
+                               
                             </div>
                           </div>
                           <div class="col-md-3 pl-none">
@@ -2613,7 +2645,10 @@ input[type=button] {
 						
 
                       <!-- Start panel-->
-                      <tr class="text-choice otherOptionChecked1"  id="1">       
+                      <tr class="text-choice otherOptionChecked1"  id="1"> 
+                        <!-- <td class="index">2</td>
+                        <td> <input type="text" class="index1 reset_val"  value="2" /> </td> -->
+
                          <td>
                       <div class="panel panel-default" >
                         <input type="hidden" name="">
@@ -2623,10 +2658,10 @@ input[type=button] {
                                   href="#collapse1" aria-expanded="true">
                                     <div class="text-left dis-inline">
                                       <div class="gray-choice-f mb-xs mt-md">
-                                        Text Choices   
-                                        <input type="button"  class="reset_val"
-                                name="questionResponseSubTypeList[1].sequenceNumber"
-                                id="displayTextChoicesequenceNumber1" value="1">
+                                        Text Choices  
+                                        <input type="number" class="index1 reset_val" name="questionResponseSubTypeList[1].sequenceNumber"
+                                      id="displayTextChoicesequenceNumber1" value="1" /> 
+                                      
                                         <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                           title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                       </div>
@@ -2658,9 +2693,7 @@ input[type=button] {
                                         value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}"
                                         maxlength="100">
 
-                                        <input type="text"  class="reset_val"
-                                        name="questionResponseSubTypeList[1].sequenceNumber"
-                                        id="displayTextChoicesequenceNumber1" value="1">
+                                      
 
 
                                       <div class="help-block with-errors red-txt"></div>
@@ -3774,85 +3807,65 @@ input[type=button] {
 
 <!-- End right Content here -->
 
-      <!-- jQuery -->
-      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script> -->
-      <!-- jQuery UI CSS -->
-     
-      
-<script type="text/javascript">
-  
+
+<script>
   $(document).ready(function() {
-      //Helper function to keep table row from collapsing when being sorted
-    var fixHelperModified = function(e, tr) {
-      var $originals = tr.children();
-      var $helper = tr.clone();
-      $helper.children().each(function(index)
-      {
-        $(this).width($originals.eq(index).width())
-       
-      }); 
-      return $helper;
-      // alert('step 1');
-      // delete_reset1();
-     };
-      // alert('step 2');
-  
-    //Make diagnosis table sortable
-    $("#diagnosis_list tbody").sortable({
-        helper: fixHelperModified,
-      stop: function(event,ui) {renumber_table('#diagnosis_list')}
-    }).disableSelection();
-  
-  
-    //Delete button in table rows
-    // $('table').on('click','.btn-delete',function() {
-    //   tableID = '#' + $(this).closest('table').attr('id');
-    //   r = confirm('Delete this item?');
-    //   if(r) {
-    //     $(this).closest('tr').remove();
-    //     renumber_table(tableID);
-    //     }
-    // });
+var maxWidth = 1;
 
-   // Renumber table rows
-  //   function renumber_table(tableID) {
-  //   $(tableID + " tr").each(function() {
-  //     count = $(this).parent().children().index($(this)) + 1;
-  //     $(this).find('.priority').html(count);
-  //   });
-  // }
-   //sequence number set table rows
-  var sortOrder = [];
-      var $sortableTable  = $(".order_sequenceNumber tbody");
-      
-      $sortableTable.sortable({
-          start: function(event, element){
-              $.map($('[id^=displayTextChoicesequenceNumber]', $sortableTable), function(element){
-                  sortOrder.push(element.value);
-              });
-          },
-          stop: function(event, element) {
-              $.each($('tr [id^=displayTextChoicesequenceNumber]', $sortableTable), function(index, element){
-                  element.value = sortOrder[index];
-              });
-          }
-      });
 
+var fixHelperModified = function(e, tr) {
+  var $originals = tr.children();
+  var $helper = tr.clone();
+  $helper.children().each(function(index) {
+      $(this).width($originals.eq(index).width()+17); // 16 - 18
   });
-
-
-
-  function delete_reset1()   {
-        jQuery(this).closest('.text-choice').remove();
-  $('.text-choice').each(function(i){
-     //$(this).find('span.m').html('Row ' + (i+1));
-     $(this).find('.reset_val').val('' + (i+1));
-  });
-
-      }
+  return $helper;
+},
+  updateIndex = function(e, ui) {
+      $('td.index', ui.item.parent()).each(function (i) {
+          $(this).html(i + 1);
+      });  
       
+       $('input.index1', ui.item.parent()).each(function (i) {
+         // $(this).val(i + 1);
+    //  alert('working 1');
+    $(this).attr('value', (i + 1));
+    // alert('working 2');
+      });  
+      // $(this).attr('value', (i + 1));
+  };
 
-  </script>
+$("#diagnosis_list tbody").sortable({
+  helper: fixHelperModified,
+  stop: updateIndex
+}).disableSelection();
+
+});
+
+  
+</script>
+
+<script>
+
+
+// $(document).on('click','.remove',function(){
+//       $(this).parents('tr').remove();
+//   delete_reorder();
+//   });
+
+function delete_reset1()   {
+// alert('working ');
+      jQuery(this).closest('.text-choice').remove();
+$('.text-choice').each(function(i){
+   //$(this).find('span.m').html('Row ' + (i+1));
+  //  $(this).find('.index1').val('' + (i+1));
+   $(this).find('.index1').attr('value', (i + 1));
+ $(this).find('td.index').html('' + (i+1));
+});
+
+    }
+</script>
+
 
 
 
@@ -6334,13 +6347,14 @@ input[type=button] {
       function addTextChoice() {
         choiceCount = $('.text-choice').length;
         var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
-        var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''><td><div class='clearfix'></div><div class='panel panel-default'><div class='panel-heading'><div class='panel-title'>" 
+        var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>" 
+         
+          + "<td><div class='clearfix'></div><div class='panel panel-default'><div class='panel-heading'><div class='panel-title'>" 
           + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
-              + "    Text Choices "
-              +"  <input type='button'  class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' "
-              + " id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
+              + "    Text Choices <input type='number' class='index1 reset_val' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' />"
+             
               
               +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
                 + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
@@ -6358,10 +6372,10 @@ input[type=button] {
             "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
             +
             "   <div class='form-group mb-none'>" +
-            "   <input type='hidden' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
+            "   <input type='text' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
             + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
             + "'  maxlength='100' required>" 
-    		+ "  <input type='text' class='reset_val' name='questionResponseSubTypeList["+ choiceCount +"].sequenceNumber' id='displayTextChoicesequenceNumber"+ choiceCount +"' value='"+ (choiceCount+1) +"'>"
+    	
             +
             "      <div class='help-block with-errors red-txt'></div>" +
             "   </div>" +

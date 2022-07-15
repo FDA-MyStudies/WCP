@@ -1963,7 +1963,7 @@ input[type=number] {
 														<div class="form-group">
 															<select
 																name="questionResponseSubTypeList[0].destinationStepId"
-																id="destinationTextChoiceStepId0"
+																id="destinationValuePickerStepId0"
 																class="selectpicker destionationYes"<%-- <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> --%>>
 																<option value="" selected>Select</option>
 																<c:forEach items="${destinationStepList}"
@@ -2016,7 +2016,7 @@ input[type=number] {
 														<div class="form-group">
 															<select
 																name="questionResponseSubTypeList[1].destinationStepId"
-																id="destinationTextChoiceStepId1"
+																id="destinationValuePickerStepId1"
 																class="selectpicker destionationYes"<%-- <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if> --%>>
 																<option value="" selected>select</option>
 																<c:forEach items="${destinationStepList}"
@@ -5828,7 +5828,7 @@ $('.text-choice').each(function(i){
             var response_sub_type_id = $("#valPickSubTypeValueId" + id).val();
             var diasplay_text = $("#displayValPickText" + id).val();
             var diaplay_value = $("#displayValPickValue" + id).val();
-            var destination_step = $("#destinationTextChoiceStepId" + id).val();
+            var destination_step = $("#destinationValuePickerStepId" + id).val();
 
             questionSubResponseType.responseSubTypeValueId = response_sub_type_id;
             questionSubResponseType.text = diasplay_text;
@@ -6201,7 +6201,7 @@ $('.text-choice').each(function(i){
         newValuePicker += "<div class='col-md-2 pl-none'>" +
             "   <div class='form-group'>" +
             "  <select name='questionResponseSubTypeList[" + count
-            + "].destinationStepId' id='destinationTextChoiceStepId" + count
+            + "].destinationStepId' id='destinationValuePickerStepId" + count
             + "' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value='' disabled selected>Select</option>";
         <c:forEach items='${destinationStepList}' var='destinationStep'>
         newValuePicker += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";

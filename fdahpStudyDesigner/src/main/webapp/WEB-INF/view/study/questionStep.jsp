@@ -2836,7 +2836,7 @@ input[type=number] {
 									</c:otherwise>
 								</c:choose>
                 </tbody></table> 
-							</div>
+
               
 							<div>
 								<div class="clearfix"></div>
@@ -2985,7 +2985,7 @@ input[type=number] {
 								</div>
 							</div>
 
-
+							</div>
 						</div>
 
 						<div id="ImageChoice" style="display: none;">

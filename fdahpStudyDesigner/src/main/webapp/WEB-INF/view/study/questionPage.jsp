@@ -2267,7 +2267,7 @@ input[type=number] {
                             <c:otherwise>
 
 
-                              <tr class="text-choice otherOptionChecked" id="0">
+                              <tr class="text-choice otherOptionChecked" id="1">
                                 <td>
                                   <div class="panel panel-default">
                                 <input type="hidden" name="">
@@ -2279,7 +2279,7 @@ input[type=number] {
                                                 <div class="gray-choice-f mb-xs mt-md">
                                                   Text Choices 
                                                   <input type="number" class="index1 reset_val" name="questionResponseSubTypeList[0].sequenceNumber"
-                                                  id="displayTextChoicesequenceNumber0" value="0" />
+                                                  id="displayTextChoicesequenceNumber0" value="1" />
             
                                                    <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                                     title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
@@ -2388,7 +2388,7 @@ input[type=number] {
 
 
                     <!-- Start panel-->
-                    <tr class="text-choice otherOptionChecked1"  id="1">       
+                    <tr class="text-choice otherOptionChecked1"  id="2">       
                       <td>
                   <div class="panel panel-default" >
                     <input type="hidden" name="">
@@ -2401,7 +2401,7 @@ input[type=number] {
                                     Text Choices   
                                     
                                     <input type="number" class="index1 reset_val" name="questionResponseSubTypeList[1].sequenceNumber"
-                                    id="displayTextChoicesequenceNumber1" value="1" /> 
+                                    id="displayTextChoicesequenceNumber1" value="2" /> 
 
                                     <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                       title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>

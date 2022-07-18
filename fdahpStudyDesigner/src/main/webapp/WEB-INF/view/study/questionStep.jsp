@@ -6907,8 +6907,8 @@ input[type=number] {
                 $("#displayTextChoiceValue" + id).parent().find(".help-block").append(
                     $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
                         "The value should be unique "));
-              } else
-                valueArray.push(diaplay_value.toLowerCase());
+              } //else
+               // valueArray.push(diaplay_value.toLowerCase());
             } else {
 
             }

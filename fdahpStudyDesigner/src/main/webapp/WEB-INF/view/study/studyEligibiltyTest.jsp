@@ -304,7 +304,7 @@
                         timeOutFunction();
                     </c:if>
             }
-        }, 75000); // 5 minutes
+        }, 226000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -331,7 +331,7 @@
                    idleTime = 0;
                    i-=1;
                     }
-                    }, 15000);
+                    }, 60000);
                     }
           // pop message after 15 minutes
           if ($('#isAutoSaved').val() === 'true') {
@@ -359,7 +359,7 @@
                       i+=1;
                       j-=1;
                   }
-              }, 15000);
+              }, 60000);
           }
       });
 

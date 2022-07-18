@@ -3968,7 +3968,7 @@ input[type=number] {
                         timeOutFunction();
                     </c:if>
             }
-        }, 75000); // 5 minutes
+        }, 226000); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;
@@ -3996,7 +3996,7 @@ input[type=number] {
                  idleTime = 0;
                  i-=1;
                   }
-                  }, 15000);
+                  }, 60000);
                   }
   });
     function autoSaveFormQuestionPage(mode){
@@ -4676,7 +4676,7 @@ input[type=number] {
                         i += 1;
                         j-=1;
                     }
-                }, 15000);
+                }, 60000);
                 $("#isAutoSaved").val('false');
             }
           } else {
@@ -4913,6 +4913,7 @@ input[type=number] {
   }
 
   function addTextChoice() {
+  debugger
     let choiceCount = $('.text-choice').length;
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
@@ -5292,6 +5293,7 @@ input[type=number] {
   }
 
   function validateForUniqueValue(item, responsetype, callback) {
+  debugger
     var isValid = true;
     if (responsetype == 'Text Scale') {
       var valueArray = new Array();

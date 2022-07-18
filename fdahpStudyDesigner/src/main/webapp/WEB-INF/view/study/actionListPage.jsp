@@ -261,7 +261,7 @@ var idleTime = 0;
                if (idleTime > 3) { // 5 minutes
                timeOutFunction();
                 }
-                }, 75000);
+                }, 226000);
 
                 $(this).mousemove(function (e) {
                   idleTime = 0;
@@ -289,7 +289,7 @@ var idleTime = 0;
                         idleTime = 0;
                         i-=1;
                          }
-                       }, 15000);
+                       }, 60000);
                      }
 	});
 	$('input[type="radio"]').change(function() {

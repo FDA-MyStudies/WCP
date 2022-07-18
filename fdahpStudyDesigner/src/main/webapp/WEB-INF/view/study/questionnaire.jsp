@@ -2952,7 +2952,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     timeOutFunction();
                 </c:if>
         }
-    }, 75000); // 5 minutes
+    }, 226000); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;
@@ -2980,7 +2980,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
              idleTime = 0;
              i-=1;
               }
-              }, 15000);
+              }, 60000);
               }
   });
   function autoSaveQuestionnaire(mode){
@@ -3844,7 +3844,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                           i+=1;
                           j-=1;
                       }
-                  }, 15000);
+                  }, 60000);
               }
           } else {
             $("body").removeClass("loading");

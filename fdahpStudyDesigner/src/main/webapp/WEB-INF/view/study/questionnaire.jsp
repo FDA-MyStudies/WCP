@@ -2990,6 +2990,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 	          if (isFromValid("#contentFormId")) {
                   if (mode === 'auto') {
                       $('#isAutoSaved').val('true');
+                  } else {
+                      $('#isAutoSaved').val('false');
                   }
 	            doneQuestionnaire(this, 'save', function (val) {
 	              if (val) {

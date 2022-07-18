@@ -1209,7 +1209,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             (StudyBo)
                 session
                     .createQuery("from StudyBo where customStudyId=:customStudyId and live=0 ")
-                    .setString("customStudyId", customStudyId)
+                    .setParameter("customStudyId", customStudyId)
+                    .setMaxResults(1)
                     .uniqueResult();
         if (studyBo != null) {
           boolean isChange = true;

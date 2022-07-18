@@ -6819,7 +6819,7 @@ input[type=number] {
             $("#displayTextSclValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayTextSclValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayTextSclValue" + id).val('');
@@ -6845,7 +6845,7 @@ input[type=number] {
             $("#displayValPickValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayValPickValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayValPickValue" + id).val('');
@@ -6871,7 +6871,7 @@ input[type=number] {
             $("#displayImageChoiceValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayImageChoiceValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayImageChoiceValue" + id).val('');
@@ -6897,7 +6897,7 @@ input[type=number] {
             $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayTextChoiceValue" + id).val('');
@@ -7781,6 +7781,7 @@ input[type=number] {
 						  $('#' + id).val('');
 						  i++;
 					  });
+					  $('#textchoiceOtherId').attr('disabled', true);
 				  }
                   let i = 0;
                   $(className).find('input.lang-specific').each(function (index, ele) {
@@ -7846,7 +7847,7 @@ input[type=number] {
                             $('#mlOtherDescription', htmlData).val());
                     $('[name="questionReponseTypeBo.otherPlaceholderText"]').val(
                             $('#mlOtherPlaceholderText', htmlData).val());
-
+					$('#textchoiceOtherId').attr('disabled', true);
                     let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
 					let txtDescriptionArray = [];
 					if (textChoiceDescription !== '') {
@@ -7985,6 +7986,7 @@ input[type=number] {
 						let id = ele.getAttribute('id');
 						$('#' + id).val($('#' + id, htmlData).val());
 					});
+					$('#textchoiceOtherId').attr('disabled', false);
                 }
                 $(className).find('input.lang-specific').each(function (index, ele) {
                   let id = ele.getAttribute('id');

@@ -1296,12 +1296,15 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
       session
           .createQuery("delete from ActiveTaskLangBO where activeTaskLangPK.id=:id")
-          .setInteger("id", id)
+          .setParameter("id", id)
           .executeUpdate();
+      transaction.commit();
       message = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {
+      transaction.rollback();
       logger.error("StudyActiveTasksDAOImpl - deleteActiveTaskLang() - ERROR", e);
     } finally {
       if (null != session && session.isOpen()) {

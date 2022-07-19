@@ -25,6 +25,50 @@
   .langSpecific > button{
     padding-left: 30px;
   }
+
+  #autoSavedMessage{
+  width:257px;
+  }
+
+  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+  position:relative !important;
+  right:-14px !important;
+  margin-top:6% !important;
+  }
+
+   #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+     position:relative !important;
+     right:-14px !important;
+     margin-top:6% !important;
+     }
+
+  .flr_modal{
+  float:right !important;
+  }
+
+  .grey_txt{
+  color:grey;
+  font-size:15px;
+  font-weight:500;
+  }
+
+  .blue_text{
+  color:#007CBA !important;
+  font-size:15px;
+  font-weight:500;
+  }
+
+  .timerPos{
+  position:relative;
+  top:-2px;
+  right:2px !important;
+  }
+
+  .bold_txt{
+  font-weight:900 !important;
+  color:#007cba !important;
+  font-size:15px;
+   }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -328,17 +372,30 @@
         </div>
     </form:form>
     <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
-            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
-                <div class="modal-header cust-hdr pt-lg">
-                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title pl-lg text-center">
-                        <b id="autoSavedMessage">Last saved now</b>
-                    </h4>
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div id="autoSavedMessage" class="text-right">
+                    <div class="blue_text">Last saved now</div>
+                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
+
+                <div class="modal fade" id="timeOutModal" role="dialog">
+                                    <div class="modal-dialog modal-sm flr_modal">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                                <div class="modal-body">
+                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
@@ -390,8 +447,14 @@ var idleTime = 0;
         }
         setInterval(function () {
         idleTime += 1;
-        if (idleTime > 3) { // 5 minutes
-        autoSaveComprehensionQuestionPage('auto');
+        if (idleTime > 3) {
+         debugger
+           <c:if test="${actionPage ne 'view'}">
+           autoSaveComprehensionQuestionPage('auto');
+           </c:if>
+           <c:if test="${actionPage eq 'view'}">
+            timeOutFunction();
+            </c:if>
          }
          }, 226000); // 5 minutes
 
@@ -401,6 +464,28 @@ var idleTime = 0;
           $(this).keypress(function (e) {
            idleTime = 0;
             });
+
+            function timeOutFunction() {
+               $('#timeOutModal').modal('show');
+                let i = 14;
+                let timeOutInterval = setInterval(function () {
+                if (i === 0) {
+                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                    if ($('#timeOutModal').hasClass('in')) {
+                     $('#backToLoginPage').submit();
+                       }
+                        clearInterval(timeOutInterval);
+                        } else {
+                         if (i === 1) {
+                          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                          } else {
+                          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                          }
+                          idleTime = 0;
+                          i-=1;
+                          }
+                       }, 60000);
+                     }
       });
       function autoSaveComprehensionQuestionPage(mode) {
           $(".right-content-body").parents("form").validator(
@@ -572,20 +657,27 @@ var idleTime = 0;
             if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 1;
+                let j =14;
                 let lastSavedInterval = setInterval(function () {
-                    if (i === 15) {
-                    $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                   if ((i === 15) || (j === 0)) {
+                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
                         if ($('#myModal').hasClass('in')) {
                             $('#backToLoginPage').submit();
                         }
                         clearInterval(lastSavedInterval);
                     } else {
-                        if (i === 1) {
-                            $('#autoSavedMessage').text('Last saved was 1 minute ago');
-                        } else {
-                            $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                    if ((i === 1) || (j === 14)) {
+                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
                         }
+                    else if ((i === 14) || (j === 1)) {
+                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+                    }
+                     else {
+                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
+                        }
+                        idleTime = 0;
                         i += 1;
+                        j-=1;
                     }
                 }, 60000);
                 $("#isAutoSaved").val('false');

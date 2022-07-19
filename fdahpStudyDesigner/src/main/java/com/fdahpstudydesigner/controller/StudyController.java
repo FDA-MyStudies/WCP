@@ -4,33 +4,7 @@ import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bean.StudySessionBean;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.Checklist;
-import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
-import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
-import com.fdahpstudydesigner.bo.ConsentBo;
-import com.fdahpstudydesigner.bo.ConsentInfoBo;
-import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
-import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
-import com.fdahpstudydesigner.bo.EligibilityBo;
-import com.fdahpstudydesigner.bo.EligibilityTestBo;
-import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
-import com.fdahpstudydesigner.bo.MultiLanguageCodes;
-import com.fdahpstudydesigner.bo.NotificationBO;
-import com.fdahpstudydesigner.bo.NotificationHistoryBO;
-import com.fdahpstudydesigner.bo.NotificationLangBO;
-import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
-import com.fdahpstudydesigner.bo.ReferenceTablesBo;
-import com.fdahpstudydesigner.bo.ResourceBO;
-import com.fdahpstudydesigner.bo.ResourcesLangBO;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudyLanguageBO;
-import com.fdahpstudydesigner.bo.StudyPageBo;
-import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
-import com.fdahpstudydesigner.bo.StudyPermissionBO;
-import com.fdahpstudydesigner.bo.StudySequenceBo;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
-import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.service.NotificationService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
@@ -74,6 +48,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class StudyController {
 
   private static Logger logger = LogManager.getLogger(StudyController.class.getName());
+  private final String QUOTE = "&quot;";
+  private final String QUOTE_MARK = "'";
 
   @Autowired private NotificationService notificationService;
 
@@ -325,11 +301,25 @@ public class StudyController {
           }
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+          if (resourceBO != null) {
+            if (StringUtils.isNotBlank(resourceBO.getRichText()) &&
+                    resourceBO.getRichText().contains(QUOTE)) {
+              String filteredText = resourceBO.getRichText().replace(QUOTE, QUOTE_MARK);
+              resourceBO.setRichText(filteredText);
+            }
+          }
           map.addAttribute("resourceBO", resourceBO);
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-            map.addAttribute(
-                "resourceLangBO", studyService.getResourceLangInfo(resourceInfoId, language));
+            ResourcesLangBO resourcesLangBO = studyService.getResourceLangInfo(resourceInfoId, language);
+            map.addAttribute("resourceLangBO", resourcesLangBO);
+            if (resourcesLangBO != null) {
+              if (StringUtils.isNotBlank(resourcesLangBO.getRichText()) &&
+                      resourcesLangBO.getRichText().contains(QUOTE)) {
+                String filteredText = resourcesLangBO.getRichText().replace(QUOTE, QUOTE_MARK);
+                resourcesLangBO.setRichText(filteredText);
+              }
+            }
             this.setStudyLangData(studyId, language, map);
           }
           map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON, action);
@@ -1763,6 +1753,11 @@ public class StudyController {
         }
         if ((consentInfoId != null) && !consentInfoId.isEmpty()) {
           consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
+          if (StringUtils.isNotBlank(consentInfoBo.getElaborated())
+                  && consentInfoBo.getElaborated().contains(QUOTE)) {
+            String filteredText = consentInfoBo.getElaborated().replace(QUOTE, QUOTE_MARK);
+            consentInfoBo.setElaborated(filteredText);
+          }
           map.addAttribute("consentInfoBo", consentInfoBo);
 
           String language = request.getParameter("language");
@@ -1771,6 +1766,11 @@ public class StudyController {
             consentInfoLangBO =
                 studyService.getConsentInfoLangById(consentInfoBo.getId(), language);
             this.setStudyLangData(studyId, language, map);
+            if (StringUtils.isNotBlank(consentInfoLangBO.getElaborated())
+                    && consentInfoLangBO.getElaborated().contains(QUOTE)) {
+              String filteredText = consentInfoLangBO.getElaborated().replace(QUOTE, QUOTE_MARK);
+              consentInfoLangBO.setElaborated(filteredText);
+            }
           }
           map.addAttribute("currLanguage", language);
           map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
@@ -1906,6 +1906,19 @@ public class StudyController {
           String language = request.getParameter("language");
           if (FdahpStudyDesignerUtil.isNotEmpty(language) && !"en".equals(language)) {
             this.setStudyLangData(studyId, language, map);
+            StudyLanguageBO studyLanguageBO = (StudyLanguageBO) map.getAttribute("studyLanguageBO");
+            if (studyLanguageBO != null) {
+              if (StringUtils.isNotBlank(studyLanguageBO.getLearnMoreText())
+                      && studyLanguageBO.getLearnMoreText().contains(QUOTE)) {
+                String filteredText = studyLanguageBO.getLearnMoreText().replace(QUOTE, QUOTE_MARK);
+                studyLanguageBO.setLearnMoreText(filteredText);
+              }
+              if (StringUtils.isNotBlank(studyLanguageBO.getConsentDocContent())
+                      && studyLanguageBO.getConsentDocContent().contains(QUOTE)) {
+                String filteredText = studyLanguageBO.getConsentDocContent().replace(QUOTE, QUOTE_MARK);
+                studyLanguageBO.setConsentDocContent(filteredText);
+              }
+            }
             List<ConsentInfoLangBO> consentInfoLangBOList =
                 studyService.getConsentInfoLangByStudyId(Integer.parseInt(studyId), language);
             map.addAttribute(
@@ -1930,6 +1943,14 @@ public class StudyController {
                 .setAttribute(
                     sessionStudyCount + FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
             map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentBo.getId());
+            if (StringUtils.isNotBlank(consentBo.getLearnMoreText()) && consentBo.getLearnMoreText().contains(QUOTE)) {
+              String filteredText = consentBo.getLearnMoreText().replace(QUOTE, QUOTE_MARK);
+              consentBo.setLearnMoreText(filteredText);
+            }
+            if (StringUtils.isNotBlank(consentBo.getConsentDocContent()) && consentBo.getConsentDocContent().contains(QUOTE)) {
+              String filteredText = consentBo.getConsentDocContent().replace(QUOTE, QUOTE_MARK);
+              consentBo.setConsentDocContent(filteredText);
+            }
           }
 
           String permission =
@@ -5997,6 +6018,10 @@ public class StudyController {
 
         map.addAttribute("categoryList", categoryList);
         map.addAttribute("dataPartnerList", dataPartnerList);
+        if (StringUtils.isNotBlank(studyBo.getDescription()) && studyBo.getDescription().contains(QUOTE)) {
+          String filteredText = studyBo.getDescription().replace(QUOTE, QUOTE_MARK);
+          studyBo.setDescription(filteredText);
+        }
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("createStudyId", "true");
         map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
@@ -6833,5 +6858,76 @@ public class StudyController {
     }
     logger.info("StudyController - removeSelectedLanguage - Ends");
     return mav;
+  }
+
+  @RequestMapping("/adminApps/getAppsList.do")
+  public ModelAndView getAppsList(HttpServletRequest request) {
+    logger.info("UsersController - getAppsList() - Starts");
+    ModelAndView mav = new ModelAndView();
+    ModelMap map = new ModelMap();
+    List<VersionInfo> appList = null;
+    String sucMsg = "";
+    String errMsg = "";
+    String ownUser = "";
+    List<RoleBO> roleList = null;
+    try {
+      if (FdahpStudyDesignerUtil.isSession(request)) {
+        if (null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)) {
+          sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+          map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+          request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+        }
+        if (null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)) {
+          errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+          map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+          request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+        }
+        appList = studyService.getVersionInfoList();
+        map.addAttribute("appList", appList);
+        Map<String, Boolean> typeMap = new HashMap<>();
+        typeMap.put("Auto", true);
+        typeMap.put("Manual", false);
+        map.addAttribute("updateTypes", typeMap);
+        mav = new ModelAndView("appListPage", map);
+      }
+    } catch (Exception e) {
+      logger.error("UsersController - getAppsList() - ERROR", e);
+    }
+    logger.info("UsersController - getAppsList() - Ends");
+    return mav;
+  }
+
+  @RequestMapping(value = "/adminApps/forceUpgradeApp.do", method = RequestMethod.POST)
+  public ModelAndView forceUpgradeApp(
+          HttpServletRequest request, HttpServletResponse response) {
+    logger.info("StudyController - forceUpgradeApp() - Starts");
+    JSONObject jsonobject = new JSONObject();
+    PrintWriter out = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      String appId =
+          FdahpStudyDesignerUtil.isEmpty(request.getParameter("appId"))
+              ? ""
+              : request.getParameter("appId");
+      String androidUpdateType =
+          FdahpStudyDesignerUtil.isEmpty(request.getParameter("androidUpdateType"))
+              ? ""
+              : request.getParameter("androidUpdateType");
+      String iosUpdateType =
+          FdahpStudyDesignerUtil.isEmpty(request.getParameter("iosUpdateType"))
+              ? ""
+              : request.getParameter("iosUpdateType");
+      if (StringUtils.isNotEmpty(appId)) {
+        message = studyService.forceUpgradeApp(appId, androidUpdateType, iosUpdateType);
+      }
+      jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+      response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+      out = response.getWriter();
+      out.print(jsonobject);
+    } catch (Exception e) {
+      logger.error("StudyController - forceUpgradeApp() - ERROR", e);
+    }
+    logger.info("StudyController - forceUpgradeApp() - Ends");
+    return null;
   }
 }

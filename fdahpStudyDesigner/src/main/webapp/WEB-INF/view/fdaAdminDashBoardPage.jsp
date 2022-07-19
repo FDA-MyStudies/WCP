@@ -49,6 +49,20 @@
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
 </head>
+<style>
+#myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: 5px !important;
+    margin-top: 6% !important;
+}
+.flr_modal{
+float:right !important;
+}
+.lg-icons{
+padding-top:20px !important;
+
+}
+</style>
 <body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
      <form:form action="" name="studyListForm" id="studyListForm" method="post">
@@ -57,6 +71,12 @@
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
+	<form:form
+                 action="/fdahpStudyDesigner/sessionOut.do"
+                  id="backToLoginPage"
+                  name="backToLoginPage"
+                  method="post">
+    </form:form>
     <div id="lg-container" class="lg-container">
         
         <!-- Login Left Section-->
@@ -87,8 +107,8 @@
 	                <div class="lg-space-title">
 	                    <span>Welcome,</span><span>${sessionObject.firstName}</span>
 	                </div>
-	                <div class='lg-icons'> 
-	                   <ul class="lg-icons-list"> 
+	                <div class='lg-icons'>
+	                   <ul class="lg-icons-list">
 	                    <li class="studyListId">
 	                        <a class='studies-g' href='javascript:void(0)'></a>
 	                        <div class='studyList'>Studies<br><span>&nbsp;</span></div>
@@ -104,7 +124,11 @@
 	                   <li class="userListId">
 	                        <a class='user-g' href='javascript:void(0)'></a>
 	                        <div>Users<br><span>&nbsp;</span></div>
-	                    </li> 
+	                    </li>
+	                    <li class="appClass">
+	                       <a href='javascript:void(0)' id="appSection"></a>
+	                      <div>App Force Update<br><span>&nbsp;</span></div>
+	                    </li>
 	                    <li class="myAccountId">
 	                        <a class='account-g' href='javascript:void(0)'></a>
 	                        <div>My Account<br><span>&nbsp;</span></div>
@@ -166,7 +190,13 @@
                                 <img class="mt-xlg" src="../images/icons/user-w.png">
                             </a>
                             <div>Users<br><span>&nbsp;</span></div>
-                        </li> 
+                        </li>
+                        <li id="appSection">
+                        <a class='' href='javascript:void(0)'>
+                         <img class="mt-xlg" src="../images/icons/upgrade-w.png">
+                         </a>
+                         <div>App Force Update<br><span>&nbsp;</span></div>
+                         </li>
                         <li class="myAccountId">
                             <a class='' href='javascript:void(0)'>
                                 <img class="mt-xlg" src="../images/icons/account-w.png">
@@ -188,6 +218,16 @@
     </div>
     
     <!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                 <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                 </div>
+            </div>
+        </div>
+</div>
 <div class="modal fade" id="termsModal" role="dialog">
    <div class="modal-dialog modal-lg">
       <!-- Modal content-->
@@ -242,6 +282,7 @@
     <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>
+    var idleTime = 0;
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -275,7 +316,6 @@
     	 $(".notificationListId").unbind();
     	 </c:if>
     	 
-    	 
     	 $(".studyListId").click(function(){	
     		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/studyList.do";
     		document.studyListForm.submit();
@@ -285,7 +325,12 @@
     		document.studyListForm.action="/fdahpStudyDesigner/adminUsersView/getUserList.do";
     		document.studyListForm.submit();
     	 });
-    	 
+
+         $('#appSection').click(function(){
+        document.studyListForm.action="/fdahpStudyDesigner/adminApps/getAppsList.do";
+        document.studyListForm.submit();
+         });
+
     	 $(".notificationListId").click(function(){	
      		document.studyListForm.action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
      		document.studyListForm.submit();
@@ -303,6 +348,42 @@
       	var year = new Date().getFullYear();
     	var copyRightText= 'Copyright © '+year+' FDA';
     	document.getElementById("copyright").innerHTML = copyRightText;
+
+    	setInterval(function () {
+              idleTime += 1;
+               if (idleTime > 3) { // 5 minutes
+               timeOutFunction();
+                }
+                }, 226000);
+
+                $(this).mousemove(function (e) {
+                  idleTime = 0;
+                });
+                $(this).keypress(function (e) {
+                 idleTime = 0;
+                 });
+
+                 function timeOutFunction() {
+                 $('#myModal').modal('show');
+                  let i = 14;
+                  let timeOutInterval = setInterval(function () {
+                  if (i === 0) {
+                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                  if ($('#myModal').hasClass('in')) {
+                  $('#backToLoginPage').submit();
+                    }
+                    clearInterval(timeOutInterval);
+                     } else {
+                     if (i === 1) {
+                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                      } else {
+                      $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                        }
+                        idleTime = 0;
+                        i-=1;
+                         }
+                       }, 60000);
+                     }
     });
     <c:if test="${param.action eq 'landing'}">
     /* function noBack() { 

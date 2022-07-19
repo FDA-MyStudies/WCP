@@ -5,58 +5,7 @@ import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
-import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
-import com.fdahpstudydesigner.bo.ActiveTaskBo;
-import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
-import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
-import com.fdahpstudydesigner.bo.ActiveTaskLangBO;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.Checklist;
-import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
-import com.fdahpstudydesigner.bo.ComprehensionResponseLangBo;
-import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
-import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
-import com.fdahpstudydesigner.bo.ConsentBo;
-import com.fdahpstudydesigner.bo.ConsentInfoBo;
-import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
-import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
-import com.fdahpstudydesigner.bo.EligibilityBo;
-import com.fdahpstudydesigner.bo.EligibilityTestBo;
-import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
-import com.fdahpstudydesigner.bo.FormBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.FormMappingBo;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.NotificationBO;
-import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
-import com.fdahpstudydesigner.bo.ParticipantPropertiesDraftBO;
-import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.ReferenceTablesBo;
-import com.fdahpstudydesigner.bo.ResourceBO;
-import com.fdahpstudydesigner.bo.ResourcesLangBO;
-import com.fdahpstudydesigner.bo.StudyActivityVersionBo;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudyLanguageBO;
-import com.fdahpstudydesigner.bo.StudyLanguagePK;
-import com.fdahpstudydesigner.bo.StudyPageBo;
-import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
-import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
-import com.fdahpstudydesigner.bo.StudyPermissionBO;
-import com.fdahpstudydesigner.bo.StudySequenceBo;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
-import com.fdahpstudydesigner.bo.StudyVersionBo;
-import com.fdahpstudydesigner.bo.UserBO;
-import com.fdahpstudydesigner.bo.UserPermissions;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -1392,6 +1341,35 @@ public class StudyDAOImpl implements StudyDAO {
     }
     logger.info("StudyDAOImpl - getAllStudyList() - Ends");
     return studyBOList;
+  }
+
+  /**
+   * return all active app versions
+   *
+   * @author BTC
+   * @return the app list
+   * @exception Exception
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<VersionInfo> getVersionInfoList() {
+    logger.info("StudyDAOImpl - getVersionInfoList() - Starts");
+    Session session = null;
+    List<VersionInfo> versionInfos = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      versionInfos =
+              session.createQuery(
+                      " FROM VersionInfo WHERE appId is not null").list();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getVersionInfoList() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getVersionInfoList() - Ends");
+    return versionInfos;
   }
 
   /**
@@ -9881,6 +9859,50 @@ public class StudyDAOImpl implements StudyDAO {
       logger.error("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - ERROR ", e);
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
+    return message;
+  }
+
+  @Override
+  public String forceUpgradeApp(String appId, String androidUpdateType, String iosUpdateType) {
+    logger.info("StudyDAOImpl - forceUpgradeApp() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      Session session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      VersionInfo versionInfo = (VersionInfo) session.createQuery("from VersionInfo where appId=:appId")
+              .setParameter("appId", appId)
+              .uniqueResult();
+      if (versionInfo != null) {
+        if (StringUtils.isNotBlank(androidUpdateType)) {
+          versionInfo.setAndroidForceUpgrade("AUTO".equalsIgnoreCase(androidUpdateType));
+        } else {
+          versionInfo.setAndroidForceUpgrade(null);
+        }
+        if (StringUtils.isNotBlank(iosUpdateType)) {
+          versionInfo.setIosForceUpgrade("AUTO".equalsIgnoreCase(iosUpdateType));
+        } else {
+          versionInfo.setIosForceUpgrade(null);
+        }
+        session.update(versionInfo);
+        auditLogDAO.saveToAuditLog(
+                session,
+                transaction,
+                null,
+                "App Metadata Updated.",
+                "App Metadata Updated. (app id = "
+                        + appId
+                        + ", app name = "
+                        + versionInfo.getAppName()
+                        + ") ",
+                "StudyDAOImpl - forceUpgradeApp");
+        transaction.commit();
+        message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - forceUpgradeApp() - ERROR ", e);
+      transaction.commit();
+    }
+    logger.info("StudyDAOImpl - forceUpgradeApp() - Ends");
     return message;
   }
 }

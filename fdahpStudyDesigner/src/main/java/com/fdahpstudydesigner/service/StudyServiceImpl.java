@@ -3,40 +3,7 @@ package com.fdahpstudydesigner.service;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
-import com.fdahpstudydesigner.bo.Checklist;
-import com.fdahpstudydesigner.bo.ComprehensionQuestionLangBO;
-import com.fdahpstudydesigner.bo.ComprehensionQuestionLangPK;
-import com.fdahpstudydesigner.bo.ComprehensionResponseLangBo;
-import com.fdahpstudydesigner.bo.ComprehensionResponseLangPK;
-import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
-import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
-import com.fdahpstudydesigner.bo.ConsentBo;
-import com.fdahpstudydesigner.bo.ConsentInfoBo;
-import com.fdahpstudydesigner.bo.ConsentInfoLangBO;
-import com.fdahpstudydesigner.bo.ConsentInfoLangPK;
-import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
-import com.fdahpstudydesigner.bo.EligibilityBo;
-import com.fdahpstudydesigner.bo.EligibilityTestBo;
-import com.fdahpstudydesigner.bo.EligibilityTestLangBo;
-import com.fdahpstudydesigner.bo.EligibilityTestLangPK;
-import com.fdahpstudydesigner.bo.MultiLanguageCodes;
-import com.fdahpstudydesigner.bo.NotificationBO;
-import com.fdahpstudydesigner.bo.ParticipantPropertiesBO;
-import com.fdahpstudydesigner.bo.ReferenceTablesBo;
-import com.fdahpstudydesigner.bo.ResourceBO;
-import com.fdahpstudydesigner.bo.ResourcesLangBO;
-import com.fdahpstudydesigner.bo.ResourcesLangPK;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudyLanguageBO;
-import com.fdahpstudydesigner.bo.StudyLanguagePK;
-import com.fdahpstudydesigner.bo.StudyPageBo;
-import com.fdahpstudydesigner.bo.StudyPageLanguageBO;
-import com.fdahpstudydesigner.bo.StudyPageLanguagePK;
-import com.fdahpstudydesigner.bo.StudyPermissionBO;
-import com.fdahpstudydesigner.bo.StudySequenceBo;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
-import com.fdahpstudydesigner.bo.StudySequenceLangPK;
-import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -355,6 +322,25 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getAllStudyList() - Ends");
     return studyBOList;
+  }
+
+  /**
+   * This method is used to get all the live apps and their versions
+   *
+   * @author BTC
+   * @return List of {@link com.fdahpstudydesigner.bo.VersionInfo}
+   */
+  @Override
+  public List<VersionInfo> getVersionInfoList() {
+    logger.info("StudyServiceImpl - getVersionInfoList() - Starts");
+    List<VersionInfo> versionInfoList = null;
+    try {
+      versionInfoList = studyDAO.getVersionInfoList();
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - getVersionInfoList() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - getVersionInfoList() - Ends");
+    return versionInfoList;
   }
 
   /**
@@ -2958,5 +2944,18 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - isLanguageDeletable() - Ends");
     return map;
+  }
+
+  @Override
+  public String forceUpgradeApp(String appId, String androidUpdateType, String iosUpdateType) {
+    logger.info("StudyServiceImpl - forceUpgradeApp() - Starts");
+    String message = "";
+    try {
+      message = studyDAO.forceUpgradeApp(appId, androidUpdateType, iosUpdateType);
+    } catch (Exception e) {
+      logger.error("StudyServiceImpl - forceUpgradeApp() - ERROR ", e);
+    }
+    logger.info("StudyServiceImpl - forceUpgradeApp() - Ends");
+    return message;
   }
 }

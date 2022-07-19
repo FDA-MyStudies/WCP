@@ -39,6 +39,9 @@
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}">
                 <li id="users"><a href="javascript:void(0)" id="usersSection">Users</a></li>
                 </c:if>
+                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
+                    <li class="appClass"><a href="javascript:void(0)" id="appSection" >App Force Update</a></li>
+                </c:if>
               </ul>
               
               <ul class="nav navbar-nav navbar-right">
@@ -95,6 +98,11 @@
 		a.href = "/fdahpStudyDesigner/adminUsersView/getUserList.do";
 		document.body.appendChild(a).click();
  	});
+
+    $('#appSection').on('click',function(){
+        a.href = "/fdahpStudyDesigner/adminApps/getAppsList.do";
+        document.body.appendChild(a).click();
+    });
  	
  	$('#manageNotificationSection').on('click',function(){
 //  		$('#manageNotificationForm').submit();

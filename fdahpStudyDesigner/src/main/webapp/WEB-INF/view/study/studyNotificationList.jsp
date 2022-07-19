@@ -31,6 +31,32 @@
       }
 
       -->
+
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+            position:relative !important;
+            right:-14px !important;
+            margin-top:6% !important;
+            }
+
+            .flr_modal{
+            float:right !important;
+            }
+
+            .blue_text{
+            color:#007CBA !important;
+            font-size:15px;
+            font-weight:500;
+            }
+
+            .timerPos{
+            position:relative;
+            top:-2px;
+            right:2px !important;
+            }
+
+            #timeOutMessage{
+            width:257px;
+            }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -133,6 +159,16 @@
         </div>
     </div>
     <!--  End body tab section -->
+    <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm flr_modal">
+                <!-- Modal content-->
+                <div class="modal-content">
+                        <div class="modal-body">
+                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                        </div>
+                </div>
+            </div>
+    </div>
 </div>
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do?_S=${param._S}"
@@ -163,7 +199,14 @@
            method="post">
     <input type="hidden" name="language" value="${currLanguage}">
 </form:form>
+<form:form
+             action="/fdahpStudyDesigner/sessionOut.do"
+              id="backToLoginPage"
+              name="backToLoginPage"
+              method="post">
+</form:form>
 <script>
+var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li").removeClass('active');
@@ -201,6 +244,40 @@
       "searching": false,
     });
 
+     setInterval(function () {
+           idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+            timeOutFunction();
+             }
+             }, 226000);
+
+             $(this).mousemove(function (e) {
+               idleTime = 0;
+             });
+             $(this).keypress(function (e) {
+              idleTime = 0;
+              });
+
+              function timeOutFunction() {
+              $('#myModal').modal('show');
+               let i = 14;
+               let timeOutInterval = setInterval(function () {
+               if (i === 0) {
+               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+               if ($('#myModal').hasClass('in')) {
+               $('#backToLoginPage').submit();
+                 }
+                 clearInterval(timeOutInterval);
+                  } else {
+                  if (i === 1) {
+                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                   } else {
+                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                     }
+                     i-=1;
+                      }
+                    }, 60000);
+                  }
   });
 
   function markAsCompleted() {

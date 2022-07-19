@@ -113,7 +113,16 @@
 		</div>
 	</div>
 </div>
-
+<div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                    <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                    </div>
+                </div>
+            </div>
+</div>
 <form:form
 	action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserDetails.do"
 	id="addOrEditUserForm" name="addOrEditUserForm" method="post">
@@ -129,7 +138,14 @@
 		name="checkViewRefreshFlag">
 </form:form>
 
+<form:form
+             action="/fdahpStudyDesigner/sessionOut.do"
+              id="backToLoginPage"
+              name="backToLoginPage"
+              method="post">
+</form:form>
 <script type="text/javascript">
+var idleTime = 0;
 $(document).ready(function(){
 	$('#rowId').parent().removeClass('#white-bg');
 	
@@ -230,6 +246,43 @@ $(document).ready(function(){
 		var selected = $(this).find("option:selected").val();
 		table.column(2).search(selected).draw();
      });
+
+     setInterval(function () {
+           idleTime += 1;
+            if (idleTime > 3) { // 5 minutes
+            timeOutFunction();
+             }
+             }, 226000);
+
+             $(this).mousemove(function (e) {
+               idleTime = 0;
+             });
+             $(this).keypress(function (e) {
+              idleTime = 0;
+              });
+
+              function timeOutFunction() {
+              $('#myModal').modal('show');
+               let i = 14;
+               let timeOutInterval = setInterval(function () {
+               if (i === 0) {
+               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+               if ($('#myModal').hasClass('in')) {
+               $('#backToLoginPage').submit();
+                 }
+                 clearInterval(timeOutInterval);
+                  } else {
+                  if (i === 1) {
+                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                   } else {
+                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                     }
+                     idleTime = 0;
+                     i-=1;
+                      }
+                    }, 60000);
+                  }
+
 });
 
 

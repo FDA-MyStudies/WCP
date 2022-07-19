@@ -45,6 +45,108 @@
       .langSpecific > button {
         padding-left: 30px;
       }
+
+
+      #autoSavedMessage{
+      width:257px;
+      }
+
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+      position:relative !important;
+      right:-14px !important;
+      margin-top:6% !important;
+      }
+
+      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+        position:relative !important;
+        right:-14px !important;
+        margin-top:6% !important;
+        }
+
+      .flr_modal{
+      float:right !important;
+      }
+
+      .grey_txt{
+      color:grey;
+      font-size:15px;
+      font-weight:500;
+      }
+
+      .blue_text{
+      color:#007CBA !important;
+      font-size:15px;
+      font-weight:500;
+      }
+
+      .timerPos{
+      position:relative;
+      top:-2px;
+      right:2px !important;
+      }
+
+      .bold_txt{
+      font-weight:900 !important;
+      color:#007cba !important;
+      font-size:15px;
+       }
+
+      
+  .ui-sortable tr {
+    cursor:pointer;
+  }
+      
+  .ui-sortable tr:hover {
+    background:#fff !important;
+    -webkit-box-shadow: inset 0 0 6px #fff;
+    box-shadow: inset 0 0 6px #fff;
+  }
+ 
+  .table>tbody>tr.ui-sortable-handle>td {
+    padding: 5px 0px !important;
+}
+.panel {
+    margin-bottom: 10px !important;
+}
+
+input[type=button] {
+    -webkit-appearance: button;
+    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+}
+
+.table>tbody>tr>td {
+    padding: 5px 0px !important;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.index1 {
+    cursor: not-allowed;
+    border: none;
+    background: whitesmoke;
+    width: 10%;
+    outline: none;
+}
+
+.not-allowed_num, .disabled_num {
+	cursor: none !important;
+	/* pointer-events: none !important; */
+	opacity: 0.9 !important;
+  caret-color: transparent;
+}
+
     </style>
 </head>
 <script type="text/javascript">
@@ -2011,23 +2113,67 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="gray-choice-f mb-xs">
+                    <!-- <div class="gray-choice-f mb-xs">
                         Text Choices<span class="ml-xs sprites_v3 filled-tooltip"
                                           data-toggle="tooltip"
                                           title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span>
-                    </div>
-                    <div class="TextChoiceContainer">
+                    </div> -->
+
+
+                    <table class="table TextChoiceContainer order_sequenceNumber" id="diagnosis_list"><tbody>
+                   
                         <c:choose>
                             <c:when
                                     test="${questionsBo.responseType eq 6 && fn:length(questionsBo.questionResponseSubTypeList) gt 1}">
                                 <c:forEach items="${questionsBo.questionResponseSubTypeList}"
                                            var="questionResponseSubType" varStatus="subtype">
-                                    <!-- Section Start -->
-                                    <div class="text-choice mt-xlg" id="${subtype.index}">
-                                        <input type="hidden" class="form-control"
-                                               id="textChoiceSubTypeValueId${subtype.index}"
-                                               name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId"
-                                               value="${questionResponseSubType.responseSubTypeValueId}">
+                                   
+                                           		<!-- Section Start -->
+                      
+                      <tr class="text-choice" id="${subtype.index}">
+                       
+                        <td>  <div class="panel panel-default">
+                          <!-- <input type="hidden" name=""> -->
+                          
+                          <div class="panel-heading">
+                              <div class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapse${subtype.index}" aria-expanded="true">
+                                 
+                                      <div class="text-left dis-inline">
+                                        <div class="gray-choice-f mb-xs mt-md">
+                                          Text Choices 
+                                           
+                                          <input type="text" class="index1 reset_val disabled_num"
+                                          name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                           id="displayTextChoicesequenceNumber${subtype.index}"
+                                          <c:if test="${empty questionResponseSubType.sequenceNumber}">
+						                                value="${subtype.index+1}"
+						                                </c:if>
+						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+						                                </c:if>					                                
+						                                >
+
+                                          <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                            title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                        </div>
+                                        
+                                      </div>
+                                      <div class="text-right dis-inline pull-right">
+                                        
+                                          <span class="ml-lg imageBg"><img class="arrow"
+                                                                          src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                          <div id="collapse${subtype.index}" class="panel-collapse collapse in">
+                            <div class="panel-body pt-none">
+
+
+                                    <div class="mt-xlg" id="${subtype.index}">
+                                        
                                         <div class="col-md-3 pl-none">
                                             <div class="gray-xs-f mb-xs">
                                                 Display Text (1 to 100 characters)<span
@@ -2040,6 +2186,19 @@
                                                        id="displayTextChoiceText${subtype.index}"
                                                        value="${fn:escapeXml(questionResponseSubType.text)}"
                                                        maxlength="100">
+
+                                                       <!-- <input type="hidden"  class="reset_val"
+                                                       name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                                       id="displayTextChoicesequenceNumber${subtype.index}"
+                                                       
+                                                       <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                                                       value="${subtype.index+1}"
+                                                       </c:if>
+                                                       <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                                                       value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                                                       </c:if>					                                
+                                                       > -->
+
                                                 <div class="help-block with-errors red-txt"></div>
                                             </div>
                                         </div>
@@ -2097,7 +2256,7 @@
                                                                   maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 pl-none">
+                                            <div class="col-md-2 pl-none pt-xlg">
 													<span class="addBtnDis addbtn align-span-center top6"
                                                           onclick='addTextChoice();'>+</span> <span
                                                     class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
@@ -2106,14 +2265,51 @@
                                         </div>
                                     </div>
                                     <!-- Section End -->
+                                  </div>
+                                </div></div></td></tr> 
+
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
+
+
+                              <tr class="text-choice otherOptionChecked" id="0">
+                                <td>
+                                  <div class="panel panel-default">
+                                <input type="hidden" name="">
+                                  <div class="panel-heading">
+                                      <div class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion"
+                                            href="#collapse_0" aria-expanded="true">
+                                              <div class="text-left dis-inline">
+                                                <div class="gray-choice-f mb-xs mt-md">
+                                                  Text Choices 
+                                                  <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
+                                                  id="displayTextChoicesequenceNumber0" value="1" />
+            
+                                                   <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                                    title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                                </div>
+                                                
+                                              </div>
+                                              <div class="text-right dis-inline pull-right">
+                                                
+                                                  <span class="ml-lg imageBg"><img class="arrow"
+                                                                                  src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  </div>
+                            <div id="collapse_0" class="panel-collapse collapse in">
+                                <div class="panel-body pt-none">
+
+
+
                                 <!-- Section Start -->
-                                <div class="text-choice mt-xlg" id="0">
+                                <div class="mt-xlg">
                                     <div class="col-md-3 pl-none">
                                         <div class="gray-xs-f mb-xs">
-                                            Display Text (1 to 100 characters)<span
+                                           Display Text (1 to 100 characters)<span
                                                 class="requiredStar">*</span>
                                         </div>
                                         <div class="form-group mb-none">
@@ -2123,6 +2319,11 @@
                                                    id="displayTextChoiceText0"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}"
                                                    maxlength="100">
+
+                                                   <!-- <input type="text"  class="reset_val"
+                                                   name="questionResponseSubTypeList[0].sequenceNumber"
+                                                   id="displayTextChoicesequenceNumber0" value="0"> -->
+
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -2177,7 +2378,7 @@
                                                               maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 pl-none">
+                                        <div class="col-md-2 pl-none pt-xlg">
 												<span class="addBtnDis addbtn mr-sm align-span-center top6"
                                                       onclick='addTextChoice();'>+</span> <span
                                                 class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
@@ -2186,10 +2387,49 @@
                                     </div>
                                 </div>
                                 <!-- Section End -->
-                                <div class="text-choice mt-xlg" id="1">
+                              </div>
+                            </div></div></td></tr> 
+                          <!-- End panel-->
+
+
+
+                    <!-- Start panel-->
+                    <tr class="text-choice otherOptionChecked1"  id="1">       
+                      <td>
+                  <div class="panel panel-default" >
+                    <input type="hidden" name="">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                              href="#collapse_1" aria-expanded="true">
+                                <div class="text-left dis-inline">
+                                  <div class="gray-choice-f mb-xs mt-md">
+                                    Text Choices   
+                                    
+                                    <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
+                                    id="displayTextChoicesequenceNumber1" value="2" /> 
+
+                                    <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                      title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                  </div>
+                                  
+                                </div>
+                                <div class="text-right dis-inline pull-right">
+                                  
+                                    <span class="ml-lg imageBg"><img class="arrow"
+                                                                    src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+   <div id="collapse_1" class="panel-collapse collapse in">
+       <div class="panel-body pt-none">
+
+
+                                <div class="mt-xlg" >
                                     <div class="col-md-3 pl-none">
                                         <div class="gray-xs-f mb-xs">
-                                            Display Text (1 to 100 characters)<span
+                                          Display Text (1 to 100 characters)<span
                                                 class="requiredStar">*</span>
                                         </div>
                                         <div class="form-group mb-none">
@@ -2199,6 +2439,11 @@
                                                    id="displayTextChoiceText1"
                                                    value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}"
                                                    maxlength="100">
+
+                                                   <!-- <input type="text"  class="reset_val"
+                                                   name="questionResponseSubTypeList[1].sequenceNumber"
+                                                   id="displayTextChoicesequenceNumber1" value="1"> -->
+
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -2253,7 +2498,7 @@
                                                               maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 pl-none">
+                                        <div class="col-md-2 pl-none pt-xlg">
 												<span class="addBtnDis addbtn mr-sm align-span-center top6"
                                                       onclick='addTextChoice();'>+</span> <span
                                                 class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
@@ -2262,9 +2507,17 @@
                                     </div>
                                 </div>
                                 <!-- Section End -->
+                              </div>
+                            </div>
+                          </div> </td>
+                          </tr> 
+                          <!-- End panel-->
+
                             </c:otherwise>
                         </c:choose>
-                    </div>
+                      </tbody></table> 
+
+                      
                     <div class="clearfix"></div>
                     <div class="checkbox checkbox-inline gray-xs-f mb-xs">
                         <input type="checkbox" name="questionReponseTypeBo.otherType"
@@ -2637,21 +2890,34 @@
     </div>
     </div>
 </form:form>
-   <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
-            <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
-                <div class="modal-header cust-hdr pt-lg">
-                    <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title pl-lg text-center">
-                        <b id="autoSavedMessage">Last saved now</b>
-                    </h4>
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div id="autoSavedMessage" class="text-right">
+                    <div class="blue_text">Last saved now</div>
+                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
+                <div class="modal fade" id="timeOutModal" role="dialog">
+                                    <div class="modal-dialog modal-sm flr_modal">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                                <div class="modal-body">
+                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
 <!-- End right Content here -->
+
+
+
 <script type="text/javascript">
  var idleTime = 0;
   $(document).ready(function () {
@@ -2693,6 +2959,15 @@
     $('#questionStepId select').addClass('linkDis');
     $('.addBtnDis, .remBtnDis').addClass('dis-none');
     $(".removeImageId").css("visibility", "hidden");
+    $("tbody").removeClass('ui-sortable');
+    $("tr").removeClass('ui-sortable-handle');
+    $('table.order_sequenceNumber').removeAttr('id');
+    $('tr.text-choice').removeAttr('id');
+    $(".table").removeClass('order_sequenceNumber ');
+    $(".table").removeClass('TextChoiceContainer  ');
+    $("span.delete").addClass('disabled');
+
+    
     </c:if>
 
     $(".menuNav li.active").removeClass('active');
@@ -3691,8 +3966,13 @@
     }
     setInterval(function () {
             idleTime += 1;
-            if (idleTime > 3) { // 5 minutes
+            if (idleTime > 3) {
+                    <c:if test="${actionTypeForFormStep ne 'view'}">
                     autoSaveFormQuestionPage('auto');
+                     </c:if>
+                    <c:if test="${actionTypeForFormStep eq 'view'}">
+                        timeOutFunction();
+                    </c:if>
             }
         }, 226000); // 5 minutes
 
@@ -3702,6 +3982,28 @@
         $(this).keypress(function (e) {
             idleTime = 0;
         });
+
+        function timeOutFunction() {
+         $('#timeOutModal').modal('show');
+          let i = 14;
+          let timeOutInterval = setInterval(function () {
+           if (i === 0) {
+            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+             if ($('#timeOutModal').hasClass('in')) {
+               $('#backToLoginPage').submit();
+            }
+             clearInterval(timeOutInterval);
+               } else {
+                 if (i === 1) {
+               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                 } else {
+                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                }
+                 idleTime = 0;
+                 i-=1;
+                  }
+                  }, 60000);
+                  }
   });
     function autoSaveFormQuestionPage(mode){
       $("body").addClass("loading");
@@ -4358,21 +4660,27 @@
             if (data.isAutoSaved === 'true') {
                 $('#myModal').modal('show');
                 let i = 1;
+                let j = 14;
                 let lastSavedInterval = setInterval(function () {
-                    if (i === 15) {
-                      $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                    if ((i === 15) || (j === 0)) {
+                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
                         if ($('#myModal').hasClass('in')) {
                             $('#backToLoginPage').submit();
                         }
                         clearInterval(lastSavedInterval);
                     } else {
-                        if (i === 1) {
-                            $('#autoSavedMessage').text('Last saved was 1 minute ago');
-                        } else {
-                            $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+                         if ((i === 1) || (j === 14)){
+                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
+                        }
+                        else if ((i === 14) || (j === 1)) {
+                         $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+                        }
+                        else {
+                         $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
                         }
                         idleTime = 0;
                         i += 1;
+                        j-=1;
                     }
                 }, 60000);
                 $("#isAutoSaved").val('false');
@@ -4611,17 +4919,38 @@
   }
 
   function addTextChoice() {
+  debugger
     let choiceCount = $('.text-choice').length;
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
-    var newTextChoice = "<div class='text-choice mt-xlg' id='" + choiceCount + "'>" +
+    var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
+      
+      + " <td><div class='clearfix'></div><div class='panel panel-default'><div class='panel-heading'><div class='panel-title'>" 
+          + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
+            + " <div class='text-left dis-inline'>"
+             +  " <div class='gray-choice-f mb-xs mt-md'>"
+              + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
+             
+              
+              +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
+                + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
+              + "  </div> </div>"
+             + "<div class='text-right dis-inline pull-right'> "
+                + "  <span class='ml-lg imageBg'><img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
+            + "  </div> "
+        + "  </a> "
+    + " </div> "
+ + " </div> "
+ + " <div id='collapse"+ choiceCount +"' class='panel-collapse collapse in'><div class='panel-body pt-none'> "
+    + "<div class='mt-xlg'>" +
         "<div class='col-md-3 pl-none'>" +
         "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group mb-none'>" +
         "   <input type='text' class='form-control TextChoiceRequired lang-specific' name='questionResponseSubTypeList["
         + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
-        + "'  maxlength='100' required>" +
-        "      <div class='help-block with-errors red-txt'></div>" +
+        + "'  maxlength='100' required>" 
+        
+        + "      <div class='help-block with-errors red-txt'></div>" +
         "   </div>" +
         "</div>" +
         "<div class='col-md-3 pl-none'>" +
@@ -4664,13 +4993,13 @@
         + "' maxlength='150'></textarea>" +
         "   </div>" +
         "</div>" +
-        "<div class='col-md-2 pl-none'>" +
+        "<div class='col-md-2 pl-none pt-xlg'>" +
         "	 <span class='addBtnDis addbtn align-span-center top6' onclick='addTextChoice();'>+</span>"
         +
         "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm' onclick='removeTextChoice(this);'></span>        "
         +
         " </div></div>" +
-        "</div>";
+        "</div></div></div></div></td></tr><div class='clearfix'></div>";
     $(".text-choice:last").after(newTextChoice);
     $('.selectpicker').selectpicker('refresh');
     $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
@@ -4698,6 +5027,7 @@
         $(".remBtnDis").addClass("hide");
       }
     }
+    delete_reset1();
   }
 
   var imageCount = $('.image-choice').length;
@@ -4969,6 +5299,9 @@
   }
 
   function validateForUniqueValue(item, responsetype, callback) {
+  debugger
+  	var selected_id = $(item).attr("id");
+ 	var selected_diaplay_value = $("#" + selected_id).val();
     var isValid = true;
     if (responsetype == 'Text Scale') {
       var valueArray = new Array();
@@ -5049,27 +5382,27 @@
     } else if (responsetype == "Text Choice") {
       var valueArray = new Array();
       $('.text-choice').each(function () {
-        var id = $(this).attr("id");
-        var diaplay_value = $("#displayTextChoiceValue" + id).val();
-        $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
-            "has-error");
-        $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-        if (typeof diaplay_value != 'undefined' && diaplay_value != null && diaplay_value != '') {
-          console.log(valueArray.indexOf(diaplay_value.toLowerCase()));
-          if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
-            isValid = false;
-            $("#displayTextChoiceValue" + id).val('');
-            $("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").append(
-                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                    "The value should be unique "));
-          } else
-            valueArray.push(diaplay_value.toLowerCase());
-        } else {
+          var id = $(this).attr("id");
+          var diaplay_value = $("#displayTextChoiceValue" + id).val();
+          $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
+              "has-error");
+          $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+          if (diaplay_value != '' && diaplay_value !== undefined) {
+            if (selected_diaplay_value != '' && selected_diaplay_value !== undefined && valueArray.indexOf(selected_diaplay_value.toLowerCase()) != -1) {
+              isValid = false;
+              $("#" + selected_id).val('');
+              $("#" + selected_id).parent().addClass("has-danger").addClass(
+                  "has-error");
+              $("#" + selected_id).parent().find(".help-block").empty();
+              $("#" + selected_id).parent().find(".help-block").append(
+                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                      "The value should be unique "));
+              return false;
+            } else
+              valueArray.push(diaplay_value.toLowerCase());
+          } else {
 
-        }
-
+          }
       });
       callback(isValid);
     }
@@ -5167,7 +5500,7 @@
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
               '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-              '#destinationStepId, #addLineChart').addClass('ml-disabled').attr('disabled', true);
+              '[data-id="destinationStepId"], #addLineChart').addClass('ml-disabled').attr('disabled', true);
           $('#trailId, .removeImageId').addClass('cursor-none');
           responseTypeId.addClass('ml-disabled');
           if ($('#allowHealthKit').prop('checked') === true) {
@@ -5358,7 +5691,7 @@
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId,' +
               ' #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, ' +
-              '#inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart')
+              '#inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, [data-id="destinationStepId"], #addLineChart')
           .removeClass('ml-disabled').attr('disabled', false);
           $('#trailId, .removeImageId').removeAttr('style').removeClass('cursor-none');
           responseTypeId.removeClass('ml-disabled');
@@ -5482,4 +5815,66 @@
       }
     });
   }
+</script>
+
+
+
+<script>
+  $(document).ready(function() {
+var maxWidth = 1;
+
+
+var fixHelperModified = function(e, tr) {
+  var $originals = tr.children();
+  var $helper = tr.clone();
+  $helper.children().each(function(index) {
+      $(this).width($originals.eq(index).width()+17); // 16 - 18
+  });
+  return $helper;
+},
+  updateIndex = function(e, ui) {
+      $('td.index', ui.item.parent()).each(function (i) {
+          $(this).html(i + 1);
+      });  
+      
+       $('input.index1', ui.item.parent()).each(function (i) {
+         // $(this).val(i + 1);
+    //  alert('working 1');
+    $(this).attr('value', (i + 1));
+    // alert('working 2');
+      });  
+      // $(this).attr('value', (i + 1));
+  };
+
+$("#diagnosis_list tbody").sortable({
+  helper: fixHelperModified,
+  stop: updateIndex,
+}).disableSelection();
+
+});
+
+
+
+  
+</script>
+
+<script>
+
+
+// $(document).on('click','.remove',function(){
+//       $(this).parents('tr').remove();
+//   delete_reorder();
+//   });
+
+function delete_reset1()   {
+// alert('working ');
+      jQuery(this).closest('.text-choice').remove();
+$('.text-choice').each(function(i){
+   //$(this).find('span.m').html('Row ' + (i+1));
+  //  $(this).find('.index1').val('' + (i+1));
+   $(this).find('.index1').attr('value', (i + 1));
+ $(this).find('td.index').html('' + (i+1));
+});
+
+    }
 </script>

@@ -51,6 +51,107 @@
       .langSpecific > button {
         padding-left: 30px;
       }
+
+
+      #autoSavedMessage{
+      width:257px;
+      }
+
+      #myAutoModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+      position:relative !important;
+      right:-14px !important;
+      margin-top:6% !important;
+      }
+
+      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
+        position:relative !important;
+        right:-14px !important;
+        margin-top:6% !important;
+        }
+
+      .flr_modal{
+      float:right !important;
+      }
+
+      .grey_txt{
+      color:grey;
+      font-size:15px;
+      font-weight:500;
+      }
+
+      .blue_text{
+      color:#007CBA !important;
+      font-size:15px;
+      font-weight:500;
+      }
+
+      .timerPos{
+      position:relative;
+      top:-2px;
+      right:2px !important;
+      }
+
+      .bold_txt{
+      font-weight:900 !important;
+      color:#007cba !important;
+      font-size:15px;
+       }
+
+  .ui-sortable tr {
+    cursor:pointer;
+  }
+      
+  .ui-sortable tr:hover {
+    background:#fff !important;
+    -webkit-box-shadow: inset 0 0 6px #fff;
+    box-shadow: inset 0 0 6px #fff;
+  }
+ 
+  .table>tbody>tr.ui-sortable-handle>td {
+    padding: 5px 0px !important;
+}
+.panel {
+    margin-bottom: 10px !important;
+}
+
+input[type=button] {
+    -webkit-appearance: button;
+    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+}
+
+.table>tbody>tr>td {
+    padding: 5px 0px !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.index1 {
+    cursor: not-allowed;
+    border: none;
+    background: whitesmoke;
+    width: 10%;
+    outline: none;
+}
+
+.not-allowed_num, .disabled_num {
+	cursor: none !important;
+	/* pointer-events: none !important; */
+	opacity: 0.9 !important;
+  caret-color: transparent;
+}
+
+
     </style>
 </head>
 <script type="text/javascript">
@@ -1870,7 +1971,7 @@
 														<div class="form-group">
 															<select
 																name="questionResponseSubTypeList[0].destinationStepId"
-																id="destinationTextChoiceStepId0"
+																id="destinationValuePickerStepId0"
 																class="selectpicker destionationYes"<%-- <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> --%>>
 																<option value="" selected>Select</option>
 																<c:forEach items="${destinationStepList}"
@@ -1923,7 +2024,7 @@
 														<div class="form-group">
 															<select
 																name="questionResponseSubTypeList[1].destinationStepId"
-																id="destinationTextChoiceStepId1"
+																id="destinationValuePickerStepId1"
 																class="selectpicker destionationYes"<%-- <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if> --%>>
 																<option value="" selected>select</option>
 																<c:forEach items="${destinationStepList}"
@@ -2209,13 +2310,64 @@
 								</div>
 							</div>
 							<div class="clearfix"></div>
-							<div class="gray-choice-f mb-xs mt-md">
-								Text Choices<span class="ml-xs sprites_v3 filled-tooltip"
+
+							<!-- <div class="gray-choice-f mb-xs mt-md">
+								Text Choices 1<span class="ml-xs sprites_v3 filled-tooltip"
 									data-toggle="tooltip"
 									title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
-							</div>
+							</div> -->
 
-							<div class="TextChoiceContainer">
+
+
+
+
+
+              <!-- <div class="panel panel-default">
+             
+                
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                          href="#collapse11" aria-expanded="true">
+                       
+                            <div class="text-left dis-inline">
+                              <div class="gray-choice-f mb-xs mt-md">
+                                Text Choices 
+                                 <input type="button" class="reset_val"
+                                name="questionResponseSubTypeList[].sequenceNumber"
+                                 id="displayTextChoicesequenceNumber" value="" >
+
+                                <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                  title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                              </div>
+                              
+                            </div>
+                            <div class="text-right dis-inline pull-right">
+                              
+                                <span class="ml-lg imageBg"><img class="arrow"
+                                                                src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div id="collapse11" class="panel-collapse collapse in">
+                  <div class="panel-body pt-none">
+
+            <div class="mt-xlg" >
+              
+            <p>Enter text choices in the order you want them to appear. You can enter a display text and description, 
+              an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning 
+              once it is selected, all other options get deselected and vice-versa. You can also select a destination
+               step for each choice that is exclusive, if you have branching enabled for the questionnaire.</p>
+             
+             
+            </div> </div>
+          </div></div> -->
+
+<!--------------------------- test end -->
+
+              <table class="table TextChoiceContainer order_sequenceNumber" id="diagnosis_list"><tbody>
+				
 								<c:choose>
 									<c:when
 										test="${questionnairesStepsBo.questionsBo.responseType eq 6 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 0}">
@@ -2223,10 +2375,65 @@
 											items="${questionnairesStepsBo.questionResponseSubTypeList}"
 											var="questionResponseSubType" varStatus="subtype">
 											<!-- Section Start -->
-											<div class="mt-xlg text-choice" id="${subtype.index}">
+                      
+                      <tr class=" text-choice" id="${subtype.index}">
+                        <!-- <td class="index">1</td>
+                        <td>
+
+                        <input type="text" class="index1 reset_val"
+                        name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                         id="displayTextChoicesequenceNumber${subtype.index}"
+                        <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                          value="${subtype.index+1}"
+                          </c:if>
+                          <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                          value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                          </c:if>					                                
+                          >
+                        </td> -->
+                        <td>  <div class="panel panel-default">
+                          <!-- <input type="hidden" name=""> -->
+                          
+                          <div class="panel-heading">
+                              <div class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapse${subtype.index}" aria-expanded="true">
+                                 
+                                      <div class="text-left dis-inline">
+                                        <div class="gray-choice-f mb-xs mt-md">
+                                          Text Choices 
+                                          <input type="text" class="index1 reset_val disabled_num"
+                                          name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                           id="displayTextChoicesequenceNumber${subtype.index}"
+                                          <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                                            value="${subtype.index+1}"
+                                            </c:if>
+                                            <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                                            value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                                            </c:if>					                                
+                                            >
+                                         
+
+                                          <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                            title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                        </div>
+                                        
+                                      </div>
+                                      <div class="text-right dis-inline pull-right">
+                                        
+                                          <span class="ml-lg imageBg"><img class="arrow"
+                                                                          src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                          <div id="collapse${subtype.index}" class="panel-collapse collapse in">
+                            <div class="panel-body pt-none">
+
+											<div class="mt-xlg" >
 												<div class="col-md-3 pl-none">
 													<div class="gray-xs-f mb-xs">
-														Display Text (1 to 100 characters)<span
+												Display Text (1 to 100 characters)<span
 															class="requiredStar">*</span>
 													</div>
 													<div class="form-group mb-none">
@@ -2236,6 +2443,20 @@
 															id="displayTextChoiceText${subtype.index}"
 															value="${fn:escapeXml(questionResponseSubType.text)}"
 															maxlength="100">
+						                             <!-- <input type="text"  class="index1 reset_val"
+						                                name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+						                                id="displayTextChoicesequenceNumber${subtype.index}"
+						                                
+						                                <c:if test="${empty questionResponseSubType.sequenceNumber}">
+						                                value="${subtype.index+1}"
+						                                </c:if>
+						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+						                                </c:if>					                                
+						                                > -->
+
+                                            <!-- <input type="text" name="sort${subtype.index}" value="${subtype.index}"> -->
+                                            
 														<div class="help-block with-errors red-txt"></div>
 													</div>
 												</div>
@@ -2319,211 +2540,312 @@
 															onclick='removeTextChoice(this);'></span>
 													</div>
 												</div>
-											</div>
+											</div> </div>
+                    </div></div></td></tr> 
 											<!-- Section End -->
 										</c:forEach>
 									</c:when>
+
+
+
 									<c:otherwise>
 
-										<!-- Section Start -->
-										<div class="mt-xlg text-choice otherOptionChecked" id="0">
-											<div class="col-md-3 pl-none">
-												<div class="gray-xs-f mb-xs">
-													Display Text (1 to 100 characters)<span
-														class="requiredStar">*</span>
-												</div>
-												<div class="form-group mb-none">
-													<input type="text"
-														class="form-control lang-specific TextChoiceRequired"
-														name="questionResponseSubTypeList[0].text"
-														id="displayTextChoiceText0"
-														value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}"
-														maxlength="100">
-													<div class="help-block with-errors red-txt"></div>
-												</div>
-											</div>
-											<div class="col-md-3 pl-none">
-												<div class="gray-xs-f mb-xs">
-													Value (1 to 100 characters)<span class="requiredStar">*</span>
-												</div>
-												<div class="form-group mb-none">
-													<input type="text"
-														class="form-control TextChoiceRequired textChoiceVal"
-														name="questionResponseSubTypeList[0].value"
-														id="displayTextChoiceValue0"
-														value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}"
-														maxlength="100">
-													<div class="help-block with-errors red-txt"></div>
-												</div>
-											</div>
-											<div class="col-md-2 pl-none">
-												<div class="gray-xs-f mb-xs">
-													Mark as exclusive ? <span class="requiredStar">*</span>
-												</div>
-												<div class="form-group">
-													<select name="questionResponseSubTypeList[0].exclusive"
-														id="exclusiveId0" index="0" title="select"
-														data-error="Please choose one option"
-														class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>"
-														<c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>
-														onchange="setExclusiveData(this);">
-														<option value="Yes"
-															${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>
-															Yes</option>
-														<option value="No"
-															${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>
-															No</option>
-													</select>
-													<div class="help-block with-errors red-txt"></div>
-												</div>
-											</div>
-											<c:if test="${questionnaireBo.branching}">
-												<div class="col-md-2 pl-none">
-													<div class="gray-xs-f mb-xs">Destination Step</div>
-													<div class="form-group">
-														<select
-															name="questionResponseSubTypeList[0].destinationStepId"
-															id="destinationTextChoiceStepId0"
-															class="selectpicker destionationYes"
-															<c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
-															<option value="" selected>Select</option>
-															<c:forEach items="${destinationStepList}"
-																var="destinationStep">
-																<option value="${destinationStep.stepId}"
-																	${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
-																	Step ${destinationStep.sequenceNo} :
-																	${destinationStep.stepShortTitle}</option>
-															</c:forEach>
-															<option value="0"
-																${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
-																Completion Step</option>
-														</select>
-														<div class="help-block with-errors red-txt"></div>
-													</div>
-												</div>
-											</c:if>
-											<div class="col-md-12 p-none display__flex__">
-												<div class="col-md-10 pl-none">
-													<div class="gray-xs-f mb-xs">Description(1 to 150
-														characters)</div>
-													<div class="form-group">
-														<textarea type="text" class="form-control lang-specific"
-															name="questionResponseSubTypeList[0].description"
-															id="displayTextChoiceDescription0"
-															value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
-															maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
-													</div>
-												</div>
-												<div class="col-md-2 pl-none">
-													<span class="addBtnDis addbtn align-span-center"
-														onclick='addTextChoice();'>+</span> <span
-														class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
-														onclick='removeTextChoice(this);'></span>
-												</div>
-											</div>
-										</div>
-										<!-- Section End -->
-										<!-- Section Start -->
-										<div class="mt-xlg text-choice otherOptionChecked1" id="1">
-											<div class="col-md-3 pl-none">
-												<div class="gray-xs-f mb-xs">
-													Display Text (1 to 100 characters)<span
-														class="requiredStar">*</span>
-												</div>
-												<div class="form-group mb-none">
-													<input type="text"
-														class="form-control lang-specific TextChoiceRequired"
-														name="questionResponseSubTypeList[1].text"
-														id="displayTextChoiceText1"
-														value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}"
-														maxlength="100">
-													<div class="help-block with-errors red-txt"></div>
-												</div>
-											</div>
-											<div class="col-md-3 pl-none">
-												<div class="gray-xs-f mb-xs">
-													Value (1 to 100 characters)<span class="requiredStar">*</span>
-												</div>
-												<div class="form-group mb-none">
-													<input type="text"
-														class="form-control TextChoiceRequired textChoiceVal"
-														name="questionResponseSubTypeList[1].value"
-														id="displayTextChoiceValue1"
-														value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}"
-														maxlength="100">
-													<div class="help-block with-errors red-txt"></div>
-												</div>
-											</div>
-											<div class="col-md-2 pl-none">
-												<div class="gray-xs-f mb-xs">
-													Mark as exclusive ? <span class="requiredStar">*</span>
-												</div>
-												<div class="form-group">
-													<select name="questionResponseSubTypeList[1].exclusive"
-														id="exclusiveId1" index="1" title="select"
-														data-error="Please choose one option"
-														class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>"
-														<c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>
-														onchange="setExclusiveData(this);">
-														<option value="Yes"
-															${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>
-															Yes</option>
-														<option value="No"
-															${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>
-															No</option>
-													</select>
-													<div class="help-block with-errors red-txt"></div>
-												</div>
-											</div>
-											<c:if test="${questionnaireBo.branching}">
-												<div class="col-md-2 pl-none">
-													<div class="gray-xs-f mb-xs">Destination Step</div>
-													<div class="form-group">
-														<select
-															name="questionResponseSubTypeList[1].destinationStepId"
-															id="destinationTextChoiceStepId1"
-															class="selectpicker destionationYes"
-															<c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if>>
-															<option value="" selected>select</option>
-															<c:forEach items="${destinationStepList}"
-																var="destinationStep">
-																<option value="${destinationStep.stepId}"
-																	${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
-																	Step ${destinationStep.sequenceNo} :
-																	${destinationStep.stepShortTitle}</option>
-															</c:forEach>
-															<option value="0"
-																${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
-																Completion Step</option>
-														</select>
-														<div class="help-block with-errors red-txt"></div>
-													</div>
-												</div>
-											</c:if>
-											<div class="col-md-12 p-none display__flex__">
-												<div class="col-md-10 pl-none">
-													<div class="gray-xs-f mb-xs">Description(1 to 150
-														characters)</div>
-													<div class="form-group">
-														<textarea type="text" class="form-control lang-specific"
-															name="questionResponseSubTypeList[1].description"
-															id="displayTextChoiceDescription1"
-															value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}"
-															maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
-													</div>
-												</div>
-												<div class="col-md-2 pl-none">
-													<span class="addBtnDis addbtn align-span-center"
-														onclick='addTextChoice();'>+</span> <span
-														class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
-														onclick='removeTextChoice(this);'></span>
-												</div>
-											</div>
-										</div>
-										<!-- Section End -->
+
+                    <!-- <table class="table" id="diagnosis_list"><tbody><tr>  </tr></tbody></table> -->
+
+
+
+                  <!-- Start panel-->
+                  
+                  <tr class="text-choice otherOptionChecked" id="0">
+                    <!-- <td class="index">1</td>
+                    <td> <input type="text" class="index1 reset_val"  value="1" /> </td> -->
+
+                    <td>
+                      <div class="panel panel-default">
+                    <input type="hidden" name="">
+                      <div class="panel-heading">
+                          <div class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion"
+                                href="#collapse" aria-expanded="true">
+                                  <div class="text-left dis-inline">
+                                    <div class="gray-choice-f mb-xs mt-md">
+                                      Text Choices 
+                                     
+                                      <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
+                                      id="displayTextChoicesequenceNumber0" value="1" />
+
+                                       <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                        title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                    </div>
+                                    
+                                  </div>
+                                  <div class="text-right dis-inline pull-right">
+                                    
+                                      <span class="ml-lg imageBg"><img class="arrow"
+                                                                      src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                  </div>
+                              </a>
+                          </div>
+                      </div>
+                <div id="collapse" class="panel-collapse collapse in">
+                    <div class="panel-body pt-none">
+
+                        <!-- Section Start -->
+                        <div class="mt-xlg" >
+                          <div class="col-md-3 pl-none">
+                            <div class="gray-xs-f mb-xs">
+                            Display Text (1 to 100 characters)<span
+                                class="requiredStar">*</span>
+                            </div>
+                            <div class="form-group mb-none">
+                              <input type="text"
+                                class="form-control lang-specific TextChoiceRequired"
+                                name="questionResponseSubTypeList[0].text"
+                                id="displayTextChoiceText0"
+                                value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}"
+                                maxlength="100">
+
+                               
+                            </div>
+                          </div>
+                          <div class="col-md-3 pl-none">
+                            <div class="gray-xs-f mb-xs">
+                              Value (1 to 100 characters)<span class="requiredStar">*</span>
+                            </div>
+                            <div class="form-group mb-none">
+                              <input type="text"
+                                class="form-control TextChoiceRequired textChoiceVal"
+                                name="questionResponseSubTypeList[0].value"
+                                id="displayTextChoiceValue0"
+                                value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}"
+                                maxlength="100">
+                              <div class="help-block with-errors red-txt"></div>
+                            </div>
+                          </div>
+                          <div class="col-md-2 pl-none">
+                            <div class="gray-xs-f mb-xs">
+                              Mark as exclusive ? <span class="requiredStar">*</span>
+                            </div>
+                            <div class="form-group">
+                              <select name="questionResponseSubTypeList[0].exclusive"
+                                id="exclusiveId0" index="0" title="select"
+                                data-error="Please choose one option"
+                                class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>"
+                                <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>
+                                onchange="setExclusiveData(this);">
+                                <option value="Yes"
+                                  ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>
+                                  Yes</option>
+                                <option value="No"
+                                  ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>
+                                  No</option>
+                              </select>
+                              <div class="help-block with-errors red-txt"></div>
+                            </div>
+                          </div>
+                          <c:if test="${questionnaireBo.branching}">
+                            <div class="col-md-2 pl-none">
+                              <div class="gray-xs-f mb-xs">Destination Step</div>
+                              <div class="form-group">
+                                <select
+                                  name="questionResponseSubTypeList[0].destinationStepId"
+                                  id="destinationTextChoiceStepId0"
+                                  class="selectpicker destionationYes"
+                                  <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
+                                  <option value="" selected>Select</option>
+                                  <c:forEach items="${destinationStepList}"
+                                    var="destinationStep">
+                                    <option value="${destinationStep.stepId}"
+                                      ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
+                                      Step ${destinationStep.sequenceNo} :
+                                      ${destinationStep.stepShortTitle}</option>
+                                  </c:forEach>
+                                  <option value="0"
+                                    ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
+                                    Completion Step</option>
+                                </select>
+                                <div class="help-block with-errors red-txt"></div>
+                              </div>
+                            </div>
+                          </c:if>
+                          <div class="col-md-12 p-none display__flex__">
+                            <div class="col-md-10 pl-none">
+                              <div class="gray-xs-f mb-xs">Description(1 to 150
+                                characters)</div>
+                              <div class="form-group">
+                                <textarea type="text" class="form-control lang-specific"
+                                  name="questionResponseSubTypeList[0].description"
+                                  id="displayTextChoiceDescription0"
+                                  value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
+                                  maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
+                              </div>
+                            </div>
+                            <div class="col-md-2 pl-none">
+                              <span class="addBtnDis addbtn align-span-center"
+                                onclick='addTextChoice();'>+</span> <span
+                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                onclick='removeTextChoice(this);'></span>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Section End -->
+                          </div>
+                      </div></div></td></tr> 
+                    <!-- End panel-->
+
+
+
+						
+
+                      <!-- Start panel-->
+                      <tr class="text-choice otherOptionChecked1"  id="1"> 
+                        <!-- <td class="index">2</td>
+                        <td> <input type="text" class="index1 reset_val"  value="2" /> </td> -->
+
+                         <td>
+                      <div class="panel panel-default" >
+                        <input type="hidden" name="">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                  href="#collapse1" aria-expanded="true">
+                                    <div class="text-left dis-inline">
+                                      <div class="gray-choice-f mb-xs mt-md">
+                                        Text Choices  
+                                        <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
+                                      id="displayTextChoicesequenceNumber1" value="2" /> 
+                                      
+                                        <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                          title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                      </div>
+                                      
+                                    </div>
+                                    <div class="text-right dis-inline pull-right">
+                                      
+                                        <span class="ml-lg imageBg"><img class="arrow"
+                                                                        src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse in">
+                            <div class="panel-body pt-none">
+
+                                <!-- Section Start -->
+                                <div class="mt-xlg  ">
+                                  <div class="col-md-3 pl-none">
+                                    <div class="gray-xs-f mb-xs">
+                                  Display Text (1 to 100 characters)<span
+                                        class="requiredStar">*</span>
+                                    </div>
+                                    <div class="form-group mb-none">
+                                      <input type="text"
+                                        class="form-control lang-specific TextChoiceRequired"
+                                        name="questionResponseSubTypeList[1].text"
+                                        id="displayTextChoiceText1"
+                                        value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}"
+                                        maxlength="100">
+
+                                      
+
+
+                                      <div class="help-block with-errors red-txt"></div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3 pl-none">
+                                    <div class="gray-xs-f mb-xs">
+                                      Value (1 to 100 characters)<span class="requiredStar">*</span>
+                                    </div>
+                                    <div class="form-group mb-none">
+                                      <input type="text"
+                                        class="form-control TextChoiceRequired textChoiceVal"
+                                        name="questionResponseSubTypeList[1].value"
+                                        id="displayTextChoiceValue1"
+                                        value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}"
+                                        maxlength="100">
+                                      <div class="help-block with-errors red-txt"></div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2 pl-none">
+                                    <div class="gray-xs-f mb-xs">
+                                      Mark as exclusive ? <span class="requiredStar">*</span>
+                                    </div>
+                                    <div class="form-group">
+                                      <select name="questionResponseSubTypeList[1].exclusive"
+                                        id="exclusiveId1" index="1" title="select"
+                                        data-error="Please choose one option"
+                                        class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>"
+                                        <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>
+                                        onchange="setExclusiveData(this);">
+                                        <option value="Yes"
+                                          ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>
+                                          Yes</option>
+                                        <option value="No"
+                                          ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>
+                                          No</option>
+                                      </select>
+                                      <div class="help-block with-errors red-txt"></div>
+                                    </div>
+                                  </div>
+                                  <c:if test="${questionnaireBo.branching}">
+                                    <div class="col-md-2 pl-none">
+                                      <div class="gray-xs-f mb-xs">Destination Step</div>
+                                      <div class="form-group">
+                                        <select
+                                          name="questionResponseSubTypeList[1].destinationStepId"
+                                          id="destinationTextChoiceStepId1"
+                                          class="selectpicker destionationYes"
+                                          <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].exclusive && questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No'}">disabled</c:if>>
+                                          <option value="" selected>select</option>
+                                          <c:forEach items="${destinationStepList}"
+                                            var="destinationStep">
+                                            <option value="${destinationStep.stepId}"
+                                              ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
+                                              Step ${destinationStep.sequenceNo} :
+                                              ${destinationStep.stepShortTitle}</option>
+                                          </c:forEach>
+                                          <option value="0"
+                                            ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
+                                            Completion Step</option>
+                                        </select>
+                                        <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                    </div>
+                                  </c:if>
+                                  <div class="col-md-12 p-none display__flex__">
+                                    <div class="col-md-10 pl-none">
+                                      <div class="gray-xs-f mb-xs">Description(1 to 150
+                                        characters)</div>
+                                      <div class="form-group">
+                                        <textarea type="text" class="form-control lang-specific"
+                                          name="questionResponseSubTypeList[1].description"
+                                          id="displayTextChoiceDescription1"
+                                          value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}"
+                                          maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[1].description)}</textarea>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2 pl-none">
+                                      <span class="addBtnDis addbtn align-span-center"
+                                        onclick='addTextChoice();'>+</span> <span
+                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                        onclick='removeTextChoice(this);'></span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- Section End -->
+
+                              
+                            </div>
+                        </div>
+                      </div> </td>
+                      </tr> 
+                      <!-- End panel-->
 									</c:otherwise>
 								</c:choose>
-							</div>
+                </tbody></table> 
+
+              
 							<div>
 								<div class="clearfix"></div>
 								<div class="checkbox checkbox-inline">
@@ -2671,7 +2993,7 @@
 								</div>
 							</div>
 
-
+							</div>
 						</div>
 
 						<div id="ImageChoice" style="display: none;">
@@ -3522,22 +3844,35 @@
 				</div>
 			</div>
 	</form:form>
-	<div class="modal fade" id="myAutoModal" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <!-- Modal content-->
-                <div class="modal-content" style="width: 49%; margin-left: 82%; color: #22355e">
-                    <div class="modal-header cust-hdr pt-lg">
-                        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title pl-lg text-center">
-                            <b id="autoSavedMessage">Last saved now</b>
-                        </h4>
+    <div class="modal fade" id="myAutoModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div id="autoSavedMessage" class="text-right">
+                    <div class="blue_text">Last saved now</div>
+                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
+
+                <div class="modal fade" id="timeOutModal" role="dialog">
+                                    <div class="modal-dialog modal-sm flr_modal">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                                <div class="modal-body">
+                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
 </div>
 
 <!-- End right Content here -->
+
+
 <script type="text/javascript">
     var idleTime = 0;
       $(document).ready(function () {
@@ -3633,6 +3968,13 @@
         $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
         $("#trailId").hide();
         $(".removeImageId").css("visibility", "hidden");
+        $("tbody").removeClass('ui-sortable');
+    $("tr").removeClass('ui-sortable-handle');
+    $('table.order_sequenceNumber').removeAttr('id');
+    $('tr.text-choice').removeAttr('id');
+    $(".table").removeClass('order_sequenceNumber ');
+    $(".table").removeClass('TextChoiceContainer  ');
+    $("span.delete").addClass('disabled');
         </c:if>
 
         if ($('.value-picker').length > 2) {
@@ -4810,7 +5152,12 @@
           setInterval(function () {
                   idleTime += 1;
                   if (idleTime > 3) { // 5 minutes
+                          <c:if test="${actionTypeForQuestionPage ne 'view'}">
                           autoSaveQuestionStep('auto');
+                           </c:if>
+                          <c:if test="${actionTypeForQuestionPage eq 'view'}">
+                              timeOutFunction();
+                          </c:if>
                   }
               }, 226000); // 5 minutes
 
@@ -4820,6 +5167,28 @@
               $(this).keypress(function (e) {
                   idleTime = 0;
               });
+
+              function timeOutFunction() {
+               $('#timeOutModal').modal('show');
+                let i = 14;
+                let timeOutInterval = setInterval(function () {
+                 if (i === 0) {
+                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                   if ($('#timeOutModal').hasClass('in')) {
+                     $('#backToLoginPage').submit();
+                  }
+                   clearInterval(timeOutInterval);
+                     } else {
+                       if (i === 1) {
+                     $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                       } else {
+                       $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                      }
+                       idleTime = 0;
+                       i-=1;
+                        }
+                        }, 60000);
+                        }
       });
         function autoSaveQuestionStep(mode){
            	  $("body").addClass("loading");
@@ -5413,7 +5782,7 @@
             var response_sub_type_id = $("#valPickSubTypeValueId" + id).val();
             var diasplay_text = $("#displayValPickText" + id).val();
             var diaplay_value = $("#displayValPickValue" + id).val();
-            var destination_step = $("#destinationTextChoiceStepId" + id).val();
+            var destination_step = $("#destinationValuePickerStepId" + id).val();
 
             questionSubResponseType.responseSubTypeValueId = response_sub_type_id;
             questionSubResponseType.text = diasplay_text;
@@ -5637,21 +6006,27 @@
 				  if ($('#isAutoSaved').val() === 'true') {
 					  $('#myAutoModal').modal('show');
 					  let i = 1;
+					  let j = 14;
 					  let lastSavedInterval = setInterval(function () {
-						  if (i === 15) {
-						  $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+						  if ((i === 15) || (j === 0)) {
+                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
 							  if ($('#myAutoModal').hasClass('in')) {
 								  $('#backToLoginPage').submit();
 							  }
 							  clearInterval(lastSavedInterval);
 						  } else {
-							  if (i === 1) {
-								  $('#autoSavedMessage').text('Last saved was 1 minute ago');
-							  } else {
-								  $('#autoSavedMessage').text('Last saved was ' + i + ' minutes ago');
+							 if ((i === 1) || (j === 14)) {
+                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
+							  }
+							  else if ((i === 14) || (j === 1)) {
+                              $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+                              }
+							  else {
+                               $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
 							  }
 							  idleTime = 0;
 							  i+=1;
+							  j-=1;
 						  }
 					  }, 60000);
 					  $("#isAutoSaved").val('false');
@@ -5780,7 +6155,7 @@
         newValuePicker += "<div class='col-md-2 pl-none'>" +
             "   <div class='form-group'>" +
             "  <select name='questionResponseSubTypeList[" + count
-            + "].destinationStepId' id='destinationTextChoiceStepId" + count
+            + "].destinationStepId' id='destinationValuePickerStepId" + count
             + "' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value='' disabled selected>Select</option>";
         <c:forEach items='${destinationStepList}' var='destinationStep'>
         newValuePicker += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
@@ -5923,17 +6298,130 @@
         }
       }
 
+      // function addTextChoice() {
+      //   choiceCount = $('.text-choice').length;
+      //   var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
+      //   var newTextChoice = "<div class='mt-xlg text-choice' id='" + choiceCount + "'>" +
+      //       "<div class='col-md-3 pl-none'>" +
+      //       "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
+      //       +
+      //       "   <div class='form-group mb-none'>" +
+      //       "   <input type='text' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
+      //       + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
+      //       + "'  maxlength='100' required>" +
+      //       "      <div class='help-block with-errors red-txt'></div>" +
+      //       "   </div>" +
+      //       "</div>" +
+      //       "<div class='col-md-3 pl-none'>" +
+      //       "   <div class='gray-xs-f mb-xs'>Value (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
+      //       +
+      //       "   <div class='form-group mb-none'>" +
+      //       "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["
+      //       + choiceCount + "].value' id='displayTextChoiceValue" + choiceCount
+      //       + "'  maxlength='100' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"
+      //       +
+      //       "      <div class='help-block with-errors red-txt'></div>" +
+      //       "   </div>" +
+      //       "</div>" +
+      //       "<div class='col-md-2 pl-none'>" +
+      //       "   <div class='gray-xs-f mb-xs'>Mark as exclusive ? <span class='requiredStar'>*</span> </div>"
+      //       +
+      //       "   <div class='form-group'>";
+      //   if (selectionStyle == 'Single') {
+      //     newTextChoice += "<select name='questionResponseSubTypeList[" + choiceCount
+      //         + "].exclusive' id='exclusiveId" + choiceCount + "' index=" + choiceCount
+      //         + " title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
+      //   } else {
+      //     newTextChoice += "<select name='questionResponseSubTypeList[" + choiceCount
+      //         + "].exclusive' id='exclusiveId" + choiceCount + "' index=" + choiceCount
+      //         + " title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
+      //   }
+      //   newTextChoice += "<option value='Yes'>Yes</option>" +
+      //       "<option value='No' >No</option>" +
+      //       "</select>" +
+      //       "<div class='help-block with-errors red-txt'></div>" +
+      //       "</div>" +
+      //       "</div>";
+      //   <c:if test='${questionnaireBo.branching}'>
+      //   newTextChoice += "<div class='col-md-2 pl-none'>" +
+      //       "   <div class='gray-xs-f mb-xs'>Destination Step  </div>" +
+      //       "   <div class='form-group'>" +
+      //       "  <select name='questionResponseSubTypeList[" + choiceCount
+      //       + "].destinationStepId' id='destinationTextChoiceStepId" + choiceCount
+      //       + "' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value='' disabled selected>Select</option>";
+      //   <c:forEach items='${destinationStepList}' var='destinationStep'>
+      //   newTextChoice += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+      //   </c:forEach>
+      //   newTextChoice += "<option value='0'>Completion Step</option>" +
+      //       "</select>" +
+      //       "  <div class='help-block with-errors red-txt'></div>" +
+      //       " </div>" +
+      //       "</div>";
+      //   </c:if>
+      //   newTextChoice += "<div class='col-md-12 p-none display__flex__'><div class='col-md-10 pl-none'>"
+      //       +
+      //       "<div class='gray-xs-f mb-xs'>Description(1 to 150 characters) </div>" +
+      //       "<div class='form-group'>" +
+      //       "   <textarea type='text' class='form-control lang-specific' name='questionResponseSubTypeList["
+      //       + choiceCount + "].description' id='displayTextChoiceDescription" + choiceCount
+      //       + "'  maxlength='150'></textarea>" +
+      //       "</div>" +
+      //       "</div>" +
+      //       "<div class='col-md-2 pl-none'>" +
+      //       "   <span class='addBtnDis addbtn align-span-center' onclick='addTextChoice();'>+</span>"
+      //       +
+      //       "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"
+      //       +
+      //       "</div></div>" +
+      //       "</div>";
+      //   $(".text-choice:last").after(newTextChoice);
+      //   $('.selectpicker').selectpicker('refresh');
+      //   $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+      //   $(".text-choice").parent().find(".help-block").empty();
+      //   $(".text-choice").parents("form").validator("destroy");
+      //   $(".text-choice").parents("form").validator();
+      //   if ($('.text-choice').length > 2) {
+      //     $(".remBtnDis").removeClass("hide");
+      //   } else {
+      //     $(".remBtnDis").addClass("hide");
+      //   }
+      //   $('#' + choiceCount).find('input:first').focus();
+      // }
+
+
       function addTextChoice() {
         choiceCount = $('.text-choice').length;
         var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
-        var newTextChoice = "<div class='mt-xlg text-choice' id='" + choiceCount + "'>" +
+        var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>" 
+         
+          + "<td><div class='clearfix'></div><div class='panel panel-default'><div class='panel-heading'><div class='panel-title'>" 
+          + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
+            + " <div class='text-left dis-inline'>"
+             +  " <div class='gray-choice-f mb-xs mt-md'>"
+              + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' />"
+             
+              
+              +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
+                + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
+              + "  </div> </div>"
+             + "<div class='text-right dis-inline pull-right'> "
+                + "  <span class='ml-lg imageBg'><img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
+            + "  </div> "
+        + "  </a> "
+    + " </div> "
+ + " </div> "
+ + " <div id='collapse"+ choiceCount +"' class='panel-collapse collapse in'><div class='panel-body pt-none'> "
+
+    +    "<div class='mt-xlg' >" +
             "<div class='col-md-3 pl-none'>" +
             "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
             +
             "   <div class='form-group mb-none'>" +
             "   <input type='text' class='form-control lang-specific TextChoiceRequired' name='questionResponseSubTypeList["
             + choiceCount + "].text' id='displayTextChoiceText" + choiceCount
-            + "'  maxlength='100' required>" +
+            + "'  maxlength='100' required>" 
+    	
+            +
             "      <div class='help-block with-errors red-txt'></div>" +
             "   </div>" +
             "</div>" +
@@ -5998,7 +6486,7 @@
             "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"
             +
             "</div></div>" +
-            "</div>";
+            "</div></div></div></div></td></tr><div class='clearfix'></div>";
         $(".text-choice:last").after(newTextChoice);
         $('.selectpicker').selectpicker('refresh');
         $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
@@ -6041,6 +6529,7 @@
             }
           }
         }
+        delete_reset1();
       }
 
       var imageCount = $('.image-choice').length;
@@ -6327,8 +6816,8 @@
       }
 
       function validateForUniqueValue(item, responsetype, callback) {
-        var id = $(item).attr("id");
-
+        var selected_id = $(item).attr("id");
+        var selected_diaplay_value = $("#" + selected_id).val();
         var isValid = true;
         if (responsetype == 'Text Scale') {
           var valueArray = new Array();
@@ -6338,7 +6827,7 @@
             $("#displayTextSclValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayTextSclValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayTextSclValue" + id).val('');
@@ -6364,7 +6853,7 @@
             $("#displayValPickValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayValPickValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayValPickValue" + id).val('');
@@ -6390,7 +6879,7 @@
             $("#displayImageChoiceValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayImageChoiceValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
               if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
                 $("#displayImageChoiceValue" + id).val('');
@@ -6416,22 +6905,22 @@
             $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
                 "has-error");
             $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '') {
-              if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
+            if (diaplay_value != '' && diaplay_value !== undefined) {
+              if (selected_diaplay_value != '' && selected_diaplay_value !== undefined && valueArray.indexOf(selected_diaplay_value.toLowerCase()) != -1) {
                 isValid = false;
-                $("#displayTextChoiceValue" + id).val('');
-                $("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass(
+                $("#" + selected_id).val('');
+                $("#" + selected_id).parent().addClass("has-danger").addClass(
                     "has-error");
-                $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-                $("#displayTextChoiceValue" + id).parent().find(".help-block").append(
+                $("#" + selected_id).parent().find(".help-block").empty();
+                $("#" + selected_id).parent().find(".help-block").append(
                     $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
                         "The value should be unique "));
+                return false;
               } else
                 valueArray.push(diaplay_value.toLowerCase());
             } else {
 
             }
-
           });
           callback(isValid);
         }
@@ -7219,7 +7708,7 @@
               $('.tit_wrapper').text($('#mlName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 					  '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-					  '#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
+					  '[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
                   'ml-disabled').attr('disabled', true);
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
               // $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
@@ -7300,6 +7789,7 @@
 						  $('#' + id).val('');
 						  i++;
 					  });
+					  $('#textchoiceOtherId').attr('disabled', true);
 				  }
                   let i = 0;
                   $(className).find('input.lang-specific').each(function (index, ele) {
@@ -7365,7 +7855,7 @@
                             $('#mlOtherDescription', htmlData).val());
                     $('[name="questionReponseTypeBo.otherPlaceholderText"]').val(
                             $('#mlOtherPlaceholderText', htmlData).val());
-
+					$('#textchoiceOtherId').attr('disabled', true);
                     let textChoiceDescription = $('#mlTextChoiceDescription', htmlData).val();
 					let txtDescriptionArray = [];
 					if (textChoiceDescription !== '') {
@@ -7425,7 +7915,7 @@
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 				$('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-						'#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
+						'[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
 						'ml-disabled').attr('disabled', false);
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
               // $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
@@ -7504,6 +7994,7 @@
 						let id = ele.getAttribute('id');
 						$('#' + id).val($('#' + id, htmlData).val());
 					});
+					$('#textchoiceOtherId').attr('disabled', false);
                 }
                 $(className).find('input.lang-specific').each(function (index, ele) {
                   let id = ele.getAttribute('id');
@@ -7540,3 +8031,67 @@
         })
       }
     </script>
+
+
+
+
+<script>
+  $(document).ready(function() {
+var maxWidth = 1;
+
+
+var fixHelperModified = function(e, tr) {
+  var $originals = tr.children();
+  var $helper = tr.clone();
+  $helper.children().each(function(index) {
+      $(this).width($originals.eq(index).width()+17); // 16 - 18
+  });
+  return $helper;
+},
+  updateIndex = function(e, ui) {
+      $('td.index', ui.item.parent()).each(function (i) {
+          $(this).html(i + 1);
+      });  
+      
+       $('input.index1', ui.item.parent()).each(function (i) {
+         // $(this).val(i + 1);
+    //  alert('working 1');
+    $(this).attr('value', (i + 1));
+    // alert('working 2');
+      });  
+      // $(this).attr('value', (i + 1));
+  };
+
+$("#diagnosis_list tbody").sortable({
+  helper: fixHelperModified,
+  stop: updateIndex
+}).disableSelection();
+
+});
+
+  
+</script>
+
+<script>
+
+
+// $(document).on('click','.remove',function(){
+//       $(this).parents('tr').remove();
+//   delete_reorder();
+//   });
+
+function delete_reset1()   {
+// alert('working ');
+      jQuery(this).closest('.text-choice').remove();
+$('.text-choice').each(function(i){
+   //$(this).find('span.m').html('Row ' + (i+1));
+  //  $(this).find('.index1').val('' + (i+1));
+   $(this).find('.index1').attr('value', (i + 1));
+ $(this).find('td.index').html('' + (i+1));
+});
+
+    }
+</script>
+
+
+

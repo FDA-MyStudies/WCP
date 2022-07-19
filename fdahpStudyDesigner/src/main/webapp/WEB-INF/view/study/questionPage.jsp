@@ -5492,7 +5492,7 @@ input[type=number] {
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
               '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-              '#destinationStepId, #addLineChart').addClass('ml-disabled').attr('disabled', true);
+              '[data-id="destinationStepId"], #addLineChart').addClass('ml-disabled').attr('disabled', true);
           $('#trailId, .removeImageId').addClass('cursor-none');
           responseTypeId.addClass('ml-disabled');
           if ($('#allowHealthKit').prop('checked') === true) {
@@ -5683,7 +5683,7 @@ input[type=number] {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId,' +
               ' #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, ' +
-              '#inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, #destinationStepId, #addLineChart')
+              '#inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, [data-id="destinationStepId"], #addLineChart')
           .removeClass('ml-disabled').attr('disabled', false);
           $('#trailId, .removeImageId').removeAttr('style').removeClass('cursor-none');
           responseTypeId.removeClass('ml-disabled');

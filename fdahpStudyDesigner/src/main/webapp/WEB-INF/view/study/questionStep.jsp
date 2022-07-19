@@ -7700,7 +7700,7 @@ input[type=number] {
               $('.tit_wrapper').text($('#mlName', htmlData).val());
               $('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 					  '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-					  '#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
+					  '[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
                   'ml-disabled').attr('disabled', true);
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
               // $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
@@ -7907,7 +7907,7 @@ input[type=number] {
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 				$('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
-						'#destinationStepId, #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
+						'[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
 						'ml-disabled').attr('disabled', false);
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
               // $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);

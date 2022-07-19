@@ -140,6 +140,12 @@ input[type=number] {
     outline: none;
 }
 
+.not-allowed_num, .disabled_num {
+	cursor: none !important;
+	/* pointer-events: none !important; */
+	opacity: 0.9 !important;
+  caret-color: transparent;
+}
 
     </style>
 </head>
@@ -2138,7 +2144,7 @@ input[type=number] {
                                         <div class="gray-choice-f mb-xs mt-md">
                                           Text Choices 
                                            
-                                          <input type="number" class="index1 reset_val"
+                                          <input type="text" class="index1 reset_val disabled_num"
                                           name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                            id="displayTextChoicesequenceNumber${subtype.index}"
                                           <c:if test="${empty questionResponseSubType.sequenceNumber}">
@@ -2267,7 +2273,7 @@ input[type=number] {
                             <c:otherwise>
 
 
-                              <tr class="text-choice otherOptionChecked" id="1">
+                              <tr class="text-choice otherOptionChecked" id="0">
                                 <td>
                                   <div class="panel panel-default">
                                 <input type="hidden" name="">
@@ -2278,7 +2284,7 @@ input[type=number] {
                                               <div class="text-left dis-inline">
                                                 <div class="gray-choice-f mb-xs mt-md">
                                                   Text Choices 
-                                                  <input type="number" class="index1 reset_val" name="questionResponseSubTypeList[0].sequenceNumber"
+                                                  <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
                                                   id="displayTextChoicesequenceNumber0" value="1" />
             
                                                    <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -2388,7 +2394,7 @@ input[type=number] {
 
 
                     <!-- Start panel-->
-                    <tr class="text-choice otherOptionChecked1"  id="2">       
+                    <tr class="text-choice otherOptionChecked1"  id="1">       
                       <td>
                   <div class="panel panel-default" >
                     <input type="hidden" name="">
@@ -2400,7 +2406,7 @@ input[type=number] {
                                   <div class="gray-choice-f mb-xs mt-md">
                                     Text Choices   
                                     
-                                    <input type="number" class="index1 reset_val" name="questionResponseSubTypeList[1].sequenceNumber"
+                                    <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
                                     id="displayTextChoicesequenceNumber1" value="2" /> 
 
                                     <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -4922,7 +4928,7 @@ input[type=number] {
           + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
-              + "    Text Choices <input type='number' class='index1 reset_val' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
+              + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
              
               
               +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
@@ -5294,6 +5300,8 @@ input[type=number] {
 
   function validateForUniqueValue(item, responsetype, callback) {
   debugger
+  	var selected_id = $(item).attr("id");
+ 	var selected_diaplay_value = $("#" + selected_id).val();
     var isValid = true;
     if (responsetype == 'Text Scale') {
       var valueArray = new Array();
@@ -5374,27 +5382,27 @@ input[type=number] {
     } else if (responsetype == "Text Choice") {
       var valueArray = new Array();
       $('.text-choice').each(function () {
-        var id = $(this).attr("id");
-        var diaplay_value = $("#displayTextChoiceValue" + id).val();
-        $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
-            "has-error");
-        $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-        if (typeof diaplay_value != 'undefined' && diaplay_value != null && diaplay_value != '') {
-          console.log(valueArray.indexOf(diaplay_value.toLowerCase()));
-          if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
-            isValid = false;
-            $("#displayTextChoiceValue" + id).val('');
-            $("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").append(
-                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                    "The value should be unique "));
-          } //else
-            //valueArray.push(diaplay_value.toLowerCase());
-        } else {
+          var id = $(this).attr("id");
+          var diaplay_value = $("#displayTextChoiceValue" + id).val();
+          $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
+              "has-error");
+          $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+          if (diaplay_value != '' && diaplay_value !== undefined) {
+            if (selected_diaplay_value != '' && selected_diaplay_value !== undefined && valueArray.indexOf(selected_diaplay_value.toLowerCase()) != -1) {
+              isValid = false;
+              $("#" + selected_id).val('');
+              $("#" + selected_id).parent().addClass("has-danger").addClass(
+                  "has-error");
+              $("#" + selected_id).parent().find(".help-block").empty();
+              $("#" + selected_id).parent().find(".help-block").append(
+                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                      "The value should be unique "));
+              return false;
+            } else
+              valueArray.push(diaplay_value.toLowerCase());
+          } else {
 
-        }
-
+          }
       });
       callback(isValid);
     }

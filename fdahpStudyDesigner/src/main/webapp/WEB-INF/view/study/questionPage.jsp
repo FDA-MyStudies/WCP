@@ -2267,7 +2267,7 @@ input[type=number] {
                             <c:otherwise>
 
 
-                              <tr class="text-choice otherOptionChecked" id="1">
+                              <tr class="text-choice otherOptionChecked" id="0">
                                 <td>
                                   <div class="panel panel-default">
                                 <input type="hidden" name="">
@@ -2388,7 +2388,7 @@ input[type=number] {
 
 
                     <!-- Start panel-->
-                    <tr class="text-choice otherOptionChecked1"  id="2">       
+                    <tr class="text-choice otherOptionChecked1"  id="1">       
                       <td>
                   <div class="panel panel-default" >
                     <input type="hidden" name="">
@@ -5294,6 +5294,8 @@ input[type=number] {
 
   function validateForUniqueValue(item, responsetype, callback) {
   debugger
+  	var selected_id = $(item).attr("id");
+ 	var selected_diaplay_value = $("#" + selected_id).val();
     var isValid = true;
     if (responsetype == 'Text Scale') {
       var valueArray = new Array();
@@ -5374,27 +5376,27 @@ input[type=number] {
     } else if (responsetype == "Text Choice") {
       var valueArray = new Array();
       $('.text-choice').each(function () {
-        var id = $(this).attr("id");
-        var diaplay_value = $("#displayTextChoiceValue" + id).val();
-        $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
-            "has-error");
-        $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-        if (typeof diaplay_value != 'undefined' && diaplay_value != null && diaplay_value != '') {
-          console.log(valueArray.indexOf(diaplay_value.toLowerCase()));
-          if (valueArray.indexOf(diaplay_value.toLowerCase()) != -1) {
-            isValid = false;
-            $("#displayTextChoiceValue" + id).val('');
-            $("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").append(
-                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                    "The value should be unique "));
-          } //else
-            //valueArray.push(diaplay_value.toLowerCase());
-        } else {
+          var id = $(this).attr("id");
+          var diaplay_value = $("#displayTextChoiceValue" + id).val();
+          $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
+              "has-error");
+          $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+          if (diaplay_value != '' && diaplay_value !== undefined) {
+            if (selected_diaplay_value != '' && selected_diaplay_value !== undefined && valueArray.indexOf(selected_diaplay_value.toLowerCase()) != -1) {
+              isValid = false;
+              $("#" + selected_id).val('');
+              $("#" + selected_id).parent().addClass("has-danger").addClass(
+                  "has-error");
+              $("#" + selected_id).parent().find(".help-block").empty();
+              $("#" + selected_id).parent().find(".help-block").append(
+                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                      "The value should be unique "));
+              return false;
+            } else
+              valueArray.push(diaplay_value.toLowerCase());
+          } else {
 
-        }
-
+          }
       });
       callback(isValid);
     }

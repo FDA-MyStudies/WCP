@@ -22,6 +22,13 @@
     background-repeat: no-repeat;
   }
 
+  .ml-disabled {
+      background-color: #eee !important;
+      opacity: 1;
+      cursor: not-allowed;
+      pointer-events: none;
+  }
+
   .langSpecific > button {
     padding-left: 30px;
   }
@@ -600,13 +607,13 @@
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          $('#shortTitleId, #destinationStepId').addClass('ml-disabled');
+          $('#shortTitleId, [data-id="destinationStepId"]').addClass('ml-disabled');
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
           $('#instructionText').val($('#mlText', htmlData).val());
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#shortTitleId, #destinationStepId').removeClass('ml-disabled');
+          $('#shortTitleId, [data-id="destinationStepId"]').removeClass('ml-disabled');
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
 

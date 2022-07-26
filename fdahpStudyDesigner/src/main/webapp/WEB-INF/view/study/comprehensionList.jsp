@@ -89,6 +89,9 @@
       color:#007cba !important;
       font-size:15px;
        }
+       #comprehensionInfoForm{
+       display:contents;
+       }
     </style>
 </head>
 <script type="text/javascript">
@@ -162,7 +165,7 @@
 							save to continue)</small></span>
                 </div>
                 <div class="form-group col-md-5 p-none">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-1"> <input
                             type="radio" id="comprehensionTestYes" value="Yes"
                             name="needComprehensionTest"
                         ${consentBo.needComprehensionTest eq 'Yes' ? 'checked' : ''}>

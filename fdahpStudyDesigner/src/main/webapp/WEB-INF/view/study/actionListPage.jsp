@@ -49,6 +49,9 @@ font-size:15px;
 #timeOutMessage{
 width:257px;
 }
+.close{
+background:none;
+}
 </style>
 </head>
 
@@ -71,7 +74,7 @@ width:257px;
 				title="Use the Test Mode to verify your study content and behavior in a test app prior to actual launch/publishing in Live Mode.  Please note that the study cannot be reverted back to Test Mode once you switch to the Live Mode. The Study ID and App ID fields cannot be edited once the study is launched (or published as an upcoming study) in either Test Mode or Live Mode. However, after you switch from Test Mode to Live Mode, you will need to enter in a Study ID and an App ID that are different from what were used in Test mode, before you launch (or publish as upcoming study) the study in Live Mode."></span>
 		</div>
 		<div class="pb-lg ">
-			<span class="radio radio-info radio-inline p-40"> <input
+			<span class="radio radio-info radio-inline p-40 pl-1"> <input
 				type="radio" id="testmode" class="typeofmode" value="testmode"
 				name="modetype" checked
 				<c:if test="${not empty permission}">disabled</c:if>
@@ -90,7 +93,7 @@ width:257px;
 		<div>
 			<c:if test="${studyBo.studyPreActiveFlag eq false}">
 				<div class="form-group mr-sm" style="white-space: normal;">
-					<button type="button" class="btn btn-primary blue-btn-action"
+					<button type="button" class="btn btn-primary blue-btn-action" style="white-space: nowrap;"
 						id="publishId" onclick="validateStudyStatus(this);"
 						<c:choose>
 				             <c:when test="${not empty permission}">

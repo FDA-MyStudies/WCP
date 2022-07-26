@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+appNotificationFormId<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -9,6 +9,12 @@
 <head>
 <meta charset="UTF-8">
 </head>
+<style>
+#appNotificationFormId
+{
+display:contents;
+}
+</style>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
 	<!-- widgets section-->
@@ -60,7 +66,7 @@
 
 				<div class="mt-xlg mb-lg">
 					<div class="form-group">
-						<span class="radio radio-info radio-inline p-45"> <input
+						<span class="radio radio-info radio-inline p-45  pl-1"> <input
 							type="radio" id="inlineRadio1" value="notImmediate"
 							name="currentDateTime"
 							<c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>

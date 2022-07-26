@@ -200,7 +200,7 @@
 				<div class="gray-xs-f mb-xs">
 					Content Type<span class="requiredStar"> *</span>
 				</div>
-				<span class="radio radio-info radio-inline p-45"> <input
+				<span class="radio radio-info radio-inline p-45 pl-1"> <input
 					type="radio" class="addResource" id="inlineRadio1"
 					name="textOrPdfParam" value="0"
 					<c:if test="${not resourceBO.textOrPdf}">checked</c:if>> <label
@@ -252,7 +252,7 @@
 							title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study."
 							class="filled-tooltip"></span>
 					</div>
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-1"> <input
 						type="radio" id="inlineRadio3" name="resourceVisibilityParam"
 						value="0"
 						<c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
@@ -272,7 +272,7 @@
 						Select Time Period <span class="requiredStar">*</span>
 					</div>
 					<div id="selectTime">
-						<span class="radio radio-info radio-inline pr-md"> <input
+						<span class="radio radio-info radio-inline pr-md pl-1"> <input
 							type="radio" id="inlineRadio5" class="disRadBtn1" value="1"
 							name="resourceTypeParm"> <label for="inlineRadio5">Anchor
 								Date-based Period</label><br />
@@ -326,7 +326,7 @@
 						<span class="form-group m-none dis-inline vertical-align-middle">
 
 							<input id="xdays" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  resetAncDate"
 							placeholder="X" name="timePeriodFromDays"
 							value="${resourceBO.timePeriodFromDays}"
 							oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3"
@@ -346,7 +346,7 @@
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 
 							<input id="ydays" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate"
+							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  resetAncDate"
 							placeholder="Y" name="timePeriodToDays"
 							value="${resourceBO.timePeriodToDays}"
 							oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3"
@@ -359,7 +359,7 @@
 
 				<div class="mt-lg resetDate">
 					<div class="mb-none">
-						<span class="radio radio-info radio-inline pr-md"> <input
+						<span class="radio radio-info radio-inline pr-md pl-1"> <input
 							type="radio" class="disRadBtn1" id="inlineRadio6" value="0"
 							name="resourceTypeParm"> <label for="inlineRadio6">Custom
 								Date Range</label>

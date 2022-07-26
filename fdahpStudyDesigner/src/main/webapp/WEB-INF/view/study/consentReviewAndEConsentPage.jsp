@@ -93,6 +93,9 @@
       color:#007cba !important;
       font-size:15px;
        }
+
+
+
     </style>
 </head>
 <!-- ============================================================== -->
@@ -187,461 +190,395 @@
             <!--  End  top tab section-->
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none">
-                <ul class="nav nav-tabs review-tabs">
-                    <li class="shareData active"><a data-toggle="tab"
-                                                    href="#menu1">Share Data Permissions</a></li>
-                    <li class="consentReview"><a data-toggle="tab" href="#menu2">Consent
-                        Document for Review</a></li>
-                    <li class="econsentForm"><a data-toggle="tab" href="#menu3">E-Consent
-                        Form </a></li>
-                </ul>
-                <div class="tab-content pl-xlg pr-xlg">
-                    <input type="hidden" id="version" name="version"
-                           value="${consentBo.version}">
-                    <div id="menu1" class="tab-pane fade in active">
-                        <!--   <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div> -->
-                        <div class="mt-lg">
-                            <div class="gray-xs-f mb-sm">
-                                Enable data-sharing permission step for this study? <span
-                                    class="gray-xs-f mb-xs">(This will let participants
-									choose whether they want to allow their response data to be
-									shared with 3rd parties. <b>Note that this setting cannot
-										be changed after study launch.</b>)
-								</span>
-                            </div>
-                            <div class="col-md-12 pl-none">
-                                <div class="form-group">
-									<span class="radio radio-info radio-inline p-45"> <input
-                                            type="radio" id="shareDataPermissionsYes" value="Yes"
-                                            name="shareDataPermissions"
-                                        ${consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''}
-                                    <c:if test="${studyLiveStatus}"> disabled</c:if>> <label
-                                            for="shareDataPermissionsYes">Yes</label>
-									</span> <span class="radio radio-inline"> <input type="radio"
-                                                                                     id="shareDataPermissionsNo"
-                                                                                     value="No"
-                                                                                     name="shareDataPermissions"
-                                    ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'No' ? 'checked' : ''}
-                                <c:if test="${studyLiveStatus}"> disabled</c:if>> <label
-                                        for="shareDataPermissionsNo">No</label>
-									</span>
-                                </div>
-                            </div>
-                            <div
-                                    class="<c:if test="${consentBo.shareDataPermissions eq 'No'}">ct_panel</c:if>"
-                                    id="rootContainer">
-                                <div class="col-md-12 p-none">
-                                    <div class="gray-xs-f mb-xs">
-                                        Title <small>(250 characters max)</small><span
-                                            class="requiredStar">*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control requiredClass"
-                                               placeholde="" id="titleId" name="title"
-                                               value="${consentBo.title}" maxlength="250" <c:if test="${studyLiveStatus}"> disabled</c:if>>
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 p-none">
-                                    <div class="gray-xs-f mb-xs">
-                                        1 line description or tagline <small>(250 characters
-                                        max)</small><span class="requiredStar">*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control requiredClass"
-                                               placeholder="" maxlength="250"
-                                               name="taglineDescription"
-                                               id="taglineDescriptionId"
-                                               value="${consentBo.taglineDescription}"
-                                                <c:if test="${studyLiveStatus}"> disabled</c:if> />
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 p-none">
-                                    <div class="gray-xs-f mb-xs">
-                                        Short Description for RO (Research Organization or Data
-                                        Partner) <small>(250 characters max)</small><span
-                                            class="requiredStar">*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control requiredClass"
-                                               placeholder="" maxlength="250"
-                                               name="shortDescription"
-                                               id="shortDescriptionId"
-                                               value="${consentBo.shortDescription}"
-                                                <c:if test="${studyLiveStatus}"> disabled</c:if> />
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 p-none">
-                                    <div class="gray-xs-f mb-xs">
-                                        Long Description for RO (Research Organization or Data
-                                        Partner) <small>(500 characters max)</small><span
-                                            class="requiredStar">*</span>
-                                    </div>
-                                    <div class="form-group">
-										<textarea class="form-control requiredClass" rows="5"
-                                                  maxlength="500" placeholder=""
-                                                  name="longDescription"
-                                                  id="longDescriptionId"
-                                                <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.longDescription}</textarea>
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 p-none">
-                                    <div class="gray-xs-f mb-xs">
-                                        Learn More text (Elaborated content that explains how data
-                                        will be shared)<span class="requiredStar">*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control requiredClass"
-                                                  id="learnMoreTextId" name="learnMoreText"
-                                                <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.learnMoreText}</textarea>
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
-                                </div>
-                                    <%-- <div class="col-md-12 pl-none mt-lg">
-                                <div class="gray-xs-f mb-sm">Allow user to proceed if permission not provided</div>
-                                <div class="form-group">
-                                    <span class="radio radio-info radio-inline p-45">
-                                        <input type="radio" id="allowWithoutPermissionYes"  name="allowWithoutPermission" ${empty consentBo.allowWithoutPermission || consentBo.allowWithoutPermission eq 'Yes' ? 'checked' : ''} value="Yes">
-                                        <label for="allowWithoutPermissionYes">Yes</label>
-                                    </span>
-                                    <span class="radio radio-inline">
-                                        <input type="radio" id="allowWithoutPermissionNo"  name="allowWithoutPermission" ${consentBo.allowWithoutPermission eq 'No' ? 'checked' : ''} value="No">
-                                        <label for="allowWithoutPermissionNo">No</label>
-                                    </span>
-                                </div>
-                            </div> --%>
-                                <div class="col-md-12 pl-none mt-lg mb-xlg">
-                                    <!--  <div class="mt-lg"> -->
-                                    <!-- 		                   	<a  class="preview__text" href="javascript:void()" data-toggle="modal" data-target="#myModal"> -->
-                                    <a class="preview__text" href="javascript:void()"
-                                       data-toggle="modal" onclick="previewDataSharing();"> <img
-                                            class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
-                                    </a>
-                                    <!-- </div> -->
-                                    <!-- <span data-toggle="modal" data-target="#myModal" class="eye__preview"><span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span><span class="gray-xs-f">Preview</span></span> -->
-                                </div>
-                            </div>
-                            <!-- <div class="container">
-                              <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog" id="i__phone">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <div class="i__phone__bg">
-                                        <div class="i__phone__content">
-                                            <div class=" ">
-                                                <div class="black-md-f text-uppercase dis-line line34 mb-sm mt-xlg">Title</div>
-                                                <div class="gray-xs-f mb-sm">Tagline Description</div>
-                                                <div classs=""mb-xlg><a href="#">Learn More</a></div>
-                                            </div>
-                                            <div>
-                                                <ul>
-                                                    <li>List</li>
-                                                    <li>List</li>
-                                                    <li>List</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+<ul class="nav nav-tabs customTabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#menu1" type="button" role="tab" aria-controls="#menu1" aria-selected="true">Share Data Permissions</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#menu2" type="button" role="tab" aria-controls="#menu2" aria-selected="false">Consent Document for Review</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#menu3" type="button" role="tab" aria-controls="#menu3" aria-selected="false">E-Consent Form </button>
+  </li>
+</ul>
+<div class="tab-content pl-xlg pr-xlg" id="myTabContent">
+  <div class="tab-pane fade show active" id="menu1" role="tabpanel" aria-labelledby="home-tab">
+  <div class="mt-lg">
+                              <div class="gray-xs-f mb-sm">
+                                  Enable data-sharing permission step for this study? <span
+                                      class="gray-xs-f mb-xs">(This will let participants
+  									choose whether they want to allow their response data to be
+  									shared with 3rd parties. <b>Note that this setting cannot
+  										be changed after study launch.</b>)
+  								</span>
+                              </div>
+                              <div class="col-md-12 pl-none">
+                                  <div class="form-group">
+  									<span class="radio radio-info radio-inline p-45 pl-1"> <input
+                                              type="radio" id="shareDataPermissionsYes" value="Yes"
+                                              name="shareDataPermissions"
+                                          ${consentBo.shareDataPermissions eq 'Yes' ? 'checked' : ''}
+                                      <c:if test="${studyLiveStatus}"> disabled</c:if>> <label
+                                              for="shareDataPermissionsYes">Yes</label>
+  									</span> <span class="radio radio-inline"> <input type="radio"
+                                                                                       id="shareDataPermissionsNo"
+                                                                                       value="No"
+                                                                                       name="shareDataPermissions"
+                                      ${empty consentBo.shareDataPermissions || consentBo.shareDataPermissions eq 'No' ? 'checked' : ''}
+                                  <c:if test="${studyLiveStatus}"> disabled</c:if>> <label
+                                          for="shareDataPermissionsNo">No</label>
+  									</span>
+                                  </div>
+                              </div>
+                              <div
+                                      class="<c:if test="${consentBo.shareDataPermissions eq 'No'}">ct_panel</c:if>"
+                                      id="rootContainer">
+                                  <div class="col-md-12 p-none">
+                                      <div class="gray-xs-f mb-xs">
+                                          Title <small>(250 characters max)</small><span
+                                              class="requiredStar">*</span>
+                                      </div>
+                                      <div class="form-group">
+                                          <input type="text" class="form-control requiredClass"
+                                                 placeholde="" id="titleId" name="title"
+                                                 value="${consentBo.title}" maxlength="250" <c:if test="${studyLiveStatus}"> disabled</c:if>>
+                                          <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-12 p-none">
+                                      <div class="gray-xs-f mb-xs">
+                                          1 line description or tagline <small>(250 characters
+                                          max)</small><span class="requiredStar">*</span>
+                                      </div>
+                                      <div class="form-group">
+                                          <input type="text" class="form-control requiredClass"
+                                                 placeholder="" maxlength="250"
+                                                 name="taglineDescription"
+                                                 id="taglineDescriptionId"
+                                                 value="${consentBo.taglineDescription}"
+                                                  <c:if test="${studyLiveStatus}"> disabled</c:if> />
+                                          <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-12 p-none">
+                                      <div class="gray-xs-f mb-xs">
+                                          Short Description for RO (Research Organization or Data
+                                          Partner) <small>(250 characters max)</small><span
+                                              class="requiredStar">*</span>
+                                      </div>
+                                      <div class="form-group">
+                                          <input type="text" class="form-control requiredClass"
+                                                 placeholder="" maxlength="250"
+                                                 name="shortDescription"
+                                                 id="shortDescriptionId"
+                                                 value="${consentBo.shortDescription}"
+                                                  <c:if test="${studyLiveStatus}"> disabled</c:if> />
+                                          <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-12 p-none">
+                                      <div class="gray-xs-f mb-xs">
+                                          Long Description for RO (Research Organization or Data
+                                          Partner) <small>(500 characters max)</small><span
+                                              class="requiredStar">*</span>
+                                      </div>
+                                      <div class="form-group">
+  										<textarea class="form-control requiredClass" rows="5"
+                                                    maxlength="500" placeholder=""
+                                                    name="longDescription"
+                                                    id="longDescriptionId"
+                                                  <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.longDescription}</textarea>
+                                          <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-12 p-none">
+                                      <div class="gray-xs-f mb-xs">
+                                          Learn More text (Elaborated content that explains how data
+                                          will be shared)<span class="requiredStar">*</span>
+                                      </div>
+                                      <div class="form-group">
+                                          <textarea class="form-control requiredClass"
+                                                    id="learnMoreTextId" name="learnMoreText"
+                                                  <c:if test="${studyLiveStatus}"> disabled</c:if>>${consentBo.learnMoreText}</textarea>
+                                          <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                  </div>
+
+                                  <div class="col-md-12 pl-none mt-lg mb-xlg">
+                                      <a class="preview__text" href="javascript:void()"
+                                         data-toggle="modal" onclick="previewDataSharing();"> <img
+                                              class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
+                                      </a>
+
+                                  </div>
                               </div>
 
-                            </div> -->
-                        </div>
-                        <div class="clearfix"></div>
+                          </div>
+
+  </div>
+  <div class="tab-pane fade" id="menu2" role="tabpanel" aria-labelledby="menu2">
+  <div class="mt-lg">
+                              <div class="gray-xs-f mb-sm">Select a method of creation
+                                  for the Consent Document
+                              </div>
+                              <div class="form-group mb-none">
+                                  <div id="consentDocTypeDivId">
+  									<span class="radio radio-info radio-inline p-45 pl-1"> <input
+                                              type="radio" id="inlineRadio1" value="Auto"
+                                              name="consentDocType" required
+                                              data-error="Please choose consent document type"
+                                          ${consentBo.consentDocType=='Auto'?'checked':''}> <label
+                                              for="inlineRadio1">Use auto-created Consent Document</label>
+  									</span> <span class="radio radio-inline"> <input type="radio"
+                                                                                       id="inlineRadio2"
+                                                                                       value="New"
+                                                                                       name="consentDocType"
+                                                                                       required
+                                                                                       data-error="Please choose consent document type"
+                                      ${consentBo.consentDocType=='New'?'checked':''}> <label
+                                          for="inlineRadio2">Create New Consent Document</label>
+  									</span>
+                                      <div class="help-block with-errors red-txt"></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="italic-txt">
+                              <div id="autoCreateHelpTextDiv" style="display: block;">
+                                  <small class="inst">This is a preview of the Consent
+                                      Document to depict how it gets created by the ResearchKit /
+                                      ResearchStack frameworks on the mobile app. Consent Items
+                                      (title and long description portions) are concatenated to
+                                      automatically create the Consent Document. The mobile app also
+                                      generates a Consent Document PDF with participant first name,
+                                      last name, signature and date, time of providing consent, as
+                                      captured on the app.</small>
+                              </div>
+                              <div id="newDocumentHelpTextDiv" style="display: none;">
+                                  <small class="inst">Choose this option if you wish to
+                                      provide separate content for the Consent Document instead of
+                                      using the auto-generated Consent Document. Note that in this
+                                      case, the mobile app will not be able to add user-specific
+                                      details such as first name, last name, signature and date/time
+                                      of providing consent, to the PDF that it generates for the
+                                      Consent Document.</small>
+                              </div>
+                          </div>
+                          <div class="mt-xlg">
+                              <div class="blue-lg-f text-uppercase">
+                                  CONSENT DOCUMENT <span id="requiredStarId"
+                                                         class="requiredStar">*</span>
+                              </div>
+                              <div class="mt-lg">
+                                  <div class="cont_doc" id="autoCreateDivId"
+                                       style="display: block;">
+                                      <div style="height: 900px;">
+                                          <div id="autoConsentDocumentDivId"></div>
+                                      </div>
+                                  </div>
+                                  <div class="cont_editor">
+                                      <div id="newDivId" style="display: none;">
+                                          <div class="form-group ">
+  											<textarea class="" rows="8" id="newDocumentDivId"
+                                                        name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
+                                              <input type="hidden" id="consentType" value="${consentBo.consentDocType}">
+                                              <div class="help-block with-errors red-txt"></div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="mt-xlg dis-inline" id="autoCreateDivId01"
+                               style="display: block;">
+                              <div class="sign">Participant's First Name</div>
+                              <div class="sign">Last Name</div>
+                              <div class="sign">Signature</div>
+                              <div class="sign">Date</div>
+                              <div class="sign">Time</div>
+                          </div>
+  </div>
+  <div class="tab-pane fade" id="menu3" role="tabpanel" aria-labelledby="menu3">
+  <div class="mt-xlg text-weight-semibold">Consent by an LAR
+                              (Legally Authorized Representative):
+                          </div>
+                          <div class="col-md-12 pt-sm">
+                              <div class="text-weight-semibold">
+                                  Do you wish to enable functionality for consent to be provided
+                                  by another person on behalf of the participant?<span><span
+                                      data-toggle="tooltip" data-placement="top"
+                                      title="This will add functionality to the consent module of the study in the mobile app, to allow the app user to provide consent on behalf of the participant, as a LAR. The study will continue to support direct consent even if this setting is enabled. The app user can choose one of two consent methods as is applicable to them, and will be guided through the rest of the consent process in the app accordingly."
+                                      class="ml-xs sprites_v3 filled-tooltip"></span></span>
+                              </div>
+                              <div class="form-group pt-sm pb-none">
+  								<span class="radio radio-info radio-inline pr-md pl-1"> <input
+                                          type="radio" id="inlineRadio11" value="Yes"
+                                          name="consentByLAR"
+                                          <c:if test="${consentBo.consentByLAR eq 'Yes'}">checked</c:if>>
+  									<label for="inlineRadio11">Yes</label>
+  								</span> <span class="radio radio-inline"> <input type="radio"
+                                                                                   id="inlineRadio22"
+                                                                                   value="No"
+                                                                                   name="consentByLAR"
+                                                                                   <c:if test="${empty consentBo.consentByLAR || consentBo.consentByLAR eq 'No'}">checked</c:if>>
+  									<label for="inlineRadio22">No</label>
+  								</span>
+                              </div>
+                          </div>
+                          <div class="clearfix"></div>
+                          <div class="block__devider">
+                              <div class="text-weight-semibold">Additional signature
+                                  lines for study staff:
+                              </div>
+                              <div class="col-md-12 pt-sm">
+                                  <div class="text-weight-semibold">
+                                      Do you wish to add signature lines to the final consent PDF to
+                                      allow for study staff signatures?<span><span
+                                          data-toggle="tooltip" data-placement="top"
+                                          title="This feature will enable additional signature lines in the finalized PDF document to accommodate required study staff signatures"
+                                          class="ml-xs sprites_v3 filled-tooltip"></span></span>
+                                  </div>
+                                  <div class="form-group pt-sm pb-sm mb-none">
+  									<span class="radio radio-info radio-inline pr-md pl-1"> <input
+                                              class="addSignature" type="radio" id="inlineRadio33"
+                                              value="Yes" name="additionalSignatureRadio"
+                                              <c:if test="${consentBo.additionalSignature eq 'Yes'}">checked</c:if>>
+  										<label for="inlineRadio33">Yes</label>
+  									</span> <span class="radio radio-inline"> <input type="radio"
+                                                                                       class="addSignature"
+                                                                                       id="inlineRadio44"
+                                                                                       value="No"
+                                                                                       name="additionalSignatureRadio"
+                                                                                       <c:if test="${empty consentBo.additionalSignature || consentBo.additionalSignature eq 'No'}">checked</c:if>>
+  										<label for="inlineRadio44">No</label>
+  									</span>
+                                  </div>
+                                  <div class="additionalSignature" style="display: none;">
+                                      <div class="text-weight-semibold mb-sm">
+                                          Please add the appropriate title that should display next to
+                                          each signature line (Up to 3 signature lines are
+                                          allowed)<small>(30
+                                          characters max)</small><span><span data-toggle="tooltip"
+                                                                             data-placement="top"
+                                                                             title="Example such as Principal Investigator, Witness, Site Coordinator, etc."
+                                                                             class="ml-xs sprites_v3 filled-tooltip"></span></span>
+                                      </div>
+                                      <c:if test="${fn:length(consentBo.signatures) eq 0}">
+                                          <div class="additional-signature-option mb-md form-group"
+                                               id="0">
+  											<span
+                                                      class="form-group m-none dis-inline vertical-align-middle">
+  												<input id="signature0" type="text"
+                                                         class="form-control mt-sm input-add-signature"
+                                                         count='0'
+                                                         placeholder="Enter Professional Title"
+                                                         name="signature0" value=""
+                                                         maxlength="30"
+                                                         data-pattern-error="Please fill out this field."
+                                                         required
+                                                         onkeypress="blockSpecialChar(event,this)"/><span
+                                                      class="help-block with-errors red-txt"></span>
+  											</span><span id="addbtn0"
+                                                           class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
+                                                           onclick="addAdditionalSignature();">+</span><span
+                                                  id="deleteAncchor0"
+                                                  class="sprites_icon delete vertical-align-middle remBtn align-span-center"
+                                                  onclick="removeAdditionalSignature(this);"></span>
+                                          </div>
+                                      </c:if>
+                                      <c:if test="${fn:length(consentBo.signatures) gt 0}">
+                                          <c:forEach items="${consentBo.signatures}" var="signature"
+                                                     varStatus="customVar">
+                                              <div class="additional-signature-option mb-md form-group"
+                                                   id="${customVar.index}">
+  												<span
+                                                          class="form-group m-none dis-inline vertical-align-middle">
+  													<input id="signature${customVar.index}"
+                                                             type="text"
+                                                             class="form-control mt-sm input-add-signature"
+                                                             count='${customVar.index}'
+                                                             placeholder="Enter Professional Title"
+                                                             name="signature${customVar.index}"
+                                                             value="${signature}"
+                                                             maxlength="30" required
+                                                             data-pattern-error="Please fill out this field."
+                                                             onkeypress="blockSpecialChar(event,this)"/><span
+                                                          class="help-block with-errors red-txt"></span>
+  												</span><span id="addbtn${customVar.index}"
+                                                               class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
+                                                               onclick="addAdditionalSignature();">+</span><span
+                                                      id="deleteAncchor${customVar.index}"
+                                                      class="sprites_icon delete vertical-align-middle remBtn align-span-center"
+                                                      onclick="removeAdditionalSignature(this);"></span>
+                                              </div>
+                                          </c:forEach>
+                                      </c:if>
+                                      <div
+                                              style="font-size: 13px; font-weight: 600; margin-top: 10px;">
+                                          Note:
+                                          The signature line for the staff representative will include
+                                          first name, last name, signature and date
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="clearfix"></div>
+                          </div>
+                          <div class="mt-lg text-weight-semibold">Elements of
+                              e-consent in the app:
+                          </div>
+                          <div class="">
+                              <ul class="list-style-image">
+                                  <li>Consent to share data with 3rd parties, if this step is
+                                      configured for the study using the WCP (this participant
+                                      preference is stored on the backend servers but not included in
+                                      the signed consent PDF)
+                                  </li>
+                                  <li>Agreement to the content in the Consent Document
+                                      displayed. Use the field below for the confirmation popup text
+                                      that the user must agree to in order to proceed. (250
+                                      characters max)</small><span class="requiredStar">*</span><span
+                                              class="ml-xs sprites_v3 filled-tooltip"
+                                              data-toggle="tooltip"
+                                              title="Text message shown to the prospect participant on the app, to confirm Review of and Agreement to the Consent Document."></span>
+                                      <div class="form-group mt-sm mb-none">
+                                          <input type="text" class="form-control" placeholder=""
+                                                 required name="aggrementOfTheConsent"
+                                                 id="aggrementOfTheConsentId"
+                                                 value="${fn:escapeXml(consentBo.aggrementOfTheConsent)}"
+                                                 maxlength="250"/>
+                                          <div class="help-block with-errors red-txt"></div>
+                                      </div>
+                                  </li>
+                                  <li>First name of the signer (included in the signed
+                                      consent PDF)
+                                  </li>
+                                  <li>Last name of the signer (included in the signed consent
+                                      PDF)
+                                  </li>
+                                  <li>E-signature (included in the signed consent PDF)</li>
+                                  <li>Date and time of providing consent (included in the
+                                      signed consent PDF)
+                                  </li>
+                                  <li>Relationship of the signer to the patient and first
+                                      name and last name of the patient, in case consent is being
+                                      provided by an LAR (this information is also included in the
+                                      signed consent PDF)
+                                  </li>
+                              </ul>
+
+                          </div>
+                      </div>
+  </div>
+</div>
 
 
-                    </div>
-                    <div id="menu2" class="tab-pane fade">
-                        <div class="mt-lg">
-                            <div class="gray-xs-f mb-sm">Select a method of creation
-                                for the Consent Document
-                            </div>
-                            <div class="form-group mb-none">
-                                <div id="consentDocTypeDivId">
-									<span class="radio radio-info radio-inline p-45"> <input
-                                            type="radio" id="inlineRadio1" value="Auto"
-                                            name="consentDocType" required
-                                            data-error="Please choose consent document type"
-                                        ${consentBo.consentDocType=='Auto'?'checked':''}> <label
-                                            for="inlineRadio1">Use auto-created Consent Document</label>
-									</span> <span class="radio radio-inline"> <input type="radio"
-                                                                                     id="inlineRadio2"
-                                                                                     value="New"
-                                                                                     name="consentDocType"
-                                                                                     required
-                                                                                     data-error="Please choose consent document type"
-                                    ${consentBo.consentDocType=='New'?'checked':''}> <label
-                                        for="inlineRadio2">Create New Consent Document</label>
-									</span>
-                                    <div class="help-block with-errors red-txt"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="italic-txt">
-                            <div id="autoCreateHelpTextDiv" style="display: block;">
-                                <small class="inst">This is a preview of the Consent
-                                    Document to depict how it gets created by the ResearchKit /
-                                    ResearchStack frameworks on the mobile app. Consent Items
-                                    (title and long description portions) are concatenated to
-                                    automatically create the Consent Document. The mobile app also
-                                    generates a Consent Document PDF with participant first name,
-                                    last name, signature and date, time of providing consent, as
-                                    captured on the app.</small>
-                            </div>
-                            <div id="newDocumentHelpTextDiv" style="display: none;">
-                                <small class="inst">Choose this option if you wish to
-                                    provide separate content for the Consent Document instead of
-                                    using the auto-generated Consent Document. Note that in this
-                                    case, the mobile app will not be able to add user-specific
-                                    details such as first name, last name, signature and date/time
-                                    of providing consent, to the PDF that it generates for the
-                                    Consent Document.</small>
-                            </div>
-                        </div>
-                        <div class="mt-xlg">
-                            <div class="blue-lg-f text-uppercase">
-                                CONSENT DOCUMENT <span id="requiredStarId"
-                                                       class="requiredStar">*</span>
-                            </div>
-                            <div class="mt-lg">
-                                <div class="cont_doc" id="autoCreateDivId"
-                                     style="display: block;">
-                                    <div style="height: 900px;">
-                                        <div id="autoConsentDocumentDivId"></div>
-                                    </div>
-                                </div>
-                                <div class="cont_editor">
-                                    <div id="newDivId" style="display: none;">
-                                        <div class="form-group ">
-											<textarea class="" rows="8" id="newDocumentDivId"
-                                                      name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
-                                            <input type="hidden" id="consentType" value="${consentBo.consentDocType}">
-                                            <div class="help-block with-errors red-txt"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-xlg dis-inline" id="autoCreateDivId01"
-                             style="display: block;">
-                            <div class="sign">Participant's First Name</div>
-                            <div class="sign">Last Name</div>
-                            <div class="sign">Signature</div>
-                            <div class="sign">Date</div>
-                            <div class="sign">Time</div>
-                        </div>
-                    </div>
-                    <div id="menu3" class="tab-pane fade">
-                        <div class="mt-xlg text-weight-semibold">Consent by an LAR
-                            (Legally Authorized Representative):
-                        </div>
-                        <div class="col-md-12 pt-sm">
-                            <div class="text-weight-semibold">
-                                Do you wish to enable functionality for consent to be provided
-                                by another person on behalf of the participant?<span><span
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="This will add functionality to the consent module of the study in the mobile app, to allow the app user to provide consent on behalf of the participant, as a LAR. The study will continue to support direct consent even if this setting is enabled. The app user can choose one of two consent methods as is applicable to them, and will be guided through the rest of the consent process in the app accordingly."
-                                    class="ml-xs sprites_v3 filled-tooltip"></span></span>
-                            </div>
-                            <div class="form-group pt-sm pb-none">
-								<span class="radio radio-info radio-inline pr-md"> <input
-                                        type="radio" id="inlineRadio11" value="Yes"
-                                        name="consentByLAR"
-                                        <c:if test="${consentBo.consentByLAR eq 'Yes'}">checked</c:if>>
-									<label for="inlineRadio11">Yes</label>
-								</span> <span class="radio radio-inline"> <input type="radio"
-                                                                                 id="inlineRadio22"
-                                                                                 value="No"
-                                                                                 name="consentByLAR"
-                                                                                 <c:if test="${empty consentBo.consentByLAR || consentBo.consentByLAR eq 'No'}">checked</c:if>>
-									<label for="inlineRadio22">No</label>
-								</span>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="block__devider">
-                            <div class="text-weight-semibold">Additional signature
-                                lines for study staff:
-                            </div>
-                            <div class="col-md-12 pt-sm">
-                                <div class="text-weight-semibold">
-                                    Do you wish to add signature lines to the final consent PDF to
-                                    allow for study staff signatures?<span><span
-                                        data-toggle="tooltip" data-placement="top"
-                                        title="This feature will enable additional signature lines in the finalized PDF document to accommodate required study staff signatures"
-                                        class="ml-xs sprites_v3 filled-tooltip"></span></span>
-                                </div>
-                                <div class="form-group pt-sm pb-sm mb-none">
-									<span class="radio radio-info radio-inline pr-md"> <input
-                                            class="addSignature" type="radio" id="inlineRadio33"
-                                            value="Yes" name="additionalSignatureRadio"
-                                            <c:if test="${consentBo.additionalSignature eq 'Yes'}">checked</c:if>>
-										<label for="inlineRadio33">Yes</label>
-									</span> <span class="radio radio-inline"> <input type="radio"
-                                                                                     class="addSignature"
-                                                                                     id="inlineRadio44"
-                                                                                     value="No"
-                                                                                     name="additionalSignatureRadio"
-                                                                                     <c:if test="${empty consentBo.additionalSignature || consentBo.additionalSignature eq 'No'}">checked</c:if>>
-										<label for="inlineRadio44">No</label>
-									</span>
-                                </div>
-                                <div class="additionalSignature" style="display: none;">
-                                    <div class="text-weight-semibold mb-sm">
-                                        Please add the appropriate title that should display next to
-                                        each signature line (Up to 3 signature lines are
-                                        allowed)<small>(30
-                                        characters max)</small><span><span data-toggle="tooltip"
-                                                                           data-placement="top"
-                                                                           title="Example such as Principal Investigator, Witness, Site Coordinator, etc."
-                                                                           class="ml-xs sprites_v3 filled-tooltip"></span></span>
-                                    </div>
-                                    <c:if test="${fn:length(consentBo.signatures) eq 0}">
-                                        <div class="additional-signature-option mb-md form-group"
-                                             id="0">
-											<span
-                                                    class="form-group m-none dis-inline vertical-align-middle">
-												<input id="signature0" type="text"
-                                                       class="form-control mt-sm input-add-signature"
-                                                       count='0'
-                                                       placeholder="Enter Professional Title"
-                                                       name="signature0" value=""
-                                                       maxlength="30"
-                                                       data-pattern-error="Please fill out this field."
-                                                       required
-                                                       onkeypress="blockSpecialChar(event,this)"/><span
-                                                    class="help-block with-errors red-txt"></span>
-											</span><span id="addbtn0"
-                                                         class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
-                                                         onclick="addAdditionalSignature();">+</span><span
-                                                id="deleteAncchor0"
-                                                class="sprites_icon delete vertical-align-middle remBtn align-span-center"
-                                                onclick="removeAdditionalSignature(this);"></span>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${fn:length(consentBo.signatures) gt 0}">
-                                        <c:forEach items="${consentBo.signatures}" var="signature"
-                                                   varStatus="customVar">
-                                            <div class="additional-signature-option mb-md form-group"
-                                                 id="${customVar.index}">
-												<span
-                                                        class="form-group m-none dis-inline vertical-align-middle">
-													<input id="signature${customVar.index}"
-                                                           type="text"
-                                                           class="form-control mt-sm input-add-signature"
-                                                           count='${customVar.index}'
-                                                           placeholder="Enter Professional Title"
-                                                           name="signature${customVar.index}"
-                                                           value="${signature}"
-                                                           maxlength="30" required
-                                                           data-pattern-error="Please fill out this field."
-                                                           onkeypress="blockSpecialChar(event,this)"/><span
-                                                        class="help-block with-errors red-txt"></span>
-												</span><span id="addbtn${customVar.index}"
-                                                             class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
-                                                             onclick="addAdditionalSignature();">+</span><span
-                                                    id="deleteAncchor${customVar.index}"
-                                                    class="sprites_icon delete vertical-align-middle remBtn align-span-center"
-                                                    onclick="removeAdditionalSignature(this);"></span>
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <div
-                                            style="font-size: 13px; font-weight: 600; margin-top: 10px;">
-                                        Note:
-                                        The signature line for the staff representative will include
-                                        first name, last name, signature and date
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="mt-lg text-weight-semibold">Elements of
-                            e-consent in the app:
-                        </div>
-                        <div class="">
-                            <ul class="list-style-image">
-                                <li>Consent to share data with 3rd parties, if this step is
-                                    configured for the study using the WCP (this participant
-                                    preference is stored on the backend servers but not included in
-                                    the signed consent PDF)
-                                </li>
-                                <li>Agreement to the content in the Consent Document
-                                    displayed. Use the field below for the confirmation popup text
-                                    that the user must agree to in order to proceed. (250
-                                    characters max)</small><span class="requiredStar">*</span><span
-                                            class="ml-xs sprites_v3 filled-tooltip"
-                                            data-toggle="tooltip"
-                                            title="Text message shown to the prospect participant on the app, to confirm Review of and Agreement to the Consent Document."></span>
-                                    <div class="form-group mt-sm mb-none">
-                                        <input type="text" class="form-control" placeholder=""
-                                               required name="aggrementOfTheConsent"
-                                               id="aggrementOfTheConsentId"
-                                               value="${fn:escapeXml(consentBo.aggrementOfTheConsent)}"
-                                               maxlength="250"/>
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
-                                </li>
-                                <li>First name of the signer (included in the signed
-                                    consent PDF)
-                                </li>
-                                <li>Last name of the signer (included in the signed consent
-                                    PDF)
-                                </li>
-                                <li>E-signature (included in the signed consent PDF)</li>
-                                <li>Date and time of providing consent (included in the
-                                    signed consent PDF)
-                                </li>
-                                <li>Relationship of the signer to the patient and first
-                                    name and last name of the patient, in case consent is being
-                                    provided by an LAR (this information is also included in the
-                                    signed consent PDF)
-                                </li>
-                            </ul>
-                                <%-- <div class="mt-lg form-group">
-                                <span class="checkbox checkbox-inline">
-                                    <input type="checkbox" id="agreementCB" value="No" name="eConsentAgree" ${consentBo.eConsentAgree=='Yes'?'checked':''}>
-                                    <label for="agreementCB"> Agreement to the content in the Consent Document</label>
-                                </span>
-                            </div>
-                            <div class="mt-md form-group">
-                                <span class="checkbox checkbox-inline">
-                                    <input type="checkbox" id="fNameCB" value="Yes" name="eConsentFirstName" checked disabled>
-                                    <label for="fNameCB"> First Name</label>
-                                </span>
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                            <div class="mt-md form-group">
-                                <span class="checkbox checkbox-inline">
-                                    <input type="checkbox" id="lNameCB" value="Yes" name="eConsentLastName" checked disabled>
-                                    <label for="lNameCB"> Last Name</label>
-                                </span>
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                            <div class="mt-md form-group">
-                                <span class="checkbox checkbox-inline">
-                                    <input type="checkbox" id="eSignCB" value="Yes" name="eConsentSignature" checked disabled>
-                                    <label for="eSignCB"> E-signature</label>
-                                </span>
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                            <div class="mt-md form-group">
-                                <span class="checkbox checkbox-inline">
-                                    <input type="checkbox" id="dateTimeCB" value="Yes" name="eConsentDatetime" checked disabled>
-                                    <label for="dateTimeCB"> Date and Time of providing Consent</label>
-                                </span>
-                                 <div class="help-block with-errors red-txt"></div> --%>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
+
         <!-- End body tab section -->
 
         <!-- End right Content here -->
     </form:form>
+
     <div class="modal fade dominate" id="myAutoModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
@@ -859,7 +796,8 @@ var idleTime = 0;
 
     //active li
     $(".menuNav li").removeClass('active');
-    $(".fifthConsentReview").addClass('active');
+    $(".fifthConsentReview ").addClass('active');
+
     $("#createStudyId").show();
     consentDocumentDivType();
     //check the consent type

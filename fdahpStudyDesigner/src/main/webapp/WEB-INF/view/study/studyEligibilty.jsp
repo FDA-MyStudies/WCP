@@ -48,6 +48,17 @@
           right:-14px !important;
           margin-top:6% !important;
           }
+          .form-control {
+              border: 1px solid #c9d2d6;
+              color: #2d2926;
+              font-size:14px;
+              outline: none !important;
+              box-shadow: none;
+              -webkit-box-shadow: none;
+              transition: none;
+              -webkit-transition: none;
+              resize: none;
+          }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -121,13 +132,13 @@
                     eligibility <small style="display: none;" id="forceContinueMsgId">(Please
                     save to continue)</small>
                 </div>
-                <span class="radio radio-info radio-inline p-45"> <input
+                <span class="radio radio-info radio-inline p-45 pl-1"> <input
                         type="radio" id="inlineRadio1" value="1" class="eligibilityOptCls"
                         name="eligibilityMechanism" required
                         <c:if test="${eligibility.eligibilityMechanism eq 1}">checked</c:if>
                 <c:if test="${liveStatus}"> disabled</c:if>> <label
                         for="inlineRadio1">Token Validation Only</label>
-				</span> <span class="radio radio-inline p-45"> <input type="radio"
+				</span> <span class="radio radio-inline p-45 pl-1"> <input type="radio"
                                                                       id="inlineRadio2" value="2"
                                                                       class="eligibilityOptCls"
                                                                       name="eligibilityMechanism"
@@ -135,7 +146,7 @@
                                                                       <c:if test="${eligibility.eligibilityMechanism eq 2}">checked</c:if>
             <c:if test="${liveStatus}"> disabled</c:if>> <label
                     for="inlineRadio2">Token Validation and Eligibility Test</label>
-				</span> <span class="radio radio-inline"> <input type="radio"
+				</span> <span class="radio radio-inline pl-1"> <input type="radio"
                                                                  id="inlineRadio3" value="3"
                                                                  class="eligibilityOptCls"
                                                                  name="eligibilityMechanism"

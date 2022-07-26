@@ -48,9 +48,9 @@
 </style>
 </head>
 
-<!-- <div id="schedule" class="tab-pane fade in active mt-xlg"> -->
-<div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
-<div class="pb-lg ">
+ <div id="schedule" class="tab-pane fade in show active mt-xlg">
+    <div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
+    <div class="pb-lg ">
 	<span class="radio radio-info radio-inline p-40"> <input
 		type="radio" id="schedule1" class="typeofschedule"
 		scheduletype="Regular" value="Regular" name="scheduleType"
@@ -67,9 +67,9 @@
 		<c:if test="${empty anchorTypeList}">disabled</c:if>> <label
 		for="schedule2">Anchor-Date-based</label>
 	</span>
-</div>
-<!-- Anchor date type -->
-<form:form action="" name="anchorFormId" id="anchorFormId" method="post"
+   </div>
+   <!-- Anchor date type -->
+  <form:form action="" name="anchorFormId" id="anchorFormId" method="post"
 	role="form" data-toggle="validator">
 	<div class="anchortypeclass" style="display: none;">
 		<c:if test="${fn:length(anchorTypeList) gt 0}">
@@ -93,10 +93,10 @@
 			<div class="clearfix"></div>
 		</c:if>
 	</div>
-</form:form>
-<!-- Ancor date type -->
-<div class="gray-xs-f mb-sm">Active Task Frequency</div>
-<div class="pb-lg b-bor">
+   </form:form>
+  <!-- Ancor date type -->
+  <div class="gray-xs-f mb-sm">Active Task Frequency</div>
+  <div class="pb-lg b-bor">
 	<span class="radio radio-info radio-inline p-40"> <input
 		type="radio" id="oneTimeRadio1" class="schedule"
 		frequencytype="oneTime" value="One time" name="frequency"
@@ -132,9 +132,9 @@
 		${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}> <label
 		for="ongoingRadio6">Ongoing</label>
 	</span>
-</div>
-<!-- One time Section-->
-<form:form
+  </div>
+  <!-- One time Section-->
+  <form:form
 	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
 	name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	<input type="hidden" name="frequency" id="frequencyId"
@@ -326,9 +326,9 @@
 			<!-- Anchordate End -->
 		</div>
 	</div>
-</form:form>
-<!-- Daily Section-->
-<form:form
+  </form:form>
+  <!-- Daily Section-->
+  <form:form
 	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
 	name="dailyFormId" id="dailyFormId" method="post" role="form">
 	<input type="hidden" name="frequency" id="dailyFrequencyId"
@@ -471,9 +471,9 @@
 				- ${activeTaskBo.activeTaskLifetimeEnd}</div>
 		</div>
 	</div>
-</form:form>
-<!-- Weekly Section-->
-<form:form
+   </form:form>
+  <!-- Weekly Section-->
+  <form:form
 	action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}"
 	name="weeklyFormId" id="weeklyFormId" method="post" role="form">
 	<input type="hidden" name="frequency" id="weeklyfrequencyId">

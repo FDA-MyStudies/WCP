@@ -12,7 +12,7 @@
     cursor: not-allowed;
     pointer-events: none;
   }
-  
+
   .globe{
     	position: relative;
   	  }

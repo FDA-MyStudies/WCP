@@ -102,7 +102,7 @@
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
-            <div class="col-md-12 p-none">
+            <div class="row col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study ID <small>(15 characters max)</small><span
@@ -185,7 +185,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 p-none">
+            <div class="row col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study Category<span class="requiredStar"> *</span>
@@ -217,7 +217,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 p-none">
+            <div class="row col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Data Partner<span class="requiredStar"> *</span>
@@ -240,8 +240,9 @@
                         Tentative Duration <small>(3 numbers max)</small><span
                             class="requiredStar"> *</span>
                     </div>
+                    <div class="display-flex">
                     <div class="form-group col-md-4 p-none mr-md mb-none">
-                        <input type="text" class="form-control" name="tentativeDuration"
+                        <input type="text" class="form-control" name="tentativeDuration" style="height:auto;"
                                value="${studyBo.tentativeDuration}" maxlength="3" required
                                pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
                                data-pattern-error="Please enter valid number."/>
@@ -266,6 +267,7 @@
                             </option>
                         </select>
                         <div class="help-block with-errors red-txt"></div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -293,7 +295,7 @@
                     <div class="help-block with-errors red-txt"></div>
                 </div>
             </div>
-            <div class="col-md-12 p-none">
+            <div class="row col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study website <span>(e.g: http://www.google.com) </span> <small>(100
@@ -324,7 +326,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 p-none mb-xxlg">
+            <div class="row col-md-12 p-none mb-xxlg">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study type<span class="requiredStar"> *</span>

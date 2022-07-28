@@ -162,15 +162,22 @@
     <!--  Start body tab section -->
     <div class="right-content-body pt-none pl-none pr-none">
 
-        <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
-            <li class="contentClass active"><a data-toggle="tab"
-                                               href="#content">Content</a></li>
-            <li class="scheduleTaskClass linkDis" disabled><a
-                    data-toggle="tab" href="#schedule">Schedule</a></li>
+        <ul class="nav nav-tabs customTabs  gray-bg" id="tabsId">
+            <li class="contentClass nav-item active">
+           <!-- <a data-toggle="tab"href="#content">Content</a> -->
+
+        <button class="nav-link active"  data-toggle="tab" data-target="#content" type="button" role="tab" aria-controls="" aria-selected="true">Content</button>
+
+            </li>
+            <li class="scheduleTaskClass linkDis" disabled>
+            <!--<a data-toggle="tab" href="#schedule">Schedule</a>-->
+            <button class="nav-link"  data-toggle="tab" data-target="#schedule" type="button" role="tab" aria-controls="" aria-selected="true">Schedule</button>
+
+                    </li>
         </ul>
         <div class="tab-content pl-xlg pr-xlg">
             <!-- Content-->
-            <div id="content" class="tab-pane fade in active mt-xlg">
+            <div id="content" class="tab-pane fade in show active mt-xlg">
                 <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                 <div class="gray-xs-f mt-md mb-sm">Choose from a list of
                     pre-defined active tasks

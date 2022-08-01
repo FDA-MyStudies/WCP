@@ -150,6 +150,10 @@ input[type=number] {
 	opacity: 0.9 !important;
   caret-color: transparent;
 }
+.customTabs li nav-item.active{
+    color:#000;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
     </style>
 </head>
 <script type="text/javascript">
@@ -262,18 +266,18 @@ input[type=number] {
 		<div class="right-content-body pt-none pl-none pr-none">
 			<ul class="nav nav-tabs  customTabs gray-bg">
 				<li class=" nav-item stepLevel active">
-				<a data-toggle="tab" href="#sla">Step-level
+				<a class="nav-link" data-toggle="tab" href="#sla">Step-level
 						Attributes</a>
 						<!-- <button class="nav-link active"  data-toggle="tab" data-target="#sla" type="button" role="tab" aria-controls="" aria-selected="true">Step-level Attribute</button>  -->
 
 						</li>
 				<li class="nav-item questionLevel">
-				<a data-toggle="tab" href="#qla">Question-level
+				<a class="nav-link" data-toggle="tab" href="#qla">Question-level
 						Attributes</a>
 <!-- <button class="nav-link"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="false">Question-level Attribute</button> -->
 						</li>
 				<li class="nav-item responseLevel">
-				<a data-toggle="tab" href="#rla">Response-level
+				<a class="nav-link" data-toggle="tab" href="#rla">Response-level
 						Attributes</a>
 <!-- <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attribute</button>
 -->

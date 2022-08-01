@@ -170,7 +170,7 @@
         </ul>
         <div class="tab-content pl-xlg pr-xlg">
             <!-- Content-->
-            <div id="content" class="tab-pane fade in active mt-xlg">
+            <div id="content" class="tab-pane fade in active show mt-xlg">
                 <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                 <div class="gray-xs-f mt-md mb-sm">Choose from a list of
                     pre-defined active tasks
@@ -191,7 +191,7 @@
             </div>
             <!-- End Content-->
             <!---  Schedule --->
-            <div id="schedule" class="tab-pane fade show in mt-xlg"></div>
+            <div id="schedule" class="tab-pane fade in mt-xlg"></div>
         </div>
     </div>
     <!--  End body tab section -->

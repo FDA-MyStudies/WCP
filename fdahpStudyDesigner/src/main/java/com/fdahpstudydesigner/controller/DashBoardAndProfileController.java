@@ -80,7 +80,7 @@ public class DashBoardAndProfileController {
       response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
       logger.error("DashBoardAndProfileController - changePassword() - ERROR ", e);
     }
-    logger.info("DashBoardAndProfileController - changePassword() - Ends");
+    logger.info("DashBoardAndProfileController - changePassword() - Ends.");
   }
 
   /**

@@ -251,12 +251,14 @@ input[type=number] {
     <div class="right-content-body pt-none pl-none pr-none">
         <ul class="nav nav-tabs customTabs gray-bg">
             <li class="nav-item questionLevel active">
-           <!-- <a data-toggle="tab" href="#qla">Question-level Attributes</a> -->
-            <button class="nav-link active"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="true">Question-level Attributes</button>
+           <a class="btn btnCusto active nav-link" data-toggle="tab" href="#qla">Question-level Attributes</a>
+            <!--<button class="nav-link active"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="true">Question-level Attributes</button>
+                                            -->
                                                 </li>
             <li class="nav-item responseLevel">
-           <!-- <a data-toggle="tab" href="#rla">Response-level Attributes</a>-->
-        <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attributes</button>
+       <a class="btn btnCusto nav-link" data-toggle="tab" href="#rla">Response-level Attributes</a>
+       <!-- <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attributes</button>
+                -->
                 </li>
         </ul>
         <div class="tab-content pl-xlg pr-xlg">
@@ -2166,8 +2168,17 @@ input[type=number] {
                                       <div class="text-right dis-inline pull-right">
 
                                           <a class=" text-left"  data-toggle="collapse" href="#collapse${subtype.index}" aria-expanded="true" aria-controls="collapseOne">
-                                            <span class="ml-lg imageBg">
-                                            <img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                           <span class="ml-lg imageBg">
+                                                                                       <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                                                                       <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                                                        width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
+                                                                                        preserveAspectRatio="xMidYMid meet">
+
+                                                                                       <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                                                       fill="#000000" stroke="none">
+                                                                                       </g>
+                                                                                       </svg>
+                                                                                       </span>
                                           </a>
 
 
@@ -2319,7 +2330,16 @@ input[type=number] {
         
                                                   <a class=" text-left"  data-toggle="collapse" href="#collapse_0" aria-expanded="true" aria-controls="collapseOne">
                                                     <span class="ml-lg imageBg">
-                                                    <img class="arrow" src="./fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                                                                                <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                                                                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                                                                 width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
+                                                                                                 preserveAspectRatio="xMidYMid meet">
+
+                                                                                                <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                                                                fill="#000000" stroke="none">
+                                                                                                </g>
+                                                                                                </svg>
+                                                                                                </span>
                                                   </a>
         
         
@@ -2460,8 +2480,17 @@ input[type=number] {
                                     <div class="text-right dis-inline pull-right">
 
                                         <a class=" text-left"  data-toggle="collapse" href="#collapse_1" aria-expanded="true" aria-controls="collapseOne">
-                                          <span class="ml-lg imageBg">
-                                          <img class="arrow" src="./fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+                                         <span class="ml-lg imageBg">
+                                                                                     <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                                                                     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                                                      width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
+                                                                                      preserveAspectRatio="xMidYMid meet">
+
+                                                                                     <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                                                     fill="#000000" stroke="none">
+                                                                                     </g>
+                                                                                     </svg>
+                                                                                     </span>
                                         </a>
 
 

@@ -28,42 +28,31 @@
 	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <!-- Web Fonts  -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400"	rel="stylesheet">
 
 <!-- Vendor CSS -->
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
+<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
+<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.css">
 
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-timepicker.min.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.min.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-timepicker.min.css">
+<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
 
 <!-- Your custom styles (optional) -->
-<link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/datatable/css/jquery.dataTables.min.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/datatable/css/rowReorder.dataTables.min.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
-<link rel="stylesheet"
-    	href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
+<link rel="stylesheet" type="text/javascript"href="/fdahpStudyDesigner/vendor/datatable/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css">
 
 
 
 
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/animation/animate.css">
-	<link rel="stylesheet"
-        	href="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/animation/animate.css">
+
 
 <!-- Theme Responsive CSS -->
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/layout.css">
@@ -73,28 +62,24 @@
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
 
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/css/sprites-icons-2.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites-icons-2.css">
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_v3.css">
 
-<link rel="stylesheet"
-	href="/fdahpStudyDesigner/css/jquery-password-validator.css">
+<link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css">
 
 
 
 <!-- Head Libs -->
-<script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
 
 
 <!-- Vendor -->
 
-<script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.6.0.min.js"></script>
-
-<script src="/fdahpStudyDesigner/vendor/jquery/jquery.popper.min.js"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.js"></script>
-	<script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.js"></script>
+ <script type="text/javascript" src="/fdahpStudyDesigner/vendor/jquery/jquery-3.6.0.min.js"></script> 
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/jquery/jquery.popper.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.js"></script>
 
 
 
@@ -103,32 +88,26 @@
 
 
 
-<script
-	src="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="/fdahpStudyDesigner/vendor/datetimepicker/js/moment.min.js"></script>
-<script
-	src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-timepicker.min.js"></script>
-<script
-	src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/fdahpStudyDesigner/js/validator.min.js"></script>
-<script src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
-<script
-	src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
-<script
-	src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
-<script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
-<script
-	src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-<script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/datetimepicker/js/moment.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/js/validator.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
 
 
-<script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
 
-<script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
-<script src="/fdahpStudyDesigner/js/ajaxRequestInterceptor.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/js/underscore-min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/js/ajaxRequestInterceptor.js"></script>
 <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
-<script type="text/javascript"
-	src="/fdahpStudyDesigner/vendor/dompurify/purify.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/dompurify/purify.min.js"></script>
 
 <script>
 	//       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

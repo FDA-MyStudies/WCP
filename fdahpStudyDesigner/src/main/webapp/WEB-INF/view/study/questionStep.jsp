@@ -7,7 +7,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <head>
 <meta charset="UTF-8">
+
+
 <style>
+
 .tool-tip {
 	display: inline-block;
 }
@@ -210,7 +213,7 @@ input[type=number] {
 				test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
 				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
 					<select
-						class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+						class="selectpicker  aq-select aq-select-form studyLanguage langSpecific"
 						id="studyLanguage" name="studyLanguage" title="Select">
 						<option value="en"
 							${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
@@ -2382,7 +2385,7 @@ input[type=number] {
 
                                           <a class=" text-left"  data-toggle="collapse" href="#collapse${subtype.index}" aria-expanded="true" aria-controls="collapse">
                                             <span class="ml-lg imageBg">
-                                            <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>122</span>
+                                            <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span>
                                           </a>
 
 
@@ -8052,6 +8055,7 @@ input[type=number] {
 					}
 				}
               }
+               view_spanish_deactivemode();
 
             } else {   // for English Language
               updateCompletionTicksForEnglish();
@@ -8169,6 +8173,8 @@ input[type=number] {
               <c:if test="${actionTypeForQuestionPage == 'view'}">
               $('#questionStepId input,textarea ').prop('disabled', true);
               </c:if>
+              
+              view_spanish_activemode();
             }
           }
         })
@@ -8237,4 +8243,38 @@ $('.text-choice').each(function(i){
 </script>
 
 
+<script>
+function  view_spanish_deactivemode() {
+  $("#diagnosis_list tbody").sortable("destroy");
+}
+function  view_spanish_activemode() {
+  $("#diagnosis_list tbody").sortable();
+  var maxWidth = 1;
+var fixHelperModified = function(e, tr) {
+  var $originals = tr.children();
+  var $helper = tr.clone();
+  $helper.children().each(function(index) {
+      $(this).width($originals.eq(index).width()+17); // 16 - 18
+  });
+  return $helper;
+},
+  updateIndex = function(e, ui) {
+      $('td.index', ui.item.parent()).each(function (i) {
+          $(this).html(i + 1);
+      });  
+      
+       $('input.index1', ui.item.parent()).each(function (i) {
+         // $(this).val(i + 1);
+    //  alert('working 1');
+    $(this).attr('value', (i + 1));
+    // alert('working 2');
+      });  
+      // $(this).attr('value', (i + 1));
+  };
+$("#diagnosis_list tbody").sortable({
+  helper: fixHelperModified,
+  stop: updateIndex
+}).disableSelection();
+}
+  </script>
 

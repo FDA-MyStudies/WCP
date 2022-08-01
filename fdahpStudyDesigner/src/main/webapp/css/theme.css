@@ -1022,3 +1022,29 @@ input[type=file]{
 .float__left{
 	float:left;
 }
+button:active {
+    outline: none !important;
+}
+button:focus {
+    outline: none !important;
+}
+button{
+    outline: none !important;
+}
+
+*:focus {
+    outline: 0 !important;
+}
+.btn:focus {
+  outline: none !important;
+}
+button:focus {outline:0;}
+
+*:focus {
+  box-shadow: none !important;
+}
+
+*[data-focus] {
+  box-shadow: none !important;
+}
+

@@ -162,10 +162,10 @@
     <!--  Start body tab section -->
     <div class="right-content-body pt-none pl-none pr-none">
 
-        <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
-            <li class="contentClass active"><a data-toggle="tab"
+        <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId">
+            <li class="nav-item contentClass active"><a data-toggle="tab" class="btn btnCusto nav-link active"
                                                href="#content">Content</a></li>
-            <li class="scheduleTaskClass linkDis" disabled><a
+            <li class="nav-item scheduleTaskClass linkDis" disabled><a class="btn btnCusto nav-link"
                     data-toggle="tab" href="#schedule">Schedule</a></li>
         </ul>
         <div class="tab-content pl-xlg pr-xlg">

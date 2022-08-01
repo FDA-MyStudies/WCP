@@ -5521,7 +5521,7 @@ input[type=number] {
             if (responseType != 'Boolean') {
 
               $("#" + responseType.replace(/\s/g, '')).find('input:text').val('');
-             // $("#" + responseType.replace(/\s/g, '')).find('img').attr("src", '');
+            // $("#" + responseType.replace(/\s/g, '')).find('img').attr("src", '');
               if (responseType == "Date") {
                 var datePicker = $("#" + responseType.replace(/\s/g, '')).find('input:text').data(
                     "DateTimePicker");

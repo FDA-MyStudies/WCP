@@ -48,7 +48,7 @@
 </style>
 </head>
 
- <div id="schedule" class="tab-pane fade in  active mt-xlg">
+ <div id="schedule" class="tab-pane fade in show active mt-xlg">
     <div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
     <div class="pb-lg ">
 	<span class="radio radio-info radio-inline p-40"> <input

@@ -2744,4 +2744,13 @@ display:flex;
 background:url("../images/icons/delete.png");
  }
 
+
+.btnCusto{
+margin-left:0px !important;
+margin-right:0px !important;
+}
+.btnCusto:focus{
+box-shadow:none !important;
+outline:none !important;
+}
  /* css end here */

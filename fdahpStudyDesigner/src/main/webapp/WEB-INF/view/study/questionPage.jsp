@@ -2142,7 +2142,7 @@ input[type=number] {
                           <div class="accordion" id="accordionExample1">
 
                             <div class="card">
-                              <div class="card-header display-flex" id="heading">
+                              <div class="card-header" id="heading">
 
 
                                 <div class="text-left dis-inline">
@@ -2312,7 +2312,7 @@ input[type=number] {
                                     <input type="hidden" name="">
 
                                     <div class="card">
-                                      <div class="card-header display-flex" id="headingOne">
+                                      <div class="card-header" id="headingOne">
         
         
                                         <div class="text-left dis-inline">
@@ -2462,7 +2462,7 @@ input[type=number] {
                           <input type="hidden" name="">
 
                           <div class="card">
-                            <div class="card-header display-flex" id="headingTwo">
+                            <div class="card-header" id="headingTwo">
 
 
                               <div class="text-left dis-inline">
@@ -5012,7 +5012,7 @@ input[type=number] {
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
       
-      + " <td><div class='clearfix'></div><div class='accordion'><div class='card'><div class='card-header display-flex'>" 
+      + " <td><div class='clearfix'></div><div class='accordion'><div class='card'><div class='card-header'>" 
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
               + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
@@ -5774,6 +5774,8 @@ input[type=number] {
             }
           }
 
+ view_spanish_deactivemode();
+ 
         } else {   // for English Language
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -5899,6 +5901,9 @@ input[type=number] {
           <c:if test="${actionTypeForFormStep == 'view'}">
           $('#questionStepId input,textarea ').prop('disabled', true);
           </c:if>
+          
+           view_spanish_activemode();
+           
         }
       }
     });
@@ -5965,4 +5970,46 @@ $('.text-choice').each(function(i){
 });
 
     }
+</script>
+
+
+<script>
+  function  view_spanish_deactivemode() {
+    $("#diagnosis_list tbody").sortable("destroy");
+  
+  }
+  
+  function  view_spanish_activemode() {
+    $("#diagnosis_list tbody").sortable();
+    var maxWidth = 1;
+  
+  
+  var fixHelperModified = function(e, tr) {
+    var $originals = tr.children();
+    var $helper = tr.clone();
+    $helper.children().each(function(index) {
+        $(this).width($originals.eq(index).width()+17); // 16 - 18
+    });
+    return $helper;
+  },
+    updateIndex = function(e, ui) {
+        $('td.index', ui.item.parent()).each(function (i) {
+            $(this).html(i + 1);
+        });  
+        
+         $('input.index1', ui.item.parent()).each(function (i) {
+           // $(this).val(i + 1);
+      //  alert('working 1');
+      $(this).attr('value', (i + 1));
+      // alert('working 2');
+        });  
+        // $(this).attr('value', (i + 1));
+    };
+  
+  $("#diagnosis_list tbody").sortable({
+    helper: fixHelperModified,
+    stop: updateIndex
+  }).disableSelection();
+  
+  }
 </script>

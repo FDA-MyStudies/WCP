@@ -5685,6 +5685,7 @@ input[type=number] {
               }
             }
           }
+           view_spanish_deactivemode();
 
         } else {   // for English Language
           updateCompletionTicksForEnglish();
@@ -5811,6 +5812,8 @@ input[type=number] {
           <c:if test="${actionTypeForFormStep == 'view'}">
           $('#questionStepId input,textarea ').prop('disabled', true);
           </c:if>
+          
+          view_spanish_activemode();
         }
       }
     });

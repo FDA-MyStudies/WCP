@@ -5878,3 +5878,39 @@ $('.text-choice').each(function(i){
 
     }
 </script>
+
+	
+<script>	
+function  view_spanish_deactivemode() {	
+  $("#diagnosis_list tbody").sortable("destroy");	
+}	
+function  view_spanish_activemode() {	
+  $("#diagnosis_list tbody").sortable();	
+  var maxWidth = 1;	
+var fixHelperModified = function(e, tr) {	
+  var $originals = tr.children();	
+  var $helper = tr.clone();	
+  $helper.children().each(function(index) {	
+      $(this).width($originals.eq(index).width()+17); // 16 - 18	
+  });	
+  return $helper;	
+},	
+  updateIndex = function(e, ui) {	
+      $('td.index', ui.item.parent()).each(function (i) {	
+          $(this).html(i + 1);	
+      });  	
+      	
+       $('input.index1', ui.item.parent()).each(function (i) {	
+         // $(this).val(i + 1);	
+    //  alert('working 1');	
+    $(this).attr('value', (i + 1));	
+    // alert('working 2');	
+      });  	
+      // $(this).attr('value', (i + 1));	
+  };	
+$("#diagnosis_list tbody").sortable({	
+  helper: fixHelperModified,	
+  stop: updateIndex	
+}).disableSelection();	
+}	
+  </script>

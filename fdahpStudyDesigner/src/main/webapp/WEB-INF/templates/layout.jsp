@@ -33,7 +33,7 @@
 
 <!-- Vendor CSS -->
 <link rel="stylesheet"
-	href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
+	href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
 
 <link rel="stylesheet"
 	href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-timepicker.min.css">
@@ -63,7 +63,7 @@
 <link rel="stylesheet"
 	href="/fdahpStudyDesigner/vendor/animation/animate.css">
 	<link rel="stylesheet"
-        	href="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.css">
+        	href="/fdahpStudyDesigner/vendor/select2/bootstrap-select-1.13.18.min.css">
 
 <!-- Theme Responsive CSS -->
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/layout.css">
@@ -88,10 +88,10 @@
 
 <!-- Vendor -->
 <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.6.0.min.js"></script>
-<script src="/fdahpStudyDesigner/vendor/jquery/jquery.popper.min.js"></script>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>-->
+<script src="/fdahpStudyDesigner/vendor/jquery/jquery-popper-1.14.6.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-<script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.js"></script>
+<script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
 
 
 
@@ -125,7 +125,7 @@
 <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
 <script type="text/javascript"
 	src="/fdahpStudyDesigner/vendor/dompurify/purify.min.js"></script>
-	<script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.js"></script>
+	<script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select-1.13.18.min.js"></script>
 <script>
 	//       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	//       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

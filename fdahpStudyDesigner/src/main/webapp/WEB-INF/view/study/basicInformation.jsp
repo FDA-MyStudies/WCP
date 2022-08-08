@@ -32,7 +32,6 @@
   right:-14px !important;
   margin-top:6% !important;
   }
- 
 </style>
 
 <!-- ============================================================== -->
@@ -58,11 +57,10 @@
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                                id="studyLanguage" name="studyLanguage" title="Select"><span>vhf</span>
+                                id="studyLanguage" name="studyLanguage" title="Select">
                             <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'en')) ?'selected':''}>
                                 English
                             </option>
-                            
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language.key}"
                                     ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
@@ -104,7 +102,7 @@
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <!-- Start body tab section -->
         <div class="right-content-body col-xs-12">
-            <div class="row col-md-12 p-none">
+            <div class="col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study ID <small>(15 characters max)</small><span
@@ -187,21 +185,12 @@
                 </div>
             </div>
 
-            <div class="row col-md-12 p-none">
+            <div class="col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study Category<span class="requiredStar"> *</span>
                     </div>
-                    <div class="form-group ">
-                      <select class="form-control selectpicker aq-select aq-select-form elaborateClass" 
-                      id="category" name="category" required title="Select">
-                      <c:forEach items="${categoryList}" var="category">
-                        <option value="${category.id}"
-                            ${studyBo.category eq category.id ?'selected':''}>${category.value}</option>
-                    </c:forEach>
-                      </select>
-                    </div>
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <select
                                 class="selectpicker aq-select aq-select-form elaborateClass"
                                 id="category" name="category" required title="Select">
@@ -211,7 +200,7 @@
                             </c:forEach>
                         </select>
                         <div class="help-block with-errors red-txt"></div>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="col-md-6 pr-none">
                     <div class="gray-xs-f mb-xs">
@@ -228,7 +217,7 @@
                 </div>
             </div>
 
-            <div class="row col-md-12 p-none">
+            <div class="col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Data Partner<span class="requiredStar"> *</span>
@@ -251,9 +240,8 @@
                         Tentative Duration <small>(3 numbers max)</small><span
                             class="requiredStar"> *</span>
                     </div>
-                    <div class="display-flex">
                     <div class="form-group col-md-4 p-none mr-md mb-none">
-                        <input type="text" class="form-control" name="tentativeDuration" style="height:auto;"
+                        <input type="text" class="form-control" name="tentativeDuration"
                                value="${studyBo.tentativeDuration}" maxlength="3" required
                                pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
                                data-pattern-error="Please enter valid number."/>
@@ -278,7 +266,6 @@
                             </option>
                         </select>
                         <div class="help-block with-errors red-txt"></div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -306,7 +293,7 @@
                     <div class="help-block with-errors red-txt"></div>
                 </div>
             </div>
-            <div class="row col-md-12 p-none">
+            <div class="col-md-12 p-none">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study website <span>(e.g: http://www.google.com) </span> <small>(100
@@ -337,7 +324,7 @@
                 </div>
             </div>
 
-            <div class="row col-md-12 p-none mb-xxlg">
+            <div class="col-md-12 p-none mb-xxlg">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Study type<span class="requiredStar"> *</span>

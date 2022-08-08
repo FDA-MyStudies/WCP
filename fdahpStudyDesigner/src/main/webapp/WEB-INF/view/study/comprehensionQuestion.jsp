@@ -69,7 +69,6 @@
   color:#007cba !important;
   font-size:15px;
    }
-
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -186,7 +185,7 @@
                 <div class="unitDivParent">
                     <c:if
                             test="${fn:length(comprehensionQuestionBo.responseList) eq 0}">
-                        <div class="row col-md-12 p-none">
+                        <div class="col-md-12 p-none">
                             <div class='col-md-6 pl-none'>
                                 <div class="gray-xs-f mb-xs">
                                     Answer Options (1 to 150 characters)<span
@@ -204,7 +203,7 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="ans-opts row col-md-12 p-none" id="0">
+                        <div class="ans-opts col-md-12 p-none" id="0">
                             <div class='col-md-6 pl-none'>
                                 <div class='form-group'>
                                     <input type='text' class='form-control responseOptionClass'
@@ -239,7 +238,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ans-opts row col-md-12 p-none" id="1">
+                        <div class="ans-opts col-md-12 p-none" id="1">
                             <div class='col-md-6 pl-none'>
                                 <div class='form-group'>
                                     <input type='text' class='form-control'
@@ -353,7 +352,7 @@
                     Choose structure of the correct answer <span class="requiredStar">*</span>
                 </div>
                 <div class="form-group">
-					<span class="radio radio-info radio-inline p-45 pl-1"> <input
+					<span class="radio radio-info radio-inline p-45"> <input
                             type="radio" id="inlineRadio1" value="false"
                             name="structureOfCorrectAns"
                         ${!comprehensionQuestionBo.structureOfCorrectAns ? 'checked' : ''}>
@@ -507,7 +506,7 @@ var idleTime = 0;
 
   function addAns() {
     ansCount = ansCount + 1;
-    var newAns = "<div class='ans-opts row col-md-12 p-none' id='" + ansCount
+    var newAns = "<div class='ans-opts col-md-12 p-none' id='" + ansCount
         + "'><div class='col-md-6 pl-none'>"
         + "<div class='form-group'>"
         + "<input type='text' class='form-control' required name='responseList["

@@ -3484,7 +3484,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                             + " and Q.active=1")
                     .setInteger("newOrderNumber", newOrderNumber)
                     .setInteger("stepId", questionnairesStepsBo.getStepId());
-            query.executeUpdate();
             message = FdahpStudyDesignerConstants.SUCCESS;
           }
         }
@@ -3494,7 +3493,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           String searchQuery =
               "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId "
                   + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
-          questionnaireStepList = session.createQuery(searchQuery).setInteger("questionnaireId", questionnaireId).list();
+          questionnaireStepList = session.createQuery(searchQuery).list();
           if (null != questionnaireStepList && !questionnaireStepList.isEmpty()) {
             if (questionnaireStepList.size() == 1) {
               questionnaireStepList.get(0).setDestinationStep(0);

@@ -155,11 +155,6 @@
       color:#007cba !important;
       font-size:15px;
        }
-
-.close{
-background:none;
-}
-
     </style>
 </head>
 
@@ -264,1406 +259,1390 @@ background:none;
     <!--  Start body tab section -->
 
     <div class="right-content-body pt-none pl-none" id="rootContainer">
-
-    <ul class="nav nav-tabs customTabs" id="tabContainer" role="tablist">
-      <li class="nav-item contentqusClass" role="presentation">
-        <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#contentTab" type="button" role="tab" aria-controls="content" aria-selected="true">Content</button>
-      </li>
-      <li class="nav-item scheduleQusClass" role="presentation">
-        <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#schedule" type="button" role="tab" aria-controls="schedule" aria-selected="false">Schedule</button>
-      </li>
-
-    </ul>
-    <div class="tab-content pl-xlg pr-xlg mt-lg">
-      <div class="tab-pane fade show active" id="contentTab" role="tabpanel" aria-labelledby="home-tab">
-
-        <form:form
-                              action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
-                              name="contentFormId" id="contentFormId" method="post"
-                              data-toggle="validator" role="form">
-                          <input type="hidden" name="${csrf.parameterName}"
-                                 value="${csrf.token}">
-                          <input type="hidden" id="currentLanguage" name="language"
-                                 value="${currLanguage}">
-                          <input type="hidden" name="type" id="type" value="content">
-                          <input type="hidden" name="id" id="id"
-                                 value="${questionnaireBo.id}">
-                          <input type="hidden" id="mlTitle" value="${questionnaireLangBo.title}">
-                          <input type="hidden" name="status" id="status" value="true">
-                          <input type="hidden" name="questionnaireId" id="questionnaireId"
-                                 value="${questionnaireBo.id}">
-                          <input type="hidden" name="studyId" id="studyId"
-                                 value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-                          <input type="hidden" id="customStudyId"
-                                 value="${studyBo.customStudyId}">
-                          <input type="hidden" name="instructionId" id="instructionId"
-                                 value="">
-                          <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
-                          <input type="hidden" id="customStudyName"
-                                 value="${fn:escapeXml(studyBo.name)}"/>
-                          <input type="hidden" name="formId" id="formId" value="">
-                          <input type="hidden" name="questionId" id="questionId" value="">
-                           <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-                          <!-- <input type="hidden" id="actionType" name="actionType"> -->
-                          <input type="hidden" id="actionTypeForQuestionPage"
-                                 name="actionTypeForQuestionPage">
-
-                          <select id="questionLangBOList" style="display: none">
-                              <c:forEach items="${questionLangBOList}" var="questionLang">
-                                  <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
-                                          formId="${questionLang.formId}" value="${questionLang.question}">${questionLang.question}</option>
-                              </c:forEach>
-                          </select>
-
-                          <select id="formLangList" style="display: none">
-                              <c:forEach items="${formLangList}" var="formLang">
-                                  <option id='${formLang.formLangPK.formId}' status="${formLang.status}"></option>
-                              </c:forEach>
-                          </select>
-
-                          <select id="instructionsLangBOList" style="display: none">
-                              <c:forEach items="${instructionsLangBOList}" var="instructionLang">
-                                  <option id='${instructionLang.instructionLangPK.id}' status="${instructionLang.status}"
-                                          value="${instructionLang.instructionTitle}">${instructionLang.instructionTitle}</option>
-                              </c:forEach>
-                          </select>
-
-                          <div class="gray-xs-f mb-xs">
-                              Activity Short Title or Key (1 to 50 characters)<span
-                                  class="requiredStar">*</span><span
-                                  class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                  title="A human readable step identifier and must be unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span>
-                          </div>
-                          <div class="form-group col-md-5 p-none">
-                              <input autofocus="autofocus" type="text" custAttType="cust"
-                                     class="form-control" name="shortTitle" id="shortTitleId"
-                                     value="${fn:escapeXml(questionnaireBo.shortTitle)}"
-                                      <c:if test="${not empty questionnaireBo.shortTitleDuplicate && (questionnaireBo.shortTitleDuplicate gt 0)}"> disabled</c:if>
-                                     required="required" maxlength="50"/>
-                              <div class="help-block with-errors red-txt"></div>
-                              <input type="hidden" id="preShortTitleId"
-                                     value="${fn:escapeXml(questionnaireBo.shortTitle)}"/>
-                              <!-- ///^[ A-Za-z0-9*()_+|:.-]*$/ -->
-                          </div>
-                          <div class="clearfix"></div>
-                          <div class="gray-xs-f mb-xs">
-                              Title (1 to 300 characters)<span class="requiredStar">*</span>
-                          </div>
-                          <div class="form-group">
-                              <input type="text" class="form-control" name="title" id="titleId"
-                                     value="${fn:escapeXml(questionnaireBo.title)}" maxlength="300"
-                                     required="required"/>
-                              <div class="help-block with-errors red-txt"></div>
-                          </div>
-                          <div class="mt-lg" id="stepContainer">
-                              <div
-                                      class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
-                                      onclick="getQuestionnaireStep('Instruction');">Add
-                                  Instruction Step
-                              </div>
-                              <div
-                                      class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
-                                      onclick="getQuestionnaireStep('Question');">Add Question
-                                  Step
-                              </div>
-                              <div
-                                      class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
-                                      onclick="getQuestionnaireStep('Form');">Add Form Step
-                              </div>
-                              <span class="sprites_v3 info" id="infoIconId"></span>
-                              <div class="pull-right mt-xs">
-      							<span class="checkbox checkbox-inline"> <input
-                                          type="checkbox" id="branchingId" value="true" name="branching"
-                                      ${questionnaireBo.branching ? 'checked':''}> <label
-                                          for="branchingId"> Apply Branching </label>
-      							</span>
-                              </div>
-                          </div>
-                      </form:form>
-                      <div class="mt-md">
-                          <table id="content" class="display" cellspacing="0" width="100%"
-                                 style="border-color: #ffffff;">
-                              <thead style="display: none;"></thead>
-                              <tbody>
-                              <c:forEach items="${qTreeMap}" var="entry">
-                                  <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}" status="${entry.value.status}">
-                                      <c:choose>
-                                          <c:when test="${entry.value.stepType eq 'Instruction'}">
-                                              <td><span id="${entry.key}" data="round blue-round"
-                                                        class="round blue-round">${entry.key}</span></td>
-                                          </c:when>
-                                          <c:when test="${entry.value.stepType eq 'Question'}">
-                                              <td><span id="${entry.key}" data="round green-round"
-                                                        class="round green-round">${entry.key}</span></td>
-                                          </c:when>
-                                          <c:otherwise>
-                                              <td><span id="${entry.key}" data="round teal-round"
-                                                        class="round teal-round">${entry.key}</span></td>
-                                              <%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
-      								    <div>&nbsp;</div>
-      							 </c:forEach> --%>
-                                          </c:otherwise>
-                                      </c:choose>
-                                      <td class="title"><c:choose>
-                                          <c:when test="${entry.value.stepType eq 'Form'}">
-                                              <c:forEach items="${entry.value.fromMap}" var="subentry">
-                                                  <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
-                                                       title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
-                                                  <div class="clearfix"></div>
-                                              </c:forEach>
-                                          </c:when>
-                                          <c:otherwise>
-                                              <div class="dis-ellipsis"
-                                                   title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
-                                          </c:otherwise>
-                                      </c:choose></td>
-                                      <td>
-                                          <div class="destinationStep questionnaireStepClass"
-                                               style="display: none;">${entry.value.destinationText}</div>
-                                      </td>
-                                      <td>
-                                          <div>
-                                              <div class="text-right pos-relative">
-                                                  <c:if test="${entry.value.stepType ne 'Instruction'}">
-                                                      <c:choose>
-                                                          <c:when
-                                                                  test="${entry.value.responseTypeText eq 'Double'  && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
-                                                              <span class="sprites_v3 status-blue mr-md"></span>
-                                                          </c:when>
-                                                          <c:when
-                                                                  test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
-                                                              <span class="sprites_v3 status-gray mr-md"></span>
-                                                          </c:when>
-                                                          <c:when
-                                                                  test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
-                                                              <span class="sprites_v3 calender-blue mr-md"></span>
-                                                          </c:when>
-                                                          <c:when
-                                                                  test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
-                                                              <span class="sprites_v3 calender-gray mr-md"></span>
-                                                          </c:when>
-                                                      </c:choose>
-                                                  </c:if>
-
-                                                  <span class="ellipse"
-                                                        onmouseenter="ellipseHover(this);"></span>
-                                                  <div class="ellipse-hover-icon"
-                                                       onmouseleave="ellipseUnHover(this);">
-      													<span class="sprites_icon preview-g mr-sm"
-                                                                onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
-                                                      <span
-                                                              class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
-                                                              <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
-                                                      <span
-                                                              class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
-                                                              <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
-                                                  </div>
-                                              </div>
-                                              <c:if test="${entry.value.stepType eq 'Form'}">
-                                                  <c:if test="${fn:length(entry.value.fromMap) gt 0}">
-                                                      <c:forEach begin="0"
-                                                                 end="${fn:length(entry.value.fromMap)-1}">
-                                                          <div>&nbsp;</div>
-                                                      </c:forEach>
-                                                  </c:if>
-                                              </c:if>
-                                          </div>
-                                      </td>
-                                  </tr>
-                              </c:forEach>
-                              </tbody>
-                          </table>
-                      </div>
-
-
-      </div>
-      <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="profile-tab">
-         <div class="gray-xs-f mb-sm">Questionnaire Schedule Type</div>
-                    <div class="pb-lg ">
-      					<span class="radio radio-info radio-inline p-40 pl-1"> <input
-                                  type="radio" id="schedule1" class="typeofschedule"
-                                  scheduletype="Regular" value="Regular" name="scheduleType"
-                              ${empty questionnaireBo.scheduleType  || questionnaireBo.scheduleType=='Regular' ?'checked':''}
-                              ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                              <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
-      						<label for="schedule1">Regular</label>
-      					</span> <span id="anchorspanId" class="tool-tip" data-toggle="tooltip"
-                                        data-html="true" data-placement="top"
-                              <c:if test="${isAnchorQuestionnaire}">
-                                  title="This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it."
-                              </c:if>>
-      						<span class="radio radio-inline p-40"> <input type="radio"
-                                                                            id="schedule2"
-                                                                            class="typeofschedule"
-                                                                            scheduletype="AnchorDate"
-                                                                            value="AnchorDate"
-                                                                            name="scheduleType"
-                              ${isAnchorQuestionnaire?'disabled':''}
-                              ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''}
-                              ${questionnaireBo.shortTitleDuplicate > 0?'disabled' : ''}
-                                                                            <c:if test="${empty anchorTypeList}">disabled</c:if>> <label
-                                      for="schedule2">Anchor-Date-based</label>
-      					</span>
-      					</span>
-                      </div>
-                       <!-- Anchor date type -->
-                                      <form:form action="" name="anchorFormId" id="anchorFormId"
-                                                 method="post" role="form" data-toggle="validator">
-                                          <div class="anchortypeclass" style="display: none;">
-                                              <c:if test="${fn:length(anchorTypeList) gt 0}">
-                                                  <div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
-                                                  <div class="clearfix"></div>
-                                                  <div class="col-md-5 col-lg-5 p-none">
-                                                      <div class="form-group">
-                                                          <select id="anchorDateId"
-                                                                  class="selectpicker ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                  required name="anchorDateId">
-                                                              <option value=''>Select</option>
-                                                              <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-                                                                  <option data-id="${anchorTypeInfo.participantProperty}"
-                                                                          value="${anchorTypeInfo.id}"
-                                                                      ${questionnaireBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
-                                                              </c:forEach>
-                                                          </select>
-                                                          <div class="help-block with-errors red-txt"></div>
-                                                      </div>
-                                                  </div>
-                                                  <div class="clearfix"></div>
-                                              </c:if>
-                                          </div>
-                                      </form:form>
-                                      <!-- Ancor date type -->
-                                      <div class="gray-xs-f mb-sm">Questionnaire Scheduling Options</div>
-                                      <div class="pb-lg b-bor">
-                      					<span class="radio radio-info radio-inline p-40 pl-1"> <input
-                                                  type="radio" id="inlineRadio1" class="schedule"
-                                                  frequencytype="oneTime" value="One time" name="frequency"
-                                          ${empty questionnaireBo.frequency  || questionnaireBo.frequency=='One time' ?'checked':''}
-                                          ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
-                      						<label for="inlineRadio1">One Time</label>
-                      					</span> <span class="radio radio-inline p-40"> <input type="radio"
-                                                                                                id="inlineRadio2"
-                                                                                                class="schedule"
-                                                                                                frequencytype="daily"
-                                                                                                value="Daily"
-                                                                                                name="frequency"
-                                      ${questionnaireBo.frequency=='Daily' ?'checked':''}
-                                      ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                                      ${isAnchorQuestionnaire?'disabled':''}> <label
-                                              for="inlineRadio2">Daily</label>
-                      					</span> <span class="radio radio-inline p-40"> <input type="radio"
-                                                                                                id="inlineRadio3"
-                                                                                                class="schedule"
-                                                                                                frequencytype="week"
-                                                                                                value="Weekly"
-                                                                                                name="frequency"
-                                      ${questionnaireBo.frequency=='Weekly' ?'checked':''}
-                                      ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                                      ${isAnchorQuestionnaire?'disabled':''}> <label
-                                              for="inlineRadio3">Weekly</label>
-                      					</span> <span class="radio radio-inline p-40"> <input type="radio"
-                                                                                                id="inlineRadio4"
-                                                                                                class="schedule"
-                                                                                                frequencytype="month"
-                                                                                                value="Monthly"
-                                                                                                name="frequency"
-                                      ${questionnaireBo.frequency=='Monthly' ?'checked':''}
-                                      ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                                      ${isAnchorQuestionnaire?'disabled':''}> <label
-                                              for="inlineRadio4">Monthly</label>
-                      					</span> <span class="radio radio-inline p-40"> <input type="radio"
-                                                                                                id="inlineRadio5"
-                                                                                                class="schedule"
-                                                                                                frequencytype="manually"
-                                                                                                value="Manually Schedule"
-                                                                                                name="frequency"
-                                      ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''}
-                                      ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                                      ${isAnchorQuestionnaire?'disabled':''}> <label
-                                              for="inlineRadio5">Custom Schedule</label>
-                      					</span> <span class="radio radio-inline p-40"> <input type="radio"
-                                                                                                id="inlineRadio6"
-                                                                                                class="schedule"
-                                                                                                frequencytype="ongoing"
-                                                                                                value="Ongoing"
-                                                                                                name="frequency"
-                                      ${questionnaireBo.frequency=='Ongoing' ?'checked':''}
-                                      ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
-                                      ${isAnchorQuestionnaire?'disabled':''}> <label
-                                              for="inlineRadio6">Ongoing</label>
-                      					</span>
-                                      </div>
-                                      <!-- One Time Section-->
-                                      <form:form
-                                              action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
-                                              name="oneTimeFormId" id="oneTimeFormId" method="post" role="form"
-                                              data-toggle="validator">
-                                          <input type="hidden" name="frequency" id="frequencyId"
-                                                 value="${questionnaireBo.frequency}">
-                                          <c:choose>
-                                              <c:when test="${questionnaireBo.frequency eq 'Daily'}">
-                                                  <c:if
-                                                          test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 1}">
-                                                      <input type="hidden" name="previousFrequency"
-                                                             id="previousFrequency" value="${questionnaireBo.frequency}">
-                                                  </c:if>
-                                                  <c:if
-                                                          test="${empty questionnaireBo.questionnairesFrequenciesList || fn:length(questionnaireBo.questionnairesFrequenciesList) le 1}">
-                                                      <input type="hidden" name="previousFrequency"
-                                                             id="previousFrequency" value="One time">
-                                                  </c:if>
-                                              </c:when>
-                                              <c:otherwise>
-                                                  <input type="hidden" name="previousFrequency"
-                                                         id="previousFrequency" value="${questionnaireBo.frequency}">
-                                              </c:otherwise>
-                                          </c:choose>
-                                          <input type="hidden" name="id" id="id"
-                                                 value="${questionnaireBo.id}">
-                                          <input type="hidden" name="type" id="type" value="schedule">
-                                          <input type="hidden" name="studyId" id="studyId"
-                                                 value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-                                          <div class="oneTime all mt-lg">
-                                              <div class="gray-xs-f mb-sm">
-                                                  Date/Time of launch (pick one) <span class="requiredStar">*</span>
-                                              </div>
-                                              <div class="mt-sm">
-                      							<span class="checkbox checkbox-inline pl-1"> <input
-                                                          type="hidden" name="questionnairesFrequenciesBo.id"
-                                                          id="oneTimeFreId"
-                                                          value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-                      								<input type="checkbox" id="isLaunchStudy"
-                                                             name="questionnairesFrequenciesBo.isLaunchStudy" value="true"
-                                                          ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''}
-                                                             required ${(questionnaireBo.shortTitleDuplicate>
-                                                              0)?'disabled' : ''}> <label for="isLaunchStudy"> Launch
-                      									with study</label>
-                      							</span>
-                                                  <div class="onetimeanchorClass mt-sm" style="display: none">
-                                                      <!-- Anchordate start -->
-                                                      <div class="opacity06">OR</div>
-                                                      <!-- Anchordate start-->
-                                                      <div class="mt-none resetDate">
-                                                          <div>
-                                                              <span class="pr-md">Anchor Date</span> <span> <select
-                                                                  class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                  name="questionnairesFrequenciesBo.xDaysSign"
-                                                                  id="onetimeXSign">
-                      												<option value="0"
-                                                                          ${studyBo.enrollmentdateAsAnchordate?'selected':''}
-                                                                          ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
-                      												<option value="1"
-                                                                          ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-                      										</select>
-                      										</span>
-                                                              <!--  selectpicker -->
-                                                              <span
-                                                                      class="form-group m-none dis-inline vertical-align-middle">
-                      											<c:choose>
-                                                                      <c:when
-                                                                              test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}">
-                      													<input id="onetimexdaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                 placeholder="X"
-                                                                                 name="questionnairesFrequenciesBo.timePeriodFromDays"
-                                                                                 value=""
-                                                                                  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
-                                                                                 maxlength="3" pattern="[0-9]+"
-                                                                                 data-pattern-error="Please enter valid number."/>
-                                                                      </c:when>
-                                                                      <c:otherwise>
-                      													<input id="onetimexdaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                 placeholder="X"
-                                                                                 name="questionnairesFrequenciesBo.timePeriodFromDays"
-                                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
-                                                                                  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
-                                                                                 maxlength="3" pattern="[0-9]+"
-                                                                                 data-pattern-error="Please enter valid number."/>
-                                                                      </c:otherwise>
-                                                                  </c:choose> <span
-                                                                      class="help-block with-errors red-txt"></span>
-                      										</span> <span class="mb-sm pr-md"> <span
-                                                                  class="light-txt opacity06"> days</span>
-                      										</span> <span
-                                                                  class="form-group m-none dis-inline vertical-align-middle pr-md">
-                      											<input id="selectTime" type="text"
-                                                                         class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                         name="questionnairesFrequenciesBo.frequencyTime"
-                                                                         value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"
-                                                                          <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>
-                                                                         placeholder="Select Time"/> <span
-                                                                  class='help-block with-errors red-txt'></span>
-                      										</span>
-                                                          </div>
-                                                      </div>
-                                                      <!-- Anchordate End -->
-                                                  </div>
-
-
-                                                  <div class="mt-md form-group regularClass">
-                      								<span
-                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                      									<input id="chooseDate" type="text"
-                                                                 class="mt-sm form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                 name="questionnairesFrequenciesBo.frequencyDate"
-                                                                 placeholder="Choose Date"
-                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"
-                                                                 required
-                                                                  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
-                      									<span class='help-block with-errors red-txt'></span>
-                      								</span> <span
-                                                          class="form-group m-none dis-inline vertical-align-middle pr-md">
-                      									<input id="selectTime1" type="text"
-                                                                 class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                 name="questionnairesFrequenciesBo.frequencyTime"
-                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"
-                                                                 required
-                                                                  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>
-                                                                 placeholder="Select Time"/> <span
-                                                          class='help-block with-errors red-txt'></span>
-                      								</span>
-                                                  </div>
-                                              </div>
-                                              <!-- <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div> -->
-                                              <div class="gray-xs-f mb-sm mt-md">
-                                                  Lifetime of the run/questionnaire (choose between Study Lifetime
-                                                  and custom end date)<span class="requiredStar">*</span>
-                                              </div>
-                                              <div class="mt-sm">
-                      							<span class="checkbox checkbox-inline pl-1"> <input
-                                                          type="checkbox" id="isStudyLifeTime"
-                                                          name="questionnairesFrequenciesBo.isStudyLifeTime" value="true"
-                                                      ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''}
-                                                          required ${(questionnaireBo.shortTitleDuplicate>
-                                                          0)?'disabled' : ''}> <label for="isStudyLifeTime"> Study
-                      									Lifetime </label>
-                      							</span>
-                                                  <div class="mt-md form-group regularClass">
-                      								<span
-                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                      									<c:choose>
-                                                              <c:when
-                                                                      test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}">
-                      											<input id="chooseEndDate" type="text"
-                                                                         class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                         name="studyLifetimeEnd"
-                                                                         placeholder="Choose End Date"
-                                                                         required
-                                                                          <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
-                                                                         value=""/>
-                                                              </c:when>
-                                                              <c:otherwise>
-                      											<input id="chooseEndDate" type="text"
-                                                                         class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                         name="studyLifetimeEnd"
-                                                                         placeholder="Choose End Date"
-                                                                         required
-                                                                          <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
-                                                                         value="${questionnaireBo.studyLifetimeEnd}"/>
-                                                              </c:otherwise>
-                                                          </c:choose> <span class='help-block with-errors red-txt'></span>
-                      								</span>
-                                                  </div>
-                                                  <div class="onetimeanchorClass mt-sm" style="display: none">
-                                                      <div class="opacity06">OR</div>
-                                                      <!-- Anchordate start-->
-                                                      <div class="mt-none resetDate">
-                                                          <div>
-                                                              <span class="pr-md">Anchor Date</span> <span> <select
-                                                                  class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                  title="Select"
-                                                                  name="questionnairesFrequenciesBo.yDaysSign"
-                                                                  id="onetimeYSign">
-                      												<option value="0"
-                                                                          ${not questionnaireBo.questionnairesFrequenciesBo.yDaysSign ?'selected':''}>+</option>
-                      												<option value="1"
-                                                                          ${questionnaireBo.questionnairesFrequenciesBo.yDaysSign ?'selected':''}>-</option>
-                      										</select>
-                      										</span>
-                                                              <!--  selectpicker -->
-                                                              <span
-                                                                      class="form-group m-none dis-inline vertical-align-middle">
-                      											<c:choose>
-                                                                      <c:when
-                                                                              test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}">
-                      													<input id="onetimeydaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                 placeholder="Y"
-                                                                                 name="questionnairesFrequenciesBo.timePeriodToDays"
-                                                                                 value=""
-                                                                                  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
-                                                                                 maxlength="3" pattern="[0-9]+"
-                                                                                 data-pattern-error="Please enter valid number."/>
-                                                                      </c:when>
-                                                                      <c:otherwise>
-                      													<input id="onetimeydaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                 placeholder="Y"
-                                                                                 name="questionnairesFrequenciesBo.timePeriodToDays"
-                                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodToDays}"
-                                                                                  <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
-                                                                                 maxlength="3" pattern="[0-9]+"
-                                                                                 data-pattern-error="Please enter valid number."/>
-                                                                      </c:otherwise>
-                                                                  </c:choose> <span
-                                                                      class="help-block with-errors red-txt"></span>
-                      										</span> <span class="mb-sm pr-md"> <span
-                                                                  class="light-txt opacity06"> days</span>
-                      										</span>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                                  <!-- Anchordate End -->
-                                              </div>
-                                          </div>
-                                      </form:form>
-                                       <!-- Daily Section-->
-                                                      <form:form
-                                                              action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
-                                                              name="dailyFormId" id="dailyFormId" method="post" role="form"
-                                                              data-toggle="validator">
-                                                          <input type="hidden" name="frequency" id="dailyFrequencyId"
-                                                                 value="${questionnaireBo.frequency}">
-                                                          <input type="hidden" name="previousFrequency"
-                                                                 id="previousFrequency" value="${questionnaireBo.frequency}">
-                                                          <input type="hidden" name="id" id="id"
-                                                                 value="${questionnaireBo.id}">
-                                                          <input type="hidden" name="studyId" id="studyId"
-                                                                 value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-                                                          <input type="hidden" name="type" id="type" value="schedule">
-                                                          <div class="daily all mt-lg dis-none">
-                                                              <div class="gray-xs-f mb-sm">
-                                                                  Time(s) of the day for daily occurrence <span
-                                                                      class="requiredStar">*</span>
-                                                              </div>
-                                                              <div class="dailyContainer">
-                                                                  <c:if
-                                                                          test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
-                                                                      <div class="time-opts mt-md dailyTimeDiv" id="0">
-                                      									<span
-                                                                                  class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      										<input id="time0" type="text"
-                                                                                     name="questionnairesFrequenciesList[0].frequencyTime"
-                                                                                     required
-                                                                                     class="form-control clock dailyClock"
-                                                                                     placeholder="Time"
-                                                                                     onclick='timep(this.id);'/> <span
-                                                                                  class='help-block with-errors red-txt'></span>
-                                      									</span> <span class="addBtnDis addbtn mr-sm align-span-center"
-                                                                                        onclick='addTime();'>+</span>
-                                                                          <!-- <span
-                                      										class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
-                                      										onclick='removeTime(this);'></span> -->
-                                                                      </div>
-                                                                  </c:if>
-                                                                  <c:if
-                                                                          test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0}">
-                                                                      <c:forEach
-                                                                              items="${questionnaireBo.questionnairesFrequenciesList}"
-                                                                              var="questionnairesFrequencies" varStatus="frequeincesVar">
-                                                                          <div class="time-opts mt-md dailyTimeDiv"
-                                                                               id="${frequeincesVar.index}">
-                                                                              <input type="hidden"
-                                                                                     name="questionnairesFrequenciesList[${frequeincesVar.index}].id"
-                                                                                     value="${questionnairesFrequencies.id}"> <span
-                                                                                  class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      											<input id="time${frequeincesVar.index}" type="text"
-                                                                                         name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime"
-                                                                                         required
-                                                                                         class="form-control clock dailyClock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                         placeholder="Time" onclick='timep(this.id);'
-                                                                                         value="${questionnairesFrequencies.frequencyTime}"
-                                                                                      ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} />
-                                      											<span class='help-block with-errors red-txt'></span>
-                                      										</span> <span
-                                                                                  class="addBtnDis addbtn mr-sm align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                  onclick='addTime();'>+</span> <span
-                                                                                  class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                  onclick='removeTime(this);'></span>
-                                                                          </div>
-                                                                      </c:forEach>
-                                                                  </c:if>
-                                                              </div>
-                                                              <div class="mt-md">
-                                                                  <div class="dailyStartCls col-md-3 pl-none">
-                                      								<span
-                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      									<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                  class="requiredStar">*</span></span><br/> <input
-                                                                              id="startDate"
-                                                                              type="text"
-                                                                              class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                              placeholder="Choose Date" name="studyLifetimeStart"
-                                                                              value="${questionnaireBo.studyLifetimeStart}"/> <span
-                                                                              class='help-block with-errors red-txt'></span>
-                                      								</span>
-                                                                  </div>
-                                                                  <!-- Anchordate start-->
-                                                                  <div class="dailyanchorDiv col-md-4 pl-none"
-                                                                       style="display: none;">
-                                                                      <div class=" resetDate">
-                                                                          <div>
-                                      										<span
-                                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      											<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                          class="requiredStar">*</span></span><br/> <span
-                                                                                      class="pr-md">Anchor
-                                      												Date</span> <span> <select
-                                                                                      class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                      title="Select"
-                                                                                      name="questionnairesFrequenciesList[0].xDaysSign"
-                                                                                      id="dailyXSign">
-                                      													<option value="0"
-                                                                                              ${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0) && not questionnaireBo.questionnairesFrequenciesList[0].xDaysSign ?'selected':''}>+</option>
-                                      													<option value="1"
-                                                                                              ${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0) && questionnaireBo.questionnairesFrequenciesList[0].xDaysSign ?'selected':''}>-</option>
-                                      											</select>
-                                      										</span> <span
-                                                                                      class="form-group m-none dis-inline vertical-align-middle">
-                                      												<input id="dailyxdaysId" type="text"
-                                                                                             class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                             placeholder="X"
-                                                                                             name="questionnairesFrequenciesList[0].timePeriodFromDays"
-                                                                                             value="${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0)?questionnaireBo.questionnairesFrequenciesList[0].timePeriodFromDays:''}"
-                                                                                             maxlength="3" pattern="[0-9]+"
-                                                                                             data-pattern-error="Please enter valid number."/> <span
-                                                                                      class="help-block with-errors red-txt"></span>
-                                      										</span> <span class="mb-sm pr-md"> <span
-                                                                                      class="light-txt opacity06"> days</span>
-                                      										</span>
-                                      										</span>
-                                                                          </div>
-                                                                      </div>
-                                                                  </div>
-                                                                  <!-- Anchordate End -->
-                                                                  <div class="col-md-6 pr-none">
-                                      								<span
-                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      									<span class="gray-xs-f">No. of times to repeat the
-                                      										questionnaire <span class="requiredStar">*</span>
-                                      								</span><br/> <input id="days" type="text"
-                                                                                          class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                          name="repeatQuestionnaire"
-                                                                                          placeholder="No of Times" required
-                                                                                          value="${questionnaireBo.repeatQuestionnaire}"
-                                                                                          onkeypress="return isNumber(event, this)"
-                                                                                          pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-                                                                                          data-pattern-error="Please enter valid number."
-                                                                                          maxlength="3"/>
-                                      									<span class='help-block with-errors red-txt'></span>
-                                      								</span>
-                                                                  </div>
-                                                                  <div class="clearfix"></div>
-                                                              </div>
-                                                              <div class="mt-md">
-                                                                  <div class="gray-xs-f mb-xs">End Date</div>
-                                                                  <div class="black-xs-f"
-                                                                       id="endDateId">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
-                                                                  <input type="hidden" name="studyLifetimeEnd"
-                                                                         id="studyDailyLifetimeEnd"
-                                                                         value="${questionnaireBo.studyLifetimeEnd}">
-                                                              </div>
-                                                              <div class="mt-lg">
-                                                                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
-                                                                  <div class="black-xs-f">Until the next run comes up</div>
-                                                              </div>
-                                                              <div class="mt-lg">
-                                                                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire
-                                                                  </div>
-                                                                  <div class="black-xs-f"
-                                                                       id="lifeTimeId">${questionnaireBo.studyLifetimeStart}
-                                                                      - ${questionnaireBo.studyLifetimeEnd}</div>
-                                                              </div>
-                                                          </div>
-                                                      </form:form>
-                                                      <!-- Weekly Section-->
-                                                      <form:form
-                                                              action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
-                                                              name="weeklyFormId" id="weeklyFormId" method="post" role="form"
-                                                              data-toggle="validator">
-                                                          <input type="hidden" name="frequency" id="weeklyfrequencyId">
-                                                          <input type="hidden" name="previousFrequency"
-                                                                 id="previousFrequency" value="${questionnaireBo.frequency}">
-                                                          <input type="hidden" name="id" id="id"
-                                                                 value="${questionnaireBo.id}">
-                                                          <input type="hidden" name="studyId" id="studyId"
-                                                                 value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-                                                          <input type="hidden" name="questionnairesFrequenciesBo.id"
-                                                                 id="weeklyFreId"
-                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-                                                          <input type="hidden" name="type" id="type" value="schedule">
-                                                          <div class="week all mt-lg dis-none">
-                                                              <div id="weekDaysId" class="weeklyCls">
-                                      							<span class="gray-xs-f">Day/Time (of the week) <span
-                                                                          class="requiredStar">*</span><br/> <span
-                                                                          class=" form-group m-none dis-inline vertical-align-middle pr-md">
-                                      									<span class=""> <select id="startDateWeekly"
-                                                                                                  class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
-                                                                                                  name="dayOfTheWeek" required>
-                                      											<option value=''>Select</option>
-                                      											<option value='Sunday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
-                                      											<option value='Monday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
-                                      											<option value='Tuesday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Tuesday' ?'selected':''}>Tuesday</option>
-                                      											<option value='Wednesday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Wednesday' ?'selected':''}>Wednesday</option>
-                                      											<option value='Thursday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
-                                      											<option value='Friday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday
-                                      											</option>
-                                      											<option value='Saturday'
-                                                                                      ${questionnaireBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
-                                      									</select> <span class='help-block with-errors red-txt'></span>
-                                      								</span>
-                                      							</span>
-                                      							</span> <span
-                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      								<!-- <span class="gray-xs-f">&nbsp;</span><br/> --> <input
-                                                                      id="selectWeeklyTime" type="text"
-                                                                      class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
-                                                                      required onclick="timep(this.id)" placeholder="Time"
-                                                                      name="questionnairesFrequenciesBo.frequencyTime"
-                                                                      value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
-                                      								<span class='help-block with-errors red-txt'></span>
-                                      							</span>
-                                                              </div>
-                                                              <div class="mt-md">
-                                                                  <div class="weeklyStartCls col-md-3 pl-none">
-                                      								<span
-                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      									<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                  class="requiredStar">*</span></span><br/> <input
-                                                                              id="startWeeklyDate" type="text"
-                                                                              class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                              required name="studyLifetimeStart" placeholder="Choose Date"
-                                                                              value="${questionnaireBo.studyLifetimeStart}"
-                                                                              readonly="readonly"/> <span
-                                                                              class='help-block with-errors red-txt'></span>
-                                      								</span>
-                                                                  </div>
-                                                                  <!-- Anchordate start-->
-                                                                  <div class="weeklyanchorDiv col-md-12 pl-none"
-                                                                       style="display: none;">
-                                                                      <div class=" resetDate dis_inlinetop p-none">
-                                                                          <div>
-                                      										<span
-                                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      											<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                          class="requiredStar">*</span></span><br/> <span
-                                                                                      class="pr-md">Anchor
-                                      												Date</span> <span> <select
-                                                                                      class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                      title="Select"
-                                                                                      name="questionnairesFrequenciesBo.xDaysSign"
-                                                                                      id="weeklyXSign">
-                                      													<option value="0"
-                                                                                              ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
-                                      													<option value="1"
-                                                                                              ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-                                      											</select>
-                                      										</span> <span
-                                                                                      class="form-group m-none dis-inline vertical-align-middle">
-                                      												<input id="weeklyxdaysId" type="text"
-                                                                                             class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                             placeholder="X"
-                                                                                             name="questionnairesFrequenciesBo.timePeriodFromDays"
-                                                                                             value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
-                                                                                             maxlength="3" pattern="[0-9]+"
-                                                                                             data-pattern-error="Please enter valid number."/> <span
-                                                                                      class="help-block with-errors red-txt"></span>
-                                      										</span> <span class="mb-sm pr-md"> <span
-                                                                                      class="light-txt opacity06"> days</span>
-                                      										</span>
-                                      										</span>
-                                                                          </div>
-                                                                      </div>
-                                                                      <div class="dis_inlinetop p-none">
-                                                                          <span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
-                                                                          <span
-                                                                                  class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      										<input id="selectWeeklyTimeAnchor" type="text"
-                                                                                     class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                     required onclick="timep(this.id)" placeholder="Time"
-                                                                                     name="questionnairesFrequenciesBo.frequencyTime"
-                                                                                     value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
-                                      										<span class='help-block with-errors red-txt'></span>
-                                      									</span>
-                                                                      </div>
-
-                                                                      <div class="dis_inlinetop">
-                                      									<span
-                                                                                  class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      										<span class="gray-xs-f">No. of times to repeat the
-                                      											questionnaire <span class="requiredStar">*</span>
-                                      									</span><br/> <input id="weeksAnchor" type="text"
-                                                                                              class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                              name="repeatQuestionnaire"
-                                                                                              placeholder="No of Times"
-                                                                                              value="${questionnaireBo.repeatQuestionnaire}"
-                                                                                              required
-                                                                                              onkeypress="return isNumber(event, this)"
-                                                                                              pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-                                                                                              data-pattern-error="Please enter valid number."
-                                                                                              maxlength="3"/>
-                                      										<span class='help-block with-errors red-txt'></span>
-                                      									</span>
-                                                                      </div>
-
-                                                                  </div>
-
-                                                                  <!-- Anchordate End -->
-                                                                  <div class="col-md-5 p-none weeklyRegular">
-                                      								<span
-                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                      									<span class="gray-xs-f">No. of times to repeat the
-                                      										questionnaire <span class="requiredStar">*</span>
-                                      								</span><br/> <input id="weeks" type="text"
-                                                                                          class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                          name="repeatQuestionnaire"
-                                                                                          placeholder="No of Times"
-                                                                                          value="${questionnaireBo.repeatQuestionnaire}"
-                                                                                          required
-                                                                                          onkeypress="return isNumber(event, this)"
-                                                                                          pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-                                                                                          data-pattern-error="Please enter valid number."
-                                                                                          maxlength="3"/>
-                                      									<span class='help-block with-errors red-txt'></span>
-                                      								</span>
-                                                                  </div>
-                                                                  <div class="clearfix"></div>
-                                                              </div>
-                                                              <div class="mt-md">
-                                                                  <div class="gray-xs-f mb-xs">End Date</div>
-                                                                  <div class="black-xs-f"
-                                                                       id="weekEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
-                                                                  <input type="hidden" name="studyLifetimeEnd"
-                                                                         id="studyWeeklyLifetimeEnd"
-                                                                         value="${questionnaireBo.studyLifetimeEnd}">
-                                                              </div>
-                                                              <div class="mt-lg">
-                                                                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
-                                                                  <div class="black-xs-f">Until the next run comes up</div>
-                                                              </div>
-                                                              <div class="mt-lg">
-                                                                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire
-                                                                  </div>
-                                                                  <div class="black-xs-f"
-                                                                       id="weekLifeTimeEnd">${questionnaireBo.studyLifetimeStart}
-                                                                      - ${questionnaireBo.studyLifetimeEnd}</div>
-                                                              </div>
-                                                          </div>
-                                                      </form:form>
-                                                        <!-- Monthly Section-->
-                                                                      <form:form
-                                                                              action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
-                                                                              name="monthlyFormId" id="monthlyFormId" method="post" role="form"
-                                                                              data-toggle="validator">
-                                                                          <input type="hidden" name="frequency" id="monthlyfrequencyId"
-                                                                                 value="${questionnaireBo.frequency}">
-                                                                          <input type="hidden" name="previousFrequency"
-                                                                                 id="previousFrequency" value="${questionnaireBo.frequency}">
-                                                                          <input type="hidden" name="id" id="id"
-                                                                                 value="${questionnaireBo.id}">
-                                                                          <input type="hidden" name="studyId" id="studyId"
-                                                                                 value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-                                                                          <input type="hidden" name="questionnairesFrequenciesBo.id"
-                                                                                 id="monthFreId"
-                                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-                                                                          <input type="hidden" name="type" id="type" value="schedule">
-                                                                          <div class="month all mt-lg dis-none">
-                                                                              <div id="monthlyDateId">
-                                                      							<span class="gray-xs-f">Select Date/Time (of the month) <span
-                                                                                          class="requiredStar">*</span></span><br/> <span
-                                                                                      class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      								<span class=""> <input id="startDateMonthly" type="text"
-                                                                                                             class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                                             required placeholder="Choose Date"
-                                                                                                             name="questionnairesFrequenciesBo.frequencyDate"
-                                                                                                             value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"/>
-                                                      									<span class='help-block with-errors red-txt'></span>
-                                                      							</span>
-                                                      							</span> <span
-                                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      								<!-- 	                  <span class="gray-xs-f">&nbsp;</span><br/> -->
-                                                      								<input id="selectMonthlyTime" type="text"
-                                                                                             class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                             required onclick="timep(this.id)" placeholder="Time"
-                                                                                             name="questionnairesFrequenciesBo.frequencyTime"
-                                                                                             value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
-                                                      								<span class='help-block with-errors red-txt'></span>
-                                                      							</span>
-                                                                                  <div
-                                                                                          class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light monthlyStartCls">
-                                                                                      If
-                                                                                      the selected date is not available in a month, the last day of
-                                                                                      the month will be used instead
-                                                                                  </div>
-                                                                                  <div class="monthlyStartCls dis_inlinetop p-none">
-                                                      								<span
-                                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      									<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                                  class="requiredStar">*</span></span><br/> <input
-                                                                                              id="pickStartDate"
-                                                                                              type="text"
-                                                                                              class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                              placeholder="Choose Start Date" required
-                                                                                              name="studyLifetimeStart"
-                                                                                              value="${questionnaireBo.studyLifetimeStart}"
-                                                                                              readonly="readonly"/> <span
-                                                                                              class='help-block with-errors red-txt'></span>
-                                                      								</span>
-                                                                                  </div>
-                                                                                  <div class="dis_inlinetop p-none monthlyRegular">
-                                                      								<span
-                                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      									<span class="gray-xs-f">No. of times to repeat the
-                                                      										questionnaire <span class="requiredStar">*</span>
-                                                      								</span><br/> <input id="months" type="text"
-                                                                                                          class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                                          name="repeatQuestionnaire"
-                                                                                                          placeholder="No of Times" required
-                                                                                                          value="${questionnaireBo.repeatQuestionnaire}"
-                                                                                                          onkeypress="return isNumber(event, this)"
-                                                                                                          pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-                                                                                                          data-pattern-error="Please enter valid number."
-                                                                                                          maxlength="3"/>
-                                                      									<span class='help-block with-errors red-txt'></span>
-                                                      								</span>
-                                                                                  </div>
-                                                                              </div>
-                                                                              <!-- Anchordate start-->
-                                                                              <!-- <div class="mt-lg"> -->
-                                                                                  <%-- <div class="monthlyStartCls dis_inlinetop p-none">
-                                                      								<span
-                                                      									class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      									<span class="gray-xs-f">Start date (pick a date) <span
-                                                      										class="requiredStar">*</span></span><br /> <input id="pickStartDate"
-                                                      									type="text"
-                                                      									class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                      									placeholder="Choose Start Date" required
-                                                      									name="studyLifetimeStart"
-                                                      									value="${questionnaireBo.studyLifetimeStart}"
-                                                      									readonly="readonly" /> <span
-                                                      									class='help-block with-errors red-txt'></span>
-                                                      								</span>
-                                                      							</div> --%>
-                                                                              <div class="monthlyanchorDiv" style="display: none;">
-                                                                                  <div class="dis_inlinetop p-none">
-                                                                                      <div class=" resetDate dis_inlinetop p-none">
-                                                                                          <div>
-                                                      										<span
-                                                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      											<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                                          class="requiredStar">*</span></span><br/> <span
-                                                                                                      class="pr-md">Anchor
-                                                      												Date</span> <span> <select
-                                                                                                      class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                                      title="Select"
-                                                                                                      name="questionnairesFrequenciesBo.xDaysSign"
-                                                                                                      id="monthlyXSign">
-                                                      													<option value="0"
-                                                                                                              ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
-                                                      													<option value="1"
-                                                                                                              ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
-                                                      											</select>
-                                                      										</span> <span
-                                                                                                      class="form-group m-none dis-inline vertical-align-middle">
-                                                      												<input id="monthlyxdaysId" type="text"
-                                                                                                             class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                                             placeholder="X"
-                                                                                                             name="questionnairesFrequenciesBo.timePeriodFromDays"
-                                                                                                             value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
-                                                                                                             maxlength="3" pattern="[0-9]+"
-                                                                                                             data-pattern-error="Please enter valid number."/> <span
-                                                                                                      class="help-block with-errors red-txt"></span>
-                                                      										</span> <span class="mb-sm pr-md"> <span
-                                                                                                      class="light-txt opacity06">days</span>
-                                                      										</span>
-                                                      										</span>
-                                                                                          </div>
-                                                                                      </div>
-                                                                                  </div>
-
-
-                                                                                  <div class="dis_inlinetop p-none">
-                                                                                      <span class="gray-xs-f">Time <span
-                                                                                              class="requiredStar">*</span></span><br/>
-                                                                                      <span
-                                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      									<input id="selectMonthlyTimeAnchor" type="text"
-                                                                                                 class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                                 required onclick="timep(this.id)" placeholder="Time"
-                                                                                                 name="questionnairesFrequenciesBo.frequencyTime"
-                                                                                                 value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
-                                                      									<span class='help-block with-errors red-txt'></span>
-                                                      								</span>
-                                                                                  </div>
-                                                                                  <div class="dis_inlinetop">
-                                                      								<span
-                                                                                              class="form-group m-none dis-inline vertical-align-middle pr-md">
-                                                      									<span class="gray-xs-f">No. of times to repeat the
-                                                      										questionnaire <span class="requiredStar">*</span>
-                                                      								</span><br/> <input id="monthsAnchor" type="text"
-                                                                                                          class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                                                                                          name="repeatQuestionnaire"
-                                                                                                          placeholder="No of Times" required
-                                                                                                          value="${questionnaireBo.repeatQuestionnaire}"
-                                                                                                          onkeypress="return isNumber(event, this)"
-                                                                                                          pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-                                                                                                          data-pattern-error="Please enter valid number."
-                                                                                                          maxlength="3"/>
-                                                      									<span class='help-block with-errors red-txt'></span>
-                                                      								</span>
-                                                                                  </div>
-                                                                              </div>
-                                                                              <!-- </div> -->
-                                                                              <!-- Anchordate End -->
-
-                                                                              <div class="mt-md col-md-12 p-none">
-                                                                                  <div class="gray-xs-f mb-xs">End Date</div>
-                                                                                  <div class="black-xs-f"
-                                                                                       id="monthEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
-                                                                                  <input type="hidden" name="studyLifetimeEnd"
-                                                                                         id="studyMonthlyLifetimeEnd"
-                                                                                         value="${questionnaireBo.studyLifetimeEnd}">
-                                                                              </div>
-                                                                              <div class="mt-lg col-md-12 p-none">
-                                                                                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
-                                                                                  <div class="black-xs-f">Until the next run comes up</div>
-                                                                              </div>
-                                                                              <div class="mt-lg col-md-12 p-none">
-                                                                                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire
-                                                                                  </div>
-                                                                                  <div class="black-xs-f"
-                                                                                       id="monthLifeTimeDate">${questionnaireBo.studyLifetimeStart}
-                                                                                      - ${questionnaireBo.studyLifetimeEnd}</div>
-                                                                              </div>
-                                                                          </div>
-                                                                      </form:form>
-                                                                      <!-- Manually Section-->
-                                                                      <form:form
-                                                                              action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
-                                                                              name="customFormId" id="customFormId" method="post" role="form"
-                                                                              data-toggle="validator">
-                                                                          <input type="hidden" name="id" id="id"
-                                                                                 value="${questionnaireBo.id}">
-                                                                          <input type="hidden" name="studyId" id="studyId"
-                                                                                 value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-                                                                          <input type="hidden" name="frequency" id="customfrequencyId"
-                                                                                 value="${questionnaireBo.frequency}">
-                                                                          <input type="hidden" name="previousFrequency"
-                                                                                 id="previousFrequency" value="${questionnaireBo.frequency}">
-                                                                          <input type="hidden" name="type" id="type" value="schedule">
-                                                                          <div class="manually all mt-lg dis-none">
-                                                                              <div class="gray-xs-f mb-sm">
-                                                                                  Select time period <span class="requiredStar">*</span>
-                                                                              </div>
-                                                                              <div class="manuallyContainer">
-                                                                                  <c:if
-                                                                                          test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
-                                                                                      <div class="manually-option mb-md form-group" id="0">
-                                                                                          <input type="hidden"
-                                                                                                 name="questionnaireCustomScheduleBo[0].questionnairesId"
-                                                                                                 id="questionnairesId" value="${questionnaireBo.id}">
-                                                                                          <span
-                                                                                                  class="form-group  dis-inline vertical-align-middle pr-md">
-                                                      										<input id="StartDate0" type="text" count='0'
-                                                                                                     class="form-control calendar customCalnder cusStrDate"
-                                                                                                     name="questionnaireCustomScheduleBo[0].frequencyStartDate"
-                                                                                                     value="" placeholder="Start Date"
-                                                                                                     onclick='customStartDate(this.id,0);'
-                                                                                                     required/> <span
-                                                                                                  class='help-block with-errors red-txt'></span>
-                                                      									</span> <span class="gray-xs-f mb-sm pr-md align-span-center">
-                                                      										to </span> <span
-                                                                                              class="form-group dis-inline vertical-align-middle pr-md">
-                                                      										<input id="EndDate0" type="text" count='0'
-                                                                                                     class="form-control calendar customCalnder cusEndDate"
-                                                                                                     name="questionnaireCustomScheduleBo[0].frequencyEndDate"
-                                                                                                     placeholder="End Date"
-                                                                                                     onclick='customEndDate(this.id,0);'
-                                                                                                     required/> <span
-                                                                                              class='help-block with-errors red-txt'></span>
-                                                      									</span> <span
-                                                                                              class="form-group  dis-inline vertical-align-middle pr-md">
-                                                      										<input id="customTime0" type="text" count='0'
-                                                                                                     class="form-control clock cusTime"
-                                                                                                     name="questionnaireCustomScheduleBo[0].frequencyTime"
-                                                                                                     placeholder="Time" onclick='timep(this.id);' disabled
-                                                                                                     required/>
-                                                      										<span class='help-block with-errors red-txt'></span>
-                                                      									</span> <span class="addbtn addBtnDis align-span-center mr-md"
-                                                                                                        onclick="addDate();">+</span> <span id="delete"
-                                                                                                                                            class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-                                                                                                                                            onclick="removeDate(this);"></span>
-                                                                                      </div>
-                                                                                  </c:if>
-                                                                                  <c:if
-                                                                                          test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) gt 0}">
-                                                                                      <c:forEach
-                                                                                              items="${questionnaireBo.questionnaireCustomScheduleBo}"
-                                                                                              var="questionnaireCustomScheduleBo" varStatus="customVar">
-                                                                                          <div class="manually-option mb-md form-group"
-                                                                                               id="${customVar.index}">
-                                                                                              <input type="hidden"
-                                                                                                     name="questionnaireCustomScheduleBo[${customVar.index}].id"
-                                                                                                     id="id" value="${questionnaireCustomScheduleBo.id}">
-                                                                                              <input type="hidden"
-                                                                                                     name="activeTaskCustomScheduleBo[${customVar.index}].used"
-                                                                                                     id="isUsed${customVar.index}"
-                                                                                                     value="${questionnaireCustomScheduleBo.used}"> <input
-                                                                                                  type="hidden"
-                                                                                                  name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId"
-                                                                                                  id="questionnairesId"
-                                                                                                  value="${questionnaireCustomScheduleBo.questionnairesId}">
-                                                                                              <span
-                                                                                                      class="form-group dis-inline vertical-align-middle pr-md">
-                                                      											<input id="StartDate${customVar.index}" type="text"
-                                                                                                         count='${customVar.index}'
-                                                                                                         class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} "
-                                                                                                         name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate"
-                                                                                                         value="${questionnaireCustomScheduleBo.frequencyStartDate}"
-                                                                                                         placeholder="Start Date"
-                                                                                                         onclick='customStartDate(this.id,${customVar.index});'
-                                                                                                         required/> <span
-                                                                                                      class='help-block with-errors red-txt'></span>
-                                                      										</span> <span
-                                                                                                  class="gray-xs-f mb-sm pr-md align-span-center">
-                                                      											to </span> <span
-                                                                                                  class="form-group dis-inline vertical-align-middle pr-md">
-                                                      											<input id="EndDate${customVar.index}" type="text"
-                                                                                                         count='${customVar.index}'
-                                                                                                         class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
-                                                                                                         name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate"
-                                                                                                         value="${questionnaireCustomScheduleBo.frequencyEndDate}"
-                                                                                                         placeholder="End Date"
-                                                                                                         onclick='customEndDate(this.id,${customVar.index});'
-                                                                                                         required/>
-                                                      											<span class='help-block with-errors red-txt'></span>
-                                                      										</span> <span
-                                                                                                  class="form-group  dis-inline vertical-align-middle pr-md">
-                                                      											<input id="customTime${customVar.index}" type="text"
-                                                                                                         count='${customVar.index}'
-                                                                                                         class="form-control clock cusTime ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
-                                                                                                         name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
-                                                                                                         value="${questionnaireCustomScheduleBo.frequencyTime}"
-                                                                                                         placeholder="Time" onclick='timep(this.id);'
-                                                                                                         required/> <span
-                                                                                                  class='help-block with-errors red-txt'></span>
-                                                      										</span> <span
-                                                                                                  class="addbtn addBtnDis align-span-center mr-md cursor-display"
-                                                                                                  onclick="addDate();">+</span> <span id="delete"
-                                                                                                                                      class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
-                                                                                                                                      onclick="removeDate(this);"></span>
-                                                                                          </div>
-                                                                                      </c:forEach>
-                                                                                  </c:if>
-                                                                              </div>
-                                                                              <div class="manuallyAnchorContainer" style="display: none;">
-                                                                                  <!-- anchordate Start -->
-                                                                                  <c:if
-                                                                                          test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
-                                                                                      <div class="manually-anchor-option mb-md form-group" id="0">
-                                                                                          <input type="hidden"
-                                                                                                 name="questionnaireCustomScheduleBo[0].questionnairesId"
-                                                                                                 id="questionnairesId" value="${questionnaireBo.id}">
-                                                                                          <span
-                                                                                                  class="mb-sm pr-md"> <span class="light-txt opacity06">
-                                                      											Anchor Date </span>
-                                                      									</span> <span> <select
-                                                                                              class="signDropDown selectpicker sign-box selectXSign"
-                                                                                              count='0' title="Select"
-                                                                                              name="questionnaireCustomScheduleBo[0].xDaysSign"
-                                                                                              id="xSign0">
-                                                      											<option value="0"
-                                                                                                      ${not questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
-                                                      											<option value="1"
-                                                                                                      ${questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>-</option>
-                                                      									</select>
-                                                      									</span> <span
-                                                                                              class="form-group m-none dis-inline vertical-align-middle">
-                                                      										<input id="xdays0" type="text"
-                                                                                                     class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate"
-                                                                                                     count='0' placeholder="X"
-                                                                                                     name="questionnaireCustomScheduleBo[0].timePeriodFromDays"
-                                                                                                     value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
-                                                                                                     maxlength="3" required pattern="[0-9]+"
-                                                                                                     data-pattern-error="Please enter valid number."/> <span
-                                                                                              class="help-block with-errors red-txt"></span>
-                                                      									</span> <span class="mb-sm pr-md"> <span
-                                                                                              class="light-txt opacity06"> days <span
-                                                                                              style="padding-right: 5px; padding-left: 5px">to </span>
-                                                      											Anchor Date
-                                                      									</span>
-                                                      									</span> <span> <select
-                                                                                              class="signDropDown selectpicker sign-box selectYSign"
-                                                                                              count='0' title="Select"
-                                                                                              name="questionnaireCustomScheduleBo[0].yDaysSign"
-                                                                                              id="ySign0">
-                                                      											<option value="0"
-                                                                                                      ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
-                                                      											<option value="1"
-                                                                                                      ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
-                                                      									</select>
-                                                      									</span> <span
-                                                                                              class="form-group m-none dis-inline vertical-align-middle">
-                                                      										<input id="ydays0" type="text"
-                                                                                                     class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate"
-                                                                                                     count='0' placeholder="Y"
-                                                                                                     name="questionnaireCustomScheduleBo[0].timePeriodToDays"
-                                                                                                     value="${questionnaireCustomScheduleBo.timePeriodToDays}"
-                                                                                                     maxlength="3" pattern="[0-9]+"
-                                                                                                     data-pattern-error="Please enter valid number."
-                                                                                                     required/> <span
-                                                                                              class="help-block with-errors red-txt"></span>
-                                                      									</span> <span class="mb-sm pr-md"> <span
-                                                                                              class="light-txt opacity06"> days </span>
-                                                      									</span> <span
-                                                                                              class="form-group  dis-inline vertical-align-middle pr-md"
-                                                                                              style="margin-bottom: -13px"> <input id="manualTime0"
-                                                                                                                                   type="text"
-                                                                                                                                   class="form-control clock"
-                                                                                                                                   name="questionnaireCustomScheduleBo[0].frequencyTime"
-                                                                                                                                   value="${questionnaireCustomScheduleBo.frequencyTime}"
-                                                                                                                                   placeholder="Time"
-                                                                                                                                   required/> <span
-                                                                                              class='help-block with-errors red-txt'></span>
-                                                      									</span> <span id="addbtn0"
-                                                                                                        class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle mr-sm"
-                                                                                                        onclick="addDateAnchor();">+</span>
-                                                                                          <!-- <span id="deleteAncchor0"
-                                                      										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-                                                      										onclick="removeDateAnchor(this);"></span> -->
-                                                                                      </div>
-                                                                                  </c:if>
-                                                                                  <c:if
-                                                                                          test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) gt 0}">
-                                                                                      <c:forEach
-                                                                                              items="${questionnaireBo.questionnaireCustomScheduleBo}"
-                                                                                              var="questionnaireCustomScheduleBo" varStatus="customVar">
-                                                                                          <div class="manually-anchor-option mb-md form-group"
-                                                                                               id="${customVar.index}">
-                                                                                              <input type="hidden"
-                                                                                                     name="questionnaireCustomScheduleBo[${customVar.index}].id"
-                                                                                                     id="id" value="${questionnaireCustomScheduleBo.id}">
-                                                                                              <input type="hidden"
-                                                                                                     name="activeTaskCustomScheduleBo[${customVar.index}].used"
-                                                                                                     id="isUsed${customVar.index}"
-                                                                                                     value="${questionnaireCustomScheduleBo.used}"> <input
-                                                                                                  type="hidden"
-                                                                                                  name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId"
-                                                                                                  id="questionnairesId"
-                                                                                                  value="${questionnaireCustomScheduleBo.questionnairesId}">
-                                                                                              <span class="mb-sm pr-md"> <span
-                                                                                                      class="light-txt opacity06"> Anchor Date </span>
-                                                      										</span> <span> <select
-                                                                                                  class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
-                                                                                                  count='${customVar.index}' title="Select"
-                                                                                                  name="questionnaireCustomScheduleBo[${customVar.index}].xDaysSign"
-                                                                                                  id="xSign${customVar.index}">
-                                                      												<option value="0"
-                                                                                                          ${not questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
-                                                      												<option value="1"
-                                                                                                          ${questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>-</option>
-                                                      										</select>
-                                                      										</span> <span
-                                                                                                  class="form-group m-none dis-inline vertical-align-middle">
-                                                      											<input id="xdays${customVar.index}" type="text"
-                                                                                                         class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
-                                                                                                         count='${customVar.index}' placeholder="X"
-                                                                                                         name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodFromDays"
-                                                                                                         value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
-                                                                                                         maxlength="3" required pattern="[0-9]+"
-                                                                                                         data-pattern-error="Please enter valid number."/> <span
-                                                                                                  class="help-block with-errors red-txt"></span>
-                                                      										</span> <span class="mb-sm pr-md"> <span
-                                                                                                  class="light-txt opacity06"> days <span
-                                                                                                  style="padding-right: 5px; padding-left: 5px">to </span>
-                                                      												Anchor Date
-                                                      										</span>
-                                                      										</span> <span> <select
-                                                                                                  class="signDropDown selectpicker sign-box selectYSign ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
-                                                                                                  count='${customVar.index}' title="Select"
-                                                                                                  name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign"
-                                                                                                  id="ySign${customVar.index}">
-                                                      												<option value="0"
-                                                                                                          ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
-                                                      												<option value="1"
-                                                                                                          ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
-                                                      										</select>
-                                                      										</span> <span
-                                                                                                  class="form-group m-none dis-inline vertical-align-middle">
-                                                      											<input id="ydays${customVar.index}" type="text"
-                                                                                                         class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
-                                                                                                         count='${customVar.index}' placeholder="Y"
-                                                                                                         name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodToDays"
-                                                                                                         value="${questionnaireCustomScheduleBo.timePeriodToDays}"
-                                                                                                         maxlength="3" pattern="[0-9]+"
-                                                                                                         data-pattern-error="Please enter valid number."
-                                                                                                         required/>
-                                                      											<span class="help-block with-errors red-txt"></span>
-                                                      										</span> <span class="mb-sm pr-md"> <span
-                                                                                                  class="light-txt opacity06"> days </span>
-                                                      										</span> <span
-                                                                                                  class="form-group  dis-inline vertical-align-middle pr-md"
-                                                                                                  style="margin-bottom: -13px"> <input
-                                                                                                  id="manualTime${customVar.index}" type="text"
-                                                                                                  class="form-control clock ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
-                                                                                                  name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
-                                                                                                  value="${questionnaireCustomScheduleBo.frequencyTime}"
-                                                                                                  placeholder="Time" required/> <span
-                                                                                                  class='help-block with-errors red-txt'></span>
-                                                      										</span> <span id="addbtn${customVar.index}"
-                                                                                                            class="addbtn addBtnDis addbtnZero align-span-center mr-sm cursor-display"
-                                                                                                            onclick="addDateAnchor();">+</span> <span
-                                                                                                  id="deleteAncchor${customVar.index}"
-                                                                                                  class="sprites_icon delete vertical-align-middle remBtnDis remBtnZero hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
-                                                                                                  onclick="removeDateAnchor(this);"></span>
-                                                                                          </div>
-                                                                                      </c:forEach>
-                                                                                  </c:if>
-                                                                              </div>
-                                                                              <!-- anchordate end -->
-                                                                              <div class="mt-md">
-                                                                                  <div class="gray-xs-f mb-xs">Default Lifetime of each run</div>
-                                                                                  <div class="black-xs-f">As defined by the start and end
-                                                                                      times selected above
-                                                                                  </div>
-                                                                              </div>
-                                                                              <div class="col-md-4 col-lg-3 mt-xlg mb-lg addNewRuns"
-                                                                                   style="display: none;">
-                                                      							<span class="checkbox checkbox-inline addNewRuns"> <input
-                                                                                          type="checkbox" id="addNewRunsId"
-                                                                                          value="${questionnaireBo.addNewRuns}"
-                                                                                          <c:if test="${questionnaireBo.addNewRuns}">checked</c:if>>
-                                                      								<label for="addNewRunsId"> Add Runs </label>
-                                                      							</span>
-                                                                              </div>
-                                                                          </div>
-                                                                      </form:form>
-                                                                      <div id="ongoingNoteId" class="note-center" style="display: none">Note:
-                                                                          Activities scheduled as ongoing will always be available for
-                                                                          participants to take any number of times, during the lifetime of
-                                                                          the study
-                                                                      </div>
-
-
-
-
-      </div>
-    </div>
-
-       <!-- <ul class="nav nav-tabs review-tabs" id="tabContainer">
+        <ul class="nav nav-tabs review-tabs" id="tabContainer">
             <li class="contentqusClass active"><a data-toggle="tab"
                                                   href="#contentTab">Content</a></li>
             <li class="scheduleQusClass"><a data-toggle="tab"
                                             href="#schedule">Schedule</a></li>
-        </ul>--->
+        </ul>
+        <div class="tab-content pl-xlg pr-xlg">
+            <!-- Content-->
+            <div id="contentTab" class="tab-pane fade in active mt-lg">
+                <form:form
+                        action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
+                        name="contentFormId" id="contentFormId" method="post"
+                        data-toggle="validator" role="form">
+                    <input type="hidden" name="${csrf.parameterName}"
+                           value="${csrf.token}">
+                    <input type="hidden" id="currentLanguage" name="language"
+                           value="${currLanguage}">
+                    <input type="hidden" name="type" id="type" value="content">
+                    <input type="hidden" name="id" id="id"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" id="mlTitle" value="${questionnaireLangBo.title}">
+                    <input type="hidden" name="status" id="status" value="true">
+                    <input type="hidden" name="questionnaireId" id="questionnaireId"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" name="studyId" id="studyId"
+                           value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+                    <input type="hidden" id="customStudyId"
+                           value="${studyBo.customStudyId}">
+                    <input type="hidden" name="instructionId" id="instructionId"
+                           value="">
+                    <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                    <input type="hidden" id="customStudyName"
+                           value="${fn:escapeXml(studyBo.name)}"/>
+                    <input type="hidden" name="formId" id="formId" value="">
+                    <input type="hidden" name="questionId" id="questionId" value="">
+                     <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+                    <!-- <input type="hidden" id="actionType" name="actionType"> -->
+                    <input type="hidden" id="actionTypeForQuestionPage"
+                           name="actionTypeForQuestionPage">
 
+                    <select id="questionLangBOList" style="display: none">
+                        <c:forEach items="${questionLangBOList}" var="questionLang">
+                            <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
+                                    formId="${questionLang.formId}" value="${questionLang.question}">${questionLang.question}</option>
+                        </c:forEach>
+                    </select>
+
+                    <select id="formLangList" style="display: none">
+                        <c:forEach items="${formLangList}" var="formLang">
+                            <option id='${formLang.formLangPK.formId}' status="${formLang.status}"></option>
+                        </c:forEach>
+                    </select>
+
+                    <select id="instructionsLangBOList" style="display: none">
+                        <c:forEach items="${instructionsLangBOList}" var="instructionLang">
+                            <option id='${instructionLang.instructionLangPK.id}' status="${instructionLang.status}"
+                                    value="${instructionLang.instructionTitle}">${instructionLang.instructionTitle}</option>
+                        </c:forEach>
+                    </select>
+
+                    <div class="gray-xs-f mb-xs">
+                        Activity Short Title or Key (1 to 50 characters)<span
+                            class="requiredStar">*</span><span
+                            class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                            title="A human readable step identifier and must be unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span>
+                    </div>
+                    <div class="form-group col-md-5 p-none">
+                        <input autofocus="autofocus" type="text" custAttType="cust"
+                               class="form-control" name="shortTitle" id="shortTitleId"
+                               value="${fn:escapeXml(questionnaireBo.shortTitle)}"
+                                <c:if test="${not empty questionnaireBo.shortTitleDuplicate && (questionnaireBo.shortTitleDuplicate gt 0)}"> disabled</c:if>
+                               required="required" maxlength="50"/>
+                        <div class="help-block with-errors red-txt"></div>
+                        <input type="hidden" id="preShortTitleId"
+                               value="${fn:escapeXml(questionnaireBo.shortTitle)}"/>
+                        <!-- ///^[ A-Za-z0-9*()_+|:.-]*$/ -->
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="gray-xs-f mb-xs">
+                        Title (1 to 300 characters)<span class="requiredStar">*</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="title" id="titleId"
+                               value="${fn:escapeXml(questionnaireBo.title)}" maxlength="300"
+                               required="required"/>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                    <div class="mt-lg" id="stepContainer">
+                        <div
+                                class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                onclick="getQuestionnaireStep('Instruction');">Add
+                            Instruction Step
+                        </div>
+                        <div
+                                class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                onclick="getQuestionnaireStep('Question');">Add Question
+                            Step
+                        </div>
+                        <div
+                                class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                onclick="getQuestionnaireStep('Form');">Add Form Step
+                        </div>
+                        <span class="sprites_v3 info" id="infoIconId"></span>
+                        <div class="pull-right mt-xs">
+							<span class="checkbox checkbox-inline"> <input
+                                    type="checkbox" id="branchingId" value="true" name="branching"
+                                ${questionnaireBo.branching ? 'checked':''}> <label
+                                    for="branchingId"> Apply Branching </label>
+							</span>
+                        </div>
+                    </div>
+                </form:form>
+                <div class="mt-md">
+                    <table id="content" class="display" cellspacing="0" width="100%"
+                           style="border-color: #ffffff;">
+                        <thead style="display: none;"></thead>
+                        <tbody>
+                        <c:forEach items="${qTreeMap}" var="entry">
+                            <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}" status="${entry.value.status}">
+                                <c:choose>
+                                    <c:when test="${entry.value.stepType eq 'Instruction'}">
+                                        <td><span id="${entry.key}" data="round blue-round"
+                                                  class="round blue-round">${entry.key}</span></td>
+                                    </c:when>
+                                    <c:when test="${entry.value.stepType eq 'Question'}">
+                                        <td><span id="${entry.key}" data="round green-round"
+                                                  class="round green-round">${entry.key}</span></td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td><span id="${entry.key}" data="round teal-round"
+                                                  class="round teal-round">${entry.key}</span></td>
+                                        <%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+								    <div>&nbsp;</div>
+							 </c:forEach> --%>
+                                    </c:otherwise>
+                                </c:choose>
+                                <td class="title"><c:choose>
+                                    <c:when test="${entry.value.stepType eq 'Form'}">
+                                        <c:forEach items="${entry.value.fromMap}" var="subentry">
+                                            <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
+                                                 title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+                                            <div class="clearfix"></div>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="dis-ellipsis"
+                                             title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
+                                    </c:otherwise>
+                                </c:choose></td>
+                                <td>
+                                    <div class="destinationStep questionnaireStepClass"
+                                         style="display: none;">${entry.value.destinationText}</div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="text-right pos-relative">
+                                            <c:if test="${entry.value.stepType ne 'Instruction'}">
+                                                <c:choose>
+                                                    <c:when
+                                                            test="${entry.value.responseTypeText eq 'Double'  && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
+                                                        <span class="sprites_v3 status-blue mr-md"></span>
+                                                    </c:when>
+                                                    <c:when
+                                                            test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
+                                                        <span class="sprites_v3 status-gray mr-md"></span>
+                                                    </c:when>
+                                                    <c:when
+                                                            test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
+                                                        <span class="sprites_v3 calender-blue mr-md"></span>
+                                                    </c:when>
+                                                    <c:when
+                                                            test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
+                                                        <span class="sprites_v3 calender-gray mr-md"></span>
+                                                    </c:when>
+                                                </c:choose>
+                                            </c:if>
+
+                                            <span class="ellipse"
+                                                  onmouseenter="ellipseHover(this);"></span>
+                                            <div class="ellipse-hover-icon"
+                                                 onmouseleave="ellipseUnHover(this);">
+													<span class="sprites_icon preview-g mr-sm"
+                                                          onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
+                                                <span
+                                                        class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
+                                                        <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
+                                                <span
+                                                        class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
+                                                        <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
+                                            </div>
+                                        </div>
+                                        <c:if test="${entry.value.stepType eq 'Form'}">
+                                            <c:if test="${fn:length(entry.value.fromMap) gt 0}">
+                                                <c:forEach begin="0"
+                                                           end="${fn:length(entry.value.fromMap)-1}">
+                                                    <div>&nbsp;</div>
+                                                </c:forEach>
+                                            </c:if>
+                                        </c:if>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- End Content-->
+            <!-- Schedule-->
+            <div id="schedule" class="tab-pane fade mt-lg">
+                <div class="gray-xs-f mb-sm">Questionnaire Schedule Type</div>
+                <div class="pb-lg ">
+					<span class="radio radio-info radio-inline p-40"> <input
+                            type="radio" id="schedule1" class="typeofschedule"
+                            scheduletype="Regular" value="Regular" name="scheduleType"
+                        ${empty questionnaireBo.scheduleType  || questionnaireBo.scheduleType=='Regular' ?'checked':''}
+                        ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+                        <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
+						<label for="schedule1">Regular</label>
+					</span> <span id="anchorspanId" class="tool-tip" data-toggle="tooltip"
+                                  data-html="true" data-placement="top"
+                        <c:if test="${isAnchorQuestionnaire}">
+                            title="This option has been disabled, since this questionnaire has 1 or more Anchor Dates defined in it."
+                        </c:if>>
+						<span class="radio radio-inline p-40"> <input type="radio"
+                                                                      id="schedule2"
+                                                                      class="typeofschedule"
+                                                                      scheduletype="AnchorDate"
+                                                                      value="AnchorDate"
+                                                                      name="scheduleType"
+                        ${isAnchorQuestionnaire?'disabled':''}
+                        ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''}
+                        ${questionnaireBo.shortTitleDuplicate > 0?'disabled' : ''}
+                                                                      <c:if test="${empty anchorTypeList}">disabled</c:if>> <label
+                                for="schedule2">Anchor-Date-based</label>
+					</span>
+					</span>
+                </div>
+                <!-- Anchor date type -->
+                <form:form action="" name="anchorFormId" id="anchorFormId"
+                           method="post" role="form" data-toggle="validator">
+                    <div class="anchortypeclass" style="display: none;">
+                        <c:if test="${fn:length(anchorTypeList) gt 0}">
+                            <div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-5 col-lg-5 p-none">
+                                <div class="form-group">
+                                    <select id="anchorDateId"
+                                            class="selectpicker ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                            required name="anchorDateId">
+                                        <option value=''>Select</option>
+                                        <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+                                            <option data-id="${anchorTypeInfo.participantProperty}"
+                                                    value="${anchorTypeInfo.id}"
+                                                ${questionnaireBo.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <div class="help-block with-errors red-txt"></div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </c:if>
+                    </div>
+                </form:form>
+                <!-- Ancor date type -->
+                <div class="gray-xs-f mb-sm">Questionnaire Scheduling Options</div>
+                <div class="pb-lg b-bor">
+					<span class="radio radio-info radio-inline p-40"> <input
+                            type="radio" id="inlineRadio1" class="schedule"
+                            frequencytype="oneTime" value="One time" name="frequency"
+                    ${empty questionnaireBo.frequency  || questionnaireBo.frequency=='One time' ?'checked':''}
+                    ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}>
+						<label for="inlineRadio1">One Time</label>
+					</span> <span class="radio radio-inline p-40"> <input type="radio"
+                                                                          id="inlineRadio2"
+                                                                          class="schedule"
+                                                                          frequencytype="daily"
+                                                                          value="Daily"
+                                                                          name="frequency"
+                ${questionnaireBo.frequency=='Daily' ?'checked':''}
+                ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+                ${isAnchorQuestionnaire?'disabled':''}> <label
+                        for="inlineRadio2">Daily</label>
+					</span> <span class="radio radio-inline p-40"> <input type="radio"
+                                                                          id="inlineRadio3"
+                                                                          class="schedule"
+                                                                          frequencytype="week"
+                                                                          value="Weekly"
+                                                                          name="frequency"
+                ${questionnaireBo.frequency=='Weekly' ?'checked':''}
+                ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+                ${isAnchorQuestionnaire?'disabled':''}> <label
+                        for="inlineRadio3">Weekly</label>
+					</span> <span class="radio radio-inline p-40"> <input type="radio"
+                                                                          id="inlineRadio4"
+                                                                          class="schedule"
+                                                                          frequencytype="month"
+                                                                          value="Monthly"
+                                                                          name="frequency"
+                ${questionnaireBo.frequency=='Monthly' ?'checked':''}
+                ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+                ${isAnchorQuestionnaire?'disabled':''}> <label
+                        for="inlineRadio4">Monthly</label>
+					</span> <span class="radio radio-inline p-40"> <input type="radio"
+                                                                          id="inlineRadio5"
+                                                                          class="schedule"
+                                                                          frequencytype="manually"
+                                                                          value="Manually Schedule"
+                                                                          name="frequency"
+                ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''}
+                ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+                ${isAnchorQuestionnaire?'disabled':''}> <label
+                        for="inlineRadio5">Custom Schedule</label>
+					</span> <span class="radio radio-inline p-40"> <input type="radio"
+                                                                          id="inlineRadio6"
+                                                                          class="schedule"
+                                                                          frequencytype="ongoing"
+                                                                          value="Ongoing"
+                                                                          name="frequency"
+                ${questionnaireBo.frequency=='Ongoing' ?'checked':''}
+                ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+                ${isAnchorQuestionnaire?'disabled':''}> <label
+                        for="inlineRadio6">Ongoing</label>
+					</span>
+                </div>
+                <!-- One Time Section-->
+                <form:form
+                        action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
+                        name="oneTimeFormId" id="oneTimeFormId" method="post" role="form"
+                        data-toggle="validator">
+                    <input type="hidden" name="frequency" id="frequencyId"
+                           value="${questionnaireBo.frequency}">
+                    <c:choose>
+                        <c:when test="${questionnaireBo.frequency eq 'Daily'}">
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 1}">
+                                <input type="hidden" name="previousFrequency"
+                                       id="previousFrequency" value="${questionnaireBo.frequency}">
+                            </c:if>
+                            <c:if
+                                    test="${empty questionnaireBo.questionnairesFrequenciesList || fn:length(questionnaireBo.questionnairesFrequenciesList) le 1}">
+                                <input type="hidden" name="previousFrequency"
+                                       id="previousFrequency" value="One time">
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" name="previousFrequency"
+                                   id="previousFrequency" value="${questionnaireBo.frequency}">
+                        </c:otherwise>
+                    </c:choose>
+                    <input type="hidden" name="id" id="id"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" name="type" id="type" value="schedule">
+                    <input type="hidden" name="studyId" id="studyId"
+                           value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+                    <div class="oneTime all mt-lg">
+                        <div class="gray-xs-f mb-sm">
+                            Date/Time of launch (pick one) <span class="requiredStar">*</span>
+                        </div>
+                        <div class="mt-sm">
+							<span class="checkbox checkbox-inline"> <input
+                                    type="hidden" name="questionnairesFrequenciesBo.id"
+                                    id="oneTimeFreId"
+                                    value="${questionnaireBo.questionnairesFrequenciesBo.id}">
+								<input type="checkbox" id="isLaunchStudy"
+                                       name="questionnairesFrequenciesBo.isLaunchStudy" value="true"
+                                    ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''}
+                                       required ${(questionnaireBo.shortTitleDuplicate>
+                                        0)?'disabled' : ''}> <label for="isLaunchStudy"> Launch
+									with study</label>
+							</span>
+                            <div class="onetimeanchorClass mt-sm" style="display: none">
+                                <!-- Anchordate start -->
+                                <div class="opacity06">OR</div>
+                                <!-- Anchordate start-->
+                                <div class="mt-none resetDate">
+                                    <div>
+                                        <span class="pr-md">Anchor Date</span> <span> <select
+                                            class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                            name="questionnairesFrequenciesBo.xDaysSign"
+                                            id="onetimeXSign">
+												<option value="0"
+                                                    ${studyBo.enrollmentdateAsAnchordate?'selected':''}
+                                                    ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+												<option value="1"
+                                                    ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+										</select>
+										</span>
+                                        <!--  selectpicker -->
+                                        <span
+                                                class="form-group m-none dis-inline vertical-align-middle">
+											<c:choose>
+                                                <c:when
+                                                        test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}">
+													<input id="onetimexdaysId" type="text"
+                                                           class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                           placeholder="X"
+                                                           name="questionnairesFrequenciesBo.timePeriodFromDays"
+                                                           value=""
+                                                            <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+                                                           maxlength="3" pattern="[0-9]+"
+                                                           data-pattern-error="Please enter valid number."/>
+                                                </c:when>
+                                                <c:otherwise>
+													<input id="onetimexdaysId" type="text"
+                                                           class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                           placeholder="X"
+                                                           name="questionnairesFrequenciesBo.timePeriodFromDays"
+                                                           value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
+                                                            <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy }"> disabled </c:if>
+                                                           maxlength="3" pattern="[0-9]+"
+                                                           data-pattern-error="Please enter valid number."/>
+                                                </c:otherwise>
+                                            </c:choose> <span
+                                                class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                            class="light-txt opacity06"> days</span>
+										</span> <span
+                                            class="form-group m-none dis-inline vertical-align-middle pr-md">
+											<input id="selectTime" type="text"
+                                                   class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                   name="questionnairesFrequenciesBo.frequencyTime"
+                                                   value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"
+                                                    <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>
+                                                   placeholder="Select Time"/> <span
+                                            class='help-block with-errors red-txt'></span>
+										</span>
+                                    </div>
+                                </div>
+                                <!-- Anchordate End -->
+                            </div>
+
+
+                            <div class="mt-md form-group regularClass">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<input id="chooseDate" type="text"
+                                           class="mt-sm form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                           name="questionnairesFrequenciesBo.frequencyDate"
+                                           placeholder="Choose Date"
+                                           value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"
+                                           required
+                                            <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
+									<span class='help-block with-errors red-txt'></span>
+								</span> <span
+                                    class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<input id="selectTime1" type="text"
+                                           class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                           name="questionnairesFrequenciesBo.frequencyTime"
+                                           value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"
+                                           required
+                                            <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>
+                                           placeholder="Select Time"/> <span
+                                    class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                        </div>
+                        <!-- <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div> -->
+                        <div class="gray-xs-f mb-sm mt-md">
+                            Lifetime of the run/questionnaire (choose between Study Lifetime
+                            and custom end date)<span class="requiredStar">*</span>
+                        </div>
+                        <div class="mt-sm">
+							<span class="checkbox checkbox-inline"> <input
+                                    type="checkbox" id="isStudyLifeTime"
+                                    name="questionnairesFrequenciesBo.isStudyLifeTime" value="true"
+                                ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''}
+                                    required ${(questionnaireBo.shortTitleDuplicate>
+                                    0)?'disabled' : ''}> <label for="isStudyLifeTime"> Study
+									Lifetime </label>
+							</span>
+                            <div class="mt-md form-group regularClass">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<c:choose>
+                                        <c:when
+                                                test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}">
+											<input id="chooseEndDate" type="text"
+                                                   class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                   name="studyLifetimeEnd"
+                                                   placeholder="Choose End Date"
+                                                   required
+                                                    <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+                                                   value=""/>
+                                        </c:when>
+                                        <c:otherwise>
+											<input id="chooseEndDate" type="text"
+                                                   class="form-control calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                   name="studyLifetimeEnd"
+                                                   placeholder="Choose End Date"
+                                                   required
+                                                    <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+                                                   value="${questionnaireBo.studyLifetimeEnd}"/>
+                                        </c:otherwise>
+                                    </c:choose> <span class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <div class="onetimeanchorClass mt-sm" style="display: none">
+                                <div class="opacity06">OR</div>
+                                <!-- Anchordate start-->
+                                <div class="mt-none resetDate">
+                                    <div>
+                                        <span class="pr-md">Anchor Date</span> <span> <select
+                                            class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                            title="Select"
+                                            name="questionnairesFrequenciesBo.yDaysSign"
+                                            id="onetimeYSign">
+												<option value="0"
+                                                    ${not questionnaireBo.questionnairesFrequenciesBo.yDaysSign ?'selected':''}>+</option>
+												<option value="1"
+                                                    ${questionnaireBo.questionnairesFrequenciesBo.yDaysSign ?'selected':''}>-</option>
+										</select>
+										</span>
+                                        <!--  selectpicker -->
+                                        <span
+                                                class="form-group m-none dis-inline vertical-align-middle">
+											<c:choose>
+                                                <c:when
+                                                        test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}">
+													<input id="onetimeydaysId" type="text"
+                                                           class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                           placeholder="Y"
+                                                           name="questionnairesFrequenciesBo.timePeriodToDays"
+                                                           value=""
+                                                            <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if>
+                                                           maxlength="3" pattern="[0-9]+"
+                                                           data-pattern-error="Please enter valid number."/>
+                                                </c:when>
+                                                <c:otherwise>
+													<input id="onetimeydaysId" type="text"
+                                                           class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                           placeholder="Y"
+                                                           name="questionnairesFrequenciesBo.timePeriodToDays"
+                                                           value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodToDays}"
+                                                            <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime}"> disabled </c:if>
+                                                           maxlength="3" pattern="[0-9]+"
+                                                           data-pattern-error="Please enter valid number."/>
+                                                </c:otherwise>
+                                            </c:choose> <span
+                                                class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                            class="light-txt opacity06"> days</span>
+										</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Anchordate End -->
+                        </div>
+                    </div>
+                </form:form>
+                <!-- Daily Section-->
+                <form:form
+                        action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
+                        name="dailyFormId" id="dailyFormId" method="post" role="form"
+                        data-toggle="validator">
+                    <input type="hidden" name="frequency" id="dailyFrequencyId"
+                           value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="previousFrequency"
+                           id="previousFrequency" value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="id" id="id"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" name="studyId" id="studyId"
+                           value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+                    <input type="hidden" name="type" id="type" value="schedule">
+                    <div class="daily all mt-lg dis-none">
+                        <div class="gray-xs-f mb-sm">
+                            Time(s) of the day for daily occurrence <span
+                                class="requiredStar">*</span>
+                        </div>
+                        <div class="dailyContainer">
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
+                                <div class="time-opts mt-md dailyTimeDiv" id="0">
+									<span
+                                            class="form-group m-none dis-inline vertical-align-middle pr-md">
+										<input id="time0" type="text"
+                                               name="questionnairesFrequenciesList[0].frequencyTime"
+                                               required
+                                               class="form-control clock dailyClock"
+                                               placeholder="Time"
+                                               onclick='timep(this.id);'/> <span
+                                            class='help-block with-errors red-txt'></span>
+									</span> <span class="addBtnDis addbtn mr-sm align-span-center"
+                                                  onclick='addTime();'>+</span>
+                                    <!-- <span
+										class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+										onclick='removeTime(this);'></span> -->
+                                </div>
+                            </c:if>
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0}">
+                                <c:forEach
+                                        items="${questionnaireBo.questionnairesFrequenciesList}"
+                                        var="questionnairesFrequencies" varStatus="frequeincesVar">
+                                    <div class="time-opts mt-md dailyTimeDiv"
+                                         id="${frequeincesVar.index}">
+                                        <input type="hidden"
+                                               name="questionnairesFrequenciesList[${frequeincesVar.index}].id"
+                                               value="${questionnairesFrequencies.id}"> <span
+                                            class="form-group m-none dis-inline vertical-align-middle pr-md">
+											<input id="time${frequeincesVar.index}" type="text"
+                                                   name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime"
+                                                   required
+                                                   class="form-control clock dailyClock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                   placeholder="Time" onclick='timep(this.id);'
+                                                   value="${questionnairesFrequencies.frequencyTime}"
+                                                ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} />
+											<span class='help-block with-errors red-txt'></span>
+										</span> <span
+                                            class="addBtnDis addbtn mr-sm align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                            onclick='addTime();'>+</span> <span
+                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                            onclick='removeTime(this);'></span>
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                        </div>
+                        <div class="mt-md">
+                            <div class="dailyStartCls col-md-3 pl-none">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">Start date (pick a date) <span
+                                            class="requiredStar">*</span></span><br/> <input
+                                        id="startDate"
+                                        type="text"
+                                        class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                        placeholder="Choose Date" name="studyLifetimeStart"
+                                        value="${questionnaireBo.studyLifetimeStart}"/> <span
+                                        class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <!-- Anchordate start-->
+                            <div class="dailyanchorDiv col-md-4 pl-none"
+                                 style="display: none;">
+                                <div class=" resetDate">
+                                    <div>
+										<span
+                                                class="form-group m-none dis-inline vertical-align-middle pr-md">
+											<span class="gray-xs-f">Start date (pick a date) <span
+                                                    class="requiredStar">*</span></span><br/> <span
+                                                class="pr-md">Anchor
+												Date</span> <span> <select
+                                                class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                title="Select"
+                                                name="questionnairesFrequenciesList[0].xDaysSign"
+                                                id="dailyXSign">
+													<option value="0"
+                                                        ${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0) && not questionnaireBo.questionnairesFrequenciesList[0].xDaysSign ?'selected':''}>+</option>
+													<option value="1"
+                                                        ${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0) && questionnaireBo.questionnairesFrequenciesList[0].xDaysSign ?'selected':''}>-</option>
+											</select>
+										</span> <span
+                                                class="form-group m-none dis-inline vertical-align-middle">
+												<input id="dailyxdaysId" type="text"
+                                                       class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                       placeholder="X"
+                                                       name="questionnairesFrequenciesList[0].timePeriodFromDays"
+                                                       value="${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0)?questionnaireBo.questionnairesFrequenciesList[0].timePeriodFromDays:''}"
+                                                       maxlength="3" pattern="[0-9]+"
+                                                       data-pattern-error="Please enter valid number."/> <span
+                                                class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                                class="light-txt opacity06"> days</span>
+										</span>
+										</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Anchordate End -->
+                            <div class="col-md-6 pr-none">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">No. of times to repeat the
+										questionnaire <span class="requiredStar">*</span>
+								</span><br/> <input id="days" type="text"
+                                                    class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                    name="repeatQuestionnaire"
+                                                    placeholder="No of Times" required
+                                                    value="${questionnaireBo.repeatQuestionnaire}"
+                                                    onkeypress="return isNumber(event, this)"
+                                                    pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+                                                    data-pattern-error="Please enter valid number."
+                                                    maxlength="3"/>
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="mt-md">
+                            <div class="gray-xs-f mb-xs">End Date</div>
+                            <div class="black-xs-f"
+                                 id="endDateId">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
+                            <input type="hidden" name="studyLifetimeEnd"
+                                   id="studyDailyLifetimeEnd"
+                                   value="${questionnaireBo.studyLifetimeEnd}">
+                        </div>
+                        <div class="mt-lg">
+                            <div class="gray-xs-f mb-xs">Lifetime of each run</div>
+                            <div class="black-xs-f">Until the next run comes up</div>
+                        </div>
+                        <div class="mt-lg">
+                            <div class="gray-xs-f mb-xs">Lifetime of the questionnaire
+                            </div>
+                            <div class="black-xs-f"
+                                 id="lifeTimeId">${questionnaireBo.studyLifetimeStart}
+                                - ${questionnaireBo.studyLifetimeEnd}</div>
+                        </div>
+                    </div>
+                </form:form>
+                <!-- Weekly Section-->
+                <form:form
+                        action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
+                        name="weeklyFormId" id="weeklyFormId" method="post" role="form"
+                        data-toggle="validator">
+                    <input type="hidden" name="frequency" id="weeklyfrequencyId">
+                    <input type="hidden" name="previousFrequency"
+                           id="previousFrequency" value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="id" id="id"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" name="studyId" id="studyId"
+                           value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+                    <input type="hidden" name="questionnairesFrequenciesBo.id"
+                           id="weeklyFreId"
+                           value="${questionnaireBo.questionnairesFrequenciesBo.id}">
+                    <input type="hidden" name="type" id="type" value="schedule">
+                    <div class="week all mt-lg dis-none">
+                        <div id="weekDaysId" class="weeklyCls">
+							<span class="gray-xs-f">Day/Time (of the week) <span
+                                    class="requiredStar">*</span><br/> <span
+                                    class=" form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class=""> <select id="startDateWeekly"
+                                                            class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
+                                                            name="dayOfTheWeek" required>
+											<option value=''>Select</option>
+											<option value='Sunday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
+											<option value='Monday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
+											<option value='Tuesday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Tuesday' ?'selected':''}>Tuesday</option>
+											<option value='Wednesday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Wednesday' ?'selected':''}>Wednesday</option>
+											<option value='Thursday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
+											<option value='Friday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday
+											</option>
+											<option value='Saturday'
+                                                ${questionnaireBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
+									</select> <span class='help-block with-errors red-txt'></span>
+								</span>
+							</span>
+							</span> <span
+                                class="form-group m-none dis-inline vertical-align-middle pr-md">
+								<!-- <span class="gray-xs-f">&nbsp;</span><br/> --> <input
+                                id="selectWeeklyTime" type="text"
+                                class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
+                                required onclick="timep(this.id)" placeholder="Time"
+                                name="questionnairesFrequenciesBo.frequencyTime"
+                                value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+								<span class='help-block with-errors red-txt'></span>
+							</span>
+                        </div>
+                        <div class="mt-md">
+                            <div class="weeklyStartCls col-md-3 pl-none">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">Start date (pick a date) <span
+                                            class="requiredStar">*</span></span><br/> <input
+                                        id="startWeeklyDate" type="text"
+                                        class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                        required name="studyLifetimeStart" placeholder="Choose Date"
+                                        value="${questionnaireBo.studyLifetimeStart}"
+                                        readonly="readonly"/> <span
+                                        class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <!-- Anchordate start-->
+                            <div class="weeklyanchorDiv col-md-12 pl-none"
+                                 style="display: none;">
+                                <div class=" resetDate dis_inlinetop p-none">
+                                    <div>
+										<span
+                                                class="form-group m-none dis-inline vertical-align-middle pr-md">
+											<span class="gray-xs-f">Start date (pick a date) <span
+                                                    class="requiredStar">*</span></span><br/> <span
+                                                class="pr-md">Anchor
+												Date</span> <span> <select
+                                                class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                title="Select"
+                                                name="questionnairesFrequenciesBo.xDaysSign"
+                                                id="weeklyXSign">
+													<option value="0"
+                                                        ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+													<option value="1"
+                                                        ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+											</select>
+										</span> <span
+                                                class="form-group m-none dis-inline vertical-align-middle">
+												<input id="weeklyxdaysId" type="text"
+                                                       class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                       placeholder="X"
+                                                       name="questionnairesFrequenciesBo.timePeriodFromDays"
+                                                       value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
+                                                       maxlength="3" pattern="[0-9]+"
+                                                       data-pattern-error="Please enter valid number."/> <span
+                                                class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                                class="light-txt opacity06"> days</span>
+										</span>
+										</span>
+                                    </div>
+                                </div>
+                                <div class="dis_inlinetop p-none">
+                                    <span class="gray-xs-f">Time <span class="requiredStar">*</span><br/></span>
+                                    <span
+                                            class="form-group m-none dis-inline vertical-align-middle pr-md">
+										<input id="selectWeeklyTimeAnchor" type="text"
+                                               class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                               required onclick="timep(this.id)" placeholder="Time"
+                                               name="questionnairesFrequenciesBo.frequencyTime"
+                                               value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+										<span class='help-block with-errors red-txt'></span>
+									</span>
+                                </div>
+
+                                <div class="dis_inlinetop">
+									<span
+                                            class="form-group m-none dis-inline vertical-align-middle pr-md">
+										<span class="gray-xs-f">No. of times to repeat the
+											questionnaire <span class="requiredStar">*</span>
+									</span><br/> <input id="weeksAnchor" type="text"
+                                                        class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                        name="repeatQuestionnaire"
+                                                        placeholder="No of Times"
+                                                        value="${questionnaireBo.repeatQuestionnaire}"
+                                                        required
+                                                        onkeypress="return isNumber(event, this)"
+                                                        pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+                                                        data-pattern-error="Please enter valid number."
+                                                        maxlength="3"/>
+										<span class='help-block with-errors red-txt'></span>
+									</span>
+                                </div>
+
+                            </div>
+
+                            <!-- Anchordate End -->
+                            <div class="col-md-5 p-none weeklyRegular">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">No. of times to repeat the
+										questionnaire <span class="requiredStar">*</span>
+								</span><br/> <input id="weeks" type="text"
+                                                    class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                    name="repeatQuestionnaire"
+                                                    placeholder="No of Times"
+                                                    value="${questionnaireBo.repeatQuestionnaire}"
+                                                    required
+                                                    onkeypress="return isNumber(event, this)"
+                                                    pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+                                                    data-pattern-error="Please enter valid number."
+                                                    maxlength="3"/>
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="mt-md">
+                            <div class="gray-xs-f mb-xs">End Date</div>
+                            <div class="black-xs-f"
+                                 id="weekEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
+                            <input type="hidden" name="studyLifetimeEnd"
+                                   id="studyWeeklyLifetimeEnd"
+                                   value="${questionnaireBo.studyLifetimeEnd}">
+                        </div>
+                        <div class="mt-lg">
+                            <div class="gray-xs-f mb-xs">Lifetime of each run</div>
+                            <div class="black-xs-f">Until the next run comes up</div>
+                        </div>
+                        <div class="mt-lg">
+                            <div class="gray-xs-f mb-xs">Lifetime of the questionnaire
+                            </div>
+                            <div class="black-xs-f"
+                                 id="weekLifeTimeEnd">${questionnaireBo.studyLifetimeStart}
+                                - ${questionnaireBo.studyLifetimeEnd}</div>
+                        </div>
+                    </div>
+                </form:form>
+                <!-- Monthly Section-->
+                <form:form
+                        action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
+                        name="monthlyFormId" id="monthlyFormId" method="post" role="form"
+                        data-toggle="validator">
+                    <input type="hidden" name="frequency" id="monthlyfrequencyId"
+                           value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="previousFrequency"
+                           id="previousFrequency" value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="id" id="id"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" name="studyId" id="studyId"
+                           value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+                    <input type="hidden" name="questionnairesFrequenciesBo.id"
+                           id="monthFreId"
+                           value="${questionnaireBo.questionnairesFrequenciesBo.id}">
+                    <input type="hidden" name="type" id="type" value="schedule">
+                    <div class="month all mt-lg dis-none">
+                        <div id="monthlyDateId">
+							<span class="gray-xs-f">Select Date/Time (of the month) <span
+                                    class="requiredStar">*</span></span><br/> <span
+                                class="monthlyStartCls form-group m-none dis-inline vertical-align-middle pr-md">
+								<span class=""> <input id="startDateMonthly" type="text"
+                                                       class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                       required placeholder="Choose Date"
+                                                       name="questionnairesFrequenciesBo.frequencyDate"
+                                                       value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"/>
+									<span class='help-block with-errors red-txt'></span>
+							</span>
+							</span> <span
+                                class="form-group m-none dis-inline vertical-align-middle pr-md">
+								<!-- 	                  <span class="gray-xs-f">&nbsp;</span><br/> -->
+								<input id="selectMonthlyTime" type="text"
+                                       class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                       required onclick="timep(this.id)" placeholder="Time"
+                                       name="questionnairesFrequenciesBo.frequencyTime"
+                                       value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+								<span class='help-block with-errors red-txt'></span>
+							</span>
+                            <div
+                                    class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light monthlyStartCls">
+                                If
+                                the selected date is not available in a month, the last day of
+                                the month will be used instead
+                            </div>
+                            <div class="monthlyStartCls dis_inlinetop p-none">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">Start date (pick a date) <span
+                                            class="requiredStar">*</span></span><br/> <input
+                                        id="pickStartDate"
+                                        type="text"
+                                        class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                        placeholder="Choose Start Date" required
+                                        name="studyLifetimeStart"
+                                        value="${questionnaireBo.studyLifetimeStart}"
+                                        readonly="readonly"/> <span
+                                        class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <div class="dis_inlinetop p-none monthlyRegular">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">No. of times to repeat the
+										questionnaire <span class="requiredStar">*</span>
+								</span><br/> <input id="months" type="text"
+                                                    class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                    name="repeatQuestionnaire"
+                                                    placeholder="No of Times" required
+                                                    value="${questionnaireBo.repeatQuestionnaire}"
+                                                    onkeypress="return isNumber(event, this)"
+                                                    pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+                                                    data-pattern-error="Please enter valid number."
+                                                    maxlength="3"/>
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                        </div>
+                        <!-- Anchordate start-->
+                        <!-- <div class="mt-lg"> -->
+                            <%-- <div class="monthlyStartCls dis_inlinetop p-none">
+								<span
+									class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">Start date (pick a date) <span
+										class="requiredStar">*</span></span><br /> <input id="pickStartDate"
+									type="text"
+									class="form-control mt-sm calendar ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+									placeholder="Choose Start Date" required
+									name="studyLifetimeStart"
+									value="${questionnaireBo.studyLifetimeStart}"
+									readonly="readonly" /> <span
+									class='help-block with-errors red-txt'></span>
+								</span>
+							</div> --%>
+                        <div class="monthlyanchorDiv" style="display: none;">
+                            <div class="dis_inlinetop p-none">
+                                <div class=" resetDate dis_inlinetop p-none">
+                                    <div>
+										<span
+                                                class="form-group m-none dis-inline vertical-align-middle pr-md">
+											<span class="gray-xs-f">Start date (pick a date) <span
+                                                    class="requiredStar">*</span></span><br/> <span
+                                                class="pr-md">Anchor
+												Date</span> <span> <select
+                                                class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                title="Select"
+                                                name="questionnairesFrequenciesBo.xDaysSign"
+                                                id="monthlyXSign">
+													<option value="0"
+                                                        ${not questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>+</option>
+													<option value="1"
+                                                        ${questionnaireBo.questionnairesFrequenciesBo.xDaysSign ?'selected':''}>-</option>
+											</select>
+										</span> <span
+                                                class="form-group m-none dis-inline vertical-align-middle">
+												<input id="monthlyxdaysId" type="text"
+                                                       class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                       placeholder="X"
+                                                       name="questionnairesFrequenciesBo.timePeriodFromDays"
+                                                       value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
+                                                       maxlength="3" pattern="[0-9]+"
+                                                       data-pattern-error="Please enter valid number."/> <span
+                                                class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                                class="light-txt opacity06">days</span>
+										</span>
+										</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="dis_inlinetop p-none">
+                                <span class="gray-xs-f">Time <span
+                                        class="requiredStar">*</span></span><br/>
+                                <span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<input id="selectMonthlyTimeAnchor" type="text"
+                                           class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                           required onclick="timep(this.id)" placeholder="Time"
+                                           name="questionnairesFrequenciesBo.frequencyTime"
+                                           value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                            <div class="dis_inlinetop">
+								<span
+                                        class="form-group m-none dis-inline vertical-align-middle pr-md">
+									<span class="gray-xs-f">No. of times to repeat the
+										questionnaire <span class="requiredStar">*</span>
+								</span><br/> <input id="monthsAnchor" type="text"
+                                                    class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                    name="repeatQuestionnaire"
+                                                    placeholder="No of Times" required
+                                                    value="${questionnaireBo.repeatQuestionnaire}"
+                                                    onkeypress="return isNumber(event, this)"
+                                                    pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+                                                    data-pattern-error="Please enter valid number."
+                                                    maxlength="3"/>
+									<span class='help-block with-errors red-txt'></span>
+								</span>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                        <!-- Anchordate End -->
+
+                        <div class="mt-md col-md-12 p-none">
+                            <div class="gray-xs-f mb-xs">End Date</div>
+                            <div class="black-xs-f"
+                                 id="monthEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
+                            <input type="hidden" name="studyLifetimeEnd"
+                                   id="studyMonthlyLifetimeEnd"
+                                   value="${questionnaireBo.studyLifetimeEnd}">
+                        </div>
+                        <div class="mt-lg col-md-12 p-none">
+                            <div class="gray-xs-f mb-xs">Lifetime of each run</div>
+                            <div class="black-xs-f">Until the next run comes up</div>
+                        </div>
+                        <div class="mt-lg col-md-12 p-none">
+                            <div class="gray-xs-f mb-xs">Lifetime of the questionnaire
+                            </div>
+                            <div class="black-xs-f"
+                                 id="monthLifeTimeDate">${questionnaireBo.studyLifetimeStart}
+                                - ${questionnaireBo.studyLifetimeEnd}</div>
+                        </div>
+                    </div>
+                </form:form>
+                <!-- Manually Section-->
+                <form:form
+                        action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}"
+                        name="customFormId" id="customFormId" method="post" role="form"
+                        data-toggle="validator">
+                    <input type="hidden" name="id" id="id"
+                           value="${questionnaireBo.id}">
+                    <input type="hidden" name="studyId" id="studyId"
+                           value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+                    <input type="hidden" name="frequency" id="customfrequencyId"
+                           value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="previousFrequency"
+                           id="previousFrequency" value="${questionnaireBo.frequency}">
+                    <input type="hidden" name="type" id="type" value="schedule">
+                    <div class="manually all mt-lg dis-none">
+                        <div class="gray-xs-f mb-sm">
+                            Select time period <span class="requiredStar">*</span>
+                        </div>
+                        <div class="manuallyContainer">
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
+                                <div class="manually-option mb-md form-group" id="0">
+                                    <input type="hidden"
+                                           name="questionnaireCustomScheduleBo[0].questionnairesId"
+                                           id="questionnairesId" value="${questionnaireBo.id}">
+                                    <span
+                                            class="form-group  dis-inline vertical-align-middle pr-md">
+										<input id="StartDate0" type="text" count='0'
+                                               class="form-control calendar customCalnder cusStrDate"
+                                               name="questionnaireCustomScheduleBo[0].frequencyStartDate"
+                                               value="" placeholder="Start Date"
+                                               onclick='customStartDate(this.id,0);'
+                                               required/> <span
+                                            class='help-block with-errors red-txt'></span>
+									</span> <span class="gray-xs-f mb-sm pr-md align-span-center">
+										to </span> <span
+                                        class="form-group dis-inline vertical-align-middle pr-md">
+										<input id="EndDate0" type="text" count='0'
+                                               class="form-control calendar customCalnder cusEndDate"
+                                               name="questionnaireCustomScheduleBo[0].frequencyEndDate"
+                                               placeholder="End Date"
+                                               onclick='customEndDate(this.id,0);'
+                                               required/> <span
+                                        class='help-block with-errors red-txt'></span>
+									</span> <span
+                                        class="form-group  dis-inline vertical-align-middle pr-md">
+										<input id="customTime0" type="text" count='0'
+                                               class="form-control clock cusTime"
+                                               name="questionnaireCustomScheduleBo[0].frequencyTime"
+                                               placeholder="Time" onclick='timep(this.id);' disabled
+                                               required/>
+										<span class='help-block with-errors red-txt'></span>
+									</span> <span class="addbtn addBtnDis align-span-center mr-md"
+                                                  onclick="addDate();">+</span> <span id="delete"
+                                                                                      class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
+                                                                                      onclick="removeDate(this);"></span>
+                                </div>
+                            </c:if>
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) gt 0}">
+                                <c:forEach
+                                        items="${questionnaireBo.questionnaireCustomScheduleBo}"
+                                        var="questionnaireCustomScheduleBo" varStatus="customVar">
+                                    <div class="manually-option mb-md form-group"
+                                         id="${customVar.index}">
+                                        <input type="hidden"
+                                               name="questionnaireCustomScheduleBo[${customVar.index}].id"
+                                               id="id" value="${questionnaireCustomScheduleBo.id}">
+                                        <input type="hidden"
+                                               name="activeTaskCustomScheduleBo[${customVar.index}].used"
+                                               id="isUsed${customVar.index}"
+                                               value="${questionnaireCustomScheduleBo.used}"> <input
+                                            type="hidden"
+                                            name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId"
+                                            id="questionnairesId"
+                                            value="${questionnaireCustomScheduleBo.questionnairesId}">
+                                        <span
+                                                class="form-group dis-inline vertical-align-middle pr-md">
+											<input id="StartDate${customVar.index}" type="text"
+                                                   count='${customVar.index}'
+                                                   class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} "
+                                                   name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate"
+                                                   value="${questionnaireCustomScheduleBo.frequencyStartDate}"
+                                                   placeholder="Start Date"
+                                                   onclick='customStartDate(this.id,${customVar.index});'
+                                                   required/> <span
+                                                class='help-block with-errors red-txt'></span>
+										</span> <span
+                                            class="gray-xs-f mb-sm pr-md align-span-center">
+											to </span> <span
+                                            class="form-group dis-inline vertical-align-middle pr-md">
+											<input id="EndDate${customVar.index}" type="text"
+                                                   count='${customVar.index}'
+                                                   class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
+                                                   name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate"
+                                                   value="${questionnaireCustomScheduleBo.frequencyEndDate}"
+                                                   placeholder="End Date"
+                                                   onclick='customEndDate(this.id,${customVar.index});'
+                                                   required/>
+											<span class='help-block with-errors red-txt'></span>
+										</span> <span
+                                            class="form-group  dis-inline vertical-align-middle pr-md">
+											<input id="customTime${customVar.index}" type="text"
+                                                   count='${customVar.index}'
+                                                   class="form-control clock cusTime ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
+                                                   name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
+                                                   value="${questionnaireCustomScheduleBo.frequencyTime}"
+                                                   placeholder="Time" onclick='timep(this.id);'
+                                                   required/> <span
+                                            class='help-block with-errors red-txt'></span>
+										</span> <span
+                                            class="addbtn addBtnDis align-span-center mr-md cursor-display"
+                                            onclick="addDate();">+</span> <span id="delete"
+                                                                                class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
+                                                                                onclick="removeDate(this);"></span>
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                        </div>
+                        <div class="manuallyAnchorContainer" style="display: none;">
+                            <!-- anchordate Start -->
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
+                                <div class="manually-anchor-option mb-md form-group" id="0">
+                                    <input type="hidden"
+                                           name="questionnaireCustomScheduleBo[0].questionnairesId"
+                                           id="questionnairesId" value="${questionnaireBo.id}">
+                                    <span
+                                            class="mb-sm pr-md"> <span class="light-txt opacity06">
+											Anchor Date </span>
+									</span> <span> <select
+                                        class="signDropDown selectpicker sign-box selectXSign"
+                                        count='0' title="Select"
+                                        name="questionnaireCustomScheduleBo[0].xDaysSign"
+                                        id="xSign0">
+											<option value="0"
+                                                ${not questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
+											<option value="1"
+                                                ${questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>-</option>
+									</select>
+									</span> <span
+                                        class="form-group m-none dis-inline vertical-align-middle">
+										<input id="xdays0" type="text"
+                                               class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate"
+                                               count='0' placeholder="X"
+                                               name="questionnaireCustomScheduleBo[0].timePeriodFromDays"
+                                               value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
+                                               maxlength="3" required pattern="[0-9]+"
+                                               data-pattern-error="Please enter valid number."/> <span
+                                        class="help-block with-errors red-txt"></span>
+									</span> <span class="mb-sm pr-md"> <span
+                                        class="light-txt opacity06"> days <span
+                                        style="padding-right: 5px; padding-left: 5px">to </span>
+											Anchor Date
+									</span>
+									</span> <span> <select
+                                        class="signDropDown selectpicker sign-box selectYSign"
+                                        count='0' title="Select"
+                                        name="questionnaireCustomScheduleBo[0].yDaysSign"
+                                        id="ySign0">
+											<option value="0"
+                                                ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
+											<option value="1"
+                                                ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
+									</select>
+									</span> <span
+                                        class="form-group m-none dis-inline vertical-align-middle">
+										<input id="ydays0" type="text"
+                                               class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate"
+                                               count='0' placeholder="Y"
+                                               name="questionnaireCustomScheduleBo[0].timePeriodToDays"
+                                               value="${questionnaireCustomScheduleBo.timePeriodToDays}"
+                                               maxlength="3" pattern="[0-9]+"
+                                               data-pattern-error="Please enter valid number."
+                                               required/> <span
+                                        class="help-block with-errors red-txt"></span>
+									</span> <span class="mb-sm pr-md"> <span
+                                        class="light-txt opacity06"> days </span>
+									</span> <span
+                                        class="form-group  dis-inline vertical-align-middle pr-md"
+                                        style="margin-bottom: -13px"> <input id="manualTime0"
+                                                                             type="text"
+                                                                             class="form-control clock"
+                                                                             name="questionnaireCustomScheduleBo[0].frequencyTime"
+                                                                             value="${questionnaireCustomScheduleBo.frequencyTime}"
+                                                                             placeholder="Time"
+                                                                             required/> <span
+                                        class='help-block with-errors red-txt'></span>
+									</span> <span id="addbtn0"
+                                                  class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle mr-sm"
+                                                  onclick="addDateAnchor();">+</span>
+                                    <!-- <span id="deleteAncchor0"
+										class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
+										onclick="removeDateAnchor(this);"></span> -->
+                                </div>
+                            </c:if>
+                            <c:if
+                                    test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) gt 0}">
+                                <c:forEach
+                                        items="${questionnaireBo.questionnaireCustomScheduleBo}"
+                                        var="questionnaireCustomScheduleBo" varStatus="customVar">
+                                    <div class="manually-anchor-option mb-md form-group"
+                                         id="${customVar.index}">
+                                        <input type="hidden"
+                                               name="questionnaireCustomScheduleBo[${customVar.index}].id"
+                                               id="id" value="${questionnaireCustomScheduleBo.id}">
+                                        <input type="hidden"
+                                               name="activeTaskCustomScheduleBo[${customVar.index}].used"
+                                               id="isUsed${customVar.index}"
+                                               value="${questionnaireCustomScheduleBo.used}"> <input
+                                            type="hidden"
+                                            name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId"
+                                            id="questionnairesId"
+                                            value="${questionnaireCustomScheduleBo.questionnairesId}">
+                                        <span class="mb-sm pr-md"> <span
+                                                class="light-txt opacity06"> Anchor Date </span>
+										</span> <span> <select
+                                            class="signDropDown selectpicker sign-box ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                            count='${customVar.index}' title="Select"
+                                            name="questionnaireCustomScheduleBo[${customVar.index}].xDaysSign"
+                                            id="xSign${customVar.index}">
+												<option value="0"
+                                                    ${not questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>+</option>
+												<option value="1"
+                                                    ${questionnaireCustomScheduleBo.xDaysSign ?'selected':''}>-</option>
+										</select>
+										</span> <span
+                                            class="form-group m-none dis-inline vertical-align-middle">
+											<input id="xdays${customVar.index}" type="text"
+                                                   class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                                   count='${customVar.index}' placeholder="X"
+                                                   name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodFromDays"
+                                                   value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
+                                                   maxlength="3" required pattern="[0-9]+"
+                                                   data-pattern-error="Please enter valid number."/> <span
+                                            class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                            class="light-txt opacity06"> days <span
+                                            style="padding-right: 5px; padding-left: 5px">to </span>
+												Anchor Date
+										</span>
+										</span> <span> <select
+                                            class="signDropDown selectpicker sign-box selectYSign ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                            count='${customVar.index}' title="Select"
+                                            name="questionnaireCustomScheduleBo[${customVar.index}].yDaysSign"
+                                            id="ySign${customVar.index}">
+												<option value="0"
+                                                    ${not questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>+</option>
+												<option value="1"
+                                                    ${questionnaireCustomScheduleBo.yDaysSign ?'selected':''}>-</option>
+										</select>
+										</span> <span
+                                            class="form-group m-none dis-inline vertical-align-middle">
+											<input id="ydays${customVar.index}" type="text"
+                                                   class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                                   count='${customVar.index}' placeholder="Y"
+                                                   name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodToDays"
+                                                   value="${questionnaireCustomScheduleBo.timePeriodToDays}"
+                                                   maxlength="3" pattern="[0-9]+"
+                                                   data-pattern-error="Please enter valid number."
+                                                   required/>
+											<span class="help-block with-errors red-txt"></span>
+										</span> <span class="mb-sm pr-md"> <span
+                                            class="light-txt opacity06"> days </span>
+										</span> <span
+                                            class="form-group  dis-inline vertical-align-middle pr-md"
+                                            style="margin-bottom: -13px"> <input
+                                            id="manualTime${customVar.index}" type="text"
+                                            class="form-control clock ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                            name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
+                                            value="${questionnaireCustomScheduleBo.frequencyTime}"
+                                            placeholder="Time" required/> <span
+                                            class='help-block with-errors red-txt'></span>
+										</span> <span id="addbtn${customVar.index}"
+                                                      class="addbtn addBtnDis addbtnZero align-span-center mr-sm cursor-display"
+                                                      onclick="addDateAnchor();">+</span> <span
+                                            id="deleteAncchor${customVar.index}"
+                                            class="sprites_icon delete vertical-align-middle remBtnDis remBtnZero hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
+                                            onclick="removeDateAnchor(this);"></span>
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                        </div>
+                        <!-- anchordate end -->
+                        <div class="mt-md">
+                            <div class="gray-xs-f mb-xs">Default Lifetime of each run</div>
+                            <div class="black-xs-f">As defined by the start and end
+                                times selected above
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-3 mt-xlg mb-lg addNewRuns"
+                             style="display: none;">
+							<span class="checkbox checkbox-inline addNewRuns"> <input
+                                    type="checkbox" id="addNewRunsId"
+                                    value="${questionnaireBo.addNewRuns}"
+                                    <c:if test="${questionnaireBo.addNewRuns}">checked</c:if>>
+								<label for="addNewRunsId"> Add Runs </label>
+							</span>
+                        </div>
+                    </div>
+                </form:form>
+                <div id="ongoingNoteId" class="note-center" style="display: none">Note:
+                    Activities scheduled as ongoing will always be available for
+                    participants to take any number of times, during the lifetime of
+                    the study
+                </div>
+            </div>
+        </div>
     </div>
     <!--  End body tab section -->
     <div class="modal fade" id="myAutoModal" role="dialog">
@@ -1698,11 +1677,11 @@ background:none;
         <!-- Modal content-->
         <div class="modal-content">
 
-            <div class="cust-hdr pt-lg">
-                <button type="button" class="close pull-right pr-4" data-dismiss="modal">&times;</button>
-                <h5 class="modal-title pl-lg">
+            <div class="modal-header cust-hdr pt-lg">
+                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title pl-lg">
                     <b>Setting up a Questionnaire</b>
-                </h5>
+                </h4>
             </div>
 
             <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">

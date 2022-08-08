@@ -47,7 +47,7 @@
         margin-top: 30px;
         float: right;
       }
-
+      
       .langSpecific{
     	position: relative;
   	  }
@@ -188,7 +188,7 @@
         <div class="tab-content pl-xlg pr-xlg">
 
             <!-- Step-level Attributes-->
-            <div id="sla" class="tab-pane fade in active show mt-xlg">
+            <div id="sla" class="tab-pane fade in active mt-xlg">
                 <form:form
                         action="/fdahpStudyDesigner/adminStudies/saveorUpdateParticipantProperties.do?_S=${param._S}"
                         name="participantPropertiesFormId" id="participantPropertiesFormId"
@@ -265,7 +265,7 @@
                                 title="This determines whether the value of the property per participant will be made available to the system before the participant enrolls into the study using the mobile app. As a general guideline, pre-enrollment properties must be used for information that is generic or non-sensitive in nature. Note that this field cannot be edited once the study is launched."></span>
                         </div>
                         <div class="form-group">
-							<span class="radio radio-info radio-inline p-45 pl-1 propTypeCls">
+							<span class="radio radio-info radio-inline p-45 propTypeCls">
 								<%-- <form:radiobutton class="enrollment-cls" id="inlineRadio1"
 									value="PreEnrollment" name="typeOfProperty" path="propertyType"
 									required="required" /> --%> <input type="radio"

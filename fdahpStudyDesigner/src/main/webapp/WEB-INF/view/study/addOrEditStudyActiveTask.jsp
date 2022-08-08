@@ -12,7 +12,7 @@
     cursor: not-allowed;
     pointer-events: none;
   }
-
+  
   .globe{
     	position: relative;
   	  }
@@ -162,15 +162,15 @@
     <!--  Start body tab section -->
     <div class="right-content-body pt-none pl-none pr-none">
 
-        <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId">
-            <li class="nav-item contentClass active"><a data-toggle="tab" class="btn btnCusto nav-link active"
+        <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
+            <li class="contentClass active"><a data-toggle="tab"
                                                href="#content">Content</a></li>
-            <li class="nav-item scheduleTaskClass linkDis" disabled><a class="btn btnCusto nav-link"
+            <li class="scheduleTaskClass linkDis" disabled><a
                     data-toggle="tab" href="#schedule">Schedule</a></li>
         </ul>
         <div class="tab-content pl-xlg pr-xlg">
             <!-- Content-->
-            <div id="content" class="tab-pane fade in active show mt-xlg">
+            <div id="content" class="tab-pane fade in active mt-xlg">
                 <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                 <div class="gray-xs-f mt-md mb-sm">Choose from a list of
                     pre-defined active tasks
@@ -191,7 +191,7 @@
             </div>
             <!-- End Content-->
             <!---  Schedule --->
-            <div id="schedule" class="tab-pane fade in mt-xlg"></div>
+            <div id="schedule" class="tab-pane fade mt-xlg"></div>
         </div>
     </div>
     <!--  End body tab section -->
@@ -244,7 +244,6 @@
         $("#targetOptionId")
         .change(
             function () {
-            debugger
               console.log($(this).val());
               var taskId = $(this).val();
               if (taskId == 1) {
@@ -286,7 +285,6 @@
 
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
-            debugger;
           let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           let isAutoSaved = $('#isAutoSavedParent').val();
           $(".changeContent").load(
@@ -339,7 +337,6 @@
 
         function loadActiveSchedule(changeTabSchedule) {
           if (changeTabSchedule) {
-          debugger;
             $("#schedule")
             .load(
                 "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}",

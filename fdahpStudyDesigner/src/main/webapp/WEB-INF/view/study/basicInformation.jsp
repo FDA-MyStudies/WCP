@@ -32,6 +32,7 @@
   right:-14px !important;
   margin-top:6% !important;
   }
+ 
 </style>
 
 <!-- ============================================================== -->
@@ -57,10 +58,11 @@
                     <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
-                                id="studyLanguage" name="studyLanguage" title="Select">
+                                id="studyLanguage" name="studyLanguage" title="Select"><span>vhf</span>
                             <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'en')) ?'selected':''}>
                                 English
                             </option>
+                            
                             <c:forEach items="${languageList}" var="language">
                                 <option value="${language.key}"
                                     ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
@@ -190,7 +192,16 @@
                     <div class="gray-xs-f mb-xs">
                         Study Category<span class="requiredStar"> *</span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group ">
+                      <select class="form-control selectpicker aq-select aq-select-form elaborateClass" 
+                      id="category" name="category" required title="Select">
+                      <c:forEach items="${categoryList}" var="category">
+                        <option value="${category.id}"
+                            ${studyBo.category eq category.id ?'selected':''}>${category.value}</option>
+                    </c:forEach>
+                      </select>
+                    </div>
+                    <!-- <div class="form-group">
                         <select
                                 class="selectpicker aq-select aq-select-form elaborateClass"
                                 id="category" name="category" required title="Select">
@@ -200,7 +211,7 @@
                             </c:forEach>
                         </select>
                         <div class="help-block with-errors red-txt"></div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-6 pr-none">
                     <div class="gray-xs-f mb-xs">

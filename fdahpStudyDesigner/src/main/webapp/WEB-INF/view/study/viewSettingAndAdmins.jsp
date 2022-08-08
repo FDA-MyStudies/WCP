@@ -239,7 +239,7 @@
                     <span class="study-addbtn changeView" id="addLangBtn">+</span>
                 </div>
                 <!-- Selected Language items -->
-                <div class="study-selected mt-md" id="selectedLanguages">
+                <div class="study-selected mt-md mb-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
                         <input type="hidden" class="stdCls" id="${stdLang.key}"
                                value="${stdLang.key}">
@@ -252,7 +252,7 @@
                     </c:forEach>
                 </div>
             </div>
-            <br>
+           
 
 
             <!-- Start Section-->
@@ -437,7 +437,7 @@
                                 <td><span class="dis-ellipsis"
                                           title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span>
                                 </td>
-                                <td><span class="radio radio-info  radio-inline p-45">
+                                <td><span class="radio radio-info  radio-inline">
 											<input type="radio" id="inlineRadio1${perm.userId}"
                                                    class="radcls" value="0"
                                                    name="view${perm.userId}"
@@ -445,14 +445,14 @@
 											<label for="inlineRadio1${perm.userId}"></label>
 									</span></td>
                                 <td align="center"><span
-                                        class="radio radio-info radio-inline p-45"> <input
+                                        class="radio radio-info radio-inline"> <input
                                         type="radio" id="inlineRadio2${perm.userId}" class="radcls"
                                         value="1" name="view${perm.userId}"
                                         <c:if test="${perm.viewPermission}">checked</c:if>> <label
                                         for="inlineRadio2${perm.userId}"></label>
 									</span></td>
                                 <td align="center"><span
-                                        class="radio radio-info radio-inline p-45"> <input
+                                        class="radio radio-info radio-inline"> <input
                                         type="radio" id="inlineRadio3${perm.userId}"
                                         class="radcls leadCls" value="" name="projectLead"
                                         <c:if test="${perm.projectLead eq 1}">checked</c:if>>
@@ -1133,17 +1133,17 @@ var idleTime = 0;
           + '" role="row" class="studyAdminRowCls" studyUserId="' + userId + '">';
       domStr = domStr + '<td><span class="dis-ellipsis" title="' + DOMPurify.sanitize(name) + '">'
           + DOMPurify.sanitize(name) + '</span></td>';
-      domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">' +
+      domStr = domStr + '<td><span class="radio radio-info radio-inline">' +
           '<input type="radio" id="inlineRadio1' + userId + '" value="0" name="view' + userId
           + '" checked>' +
           '<label for="inlineRadio1' + userId + '"></label>' +
           '</span></td>';
-      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">' +
+      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline">' +
           '<input type="radio" id="inlineRadio2' + userId + '" value="1" name="view' + userId + '">'
           +
           '<label for="inlineRadio2' + userId + '"></label>' +
           '</span></td>';
-      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">' +
+      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline">' +
           '<input type="radio" id="inlineRadio3' + userId + '" class="leadCls" name="projectLead">'
           +
           '<label for="inlineRadio3' + userId + '"></label>' +

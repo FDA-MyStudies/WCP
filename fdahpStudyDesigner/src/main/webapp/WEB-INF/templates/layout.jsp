@@ -32,7 +32,6 @@
 
 <!-- Vendor CSS -->
 <link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
-<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
 <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.css">
 
 <link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-timepicker.min.css">
@@ -67,6 +66,30 @@
 
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css">
 
+<style>
+
+/* after bootstrap from 3.3.7 to 4.6.1 migration dropdown caret icon not worked so added extra CSS here */
+
+.dropdown-toggle::after {
+    display: inline-block !important;
+    margin-left: 0.255em !important;
+    vertical-align: 0.255em !important;
+    content: "" !important;
+    border-top: 0.3em solid !important;
+    border-right: 0.3em solid transparent !important;
+    border-bottom: 0 !important;
+    border-left: 0.3em solid transparent !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #262626 !important;
+    text-decoration: none !important;
+    background-color: #f5f5f5 !important;
+}
+
+
+
+</style>
 
 
 <!-- Head Libs -->

@@ -277,7 +277,7 @@
                     </c:if>
                     <c:if
                             test="${fn:length(comprehensionQuestionBo.responseList) gt 0}">
-                        <div class="col-md-12 p-none">
+                        <div class="row col-md-12 p-none">
                             <div class='col-md-6 pl-none'>
                                 <div class="gray-xs-f mb-xs">
                                     Answer Options (1 to 150 characters)<span
@@ -297,7 +297,7 @@
                         </div>
                         <c:forEach items="${comprehensionQuestionBo.responseList}"
                                    var="responseBo" varStatus="responseBoVar">
-                            <div class="ans-opts col-md-12 p-none"
+                            <div class="ans-opts row col-md-12 p-none"
                                  id="${responseBoVar.index}">
                                 <div class='col-md-6 pl-none'>
                                     <div class='form-group'>

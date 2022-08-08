@@ -1,4 +1,4 @@
-appNotificationFormId<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -9,12 +9,7 @@ appNotificationFormId<%@ page language="java" contentType="text/html" pageEncodi
 <head>
 <meta charset="UTF-8">
 </head>
-<style>
-#appNotificationFormId
-{
-display:contents;
-}
-</style>
+
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
 	<!-- widgets section-->
@@ -33,7 +28,7 @@ display:contents;
 </div>
 <form:form
 	action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}"
-	data-toggle="validator" role="form" id="appNotificationFormId"
+	data-toggle="validator" role="form" id="appNotificationFormId" class="display_content"
 	method="post" autocomplete="off">
 	<input type="hidden" name="buttonType" id="buttonType">
 	<input type="hidden" name="notificationId"

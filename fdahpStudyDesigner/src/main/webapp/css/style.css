@@ -1988,10 +1988,10 @@ text-align:left !important;
 .wid20 {
 	width: 20%;
 }
-
+/*
 option:first-child {
 	color: #ccc;
-}
+} */
 
 #accessCodeForm {
 	width: 384px;
@@ -2753,4 +2753,25 @@ margin-right:0px !important;
 box-shadow:none !important;
 outline:none !important;
 }
+
+/* after bootstrap from 3.3.7 to 4.6.1 migration added extra CSS here */
+.close {
+	background : transparent !important;
+}
+
+
+.form-group {
+    margin-bottom: 0rem;
+}
+
+table.dataTable {
+    clear: both;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: separate !important;
+}
+
+
  /* css end here */

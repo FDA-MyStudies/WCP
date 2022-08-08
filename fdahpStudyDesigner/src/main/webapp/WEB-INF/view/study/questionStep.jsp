@@ -212,7 +212,7 @@ input[type=number] {
 
 			<c:if
 				test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
-				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+				 <!-- <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
 					<select
 						class="selectpicker  aq-select aq-select-form studyLanguage langSpecific"
 						id="studyLanguage" name="studyLanguage" title="Select">
@@ -224,7 +224,21 @@ input[type=number] {
 								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
 						</c:forEach>
 					</select>
-				</div>
+				</div> -->
+				
+				<div class="form-group">
+    <label for="exampleFormControlSelect1">Example select</label>
+    <select class="form-control" id="studyLanguage" name="studyLanguage" title="Select" >
+     <option value="en"
+							${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+							English</option>
+						<c:forEach items="${languageList}" var="language">
+							<option value="${language.key}"
+								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+						</c:forEach>
+    </select>
+  </div>
+  
 			</c:if>
 
 			<c:if
@@ -236,7 +250,7 @@ input[type=number] {
 						<select
 						class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
 						title="Select" disabled>
-							<option selected>English</option>
+							<option selected></option>
 					</select>
 					</span>
 				</div>

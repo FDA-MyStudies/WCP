@@ -827,8 +827,17 @@ select.bs-select-hidden, select.selectpicker {
 .review-tabs>li>a:focus, .review-tabs>li>a:hover {
 	background: #f3f6f8;
 }
-
-.review-tabs li a {
+.review-tabs li {
+	background: #f3f6f8;
+	margin: 0px;
+               padding: 10px 30px;
+               color: #a8aaab;
+               border-left: 0px;
+               text-transform: none;
+               font-size: 16px;
+                border-bottom: 1px solid #dee2e6;
+}
+.review-tabs li a  {
 	margin: 0px;
 	padding: 10px 30px;
 	color: #a8aaab;
@@ -837,32 +846,56 @@ select.bs-select-hidden, select.selectpicker {
 	font-size: 16px;
 }
 
-.review-tabs li.active a {
+.review-tabs li.active  {
 	color: #000 !important;
+	background:#fff !important;
+	border-bottom:none !important;
 }
+.review-tabs li a.active {
+color: #000 !important;
+	background:#fff !important;
+	border-bottom:none !important;
+}
+.review-tabs li:has(> a.active) {
+ color: #000 !important;
+ 	background:#fff !important;
+ 	border-bottom:none !important;
 
-.review-tabs li:nth-child(2) a {
+ }
+
+.review-tabs li:nth-child(2)  {
 	border-right: 1px solid #ddd;
 	border-left: 1px solid #ddd;
 }
 
-.review-tab>li.active>a, .review-tab>li.active>a:focus, .review-tab>li.active>a:hover
+
+.review-tabs>li.active>a, .review-tabs>li.active>a:focus, .review-tabs>li.active>a:hover
 	{
 	border-left: 0px;
+	background:#fff !important;
+	border-bottom:none !important;
 }
 
 .review-tabs li:first-child a {
 	border-left: none;
 }
 
-.review-tabs li.active:first-child a {
-	border-left: none;
-	border-right: none;
+/*new tab css*/
+.customTabs .nav-link{
+font-size: 16px;
+padding:10px 30px;
+color: #95a2ab;
+border-bottom:1px solid  #ddd;
+}
+.customTabs li:nth-child(2)  {
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
 }
 
-.review-tabs li {
-	background: #f3f6f8;
+.customTabs .nav-link.active{
+color:#000 !important;
 }
+
 
 .italic-txt {
 	font-style: italic;
@@ -1881,7 +1914,12 @@ input[type=radio]:disabled+label::after {
 }
 
 #studyAdminsTable td {
-	padding-left: 10px !important;
+	padding-left: 5px !important;
+	padding-right:5px !important;
+	text-align:center !important;
+}
+#studyAdminsTable td:first-child{
+text-align:left !important;
 }
 
 .ellipse {
@@ -2685,3 +2723,37 @@ width:257px;
 .dominate{
 	z-index: 1301 !important;
 }
+.btn-light {
+    color: #000 !important;
+    background-color: #fff !important;
+    border-color: #ccc !important;
+}
+.btn-light:focus{
+outline:none !important;
+box-shadow:none !important;
+}
+.card-body{
+border: 1px solid rgba(0,0,0,.125);
+}
+.display-flex{
+display:flex;
+}
+
+
+.select{
+background:url("../images/icons/delete.png");
+ }
+
+
+.btnCusto{
+margin-left:0px !important;
+margin-right:0px !important;
+}
+.btnCusto:focus{
+box-shadow:none !important;
+outline:none !important;
+}
+.close{
+background:none !important;
+}
+ /* css end here */

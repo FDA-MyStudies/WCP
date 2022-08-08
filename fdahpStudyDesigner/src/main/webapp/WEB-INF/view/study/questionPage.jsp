@@ -249,11 +249,17 @@ input[type=number] {
         name="questionStepId" id="questionStepId" method="post"
         data-toggle="validator" role="form" enctype="multipart/form-data">
     <div class="right-content-body pt-none pl-none pr-none">
-        <ul class="nav nav-tabs review-tabs gray-bg">
-            <li class="questionLevel active"><a data-toggle="tab"
-                                                href="#qla">Question-level Attributes</a></li>
-            <li class="responseLevel"><a data-toggle="tab" href="#rla">Response-level
-                Attributes</a></li>
+        <ul class="nav nav-tabs customTabs gray-bg">
+            <li class="nav-item questionLevel active">
+           <a class="btn btnCusto active nav-link" data-toggle="tab" href="#qla">Question-level Attributes</a>
+            <!--<button class="nav-link active"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="true">Question-level Attributes</button>
+                                            -->
+                                                </li>
+            <li class="nav-item responseLevel">
+       <a class="btn btnCusto nav-link" data-toggle="tab" href="#rla">Response-level Attributes</a>
+       <!-- <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attributes</button>
+                -->
+                </li>
         </ul>
         <div class="tab-content pl-xlg pr-xlg">
             <!-- Step-level Attributes-->
@@ -290,7 +296,7 @@ input[type=number] {
             <input type="hidden" id="mlOtherText" value="${questionLangBO.otherText}">
             <input type="hidden" id="repeatable" value="${questionnairesStepsBo.repeatable}">
             <!---  Form-level Attributes --->
-            <div id="qla" class="tab-pane fade active in mt-xlg">
+            <div id="qla" class="tab-pane fade show active in mt-xlg">
                 <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">
                         Question Short Title or Key (1 to 15 characters) <span
@@ -332,7 +338,7 @@ input[type=number] {
                 <div>
                     <div class="gray-xs-f mb-xs">Is this a Skippable Question?</div>
                     <div>
-							<span class="radio radio-info radio-inline p-45"> <input
+							<span class="radio radio-info radio-inline p-45 pl-1"> <input
                                     type="radio" id="skiappableYes" value="Yes" name="skippable"
                                 ${empty questionsBo.skippable  || questionsBo.skippable =='Yes' ? 'checked':''}>
 								<label for="skiappableYes">Yes</label>
@@ -2132,141 +2138,167 @@ input[type=number] {
                       
                       <tr class="text-choice" id="${subtype.index}">
                        
-                        <td>  <div class="panel panel-default">
-                          <!-- <input type="hidden" name=""> -->
-                          
-                          <div class="panel-heading">
-                              <div class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion"
-                                    href="#collapse${subtype.index}" aria-expanded="true">
-                                 
-                                      <div class="text-left dis-inline">
-                                        <div class="gray-choice-f mb-xs mt-md">
-                                          Text Choices 
-                                           
-                                          <input type="text" class="index1 reset_val disabled_num"
-                                          name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
-                                           id="displayTextChoicesequenceNumber${subtype.index}"
-                                          <c:if test="${empty questionResponseSubType.sequenceNumber}">
-						                                value="${subtype.index+1}"
-						                                </c:if>
-						                                <c:if test="${not empty questionResponseSubType.sequenceNumber}">
-						                                value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
-						                                </c:if>					                                
-						                                >
+                        <td> 
+                          <div class="accordion" id="accordionExample1">
 
-                                          <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                            title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
-                                        </div>
-                                        
-                                      </div>
-                                      <div class="text-right dis-inline pull-right">
-                                        
-                                          <span class="ml-lg imageBg"><img class="arrow"
-                                                                          src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
-                                      </div>
-                                  </a>
-                              </div>
-                          </div>
-                          <div id="collapse${subtype.index}" class="panel-collapse collapse in">
-                            <div class="panel-body pt-none">
+                            <div class="card">
+                              <div class="card-header display-flex" id="heading">
 
 
-                                    <div class="mt-xlg" id="${subtype.index}">
-                                        
-                                        <div class="col-md-3 pl-none">
-                                            <div class="gray-xs-f mb-xs">
-                                                Display Text (1 to 100 characters)<span
-                                                    class="requiredStar">*</span>
-                                            </div>
-                                            <div class="form-group mb-none">
-                                                <input type="text"
-                                                       class="form-control TextChoiceRequired lang-specific"
-                                                       name="questionResponseSubTypeList[${subtype.index}].text"
-                                                       id="displayTextChoiceText${subtype.index}"
-                                                       value="${fn:escapeXml(questionResponseSubType.text)}"
-                                                       maxlength="100">
+                                <div class="text-left dis-inline">
+                                  <div class="gray-choice-f mb-xs mt-md">
+                                    Text Choices 
+                                     
+                                    <input type="text" class="index1 reset_val disabled_num"
+                                    name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                     id="displayTextChoicesequenceNumber${subtype.index}"
+                                    <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                                      value="${subtype.index+1}"
+                                      </c:if>
+                                      <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                                      value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                                      </c:if>					                                
+                                      >
 
-                                                       <!-- <input type="hidden"  class="reset_val"
-                                                       name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
-                                                       id="displayTextChoicesequenceNumber${subtype.index}"
-                                                       
-                                                       <c:if test="${empty questionResponseSubType.sequenceNumber}">
-                                                       value="${subtype.index+1}"
-                                                       </c:if>
-                                                       <c:if test="${not empty questionResponseSubType.sequenceNumber}">
-                                                       value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
-                                                       </c:if>					                                
-                                                       > -->
-
-                                                <div class="help-block with-errors red-txt"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 pl-none">
-                                            <div class="gray-xs-f mb-xs">
-                                                Value (1 to 100 characters)<span
-                                                    class="requiredStar">*</span>
-                                            </div>
-                                            <div class="form-group mb-none">
-                                                <input type="text"
-                                                       class="form-control TextChoiceRequired textChoiceVal"
-                                                       name="questionResponseSubTypeList[${subtype.index}].value"
-                                                       id="displayTextChoiceValue${subtype.index}"
-                                                       value="${fn:escapeXml(questionResponseSubType.value)}"
-                                                       maxlength="100">
-                                                <div class="help-block with-errors red-txt"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 pl-none">
-                                            <div class="gray-xs-f mb-xs">
-                                                Mark as exclusive ? <span
-                                                    class="requiredStar">*</span>
-                                            </div>
-                                            <div class="form-group">
-                                                <select
-                                                        name="questionResponseSubTypeList[${subtype.index}].exclusive"
-                                                        id="exclusiveId${subtype.index}"
-                                                        index="${subtype.index}"
-                                                        title="select"
-                                                        data-error="Please choose one option"
-                                                        class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive"
-                                                        <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>>
-                                                    <option value="Yes"
-                                                        ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>
-                                                        Yes
-                                                    </option>
-                                                    <option value="No"
-                                                        ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>
-                                                        No
-                                                    </option>
-                                                </select>
-                                                <div class="help-block with-errors red-txt"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 p-none display__flex__center">
-                                            <div class="col-md-10 pl-none">
-                                                <div class="gray-xs-f mb-xs">Description(1 to 150
-                                                    characters)
-                                                </div>
-                                                <div class="form-group">
-														<textarea class="form-control lang-specific"
-                                                                  name="questionResponseSubTypeList[${subtype.index}].description"
-                                                                  id="displayTextChoiceDescription${subtype.index}"
-                                                                  value="${fn:escapeXml(questionResponseSubType.description)}"
-                                                                  maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 pl-none pt-xlg">
-													<span class="addBtnDis addbtn align-span-center top6"
-                                                          onclick='addTextChoice();'>+</span> <span
-                                                    class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
-                                                    onclick='removeTextChoice(this);'></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Section End -->
+                                    <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                      title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                   </div>
-                                </div></div></td></tr> 
+                                  
+                                </div>
+                                      <div class="text-right dis-inline pull-right">
+
+                                          <a class=" text-left"  data-toggle="collapse" href="#collapse${subtype.index}" aria-expanded="true" aria-controls="collapseOne">
+                                           <span class="ml-lg imageBg">
+                                                                                       <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                                                                       <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                                                        width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
+                                                                                        preserveAspectRatio="xMidYMid meet">
+
+                                                                                       <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                                                       fill="#000000" stroke="none">
+                                                                                       </g>
+                                                                                       </svg>
+                                                                                       </span>
+                                          </a>
+
+
+
+                                      </div>
+
+
+
+
+                              </div>
+
+                              <div id="collapse${subtype.index}" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample1">
+                                <div class="panel-body pt-none">
+
+
+                                  <div class="row mt-xlg" id="${subtype.index}">
+                                      
+                                      <div class="col-md-3 pl-none">
+                                          <div class="gray-xs-f mb-xs">
+                                              Display Text (1 to 100 characters)<span
+                                                  class="requiredStar">*</span>
+                                          </div>
+                                          <div class="form-group mb-none">
+                                              <input type="text"
+                                                     class="form-control TextChoiceRequired lang-specific"
+                                                     name="questionResponseSubTypeList[${subtype.index}].text"
+                                                     id="displayTextChoiceText${subtype.index}"
+                                                     value="${fn:escapeXml(questionResponseSubType.text)}"
+                                                     maxlength="100">
+
+                                                     <!-- <input type="hidden"  class="reset_val"
+                                                     name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
+                                                     id="displayTextChoicesequenceNumber${subtype.index}"
+                                                     
+                                                     <c:if test="${empty questionResponseSubType.sequenceNumber}">
+                                                     value="${subtype.index+1}"
+                                                     </c:if>
+                                                     <c:if test="${not empty questionResponseSubType.sequenceNumber}">
+                                                     value="${fn:escapeXml(questionResponseSubType.sequenceNumber)}"
+                                                     </c:if>					                                
+                                                     > -->
+
+                                              <div class="help-block with-errors red-txt"></div>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-3 pl-none">
+                                          <div class="gray-xs-f mb-xs">
+                                              Value (1 to 100 characters)<span
+                                                  class="requiredStar">*</span>
+                                          </div>
+                                          <div class="form-group mb-none">
+                                              <input type="text"
+                                                     class="form-control TextChoiceRequired textChoiceVal"
+                                                     name="questionResponseSubTypeList[${subtype.index}].value"
+                                                     id="displayTextChoiceValue${subtype.index}"
+                                                     value="${fn:escapeXml(questionResponseSubType.value)}"
+                                                     maxlength="100">
+                                              <div class="help-block with-errors red-txt"></div>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-2 pl-none">
+                                          <div class="gray-xs-f mb-xs">
+                                              Mark as exclusive ? <span
+                                                  class="requiredStar">*</span>
+                                          </div>
+                                          <div class="form-group">
+                                              <select
+                                                      name="questionResponseSubTypeList[${subtype.index}].exclusive"
+                                                      id="exclusiveId${subtype.index}"
+                                                      index="${subtype.index}"
+                                                      title="select"
+                                                      data-error="Please choose one option"
+                                                      class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive"
+                                                      <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>>
+                                                  <option value="Yes"
+                                                      ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>
+                                                      Yes
+                                                  </option>
+                                                  <option value="No"
+                                                      ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>
+                                                      No
+                                                  </option>
+                                              </select>
+                                              <div class="help-block with-errors red-txt"></div>
+                                          </div>
+                                      </div>
+                                      <div class="row col-md-12 p-none display__flex__center">
+                                          <div class="col-md-10 pl-none">
+                                              <div class="gray-xs-f mb-xs">Description(1 to 150
+                                                  characters)
+                                              </div>
+                                              <div class="form-group">
+                          <textarea class="form-control lang-specific"
+                                                                name="questionResponseSubTypeList[${subtype.index}].description"
+                                                                id="displayTextChoiceDescription${subtype.index}"
+                                                                value="${fn:escapeXml(questionResponseSubType.description)}"
+                                                                maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-2 pl-none pt-xlg">
+                        <span class="addBtnDis addbtn align-span-center top6"
+                                                        onclick='addTextChoice();'>+</span> <span
+                                                  class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
+                                                  onclick='removeTextChoice(this);'></span>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Section End -->
+                                </div>
+                              </div>
+                            </div>
+
+
+                          </div>
+                          
+                          
+                         
+                            
+                            
+                            </td></tr> 
 
                                 </c:forEach>
                             </c:when>
@@ -2275,158 +2307,206 @@ input[type=number] {
 
                               <tr class="text-choice otherOptionChecked" id="0">
                                 <td>
-                                  <div class="panel panel-default">
-                                <input type="hidden" name="">
-                                  <div class="panel-heading">
-                                      <div class="panel-title">
-                                          <a data-toggle="collapse" data-parent="#accordion"
-                                            href="#collapse_0" aria-expanded="true">
-                                              <div class="text-left dis-inline">
-                                                <div class="gray-choice-f mb-xs mt-md">
-                                                  Text Choices 
-                                                  <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
-                                                  id="displayTextChoicesequenceNumber0" value="1" />
-            
-                                                   <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                                    title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
-                                                </div>
-                                                
-                                              </div>
+
+                                  <div class="accordion" id="accordionExample">
+                                    <input type="hidden" name="">
+
+                                    <div class="card">
+                                      <div class="card-header display-flex" id="headingOne">
+        
+        
+                                        <div class="text-left dis-inline">
+                                          <div class="gray-choice-f mb-xs mt-md">
+                                            Text Choices 
+                                            <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
+                                            id="displayTextChoicesequenceNumber0" value="1" />
+      
+                                             <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                              title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
+                                          </div>
+                                          
+                                        </div>
                                               <div class="text-right dis-inline pull-right">
-                                                
-                                                  <span class="ml-lg imageBg"><img class="arrow"
-                                                                                  src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
+        
+                                                  <a class=" text-left"  data-toggle="collapse" href="#collapse_0" aria-expanded="true" aria-controls="collapseOne">
+                                                    <span class="ml-lg imageBg">
+                                                                                                <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                                                                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                                                                 width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
+                                                                                                 preserveAspectRatio="xMidYMid meet">
+
+                                                                                                <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                                                                fill="#000000" stroke="none">
+                                                                                                </g>
+                                                                                                </svg>
+                                                                                                </span>
+                                                  </a>
+        
+        
+        
                                               </div>
-                                          </a>
+        
+        
+        
+        
                                       </div>
+        
+                                      <div id="collapse_0" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body pt-none">
+
+
+
+                                          <!-- Section Start -->
+                                          <div class="row mt-xlg">
+                                              <div class="col-md-3 pl-none">
+                                                  <div class="gray-xs-f mb-xs">
+                                                     Display Text (1 to 100 characters)<span
+                                                          class="requiredStar">*</span>
+                                                  </div>
+                                                  <div class="form-group mb-none">
+                                                      <input type="text"
+                                                             class="form-control TextChoiceRequired lang-specific"
+                                                             name="questionResponseSubTypeList[0].text"
+                                                             id="displayTextChoiceText0"
+                                                             value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}"
+                                                             maxlength="100">
+          
+                                                             <!-- <input type="text"  class="reset_val"
+                                                             name="questionResponseSubTypeList[0].sequenceNumber"
+                                                             id="displayTextChoicesequenceNumber0" value="0"> -->
+          
+                                                      <div class="help-block with-errors red-txt"></div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-3 pl-none">
+                                                  <div class="gray-xs-f mb-xs">
+                                                      Value (1 to 100 characters)<span
+                                                          class="requiredStar">*</span>
+                                                  </div>
+                                                  <div class="form-group mb-none">
+                                                      <input type="text"
+                                                             class="form-control TextChoiceRequired textChoiceVal"
+                                                             name="questionResponseSubTypeList[0].value"
+                                                             id="displayTextChoiceValue0"
+                                                             value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}"
+                                                             maxlength="100">
+                                                      <div class="help-block with-errors red-txt"></div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-2 pl-none">
+                                                  <div class="gray-xs-f mb-xs">
+                                                      Mark as exclusive ? <span class="requiredStar">*</span>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <select name="questionResponseSubTypeList[0].exclusive"
+                                                              id="exclusiveId0" index="0" title="select"
+                                                              data-error="Please choose one option"
+                                                              class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive"
+                                                              <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>>
+                                                          <option value="Yes"
+                                                              ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>
+                                                              Yes
+                                                          </option>
+                                                          <option value="No"
+                                                              ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>
+                                                              No
+                                                          </option>
+                                                      </select>
+                                                      <div class="help-block with-errors red-txt"></div>
+                                                  </div>
+                                              </div>
+                                              <div class="row col-md-12 p-none display__flex__center">
+                                                  <div class="col-md-10 pl-none">
+                                                      <div class="gray-xs-f mb-xs">
+                                                          Description(1 to 150 characters) <span
+                                                              class="requiredStar">*</span>
+                                                      </div>
+                                                      <div class="form-group">
+                                    <textarea class="form-control lang-specific"
+                                                                        name="questionResponseSubTypeList[0].description"
+                                                                        id="displayTextChoiceDescription0"
+                                                                        value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
+                                                                        maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-2 pl-none pt-xlg">
+                                  <span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                                onclick='addTextChoice();'>+</span> <span
+                                                          class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
+                                                          onclick='removeTextChoice(this);'></span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <!-- Section End -->
+                                        </div>
+                                      </div>
+                                    </div>
+        
+        
                                   </div>
-                            <div id="collapse_0" class="panel-collapse collapse in">
-                                <div class="panel-body pt-none">
+                                </td>
 
 
-
-                                <!-- Section Start -->
-                                <div class="mt-xlg">
-                                    <div class="col-md-3 pl-none">
-                                        <div class="gray-xs-f mb-xs">
-                                           Display Text (1 to 100 characters)<span
-                                                class="requiredStar">*</span>
-                                        </div>
-                                        <div class="form-group mb-none">
-                                            <input type="text"
-                                                   class="form-control TextChoiceRequired lang-specific"
-                                                   name="questionResponseSubTypeList[0].text"
-                                                   id="displayTextChoiceText0"
-                                                   value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}"
-                                                   maxlength="100">
-
-                                                   <!-- <input type="text"  class="reset_val"
-                                                   name="questionResponseSubTypeList[0].sequenceNumber"
-                                                   id="displayTextChoicesequenceNumber0" value="0"> -->
-
-                                            <div class="help-block with-errors red-txt"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 pl-none">
-                                        <div class="gray-xs-f mb-xs">
-                                            Value (1 to 100 characters)<span
-                                                class="requiredStar">*</span>
-                                        </div>
-                                        <div class="form-group mb-none">
-                                            <input type="text"
-                                                   class="form-control TextChoiceRequired textChoiceVal"
-                                                   name="questionResponseSubTypeList[0].value"
-                                                   id="displayTextChoiceValue0"
-                                                   value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].value)}"
-                                                   maxlength="100">
-                                            <div class="help-block with-errors red-txt"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 pl-none">
-                                        <div class="gray-xs-f mb-xs">
-                                            Mark as exclusive ? <span class="requiredStar">*</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <select name="questionResponseSubTypeList[0].exclusive"
-                                                    id="exclusiveId0" index="0" title="select"
-                                                    data-error="Please choose one option"
-                                                    class="selectpicker <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive"
-                                                    <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if>>
-                                                <option value="Yes"
-                                                    ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>
-                                                    Yes
-                                                </option>
-                                                <option value="No"
-                                                    ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>
-                                                    No
-                                                </option>
-                                            </select>
-                                            <div class="help-block with-errors red-txt"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 p-none display__flex__center">
-                                        <div class="col-md-10 pl-none">
-                                            <div class="gray-xs-f mb-xs">
-                                                Description(1 to 150 characters) <span
-                                                    class="requiredStar">*</span>
-                                            </div>
-                                            <div class="form-group">
-													<textarea class="form-control lang-specific"
-                                                              name="questionResponseSubTypeList[0].description"
-                                                              id="displayTextChoiceDescription0"
-                                                              value="${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}"
-                                                              maxlength="150">${fn:escapeXml(questionResponseSubType.questionResponseSubTypeList[0].description)}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 pl-none pt-xlg">
-												<span class="addBtnDis addbtn mr-sm align-span-center top6"
-                                                      onclick='addTextChoice();'>+</span> <span
-                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
-                                                onclick='removeTextChoice(this);'></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Section End -->
-                              </div>
-                            </div></div></td></tr> 
+                      
+                      </tr> 
                           <!-- End panel-->
 
 
 
                     <!-- Start panel-->
-                    <tr class="text-choice otherOptionChecked1"  id="1">       
+                    <tr class="text-choice otherOptionChecked1"  id="1"> 
+                      
                       <td>
-                  <div class="panel panel-default" >
-                    <input type="hidden" name="">
-                    <div class="panel-heading">
-                        <div class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                              href="#collapse_1" aria-expanded="true">
-                                <div class="text-left dis-inline">
-                                  <div class="gray-choice-f mb-xs mt-md">
-                                    Text Choices   
-                                    
-                                    <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
-                                    id="displayTextChoicesequenceNumber1" value="2" /> 
 
-                                    <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                      title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
-                                  </div>
+                        <div class="accordion" id="accordionExample">
+                          <input type="hidden" name="">
+
+                          <div class="card">
+                            <div class="card-header display-flex" id="headingTwo">
+
+
+                              <div class="text-left dis-inline">
+                                <div class="gray-choice-f mb-xs mt-md">
+                                  Text Choices   
                                   
+                                  <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
+                                  id="displayTextChoicesequenceNumber1" value="2" /> 
+
+                                  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                    title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
                                 </div>
-                                <div class="text-right dis-inline pull-right">
-                                  
-                                    <span class="ml-lg imageBg"><img class="arrow"
-                                                                    src="/fdahpStudyDesigner/images/icons/slide-down.png"/></span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-   <div id="collapse_1" class="panel-collapse collapse in">
-       <div class="panel-body pt-none">
+                                
+                              </div>
+                                    <div class="text-right dis-inline pull-right">
+
+                                        <a class=" text-left"  data-toggle="collapse" href="#collapse_1" aria-expanded="true" aria-controls="collapseOne">
+                                         <span class="ml-lg imageBg">
+                                                                                     <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                                                                     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                                                      width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
+                                                                                      preserveAspectRatio="xMidYMid meet">
+
+                                                                                     <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                                                     fill="#000000" stroke="none">
+                                                                                     </g>
+                                                                                     </svg>
+                                                                                     </span>
+                                        </a>
 
 
-                                <div class="mt-xlg" >
+
+                                    </div>
+
+
+
+
+                            </div>
+
+                            <div id="collapse_1" class="collapse show" aria-labelledby="headingOTwo" data-parent="#accordionExample">
+                              <div class="card-body pt-none">
+
+
+                                <div class="row mt-xlg" >
                                     <div class="col-md-3 pl-none">
                                         <div class="gray-xs-f mb-xs">
                                           Display Text (1 to 100 characters)<span
@@ -2484,7 +2564,7 @@ input[type=number] {
                                             <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 p-none display__flex__center">
+                                    <div class="row col-md-12 p-none display__flex__center">
                                         <div class="col-md-10 pl-none">
                                             <div class="gray-xs-f mb-xs">
                                                 Description(1 to 150 characters) <span
@@ -2509,7 +2589,15 @@ input[type=number] {
                                 <!-- Section End -->
                               </div>
                             </div>
-                          </div> </td>
+                          </div>
+
+
+                        </div>
+                      </td>
+
+
+
+
                           </tr> 
                           <!-- End panel-->
 
@@ -4924,8 +5012,7 @@ input[type=number] {
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
       
-      + " <td><div class='clearfix'></div><div class='panel panel-default'><div class='panel-heading'><div class='panel-title'>" 
-          + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
+      + " <td><div class='clearfix'></div><div class='accordion'><div class='card'><div class='card-header display-flex'>" 
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
               + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
@@ -4935,13 +5022,14 @@ input[type=number] {
                 + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
               + "  </div> </div>"
              + "<div class='text-right dis-inline pull-right'> "
+              + "<a data-toggle='collapse' data-parent='#accordion'  href='#collapse"+ choiceCount +"' aria-expanded='true'>"
                 + "  <span class='ml-lg imageBg'><img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/></span> "
             + "  </div> "
         + "  </a> "
     + " </div> "
  + " </div> "
- + " <div id='collapse"+ choiceCount +"' class='panel-collapse collapse in'><div class='panel-body pt-none'> "
-    + "<div class='mt-xlg'>" +
+ + " <div id='collapse"+ choiceCount +"' class='collapse show'><div class='card-body pt-none'> "
+    + "<div class='mt-xlg row'>" +
         "<div class='col-md-3 pl-none'>" +
         "   <div class='gray-xs-f mb-xs'>Display Text (1 to 100 characters)<span class='requiredStar'>*</span> </div>"
         +
@@ -4984,7 +5072,7 @@ input[type=number] {
         "   </div>" +
         "</div> ";
     newTextChoice +=
-        "<div class='col-md-12 p-none display__flex__center'><div class='col-md-10 pl-none'>" +
+        "<div class='row col-md-12 p-none display__flex__center'><div class='col-md-10 pl-none'>" +
         "   <div class='gray-xs-f mb-xs'>Description(1 to 150 characters) <span class='requiredStar'>*</span> </div>"
         +
         "   <div class='form-group'>					     " +
@@ -5685,6 +5773,7 @@ input[type=number] {
               }
             }
           }
+           view_spanish_deactivemode();
 
         } else {   // for English Language
           updateCompletionTicksForEnglish();
@@ -5811,6 +5900,8 @@ input[type=number] {
           <c:if test="${actionTypeForFormStep == 'view'}">
           $('#questionStepId input,textarea ').prop('disabled', true);
           </c:if>
+          
+          view_spanish_activemode();
         }
       }
     });
@@ -5878,3 +5969,39 @@ $('.text-choice').each(function(i){
 
     }
 </script>
+
+	
+<script>	
+function  view_spanish_deactivemode() {	
+  $("#diagnosis_list tbody").sortable("destroy");	
+}	
+function  view_spanish_activemode() {	
+  $("#diagnosis_list tbody").sortable();	
+  var maxWidth = 1;	
+var fixHelperModified = function(e, tr) {	
+  var $originals = tr.children();	
+  var $helper = tr.clone();	
+  $helper.children().each(function(index) {	
+      $(this).width($originals.eq(index).width()+17); // 16 - 18	
+  });	
+  return $helper;	
+},	
+  updateIndex = function(e, ui) {	
+      $('td.index', ui.item.parent()).each(function (i) {	
+          $(this).html(i + 1);	
+      });  	
+      	
+       $('input.index1', ui.item.parent()).each(function (i) {	
+         // $(this).val(i + 1);	
+    //  alert('working 1');	
+    $(this).attr('value', (i + 1));	
+    // alert('working 2');	
+      });  	
+      // $(this).attr('value', (i + 1));	
+  };	
+$("#diagnosis_list tbody").sortable({	
+  helper: fixHelperModified,	
+  stop: updateIndex	
+}).disableSelection();	
+}	
+  </script>

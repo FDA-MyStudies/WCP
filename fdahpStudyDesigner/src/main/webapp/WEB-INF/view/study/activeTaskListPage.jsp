@@ -311,7 +311,7 @@
                     $('#spancomId').attr("data-original-title", activityMsg);
                   } else {
                     $('#markAsComp').prop('disabled', false);
-                    //$('[data-toggle="tooltip"]').tooltip('destroy');
+                    //$('[data-toggle="tooltip"]').tooltip('dispose');
                     $('#spancomId').removeAttr('data-original-title');
                   }
                   $("#alertMsg").removeClass('e-box').addClass('s-box').text(

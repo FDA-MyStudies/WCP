@@ -76,6 +76,11 @@
       color:#007cba !important;
       font-size:15px;
        }
+       .close{
+       background-image: none;
+       }
+
+
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
@@ -167,7 +172,7 @@
                         class="sprites_v3 filled-tooltip" id="infoIconId"></span>
                 </div>
                 <div class="form-group">
-					<span class="checkbox checkbox-inline p-45"> <input
+					<span class="checkbox checkbox-inline p-45 pl-2"> <input
                             class="platformClass" type="checkbox" id="inlineCheckbox1"
                             name="platform" value="I"
                             <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if>
@@ -199,7 +204,7 @@
                 </div>
 
                 <div class="form-group">
-            		<span class="radio radio-info radio-inline p-45">
+            		<span class="radio radio-info radio-inline p-45 pl-2">
 						<input type="radio" id="mlYes" value="Yes" name="multiLanguageFlag"
                                <c:if test="${studyBo.multiLanguageFlag eq true}">checked</c:if>
                         />
@@ -234,7 +239,7 @@
                     <span class="study-addbtn changeView" id="addLangBtn">+</span>
                 </div>
                 <!-- Selected Language items -->
-                <div class="study-selected mt-md" id="selectedLanguages">
+                <div class="study-selected mt-md mb-md" id="selectedLanguages">
                     <c:forEach items="${selectedLanguages}" var="stdLang">
                         <input type="hidden" class="stdCls" id="${stdLang.key}"
                                value="${stdLang.key}">
@@ -247,7 +252,7 @@
                     </c:forEach>
                 </div>
             </div>
-            <br>
+           
 
 
             <!-- Start Section-->
@@ -257,7 +262,7 @@
                 </div>
 
                 <div class="form-group">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-2"> <input
                             type="radio" id="inlineRadio1" value="Yes"
                             name="enrollingParticipants"
                             <c:if test="${studyBo.enrollingParticipants eq 'Yes'}">checked</c:if>
@@ -286,7 +291,7 @@
                 </div>
 
                 <div class="form-group">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-2"> <input
                             type="radio" id="inlineRadio11" value="Yes"
                             name="enrollmentdateAsAnchordate"
                             <c:if test="${studyBo.enrollmentdateAsAnchordate}">checked</c:if>
@@ -312,7 +317,7 @@
                 </div>
 
                 <div class="form-group">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-2"> <input
                             type="radio" id="inlineRadio3" value="Yes"
                             name="retainParticipant"
                             <c:if test="${studyBo.retainParticipant eq 'Yes'}">checked</c:if>
@@ -345,7 +350,7 @@
                 </div>
 
                 <div class="form-group">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-2"> <input
                             type="radio" class="rejoin_radio" id="inlineRadio6" value="Yes"
                             name="allowRejoin"
                             <c:if test="${studyBo.allowRejoin eq null}">checked</c:if>
@@ -418,9 +423,9 @@
                         <thead>
                         <tr>
                             <th>&nbsp;&nbsp;&nbsp;Admins</th>
-                            <th>View</th>
-                            <th>View & Edit</th>
-                            <th>Project Lead</th>
+                            <th class="text-center">View</th>
+                            <th class="text-center">View & Edit</th>
+                            <th class="text-center">Project Lead</th>
                             <th></th>
 
                         </tr>
@@ -432,7 +437,7 @@
                                 <td><span class="dis-ellipsis"
                                           title="${fn:escapeXml(perm.userFullName)}">${perm.userFullName}</span>
                                 </td>
-                                <td><span class="radio radio-info radio-inline p-45">
+                                <td><span class="radio radio-info  radio-inline">
 											<input type="radio" id="inlineRadio1${perm.userId}"
                                                    class="radcls" value="0"
                                                    name="view${perm.userId}"
@@ -440,14 +445,14 @@
 											<label for="inlineRadio1${perm.userId}"></label>
 									</span></td>
                                 <td align="center"><span
-                                        class="radio radio-info radio-inline p-45"> <input
+                                        class="radio radio-info radio-inline"> <input
                                         type="radio" id="inlineRadio2${perm.userId}" class="radcls"
                                         value="1" name="view${perm.userId}"
                                         <c:if test="${perm.viewPermission}">checked</c:if>> <label
                                         for="inlineRadio2${perm.userId}"></label>
 									</span></td>
                                 <td align="center"><span
-                                        class="radio radio-info radio-inline p-45"> <input
+                                        class="radio radio-info radio-inline"> <input
                                         type="radio" id="inlineRadio3${perm.userId}"
                                         class="radcls leadCls" value="" name="projectLead"
                                         <c:if test="${perm.projectLead eq 1}">checked</c:if>>
@@ -568,11 +573,11 @@
         <!-- Modal content-->
         <div class="modal-content">
 
-            <div class="modal-header cust-hdr pt-lg">
-                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title pl-lg">
+            <div class="cust-hdr pt-lg">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title pl-lg">
                     <b>Platform and Feature Support</b>
-                </h4>
+                </h5>
             </div>
             <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
                 <div>
@@ -1128,17 +1133,17 @@ var idleTime = 0;
           + '" role="row" class="studyAdminRowCls" studyUserId="' + userId + '">';
       domStr = domStr + '<td><span class="dis-ellipsis" title="' + DOMPurify.sanitize(name) + '">'
           + DOMPurify.sanitize(name) + '</span></td>';
-      domStr = domStr + '<td><span class="radio radio-info radio-inline p-45">' +
+      domStr = domStr + '<td><span class="radio radio-info radio-inline">' +
           '<input type="radio" id="inlineRadio1' + userId + '" value="0" name="view' + userId
           + '" checked>' +
           '<label for="inlineRadio1' + userId + '"></label>' +
           '</span></td>';
-      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">' +
+      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline">' +
           '<input type="radio" id="inlineRadio2' + userId + '" value="1" name="view' + userId + '">'
           +
           '<label for="inlineRadio2' + userId + '"></label>' +
           '</span></td>';
-      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline p-45">' +
+      domStr = domStr + '<td align="center"><span class="radio radio-info radio-inline">' +
           '<input type="radio" id="inlineRadio3' + userId + '" class="leadCls" name="projectLead">'
           +
           '<label for="inlineRadio3' + userId + '"></label>' +

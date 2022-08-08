@@ -188,7 +188,7 @@
 
 			<div class="mt-lg mb-none">
 				<div class="form-group hideOnHover">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-1"> <input
 						type="radio" id="inlineRadio1" value="notImmediate"
 						name="currentDateTime"
 						<c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>
@@ -308,13 +308,13 @@
        }
          
          $('[data-toggle="tooltip"]').tooltip();
-         
+       
          <c:if test="${studyBo.status eq 'Active'}">
-         $('[data-toggle="tooltip"]').tooltip('destroy');
+         $('[data-toggle="tooltip"]').tooltip('dispose'); 
          </c:if>
          
          <c:if test="${notificationBO.actionPage eq 'view'}">
-         $('[data-toggle="tooltip"]').tooltip('destroy');
+           $('[data-toggle="tooltip"]').tooltip('dispose'); 
          </c:if>
          
          <c:if test="${notificationBO.actionPage eq 'view'}">
@@ -351,7 +351,7 @@
 		</c:if>
 		
 		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
-			$('[data-toggle="tooltip"]').tooltip('destroy');
+			$('[data-toggle="tooltip"]').tooltip('dispose');
 			$('#studyNotificationFormId input,textarea').prop('disabled', true);
 			$('.deleteNotificationButtonHide').addClass('dis-none');
 			$('.studyNotificationButtonHide').addClass('dis-none');
@@ -381,7 +381,7 @@
     		$('.resendBuuttonAsDone').addClass('dis-none');
     		$('.deleteNotificationButtonHide').addClass('dis-none');
     		$('.studyNotificationButtonHide').addClass('dis-none');
-    		 $('[data-toggle="tooltip"]').tooltip('destroy');
+    		 $('[data-toggle="tooltip"]').tooltip('dispose');
     		$('#doneStudyId').addClass('dis-none');
 		</c:if>
 	
@@ -522,7 +522,9 @@
         	  autoSaveNotificationPage('manual');
     		});
           
-          $('.goToNotificationListForm').on('click',function(){
+         $('.goToNotificationListForm').on('click',function(){
+         
+          
               <c:if test="${notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy' && not notificationBO.notificationSent}">
 	       		bootbox.confirm({
 	      			closeButton: false,

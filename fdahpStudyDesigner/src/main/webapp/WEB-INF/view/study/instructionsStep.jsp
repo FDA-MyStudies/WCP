@@ -164,7 +164,7 @@
             <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
              <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-            <div class="col-md-6 pl-none">
+            <div class="row"><div class="col-md-6 pl-none">
                 <div class="gray-xs-f mb-xs">
                     Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span
                         class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -185,6 +185,7 @@
             <div class="col-md-6">
                 <div class="gray-xs-f mb-xs">Step Type</div>
                 <div>Instruction Step</div>
+            </div>
             </div>
             <div class="clearfix"></div>
             <div class="gray-xs-f mb-xs">

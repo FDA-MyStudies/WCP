@@ -89,6 +89,9 @@
       color:#007cba !important;
       font-size:15px;
        }
+       #comprehensionInfoForm{
+       display:contents;
+       }
     </style>
 </head>
 <script type="text/javascript">
@@ -155,24 +158,24 @@
         </div>
         <!--  End  top tab section-->
         <div class="right-content-head-wo-z">
-            <div class="mb-xlg" id="displayTitleId">
+            <div class="" id="displayTitleId">
                 <div class="gray-xs-f mb-xs">
                     Do you need a Comprehension Test for your study? <span
                         class="ct_panel" id="addHelpNote"><small>(Please
 							save to continue)</small></span>
                 </div>
                 <div class="form-group col-md-5 p-none">
-					<span class="radio radio-info radio-inline p-45"> <input
+					<span class="radio radio-info radio-inline p-45 pl-1"> <input
                             type="radio" id="comprehensionTestYes" value="Yes"
                             name="needComprehensionTest"
                         ${consentBo.needComprehensionTest eq 'Yes' ? 'checked' : ''}>
-						<label for="comprehensionTestYes">Yes</label>
+						<label for="comprehensionTestYes" class="mb-0" >Yes</label>
 					</span> <span class="radio radio-inline"> <input type="radio"
                                                                      id="comprehensionTestNo"
                                                                      value="No"
                                                                      name="needComprehensionTest"
                     ${empty consentBo.needComprehensionTest || consentBo.needComprehensionTest eq 'No' ? 'checked' : ''}>
-						<label for="comprehensionTestNo">No</label>
+						<label for="comprehensionTestNo" class="mb-0">No</label>
 					</span>
                     <div class="help-block with-errors red-txt"></div>
                 </div>

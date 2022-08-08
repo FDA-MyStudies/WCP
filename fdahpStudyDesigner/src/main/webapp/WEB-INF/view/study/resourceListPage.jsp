@@ -365,7 +365,7 @@ var idleTime = 0;
                   $('[data-toggle="tooltip"]').tooltip();
                 } else {
                   $('#markAsComp').prop('disabled', false);
-                  $('[data-toggle="tooltip"]').tooltip('destroy');
+                  $('[data-toggle="tooltip"]').tooltip('dispose');
                 }
                 $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                     "Resource deleted successfully.");

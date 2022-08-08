@@ -92,7 +92,7 @@
 				<!-- Edit User Layout-->
 
 				<div class="blue-md-f text-uppercase mb-md">Basic Information</div>
-				<div class="col-md-12 p-none">
+				<div class="row col-md-12 p-none">
 					<!-- form- input-->
 					<div class="col-md-6 pl-none">
 						<div class="gray-xs-f mb-xs">
@@ -129,7 +129,7 @@
 				</div>
 
 
-				<div class="col-md-12 p-none">
+				<div class="row col-md-12 p-none">
 					<!-- form- input-->
 					<div class="col-md-6 pl-none">
 						<div class="gray-xs-f mb-xs">
@@ -168,7 +168,7 @@
 
 				<div class="clearfix"></div>
 				<!-- Assign Role Section -->
-				<div class="col-md-12 p-none">
+				<div class="row col-md-12 p-none">
 					<!-- form- input-->
 					<div class="col-md-6 pl-none">
 						<div class="blue-md-f text-uppercase mt-lg mb-md">
@@ -210,6 +210,7 @@
 							</div>
 						</div>
 					</c:if>
+				</div>
 				</div>
 
 				<div class="clearfix"></div>

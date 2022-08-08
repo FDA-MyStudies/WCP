@@ -138,3 +138,4 @@ function responsiveScreen() {
 	$(".lg-register-center").css("margin-top", rptb).css("margin-bottom", rptb);
 
 }
+

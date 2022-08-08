@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 </head>
 
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
 	<!-- widgets section-->
 	<div class="col-sm-12 col-md-12 col-lg-12 p-none">
@@ -27,7 +28,7 @@
 </div>
 <form:form
 	action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}"
-	data-toggle="validator" role="form" id="appNotificationFormId"
+	data-toggle="validator" role="form" id="appNotificationFormId" class="display_content"
 	method="post" autocomplete="off">
 	<input type="hidden" name="buttonType" id="buttonType">
 	<input type="hidden" name="notificationId"
@@ -60,7 +61,7 @@
 
 				<div class="mt-xlg mb-lg">
 					<div class="form-group">
-						<span class="radio radio-info radio-inline p-45"> <input
+						<span class="radio radio-info radio-inline p-45  pl-1"> <input
 							type="radio" id="inlineRadio1" value="notImmediate"
 							name="currentDateTime"
 							<c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>

@@ -128,7 +128,7 @@
             <div class="row changepwd dis-none">
 	             <div class="pl-none ">   
 		              <div class="b-bor mt-md">
-			              <div class="ed-user-layout row">            
+			              <div class="ed-user-layout row">
 			                <div class="col-md-4 p-none ">
 			                    <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
 			                </div>

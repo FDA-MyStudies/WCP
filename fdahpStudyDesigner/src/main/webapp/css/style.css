@@ -2754,6 +2754,7 @@ box-shadow:none !important;
 outline:none !important;
 }
 
+
 /* after bootstrap from 3.3.7 to 4.6.1 migration added extra CSS here */
 .close {
 	background : transparent !important;
@@ -2772,6 +2773,5 @@ table.dataTable {
     max-width: 100% !important;
     border-collapse: separate !important;
 }
-
 
  /* css end here */

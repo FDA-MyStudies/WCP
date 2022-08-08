@@ -149,7 +149,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-lg-5 col-md-5 p-none">
-                <div class="form-group col-md-12 p-none mr-md mb-none display-flex">
+                <div class="form-group col-md-12 p-none mr-md mb-none">
                     <div class="gray-xs-f mb-xs col-md-6 pl-none ">Response
                         Options
                     </div>
@@ -157,7 +157,7 @@
                         Pass / Fail<span class="requiredStar"> *</span>
                     </div>
                 </div>
-                <div class="col-md-12 p-none mr-md mb-none display-flex">
+                <div class="col-md-12 p-none mr-md mb-none">
                     <div class="col-md-6 pl-none">
                         <input type="text" class="form-control" name="tentativeDuration"
                                value="Yes" disabled/>
@@ -177,7 +177,7 @@
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
-                <div class="col-md-12 p-none mr-md mb-none display-flex">
+                <div class="col-md-12 p-none mr-md mb-none">
                     <div class="col-md-6 pl-none ">
                         <input type="text" class="form-control" name="tentativeDuration"
                                value="No" disabled/>

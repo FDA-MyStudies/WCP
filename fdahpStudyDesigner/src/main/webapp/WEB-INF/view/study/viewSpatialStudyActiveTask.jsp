@@ -105,17 +105,15 @@
             </div>
         </div>
         <div class="mt-lg blue-md-f text-uppercase">Configurable parameters</div>
-          <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span
+        <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span
                 class="requiredStar"> *</span></div>
-           <div class="form-group">
+        <div class="form-group">
             <textarea class="form-control" rows="5" id="comment" name="instruction" maxlength="150"
                       required>${activeTaskBo.instruction}</textarea>
             <div class="help-block with-errors red-txt"></div>
         </div>
-
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
-         <div class="row">
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
                     <div class="col-md-3 col-lg-3 p-none mr-lg ">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
@@ -181,7 +179,6 @@
                     </div>
                     <div class="clearfix"></div>
                 </c:if>
-
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 4}">
                     <div class="col-md-3 col-lg-3 p-none mr-lg">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
@@ -248,7 +245,6 @@
                     </div>
                     <div class="clearfix"></div>
                 </c:if>
-
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
                     <div class="col-md-3 col-lg-3 p-none">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
@@ -486,7 +482,6 @@
                     </div>
                     <div class="clearfix"></div>
                 </c:if>
-
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 9}">
                     <input type="hidden" name="taskAttributeValueBos[8].attributeValueId" value="">
                     <input type="hidden" name="taskAttributeValueBos[8].activeTaskMasterAttrId"
@@ -891,7 +886,6 @@
                     </div>
                     <div class="clearfix"></div>
                 </c:if>
-                </div>
             </c:forEach>
         </c:if>
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) gt 0}">

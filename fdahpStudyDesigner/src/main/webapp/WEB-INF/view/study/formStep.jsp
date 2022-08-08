@@ -190,137 +190,130 @@
             name="formStepId" id="formStepId" method="post"
             data-toggle="validator" role="form">
         <div class="right-content-body pt-none pl-none pr-none">
+            <ul class="nav nav-tabs review-tabs gray-bg" id="formTabConstiner">
+                <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level
+                    Attributes</a></li>
+                <li class="formLevel"><a data-toggle="tab" href="#fla">Form-level
+                    Attributes</a></li>
+            </ul>
+            <div class="tab-content pl-xlg pr-xlg">
+                <!-- Step-level Attributes-->
+                <input type="hidden" name="stepId" id="stepId"
+                       value="${questionnairesStepsBo.stepId}">
+                <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
+                 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+                <input
+                        type="hidden" name="questionnairesId" id="questionnairesId"
+                        value="${questionnaireId}"> <input type="hidden"
+                                                           id="questionnaireShortId"
+                                                           value="${questionnaireBo.shortTitle}">
+                <input type="hidden" name="stepType" id="stepType" value="Form">
+                <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+                <input type="hidden" id="mlText" value="${formLangBO.repeatableText}">
+                <input type="hidden" name="formId" id="formId"
+                       value="${questionnairesStepsBo.instructionFormId}"> <input
+                    type="hidden" name="instructionFormId" id="instructionFormId"
+                    value="${questionnairesStepsBo.instructionFormId}"> <input
+                    type="hidden" id="type" name="type" value="complete"/> <input
+                    type="hidden" id="questionId" name="questionId"/> <input
+                    type="hidden" id="actionTypeForFormStep"
+                    name="actionTypeForFormStep"/>
+                <select id="questionLangBOList" style="display: none">
+                    <c:forEach items="${questionLangBOList}" var="questionLang">
+                        <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
+                                value="${questionLang.question}">${questionLang.question}</option>
+                    </c:forEach>
+                </select>
 
-
-         <ul class="nav nav-tabs customTabs gray-bg" id="formTabConstiner" role="tablist">
-           <li class="nav-item stepLeve" role="presentation">
-             <button class="nav-link active"  data-toggle="tab" data-target="#sla" type="button" role="tab"  aria-selected="true">Step-level Attributes</button>
-           </li>
-           <li class="nav-item formLevel" role="presentation">
-             <button class="nav-link"  data-toggle="tab" data-target="#fla" type="button" role="tab"  aria-selected="false">Form-level Attributes </button>
-           </li>
-
-         </ul>
-         <div class="tab-content pl-xlg pr-xlg">
-          <!-- Step-level Attributes-->
-                         <input type="hidden" name="stepId" id="stepId"
-                                value="${questionnairesStepsBo.stepId}">
-                         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
-                         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
-                          <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-                         <input
-                                 type="hidden" name="questionnairesId" id="questionnairesId"
-                                 value="${questionnaireId}"> <input type="hidden"
-                                                                    id="questionnaireShortId"
-                                                                    value="${questionnaireBo.shortTitle}">
-                         <input type="hidden" name="stepType" id="stepType" value="Form">
-                         <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
-                         <input type="hidden" id="mlText" value="${formLangBO.repeatableText}">
-                         <input type="hidden" name="formId" id="formId"
-                                value="${questionnairesStepsBo.instructionFormId}"> <input
-                             type="hidden" name="instructionFormId" id="instructionFormId"
-                             value="${questionnairesStepsBo.instructionFormId}"> <input
-                             type="hidden" id="type" name="type" value="complete"/> <input
-                             type="hidden" id="questionId" name="questionId"/> <input
-                             type="hidden" id="actionTypeForFormStep"
-                             name="actionTypeForFormStep"/>
-                         <select id="questionLangBOList" style="display: none">
-                             <c:forEach items="${questionLangBOList}" var="questionLang">
-                                 <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
-                                         value="${questionLang.question}">${questionLang.question}</option>
-                             </c:forEach>
-                         </select>
-     <div id="sla" class="tab-pane fade in show active mt-xlg">
-                        <div class="row">
-                            <div class="col-md-6 pl-none">
+                <div id="sla" class="tab-pane fade in active mt-xlg">
+                    <div class="row">
+                        <div class="col-md-6 pl-none">
+                            <div class="gray-xs-f mb-xs">
+                                Step title or Key (1 to 15 characters) <span
+                                    class="requiredStar">*</span> <span
+                                    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                    title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span>
+                            </div>
+                            <div class="form-group">
+                                <input autofocus="autofocus" type="text" custAttType="cust"
+                                       class="form-control" name="stepShortTitle"
+                                       id="stepShortTitle"
+                                       value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"
+                                       required maxlength="15"
+                                        <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if> />
+                                <div class="help-block with-errors red-txt"></div>
+                                <input type="hidden" id="preShortTitleId"
+                                       value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="gray-xs-f mb-xs">Step Type</div>
+                            <div>Form Step</div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div>
+                            <div class="gray-xs-f mb-xs">
+                                Is this a Skippable Step?<span
+                                    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                    title="If marked as Yes, it means the user can skip the entire step meaning no responses are captured from this form step. If marked No, it means the user cannot skip the step and has to answer at least one of the questions to proceed."></span>
+                            </div>
+                            <div>
+								<span class="radio radio-info radio-inline p-45"> <input
+                                        type="radio" id="skiappableYes" value="Yes"
+                                        name="skiappable"
+                                    ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
+									<label for="skiappableYes">Yes</label>
+								</span> <span class="radio radio-inline"> <input type="radio"
+                                                                                 id="skiappableNo"
+                                                                                 value="No"
+                                                                                 name="skiappable"
+                                ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
+									<label for="skiappableNo">No</label>
+								</span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <c:if test="${questionnaireBo.branching}">
+                            <div class="col-md-4 col-lg-3 p-none mt-md">
                                 <div class="gray-xs-f mb-xs">
-                                    Step title or Key (1 to 15 characters) <span
-                                        class="requiredStar">*</span> <span
-                                        class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                        title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span>
+                                    Default Destination Step <span class="requiredStar">*</span>
+                                    <span
+                                            class="ml-xs sprites_v3 filled-tooltip"
+                                            data-toggle="tooltip"
+                                            title="The step that the user must be directed to from this step."></span>
                                 </div>
                                 <div class="form-group">
-                                    <input autofocus="autofocus" type="text" custAttType="cust"
-                                           class="form-control" name="stepShortTitle"
-                                           id="stepShortTitle"
-                                           value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"
-                                           required maxlength="15"
-                                            <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if> />
-                                    <div class="help-block with-errors red-txt"></div>
-                                    <input type="hidden" id="preShortTitleId"
-                                           value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="gray-xs-f mb-xs">Step Type</div>
-                                <div>Form Step</div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="col-lg-3 pl-0">
-                                <div class="gray-xs-f mb-xs">
-                                    Is this a Skippable Step?<span
-                                        class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                        title="If marked as Yes, it means the user can skip the entire step meaning no responses are captured from this form step. If marked No, it means the user cannot skip the step and has to answer at least one of the questions to proceed."></span>
-                                </div>
-                                <div>
-    								<span class="radio radio-info radio-inline p-45 pl-1"> <input
-                                            type="radio" id="skiappableYes" value="Yes"
-                                            name="skiappable"
-                                        ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
-    									<label for="skiappableYes">Yes</label>
-    								</span> <span class="radio radio-inline"> <input type="radio"
-                                                                                     id="skiappableNo"
-                                                                                     value="No"
-                                                                                     name="skiappable"
-                                    ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
-    									<label for="skiappableNo">No</label>
-    								</span>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <c:if test="${questionnaireBo.branching}">
-                                <div class="col-md-4 col-lg-3 p-none">
-                                    <div class="gray-xs-f mb-xs">
-                                        Default Destination Step <span class="requiredStar">*</span>
-                                        <span
-                                                class="ml-xs sprites_v3 filled-tooltip"
-                                                data-toggle="tooltip"
-                                                title="The step that the user must be directed to from this step."></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="selectpicker" name="destinationStep"
-                                                id="destinationStepId"
-                                                value="${questionnairesStepsBo.destinationStep}"
-                                                required>
-                                            <c:forEach items="${destinationStepList}"
-                                                       var="destinationStep">
-                                                <option value="${destinationStep.stepId}"
-                                                    ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
-                                                    Step
-                                                        ${destinationStep.sequenceNo} :
-                                                        ${destinationStep.stepShortTitle}</option>
-                                            </c:forEach>
-                                            <option value="0"
-                                                ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
-                                                Completion
+                                    <select class="selectpicker" name="destinationStep"
+                                            id="destinationStepId"
+                                            value="${questionnairesStepsBo.destinationStep}"
+                                            required>
+                                        <c:forEach items="${destinationStepList}"
+                                                   var="destinationStep">
+                                            <option value="${destinationStep.stepId}"
+                                                ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
                                                 Step
-                                            </option>
-                                        </select>
-                                        <div class="help-block with-errors red-txt"></div>
-                                    </div>
+                                                    ${destinationStep.sequenceNo} :
+                                                    ${destinationStep.stepShortTitle}</option>
+                                        </c:forEach>
+                                        <option value="0"
+                                            ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
+                                            Completion
+                                            Step
+                                        </option>
+                                    </select>
+                                    <div class="help-block with-errors red-txt"></div>
                                 </div>
-                            </c:if>
-                        </div>
+                            </div>
+                        </c:if>
                     </div>
-
-
-
-<!---  Form-level Attributes --->
+                </div>
+                <!---  Form-level Attributes --->
                 <div id="fla" class="tab-pane fade mt-xlg">
                     <div>
                         <div class="gray-xs-f mb-xs">Make form repeatable?</div>
                         <div>
-							<span class="radio radio-info radio-inline p-45 pl-1"> <input
+							<span class="radio radio-info radio-inline p-45"> <input
                                     type="radio" id="repeatableYes" value="Yes" name="repeatable"
                                 ${questionnairesStepsBo.repeatable eq'Yes' ?'checked':''}>
 								<label for="repeatableYes">Yes</label>
@@ -365,7 +358,6 @@
                                     New Question
                                 </button>
                             </div>
-                        </div>
                         </div>
                         <div class="clearfix"></div>
                         <div class="mt-md mb-lg">
@@ -422,10 +414,10 @@
                                 </c:forEach>
                             </table>
                         </div>
-
+                    </div>
                 </div>
-         </div>
 
+            </div>
         </div>
     </form:form>
     <div class="modal fade" id="myModal" role="dialog">

@@ -6,16 +6,8 @@
 <head>
   <meta charset="UTF-8">
 </head>
-<style>
-#studies_list_wrapper{
-width:1270px;
-}
-table thead{
-background:#fff ;
-}
 
-</style>
-<div style="display:contents;">
+<div>
             <table id="studies_list" class="table wid100 tbl">
             <thead>
               <tr>
@@ -55,7 +47,7 @@ background:#fff ;
 						</c:when>
 					</c:choose>" data-toggle="tooltip" data-placement="top" title="${(not empty study.liveStudyId)?((study.flag)?'Draft Version':'Edit'):'Draft Version'}" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc viewStudyClass " isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
+                    <span class="eye-inc viewStudyClass mr-lg" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
 <!-- Copy study functionality start -->
 <%-- 					<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}"> --%>
 <%-- 					<span class="sprites_icon copy copyStudyClass" customStudyId="${study.customStudyId}" data-toggle="tooltip" data-placement="top" title="Copy"></span> --%>

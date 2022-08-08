@@ -188,7 +188,7 @@
 
 			<div class="mt-lg mb-none">
 				<div class="form-group hideOnHover">
-					<span class="radio radio-info radio-inline p-45 pl-1"> <input
+					<span class="radio radio-info radio-inline p-45"> <input
 						type="radio" id="inlineRadio1" value="notImmediate"
 						name="currentDateTime"
 						<c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>

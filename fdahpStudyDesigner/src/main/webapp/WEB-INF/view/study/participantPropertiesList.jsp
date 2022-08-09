@@ -64,7 +64,7 @@
     </style>
 </head>
 
-<div class="col-sm-10 col-rc white-bg p-none">
+<div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
 
     <!--  Start top tab section-->
     <div class="right-content-head">
@@ -113,7 +113,7 @@
     <div class="right-content-body">
         <div class="table-responsive">
             <table id="participantProperties_list"
-                   class="display bor-none dragtbl dataTable no-footer">
+                   class="display bor-none dragtbl dataTable no-footer" style="width:100% !important">
                 <thead>
                 <tr>
                     <th>SHORT TITLE</th>

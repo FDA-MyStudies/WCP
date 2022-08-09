@@ -5,7 +5,7 @@
 
 <!-- Start left Content here -->
 <!-- ============================================================== -->
-<div class="col-sm-2 col-lc p-none">
+<div class="col-sm-2 col-lg-3 col-lc p-none">
     <div class="left-content-container">
         <ul class="menuNav">
             <li>

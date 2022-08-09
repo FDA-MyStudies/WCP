@@ -100,7 +100,7 @@
     </style>
 </head>
 <!-- Start right Content here -->
-<div class="col-sm-10 col-rc white-bg p-none">
+<div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
 <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <!--  Start top tab section-->
     <div class="right-content-head">

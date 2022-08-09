@@ -69,7 +69,7 @@
 <form:form
 	action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do"
 	data-toggle="validator" id="userForm" role="form" method="post"
-	autocomplete="off">
+	autocomplete="off" style="width:100%;">
 	<input type="hidden" name="userId" value="${userBO.userId}">
 	<input type="hidden" id="userStatus" name="enabled"
 		value="${userBO.enabled}">
@@ -215,6 +215,7 @@
 
 				<div class="clearfix"></div>
 				<!-- Assign Permissions -->
+				<div style="width: 80%;">
 				<div class="blue-md-f text-uppercase mt-lg">Assign Permissions</div>
 				<div class="pull-right mb-xs">
 					<span class="gray-xs-f">View Only</span> <span
@@ -364,6 +365,7 @@
 							</c:forEach>
 						</div>
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>

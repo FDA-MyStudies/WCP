@@ -40,7 +40,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="col-sm-10 col-rc white-bg p-none">
+<div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
 
     <!--  Start top tab section-->
     <div class="right-content-head">
@@ -166,9 +166,11 @@
     <!--  Start body tab section -->
     <div class="right-content-body pt-none pl-none pr-none">
 
-        <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId"> 
-            <li class="nav-item contentClass active"><a data-toggle="tab" class="btn btnCusto nav-link active"
-                                               href="#content">Content</a></li>
+        <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId">
+            <li class="nav-item contentClass active">
+            <a data-toggle="tab" class="btn btnCusto nav-link active"
+                                               href="#content">Content</a>
+                                               </li>
             <li class="nav-item scheduleTaskClass linkDis" disabled><a class="btn btnCusto nav-link"
                     data-toggle="tab" href="#schedule">Schedule</a></li>
         </ul>

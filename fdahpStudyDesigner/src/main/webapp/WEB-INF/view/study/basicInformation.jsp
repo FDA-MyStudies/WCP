@@ -38,7 +38,7 @@
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 
-<div class="col-sm-10 col-rc white-bg p-none">
+<div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
     <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"

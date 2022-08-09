@@ -101,7 +101,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="col-sm-10 col-rc white-bg p-none">
+<div class="col-sm-10  col-lg-9 col-rc white-bg p-none">
     <!--  Start top tab section-->
     <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
@@ -191,15 +191,21 @@
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none">
 
-<ul class="nav nav-tabs customTabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs customTabs gray-bg" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#menu1" type="button" role="tab" aria-controls="#menu1" aria-selected="true">Share Data Permissions</button>
+  <a data-toggle="tab" class="btn btnCusto nav-link active"
+                                                 href="#menu1">Share Data Permissions</a>
+    <!-- <button class="nav-link active"  data-toggle="tab" data-target="#menu1" type="button" role="tab" aria-controls="#menu1" aria-selected="true">Share Data Permissions</button> -->
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#menu2" type="button" role="tab" aria-controls="#menu2" aria-selected="false">Consent Document for Review</button>
+    <a data-toggle="tab" class="btn btnCusto nav-link"
+    href="#menu2">Consent Document for Review</a>
+    <!-- <button class="nav-link"  data-toggle="tab" data-target="#menu2" type="button" role="tab" aria-controls="#menu2" aria-selected="false">Consent Document for Review</button> -->
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#menu3" type="button" role="tab" aria-controls="#menu3" aria-selected="false">E-Consent Form </button>
+    <a data-toggle="tab" class="btn btnCusto nav-link"
+    href="#menu3">E-Consent Form</a>
+    <!-- <button class="nav-link"  data-toggle="tab" data-target="#menu3" type="button" role="tab" aria-controls="#menu3" aria-selected="false">E-Consent Form </button> -->
   </li>
 </ul>
 <div class="tab-content pl-xlg pr-xlg" id="myTabContent">

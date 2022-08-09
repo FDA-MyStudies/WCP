@@ -163,8 +163,10 @@
     <div class="right-content-body pt-none pl-none pr-none">
 
         <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId">
-            <li class="nav-item contentClass active"><a data-toggle="tab" class="btn btnCusto nav-link active"
-                                               href="#content">Content</a></li>
+            <li class="nav-item contentClass active">
+            <a data-toggle="tab" class="btn btnCusto nav-link active"
+                                               href="#content">Content</a>
+                                               </li>
             <li class="nav-item scheduleTaskClass linkDis" disabled><a class="btn btnCusto nav-link"
                     data-toggle="tab" href="#schedule">Schedule</a></li>
         </ul>

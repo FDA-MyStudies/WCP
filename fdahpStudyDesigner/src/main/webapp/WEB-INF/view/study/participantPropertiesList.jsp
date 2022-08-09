@@ -113,7 +113,7 @@
     <div class="right-content-body">
         <div class="table-responsive">
             <table id="participantProperties_list"
-                   class="display bor-none dragtbl dataTable no-footer">
+                   class="display bor-none dragtbl dataTable no-footer" style="width:100% !important">
                 <thead>
                 <tr>
                     <th>SHORT TITLE</th>

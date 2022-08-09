@@ -419,7 +419,7 @@
                     </c:if>
 
                     <table id="studyAdminsTable" class="display bor-none"
-                           cellspacing="0" width="80%">
+                           cellspacing="0" width="85%">
                         <thead>
                         <tr>
                             <th>&nbsp;&nbsp;&nbsp;Admins</th>

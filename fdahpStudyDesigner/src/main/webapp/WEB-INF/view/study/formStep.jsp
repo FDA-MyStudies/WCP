@@ -369,10 +369,10 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="mt-md mb-lg">
+                      <c:forEach items="${questionnairesStepsBo.formQuestionMap}" var="entry">
                             <table id="content" class="display" cellspacing="0" width="100%">
                                 <thead style="display: none"></thead>
-                                <c:forEach items="${questionnairesStepsBo.formQuestionMap}"
-                                           var="entry">
+
                                     <tr id="row${entry.value.questionInstructionId}" status="${entry.value.status}">
                                         <td><span id="${entry.key}">${entry.key}</span></td>
                                         <td class="title">
@@ -419,8 +419,9 @@
                                             </div>
                                         </td>
                                     </tr>
-                                </c:forEach>
+                               
                             </table>
+                             </c:forEach>
                         </div>
 
                 </div>

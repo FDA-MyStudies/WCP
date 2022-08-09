@@ -115,8 +115,9 @@
 
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
-         <div class="row">
+        
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
+                  <div class="row">  
                     <div class="col-md-3 col-lg-3 p-none mr-lg ">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
                                 class="requiredStar"> *</span><span
@@ -204,6 +205,8 @@
                     </div>
 
                 </c:if>
+
+                
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
                     <div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
@@ -281,7 +284,9 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
+                  </div>
                 </c:if>
+                <div class="clearfix"></div>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
                     <div class="blue-md-f text-uppercase">Results captured from the task</div>
                 </c:if>
@@ -890,8 +895,9 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
+                  </div>
                 </c:if>
-                </div>
+               
             </c:forEach>
         </c:if>
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) gt 0}">

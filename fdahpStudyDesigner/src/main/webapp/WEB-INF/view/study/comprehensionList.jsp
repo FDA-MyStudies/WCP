@@ -110,7 +110,7 @@
 <form:form
         action="/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}"
         name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
-    <div class="col-sm-10 col-rc white-bg p-none">
+    <div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
         <!--  Start top tab section-->
         <div class="right-content-head">
             <div class="text-right">

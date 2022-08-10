@@ -1168,6 +1168,7 @@ var idleTime = 0;
   }
 
   function removeUser(userId) {
+    debugger;
     var userId = userId;
     var count = 0;
     $('.studyAdminRowCls').each(function () {
@@ -1176,7 +1177,9 @@ var idleTime = 0;
     if (count == 1) {
       table.clear().draw();
     }
+    $('[data-toggle="tooltip"]').tooltip('dispose');
     $('#studyAdminRowId' + userId).remove();
+
     $('#user' + userId).addClass('checkCount').show();
   }
 

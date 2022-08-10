@@ -181,7 +181,7 @@ background:none;
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
+<div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
     <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <div class="right-content-head">
@@ -885,7 +885,7 @@ background:none;
                                                                       </c:forEach>
                                                                   </c:if>
                                                               </div>
-                                                              <div class="mt-md">
+                                                              <div class="mt-md row">
                                                                   <div class="dailyStartCls col-md-3 pl-none">
                                       								<span
                                                                               class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -1031,7 +1031,7 @@ background:none;
                                       								<span class='help-block with-errors red-txt'></span>
                                       							</span>
                                                               </div>
-                                                              <div class="mt-md">
+                                                              <div class="mt-md row">
                                                                   <div class="weeklyStartCls col-md-3 pl-none">
                                       								<span
                                                                               class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -1524,7 +1524,7 @@ background:none;
                                                                                               class="light-txt opacity06"> days </span>
                                                       									</span> <span
                                                                                               class="form-group  dis-inline vertical-align-middle pr-md"
-                                                                                              style="margin-bottom: -13px"> <input id="manualTime0"
+                                                                                              style="margin-bottom: 0px"> <input id="manualTime0"
                                                                                                                                    type="text"
                                                                                                                                    class="form-control clock"
                                                                                                                                    name="questionnaireCustomScheduleBo[0].frequencyTime"
@@ -1573,7 +1573,7 @@ background:none;
                                                       										</span> <span
                                                                                                   class="form-group m-none dis-inline vertical-align-middle">
                                                       											<input id="xdays${customVar.index}" type="text"
-                                                                                                         class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                                                                                         class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                                                                                          count='${customVar.index}' placeholder="X"
                                                                                                          name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodFromDays"
                                                                                                          value="${questionnaireCustomScheduleBo.timePeriodFromDays}"
@@ -1598,7 +1598,7 @@ background:none;
                                                       										</span> <span
                                                                                                   class="form-group m-none dis-inline vertical-align-middle">
                                                       											<input id="ydays${customVar.index}" type="text"
-                                                                                                         class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+                                                                                                         class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask resetAncDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                                                                                          count='${customVar.index}' placeholder="Y"
                                                                                                          name="questionnaireCustomScheduleBo[${customVar.index}].timePeriodToDays"
                                                                                                          value="${questionnaireCustomScheduleBo.timePeriodToDays}"
@@ -1610,7 +1610,7 @@ background:none;
                                                                                                   class="light-txt opacity06"> days </span>
                                                       										</span> <span
                                                                                                   class="form-group  dis-inline vertical-align-middle pr-md"
-                                                                                                  style="margin-bottom: -13px"> <input
+                                                                                                  style="margin-bottom: 0px"> <input
                                                                                                   id="manualTime${customVar.index}" type="text"
                                                                                                   class="form-control clock ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                                                                                   name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"

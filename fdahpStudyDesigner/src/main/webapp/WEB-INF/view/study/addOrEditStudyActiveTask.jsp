@@ -33,14 +33,15 @@
         padding-left: 30px;
   	  }
 
-      .fade:not(.show) {
-    opacity: 1;
-}
+      .fade:not(.show)
+      {
+        opacity: 1;
+      }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
+<div class="col-sm-10 col-rc white-bg p-none">
 
     <!--  Start top tab section-->
     <div class="right-content-head">
@@ -352,7 +353,7 @@
         function loadActiveSchedule(changeTabSchedule) {
           if (changeTabSchedule) { 
           debugger; 
-            $(".schedule")
+            $("#schedule")
             .load(
                 "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}",
                 {

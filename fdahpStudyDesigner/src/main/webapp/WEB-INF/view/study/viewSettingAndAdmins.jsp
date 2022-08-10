@@ -83,7 +83,7 @@
 
     </style>
 </head>
-<div class="col-sm-10 col-lg-9 col-rc white-bg p-none" id="settingId">
+<div class="col-sm-10 col-rc white-bg p-none" id="settingId">
 <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/removeSelectedLanguage.do?_S=${param._S}"
@@ -505,7 +505,7 @@
 <!-- End right Content here -->
 
 <c:if test="${empty permission && fn:contains(permissions,5)}">
-    <div class="col-sm-10 col-lg-9 col-rc white-bg p-none" id="adminsId">
+    <div class="col-sm-10 col-rc white-bg p-none" id="adminsId">
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f dis-line pull-left line34">

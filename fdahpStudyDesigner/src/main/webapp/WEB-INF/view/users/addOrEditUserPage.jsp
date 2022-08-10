@@ -369,7 +369,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> 
 	<c:if test="${actionPage ne 'VIEW_PAGE'}">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
 			<div class="white-bg box-space t-bor text-right">

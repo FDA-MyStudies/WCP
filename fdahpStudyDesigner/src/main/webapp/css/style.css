@@ -2811,4 +2811,18 @@ background:#f3f6f8 !important;
 }
 
 .fa-angle-down { display:none;}
+
+.radio {
+    padding-left: 0.25rem!important;
+}
+.checkbox {
+     padding-left: 0.25rem!important;
+} 
+.studyCount { color: #333333; }
+
+button:active {
+    outline: none;
+    border: none;
+}
+
  /* css end here */

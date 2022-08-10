@@ -8,7 +8,7 @@
 </head>
 <style>
 #studies_list_wrapper{
-width:1270px;
+width:100%;
 }
 table thead{
 background:#fff ;

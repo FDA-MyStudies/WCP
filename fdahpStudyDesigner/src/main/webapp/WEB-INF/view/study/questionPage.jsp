@@ -183,7 +183,7 @@ input[type=number] {
   }
 </script>
 <!-- Start right Content here -->
-<div id="questionPage" class="col-sm-10 col-lg-9 col-rc white-bg p-none">
+<div id="questionPage" class="col-sm-10 col-rc white-bg p-none">
 <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 <!-- Start top tab section-->
 <div class="right-content-head">
@@ -1348,8 +1348,8 @@ input[type=number] {
                     <div class="row mt-md">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
 
-                            <div class="col-md-12 col-lg-12 p-none">
-                                <div class="gray-xs-f mb-xs">
+                            <div class="row p-none">
+                              <div class="gray-xs-f mb-xs col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
                                     Special Validations<span
                                         class="ml-xs sprites_v3 filled-tooltip"
                                         data-toggle="tooltip"
@@ -1407,7 +1407,7 @@ input[type=number] {
                                     </div>
 
                                 </div>
-                                <div class="col-md-6 pl-none">
+                                <div class="col-md-6 row pl-none">
                                     <div class="form-group mr-xs col-md-2 pr-none">except</div>
                                     <div class="col-md-9 pl-none pr-none">
                                         <div class="form-group">
@@ -1813,7 +1813,7 @@ input[type=number] {
                                 title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span>
                         </div>
                     </div>
-                    <div class="row mt-sm" id="0">
+                    <div class=" mt-sm" id="0">
                         <div class="col-md-3 pl-none">
                             <div class="gray-xs-f mb-xs">
                                 Display Text (1 to 50 characters)<span class="requiredStar">*</span>
@@ -2624,8 +2624,8 @@ input[type=number] {
                                                title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span>
                         </div>
                     </div>
-                    <div class="mt-sm row">
-                        <div>
+                    <div class="mt-sm">
+                        <div class="row">
                             <div class="col-md-2 pl-none col-smthumb-2">
                                 <div class="gray-xs-f mb-xs">
                                     Image <span class="requiredStar">*</span><span

@@ -92,6 +92,9 @@
        #comprehensionInfoForm{
        display:contents;
        }
+       .right-content-head-wo-z {
+    padding: 12px 30px 0px 30px !important;
+}
     </style>
 </head>
 <script type="text/javascript">
@@ -110,7 +113,7 @@
 <form:form
         action="/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}"
         name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
-    <div class="col-sm-10 col-lg-9 col-rc white-bg p-none">
+    <div class="col-sm-10 col-rc white-bg p-none">
         <!--  Start top tab section-->
         <div class="right-content-head">
             <div class="text-right">
@@ -164,7 +167,7 @@
                         class="ct_panel" id="addHelpNote"><small>(Please
 							save to continue)</small></span>
                 </div>
-                <div class="form-group col-md-5 p-none">
+                <div class="form-group col-md-5 p-none mb-0">
 					<span class="radio radio-info radio-inline p-45 pl-1"> <input
                             type="radio" id="comprehensionTestYes" value="Yes"
                             name="needComprehensionTest"

@@ -195,7 +195,7 @@ input[type=number] {
   }
 </script>
 <!-- Start right Content here -->
-<div id="questionStep" class="col-sm-10 col-lg-9 col-rc white-bg p-none">
+<div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
 	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<div class="right-content-head">
@@ -212,7 +212,7 @@ input[type=number] {
 
 			<c:if
 				test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
-				 <!-- <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+				  <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
 					<select
 						class="selectpicker  aq-select aq-select-form studyLanguage langSpecific"
 						id="studyLanguage" name="studyLanguage" title="Select">
@@ -224,21 +224,8 @@ input[type=number] {
 								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
 						</c:forEach>
 					</select>
-				</div> -->
-				
-				<div class="form-group">
-    <label for="exampleFormControlSelect1">Example select</label>
-    <select class="form-control" id="studyLanguage" name="studyLanguage" title="Select" >
-     <option value="en"
-							${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
-							English</option>
-						<c:forEach items="${languageList}" var="language">
-							<option value="${language.key}"
-								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
-						</c:forEach>
-    </select>
-  </div>
-  
+				</div> 
+				   
 			</c:if>
 
 			<c:if
@@ -1406,13 +1393,14 @@ input[type=number] {
 							<div class="row mt-md">
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
 
-									<div class="col-md-12 col-lg-12 p-none">
-										<div class="gray-xs-f mb-xs">
+									<div class="row p-none">
+										<div class="gray-xs-f mb-xs col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
 											Special Validations<span
 												class="ml-xs sprites_v3 filled-tooltip"
 												data-toggle="tooltip"
 												title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span>
 										</div>
+                    
 										<div class="col-md-3 pl-none">
 											<div class="form-group">
 												<select name="questionReponseTypeBo.validationCondition"
@@ -1455,7 +1443,7 @@ input[type=number] {
 											</div>
 										</div>
 
-										<div class="col-md-6 pl-none">
+										<div class="col-md-6 row pl-none">
 											<div class="mr-xs col-md-2 pr-none">except</div>
 											<div class="form-group col-md-9 pl-none pr-none">
 
@@ -1891,7 +1879,7 @@ input[type=number] {
 										title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span>
 								</div>
 							</div>
-							<div class="row mt-sm" id="0">
+							<div class=" mt-sm" id="0">
 								<div class="col-md-3 pl-none">
 									<div class="gray-xs-f mb-xs">
 										Display Text (1 to 50 characters)<span class="requiredStar">*</span>

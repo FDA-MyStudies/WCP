@@ -775,7 +775,7 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 }
 
 .blue-btn{
-    background: #007cba;
+    background: #007cba !important;
     border-color: #007cba !important;
     padding: 4px 20px;
 }

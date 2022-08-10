@@ -873,7 +873,8 @@ setInterval(function () {
     	  	<c:if test="${sessionObject.userId eq userBO.userId}">
     	  		$('#ownUser').val('1');
     	  	</c:if>
-      		$('.addUpdate').parents('form').submit();	
+      		//$('.addUpdate').parents('form').submit();	
+			  $('#userForm').submit();
       	}
     }
     function setStudySettingByRole(element){

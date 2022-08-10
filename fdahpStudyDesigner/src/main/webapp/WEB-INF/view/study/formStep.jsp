@@ -256,7 +256,7 @@
                                 <div>Form Step</div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="col-lg-3 pl-0">
+                            <div class="col-md-12 pl-0">
                                 <div class="gray-xs-f mb-xs pt-3">
                                     Is this a Skippable Step?<span
                                         class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -279,7 +279,8 @@
                             </div>
                             <div class="clearfix"></div>
                             <c:if test="${questionnaireBo.branching}">
-                                <div class="col-md-4 col-lg-3 p-none">
+                            
+                                <div class="col-md-4 col-lg-3 p-none mt-2">
                                     <div class="gray-xs-f mb-xs">
                                         Default Destination Step <span class="requiredStar">*</span>
                                         <span

@@ -45,6 +45,18 @@
 	width: 150px; //
 	font-size: 10px !important;
 }
+
+.dailyTimeDiv .align-span-center {
+    position: relative;
+    top: 0px;
+}
+
+.manuallyContainer .align-span-center {
+    position: relative;
+    top: -9px;
+}
+
+
 </style>
 </head>
 

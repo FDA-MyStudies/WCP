@@ -147,6 +147,12 @@ input[type=number] {
   caret-color: transparent;
 }
 
+.disabled_css ~ button {
+    background-color: #eee  !important;
+    opacity: 1  !important;
+    cursor: not-allowed  !important;
+}
+
     </style>
 </head>
 <script type="text/javascript">
@@ -1513,7 +1519,7 @@ input[type=number] {
                                        id="timeIntervalStepId"
                                        value="${questionsBo.questionReponseTypeBo.step}"
                                        onkeypress="return isNumber(event)" maxlength="2"> <span
-                                    class="dis-inline mt-sm ml-sm">Min</span>
+                                    class="dis-inline ml-sm">Min</span>
                                 <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>
@@ -3045,6 +3051,7 @@ input[type=number] {
     <c:if test="${actionTypeForFormStep == 'view'}">
     $('#questionStepId input,textarea ').prop('disabled', true);
     $('#questionStepId select').addClass('linkDis');
+    $('#responseTypeId').addClass('disabled_css'); 
     $('.addBtnDis, .remBtnDis').addClass('dis-none');
     $(".removeImageId").css("visibility", "hidden");
     $("tbody").removeClass('ui-sortable');

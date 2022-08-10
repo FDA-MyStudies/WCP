@@ -158,6 +158,14 @@ input[type=number] {
     background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
     }
+     
+
+.disabled_css ~ button {
+    background-color: #eee  !important;
+    opacity: 1  !important;
+    cursor: not-allowed  !important;
+}
+
     </style>
 </head>
 <script type="text/javascript">
@@ -1028,10 +1036,10 @@ input[type=number] {
 												value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
 											<span id="removeUrl"
 												class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.minImage}">hide</c:if>"
-												onclick="removeImage(this);">X<a
-												href="javascript:void(0)"
-												class="blue-link txt-decoration-underline pl-xs">Remove
-													Image</a></span>
+												onclick="removeImage(this);">X
+												<a href="javascript:void(0)"
+												class="blue-link txt-decoration-underline pl-xs">
+												Remove Image</a></span>
 											<div class="help-block with-errors red-txt"></div>
 										</div>
 									</div>
@@ -1374,7 +1382,7 @@ input[type=number] {
 									</div>
 								</div>
 								<div class="col-md-4">
-									<div class="col-md-6 col-lg-4 p-none">
+									<div class="col-md-6  p-none">
 										<div class="gray-xs-f mb-xs">
 											Max Length <span class="ml-xs sprites_v3 filled-tooltip"
 												data-toggle="tooltip"
@@ -1544,7 +1552,7 @@ input[type=number] {
 											id="timeIntervalStepId"
 											value="${questionnairesStepsBo.questionReponseTypeBo.step}"
 											onkeypress="return isNumber(event)" maxlength="2"> <span
-											class="dis-inline mt-sm ml-sm">Min</span>
+											class="dis-inline ml-sm">Min</span>
 										<div class="help-block with-errors red-txt"></div>
 									</div>
 								</div>
@@ -4142,6 +4150,7 @@ input[type=number] {
         <c:if test="${actionTypeForQuestionPage == 'view'}">
         $('#questionStepId input,textarea ').prop('disabled', true);
         $('#questionStepId select').addClass('linkDis');
+        $('#responseTypeId').addClass('disabled_css');  
         $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
         $("#trailId").hide();
         $(".removeImageId").css("visibility", "hidden");

@@ -160,6 +160,16 @@
 background:none;
 }
 
+.dailyTimeDiv .align-span-center {
+    position: relative;
+    top: 0px;
+}
+
+.manuallyContainer .align-span-center {
+    position: relative;
+    top: -9px;
+}
+
     </style>
 </head>
 

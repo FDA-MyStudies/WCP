@@ -392,6 +392,8 @@
 
 
 <script>
+  
+$('a').each(function() { this.setAttribute('aria-expanded', 'false')});
 
   var totalSavedPages = ${studyPageBos.size()};
   var idleTime = 0;

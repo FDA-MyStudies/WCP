@@ -79,7 +79,15 @@
        .close{
        background-image: none;
        }
-
+       
+.checkbox label.addadmin_check::before {
+    margin-left: 0px !important;
+    margin-top: -13px !important;
+    }
+.checkbox label.addadmin_check::after {
+    margin-left: 0px !important;
+    margin-top: -13px !important;
+    }
 
     </style>
 </head>
@@ -548,7 +556,7 @@
 										<input type="checkbox" class="addAdminCheckbox"
                                                id="inlineCheckboxNew${user.userId}" name="case"
                                                value="${fn:escapeXml(user.userFullName)}"
-                                               userId="${user.userId}"> <label
+                                               userId="${user.userId}"> <label class="addadmin_check"
                                     for="inlineCheckboxNew${user.userId}"></label>
 								</span></td>
                             <td><span class="dis-ellipsis"

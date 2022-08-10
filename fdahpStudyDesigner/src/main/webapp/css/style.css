@@ -1103,7 +1103,10 @@ input[type=radio]:disabled+label::after {
 	{
 	color: #001a73;
 }
-
+.overview-panel .panel .panel-heading .panel-title a[aria-expanded=false] div div:first-child
+	{
+	color: #7c868d;
+}
 .overview-panel .panel .panel-heading .panel-title a[aria-expanded=true] div div:last-child
 	{
 	display: none;

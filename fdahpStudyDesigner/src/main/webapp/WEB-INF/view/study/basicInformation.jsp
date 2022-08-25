@@ -427,9 +427,10 @@
   var idleTime = 0;
   $(document).ready(function () {
     $('#loader').hide();
-    $('.commonCls').on('click', function () {
+    // unwanted code added here so its caused loader issue
+/* $('.commonCls').on('click', function () {
         $('#loader').show();
-    })
+    }) */
     $('#removeUrl').css("visibility", "hidden");
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();

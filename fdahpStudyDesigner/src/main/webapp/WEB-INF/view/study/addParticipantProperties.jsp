@@ -895,4 +895,10 @@
       }
     });
   }
+  
+    $('#propertyName').on('keyup', function () {
+          $(this).parent().find(".help-block").empty();
+          $('.form-control').parent().removeClass("has-danger").removeClass("has-error");
+        });
+        
 </script>

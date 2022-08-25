@@ -89,6 +89,21 @@
     margin-top: -13px !important;
     }
 */
+
+.checkbox label {
+    display: inline !important;
+}
+.checkbox label::before { top: 2px !important;} 
+
+.checkbox label::after {
+    display: inline !important;
+    top: 2px !important;
+    }
+    
+.close {
+    margin-right: 5px;
+}
+
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
@@ -551,8 +566,8 @@
                     <tbody>
                     <c:forEach items="${userList}" var="user">
                         <tr id="user${user.userId}" class="checkCount">
-                            <td style="position: inherit;"><span
-                                    class="checkbox checkbox-inline" style="padding-top: 5px;">
+                            <td><span
+                                    class="checkbox checkbox-inline">
 										<input type="checkbox" class="addAdminCheckbox"
                                                id="inlineCheckboxNew${user.userId}" name="case"
                                                value="${fn:escapeXml(user.userFullName)}"
@@ -662,7 +677,7 @@ var idleTime = 0;
     });
     </c:if>
 
-    $('[data-toggle="tooltip"]').tooltip();
+   $('[data-toggle="tooltip"]').tooltip(); 
 
     $('#adminsId').hide();
 
@@ -1161,7 +1176,7 @@ var idleTime = 0;
           + userId + ')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
       domStr = domStr + '</tr>';
       $('#studyAdminId').append(domStr);
-      $('[data-toggle="tooltip"]').tooltip();
+      
       $('.dataTables_empty').remove();
     });
     $('#addAdminsToStudyId').attr('disabled', false);
@@ -1175,11 +1190,16 @@ var idleTime = 0;
       count++;
     });
     if (count == 1) {
+      $('[data-toggle="tooltip"]').tooltip('dispose');
+   
       table.clear().draw();
+     
     }
     $('[data-toggle="tooltip"]').tooltip('dispose');
     $('#studyAdminRowId' + userId).remove();
 
+    $('[data-toggle="tooltip"]').tooltip('dispose');
+    
     $('#user' + userId).addClass('checkCount').show();
   }
 

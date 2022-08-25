@@ -166,6 +166,7 @@ input[type=number] {
     cursor: not-allowed  !important;
 }
 
+.hide{ display: none;}
     </style>
 </head>
 <script type="text/javascript">

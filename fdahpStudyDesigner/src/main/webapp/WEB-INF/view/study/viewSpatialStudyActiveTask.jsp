@@ -895,7 +895,6 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                  </div>
                 </c:if>
                
             </c:forEach>

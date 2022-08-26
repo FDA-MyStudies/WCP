@@ -280,7 +280,7 @@ $(document).ready(function(){
                      idleTime = 0;
                      i-=1;
                       }
-                    }, 60000);
+                    }, 1000);
                   }
 
 });

@@ -254,8 +254,7 @@
         $("#targetOptionId")
         .change(
             function () {
-            debugger
-              console.log($(this).val());
+              // console.log($(this).val());
               var taskId = $(this).val();
               if (taskId == 1) {
                 $('.activeText')
@@ -298,7 +297,6 @@
 
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
-            debugger;
           let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           let isAutoSaved = $('#isAutoSavedParent').val();
           
@@ -351,8 +349,7 @@
         }
 
         function loadActiveSchedule(changeTabSchedule) {
-          if (changeTabSchedule) { 
-          debugger; 
+          if (changeTabSchedule) {
             $("#schedule")
             .load(
                 "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}",

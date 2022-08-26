@@ -6600,9 +6600,8 @@ input[type=number] {
       //   $('#' + choiceCount).find('input:first').focus();
       // }
 
-
+	  var choiceCount = $('.text-choice').length;
       function addTextChoice() {
-        choiceCount = $('.text-choice').length;
         var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
         var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
 
@@ -6700,6 +6699,7 @@ input[type=number] {
             +
             "</div></div>" +
             "</div></div></div></div></td></tr><div class='clearfix'></div>";
+		choiceCount++;
         $(".text-choice:last").after(newTextChoice);
         $('.selectpicker').selectpicker('refresh');
         $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
@@ -6714,7 +6714,20 @@ input[type=number] {
         $('#' + choiceCount).find('input:first').focus();
       }
 
+	var valueArrayTxtChoice = new Array();
+	$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
+		let val = $(ele).val();
+		if (val !== '' && val !== undefined) {
+			valueArrayTxtChoice.push(val);
+		}
+	});
+
       function removeTextChoice(param) {
+		  let prm =  $(param).parents(".text-choice").find('input.textChoiceVal').val();
+		  let index = valueArrayTxtChoice.indexOf(prm);
+		  if (index > -1) {
+			  valueArrayTxtChoice.splice(index, 1);
+		  }
         if ($("#textchoiceOtherId").is(':checked')) {
           if ($('.text-choice').length > 1) {
             $(param).parents(".text-choice").remove();
@@ -7111,30 +7124,37 @@ input[type=number] {
           });
           callback(isValid);
         } else if (responsetype == "Text Choice") {
-          var valueArray = new Array();
-          $('.text-choice').each(function () {
-            var id = $(this).attr("id");
-            var diaplay_value = $("#displayTextChoiceValue" + id).val();
-            $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
-                "has-error");
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '' && diaplay_value !== undefined) {
-              if (selected_diaplay_value != '' && selected_diaplay_value !== undefined && valueArray.indexOf(selected_diaplay_value.toLowerCase()) != -1) {
-                isValid = false;
-                $("#" + selected_id).val('');
-                $("#" + selected_id).parent().addClass("has-danger").addClass(
-                    "has-error");
-                $("#" + selected_id).parent().find(".help-block").empty();
-                $("#" + selected_id).parent().find(".help-block").append(
-                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                        "The value should be unique "));
-                return false;
-              } else
-                valueArray.push(diaplay_value.toLowerCase());
-            } else {
-
-            }
-          });
+			let id = $("#" + selected_id);
+			let valField = $(id).val();
+			if (valField !== '' && valField !== undefined) {
+				id.parent().removeClass("has-danger").removeClass("has-error");
+				id.parent().find(".help-block").empty();
+				if (valueArrayTxtChoice.includes(valField.toLowerCase())) {
+					id.val('');
+					id.parent().addClass("has-danger").addClass("has-error");
+					id.parent().find(".help-block")
+							.append($("<ul><li> </li></ul>")
+									.attr("class", "list-unstyled")
+									.text("The value should be unique "));
+					return false;
+				} else {
+					valueArrayTxtChoice = new Array();
+					$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
+						let val = $(ele).val();
+						if (val !== '' && val !== undefined) {
+							valueArrayTxtChoice.push(val);
+						}
+					});
+				}
+			} else {
+				valueArrayTxtChoice = new Array();
+				$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
+					let val = $(ele).val();
+					if (val !== '' && val !== undefined) {
+						valueArrayTxtChoice.push(val);
+					}
+				});
+			}
           callback(isValid);
         }
       }

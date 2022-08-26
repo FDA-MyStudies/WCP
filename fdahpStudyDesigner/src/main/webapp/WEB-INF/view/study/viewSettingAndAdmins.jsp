@@ -1183,7 +1183,6 @@ var idleTime = 0;
   }
 
   function removeUser(userId) {
-    debugger;
     var userId = userId;
     var count = 0;
     $('.studyAdminRowCls').each(function () {

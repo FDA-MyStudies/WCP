@@ -450,7 +450,6 @@ var idleTime = 0;
         setInterval(function () {
         idleTime += 1;
         if (idleTime > 3) {
-         debugger
            <c:if test="${actionPage ne 'view'}">
            autoSaveComprehensionQuestionPage('auto');
            </c:if>

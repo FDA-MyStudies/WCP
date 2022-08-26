@@ -101,7 +101,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="col-sm-10  col-lg-9 col-rc white-bg p-none">
+<div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
     <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form

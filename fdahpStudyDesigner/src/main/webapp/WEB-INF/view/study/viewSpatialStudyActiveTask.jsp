@@ -288,7 +288,7 @@
                 </c:if>
                 <div class="clearfix"></div>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
-                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
+                    <div class="blue-md-f text-uppercase">Results captured from the task b</div>
                 </c:if>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8}">
                     <input type="hidden" name="taskAttributeValueBos[7].attributeValueId" value="">
@@ -904,7 +904,7 @@
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
                 <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var="taskValueAttributeBo">
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-
+                      <div class="row">  
                         <div class="col-md-3 col-lg-3 p-none mr-lg">
                             <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
                                     class="requiredStar"> *</span><span
@@ -1059,6 +1059,7 @@
 
                         <div class="clearfix"></div>
                     </c:if>
+
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 
                         <div class="col-md-3 col-lg-3 p-none">
@@ -1094,10 +1095,12 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
+                      </div>
                     </c:if>
+                    <div class="clearfix"></div>
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8 && count == 0}">
                         <c:set var="count" value="${count+1}"/>
-                        <div class="blue-md-f text-uppercase">Results captured from the task</div>
+                        <div class="blue-md-f text-uppercase">Results captured from the task a</div>
                     </c:if>
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
                         <input type="hidden" name="taskAttributeValueBos[7].attributeValueId"

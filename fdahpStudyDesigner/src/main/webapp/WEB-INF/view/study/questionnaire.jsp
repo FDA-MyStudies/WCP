@@ -4042,7 +4042,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           callback(false);
       }
     } else {
-      showErrMsg("Please fill in all mandatory fieldsssss.");
+      showErrMsg("Please fill all the mandatory fields.");
       $('.scheduleQusClass a').tab('show');
       if (callback)
         callback(false);

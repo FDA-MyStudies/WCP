@@ -1,6 +1,7 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -63,6 +64,10 @@ public class QuestionResponseSubTypeBo implements Serializable {
   private String selectedImage;
 
   @Transient private MultipartFile selectImageFile;
+
+  @Transient private List<String> displayTextLang;
+
+  @Transient private List<String> descriptionLang;
 
   @Column(name = "study_version")
   private Integer studyVersion = 1;
@@ -194,5 +199,21 @@ public class QuestionResponseSubTypeBo implements Serializable {
 
   public void setValue(String value) {
     this.value = value;
+  }
+
+  public List<String> getDisplayTextLang() {
+    return displayTextLang;
+  }
+
+  public void setDisplayTextLang(List<String> displayTextLang) {
+    this.displayTextLang = displayTextLang;
+  }
+
+  public List<String> getDescriptionLang() {
+    return descriptionLang;
+  }
+
+  public void setDescriptionLang(List<String> descriptionLang) {
+    this.descriptionLang = descriptionLang;
   }
 }

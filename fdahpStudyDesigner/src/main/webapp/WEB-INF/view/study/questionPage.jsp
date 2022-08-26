@@ -2172,28 +2172,23 @@ input[type=number] {
                                   
                                 </div>
                                       <div class="text-right dis-inline pull-right">
-
-                                          <a class=" text-left"  data-toggle="collapse" href="#collapse${subtype.index}" aria-expanded="true" aria-controls="collapseOne">
+                                          <a class=" text-left" data-toggle="collapse" href="#collapse${subtype.index}"
+                                             aria-expanded="true" aria-controls="collapseOne">
                                            <span class="ml-lg imageBg">
-                                                                                       <img class='arrow' src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
-                                                                                       <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                                                                        width="14.000000pt" height="9.000000pt" viewBox="0 0 14.000000 9.000000"
-                                                                                        preserveAspectRatio="xMidYMid meet">
-
-                                                                                       <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
-                                                                                       fill="#000000" stroke="none">
-                                                                                       </g>
-                                                                                       </svg>
-                                                                                       </span>
+                                               <img class='arrow'src='/fdahpStudyDesigner/images/icons/slide-down.png'/>
+                                               <svg version="1.0"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14.000000pt"
+                                                    height="9.000000pt"
+                                                    viewBox="0 0 14.000000 9.000000"
+                                                    preserveAspectRatio="xMidYMid meet">
+                                                   <g transform="translate(0.000000,9.000000) scale(0.100000,-0.100000)"
+                                                      fill="#000000" stroke="none">
+                                                   </g>
+                                               </svg>
+                                           </span>
                                           </a>
-
-
-
                                       </div>
-
-
-
-
                               </div>
 
                               <div id="collapse${subtype.index}" class="collapse show" aria-labelledby="heading" data-parent="#accordionExample1">
@@ -2214,6 +2209,15 @@ input[type=number] {
                                                      id="displayTextChoiceText${subtype.index}"
                                                      value="${fn:escapeXml(questionResponseSubType.text)}"
                                                      maxlength="100">
+<%--                                              for each for multiple languages--%>
+                                <c:forEach items="${questionResponseSubType.displayTextLang}"
+                                           var="displayTextLang" varStatus="subtype2">
+                                    <input type="hidden"
+                                           name="questionResponseSubTypeList[${subtype.index}].displayTextLang"
+                                           id="displayTextChoiceTextLang${subtype.index}"
+                                           value="${fn:escapeXml(displayTextLang)}"
+                                           maxlength="100">
+                                </c:forEach>
 
                                                      <!-- <input type="hidden"  class="reset_val"
                                                      name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
@@ -2277,11 +2281,20 @@ input[type=number] {
                                                   characters)
                                               </div>
                                               <div class="form-group">
-                          <textarea class="form-control lang-specific"
+                                                  <textarea class="form-control lang-specific"
                                                                 name="questionResponseSubTypeList[${subtype.index}].description"
                                                                 id="displayTextChoiceDescription${subtype.index}"
                                                                 value="${fn:escapeXml(questionResponseSubType.description)}"
                                                                 maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
+<%--                                                  for each for multiple other languages--%>
+                                                  <c:forEach items="${questionResponseSubType.descriptionLang}"
+                                                             var="descriptionLang" varStatus="subtype2">
+                                                      <input type="hidden"
+                                                             name="questionResponseSubTypeList[${subtype.index}].descriptionLang"
+                                                             id="displayTextChoiceDescriptionLang${subtype.index}"
+                                                             value="${fn:escapeXml(descriptionLang)}"
+                                                             maxlength="100">
+                                                  </c:forEach>
                                               </div>
                                           </div>
                                           <div class="col-md-2 pl-none pt-xlg">
@@ -2304,7 +2317,8 @@ input[type=number] {
                          
                             
                             
-                            </td></tr> 
+                            </td>
+                      </tr>
 
                                 </c:forEach>
                             </c:when>
@@ -4642,7 +4656,7 @@ input[type=number] {
 
       });
       questionsBo.questionResponseSubTypeList = questionSubResponseArray;
-    } else if (resType == "Text Choice") {
+    } else if (resType === "Text Choice") {
 
       var questionSubResponseArray = new Array();
       var selectionStyel = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
@@ -4662,8 +4676,13 @@ input[type=number] {
         questionSubResponseType.value = diaplay_value;
         questionSubResponseType.exclusive = exclusioveText;
         questionSubResponseType.description = display_description;
+        let dispLang = new Array();
+        dispLang.push($("#displayTextChoiceTextLang" + id).val());
+        questionSubResponseType.displayTextLang = dispLang;
+        let descLang = new Array();
+        descLang.push($("#displayTextChoiceDescriptionLang" + id).val());
+        questionSubResponseType.descriptionLang = descLang;
         questionSubResponseArray.push(questionSubResponseType);
-
       });
       questionsBo.questionResponseSubTypeList = questionSubResponseArray;
     } else if (resType == "Image Choice") {
@@ -5014,7 +5033,6 @@ input[type=number] {
   }
 
   function addTextChoice() {
-  debugger
     let choiceCount = $('.text-choice').length;
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
@@ -5394,7 +5412,6 @@ input[type=number] {
   }
 
   function validateForUniqueValue(item, responsetype, callback) {
-  debugger
   	var selected_id = $(item).attr("id");
  	var selected_diaplay_value = $("#" + selected_id).val();
     var isValid = true;
@@ -5780,9 +5797,8 @@ input[type=number] {
               }
             }
           }
+            view_spanish_deactivemode();
 
- view_spanish_deactivemode();
- 
         } else {   // for English Language
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -5862,12 +5878,19 @@ input[type=number] {
               className = '.image-choice';
             else if (respType === '6') {
               className = '.text-choice';
+                $('.text-choice').find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
+                    let currId = ele.getAttribute('id');
+                    let currVal = ele.getAttribute('value');
+                    $('#' + currId).val(currVal).text(currVal);
+                });
             }
-            $(className).find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
-              let id = ele.getAttribute('id');
-              $('#' + id).val($('#' + id, htmlData).val());
-              $('#' + id).text($('#' + id, htmlData).val());
-            });
+            if (respType !== '6') {
+                $(className).find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
+                    let id = ele.getAttribute('id');
+                    let val = $('#' + id, htmlData).val();
+                    $('#' + id).val(val).text(val);
+                });
+            }
           } else if (respType === '8' || respType === '11' || respType === '12' || respType
               === '14') {
             let id = '';

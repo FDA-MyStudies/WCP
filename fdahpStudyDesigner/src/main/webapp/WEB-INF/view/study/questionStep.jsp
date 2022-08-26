@@ -2438,6 +2438,16 @@ input[type=number] {
                                           id="displayTextChoiceText${subtype.index}"
                                           value="${fn:escapeXml(questionResponseSubType.text)}"
                                           maxlength="100">
+
+<%--										  for each for multiple languages--%>
+										  <c:forEach items="${questionResponseSubType.displayTextLang}"
+													 var="displayTextLang" varStatus="subtype2">
+											  <input type="hidden"
+													 name="questionResponseSubTypeList[${subtype.index}].displayTextLang"
+													 id="displayTextChoiceTextLang${subtype.index}"
+													 value="${fn:escapeXml(displayTextLang)}"
+													 maxlength="100">
+										  </c:forEach>
                                                      <!-- <input type="text"  class="index1 reset_val"
                                                         name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                                         id="displayTextChoicesequenceNumber${subtype.index}"
@@ -2526,6 +2536,15 @@ input[type=number] {
                                             id="displayTextChoiceDescription${subtype.index}"
                                             value="${fn:escapeXml(questionResponseSubType.description)}"
                                             maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
+												<%--                                                  for each for multiple other languages--%>
+											<c:forEach items="${questionResponseSubType.descriptionLang}"
+													   var="descriptionLang" varStatus="subtype2">
+												<input type="hidden"
+													   name="questionResponseSubTypeList[${subtype.index}].descriptionLang"
+													   id="displayTextChoiceDescriptionLang${subtype.index}"
+													   value="${fn:escapeXml(descriptionLang)}"
+													   maxlength="100">
+											</c:forEach>
                                         </div>
                                       </div>
                                       <div class="col-md-2 pl-none">
@@ -6021,6 +6040,12 @@ input[type=number] {
             questionSubResponseType.destinationStepId = destination_step;
             questionSubResponseType.exclusive = exclusioveText;
             questionSubResponseType.description = display_description;
+			  let dispLang = new Array();
+			  dispLang.push($("#displayTextChoiceTextLang" + id).val());
+			  questionSubResponseType.displayTextLang = dispLang;
+			  let descLang = new Array();
+			  descLang.push($("#displayTextChoiceDescriptionLang" + id).val());
+			  questionSubResponseType.descriptionLang = descLang;
             questionSubResponseArray.push(questionSubResponseType);
             questionReponseTypeBo.otherType = $(
                 '[name="questionReponseTypeBo.otherType"]:checked').val();
@@ -8184,11 +8209,19 @@ input[type=number] {
 						$('#' + id).val($('#' + id, htmlData).val());
 					});
 					$('#textchoiceOtherId').attr('disabled', false);
+					$('.text-choice').find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
+						let currId = ele.getAttribute('id');
+						let currVal = ele.getAttribute('value');
+						$('#' + currId).val(currVal).text(currVal);
+					});
                 }
-                $(className).find('input.lang-specific').each(function (index, ele) {
-                  let id = ele.getAttribute('id');
-                  $('#' + id).val($('#' + id, htmlData).val());
-                });
+
+				  if (respType !== '6') {
+					  $(className).find('input.lang-specific').each(function (index, ele) {
+						  let id = ele.getAttribute('id');
+						  $('#' + id).val($('#' + id, htmlData).val());
+					  });
+				  }
               } else if (respType === '8' || respType === '11' || respType === '12' || respType
                   === '14') {
                 let id = '';

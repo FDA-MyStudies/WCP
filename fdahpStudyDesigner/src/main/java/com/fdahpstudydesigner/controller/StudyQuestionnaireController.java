@@ -27,14 +27,8 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -919,14 +913,29 @@ public class StudyQuestionnaireController {
                       questionnairesStepsBo.getQuestionnairesId(),
                       questionnairesStepsBo.getSequenceNo());
               map.addAttribute("destinationStepList", destionationStepList);
-              if (FdahpStudyDesignerUtil.isNotEmpty(language)
-                  && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-                QuestionLangBO questionLangBO =
-                    studyQuestionnaireService.getQuestionLangBO(
-                        Integer.parseInt(questionId), language);
-                map.addAttribute("questionLangBO", questionLangBO);
-                this.setStudyLangData(studyId, language, map);
+            }
+
+            QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
+            if (spanishQuestionBo != null) {
+              String[] displayText = spanishQuestionBo.getDisplayText().split("\\|");
+              String[] description = spanishQuestionBo.getTextChoiceDescription().split("\\|");
+              int i = 0;
+              for (QuestionResponseSubTypeBo subTypeBo : questionsBo.getQuestionResponseSubTypeList()) {
+                if (subTypeBo != null) {
+                  subTypeBo.setDisplayTextLang(Collections.singletonList(displayText.length > i ? displayText[i] : ""));
+                  subTypeBo.setDescriptionLang(Collections.singletonList(description.length > i ? description[i] : ""));
+                }
+                i++;
               }
+            }
+
+            if (FdahpStudyDesignerUtil.isNotEmpty(language)
+                    && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+              QuestionLangBO questionLangBO =
+                      studyQuestionnaireService.getQuestionLangBO(
+                              Integer.parseInt(questionId), language);
+              map.addAttribute("questionLangBO", questionLangBO);
+              this.setStudyLangData(studyId, language, map);
             }
           }
           String languages = studyBo.getSelectedLanguages();
@@ -1622,6 +1631,21 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
           }
+
+          QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
+          if (spanishQuestionBo != null) {
+            String[] displayText = spanishQuestionBo.getDisplayText().split("\\|");
+            String[] description = spanishQuestionBo.getTextChoiceDescription().split("\\|");
+            int i = 0;
+            for (QuestionResponseSubTypeBo subTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()) {
+              if (subTypeBo != null) {
+                subTypeBo.setDisplayTextLang(Collections.singletonList(displayText.length > i ? displayText[i] : ""));
+                subTypeBo.setDescriptionLang(Collections.singletonList(description.length > i ? description[i] : ""));
+              }
+              i++;
+            }
+          }
+
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "questionId", questionId);
 

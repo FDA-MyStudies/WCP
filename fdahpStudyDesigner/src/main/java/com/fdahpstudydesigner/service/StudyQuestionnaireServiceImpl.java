@@ -31,12 +31,10 @@ import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.SortedMap;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -915,17 +913,58 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
         if (questionsBo.getId() != null) {
           addQuestionsBo =
-              studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(), null, customStudyId);
+                  studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(), null, customStudyId);
         } else {
           addQuestionsBo = new QuestionsBo();
           addQuestionsBo.setActive(true);
           this.updateStudyLangSequence(questionsBo.getQuestionnaireId(), Integer.parseInt(studyId));
         }
 
+        Integer id = questionsBo.getId();
+        if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
+          questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
+          if (questionLangBO != null) {
+            StringBuilder dispText = new StringBuilder();
+            StringBuilder desc = new StringBuilder();
+            if (questionsBo.getQuestionResponseSubTypeList() != null
+                    && !questionsBo.getQuestionResponseSubTypeList().isEmpty()) {
+              List<QuestionResponseSubTypeBo> subTypeBoList = questionsBo.getQuestionResponseSubTypeList();
+              int size = subTypeBoList.size();
+              int i = 0;
+              if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
+                Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
+                  public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
+                    return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                  }
+                });
+              }
+              for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
+                // for spanish
+                String dispLang = subTypeBo.getDisplayTextLang() != null && !subTypeBo.getDisplayTextLang().isEmpty()
+                        ? subTypeBo.getDisplayTextLang().get(0)
+                        : "";
+                String descLang = subTypeBo.getDescriptionLang() != null && !subTypeBo.getDescriptionLang().isEmpty()
+                        ? subTypeBo.getDescriptionLang().get(0)
+                        : "";
+                if (i == size - 1) {
+                  dispText.append(dispLang);
+                  desc.append(descLang);
+                } else {
+                  dispText.append(dispLang).append("|");
+                  desc.append(descLang).append("|");
+                }
+                i++;
+              }
+              questionLangBO.setDisplayText(dispText.toString());
+              questionLangBO.setTextChoiceDescription(desc.toString());
+              studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
+            }
+          }
+        }
+
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
             && !"en".equals(language)
             && !"undefined".equals(language)) {
-          Integer id = questionsBo.getId();
           if (id != null) {
             questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, language);
           }
@@ -960,12 +999,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
           StringBuilder displayText = new StringBuilder();
           StringBuilder description = new StringBuilder();
-          if (questionsBo.getQuestionResponseSubTypeList() != null
-              && questionsBo.getQuestionResponseSubTypeList().size() > 0) {
+          List<QuestionResponseSubTypeBo> subTypeBoList = questionsBo.getQuestionResponseSubTypeList();
+          if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
+            Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
+              public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
+                if (StringUtils.isNoneBlank(object1.getSequenceNumber(), object2.getSequenceNumber())) {
+                  return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                }
+                return 0;
+              }
+            });
+          }
+          if (subTypeBoList != null && !subTypeBoList.isEmpty()) {
             int size = questionsBo.getQuestionResponseSubTypeList().size();
             int i = 0;
-            for (QuestionResponseSubTypeBo subTypeBo :
-                questionsBo.getQuestionResponseSubTypeList()) {
+            for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
               if (i == size - 1) {
                 displayText.append(subTypeBo.getText());
                 description.append(subTypeBo.getDescription());
@@ -1468,6 +1516,46 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionsBo.setActive(true);
           this.updateStudyLangSequence(
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
+        }
+
+        if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
+          questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
+          if (questionLangBO != null) {
+            StringBuilder dispText = new StringBuilder();
+            StringBuilder desc = new StringBuilder();
+            List<QuestionResponseSubTypeBo> subTypeBoList = questionnairesStepsBo.getQuestionResponseSubTypeList();
+            if (subTypeBoList != null && !subTypeBoList.isEmpty()) {
+              int size = subTypeBoList.size();
+              int i = 0;
+              if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionnairesStepsBo.getType())) {
+                Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
+                  public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
+                    return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                  }
+                });
+              }
+              for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
+                // for spanish
+                String dispLang = subTypeBo.getDisplayTextLang() != null && !subTypeBo.getDisplayTextLang().isEmpty()
+                        ? subTypeBo.getDisplayTextLang().get(0)
+                        : "";
+                String descLang = subTypeBo.getDescriptionLang() != null && !subTypeBo.getDescriptionLang().isEmpty()
+                        ? subTypeBo.getDescriptionLang().get(0)
+                        : "";
+                if (i == size - 1) {
+                  dispText.append(dispLang);
+                  desc.append(descLang);
+                } else {
+                  dispText.append(dispLang).append("|");
+                  desc.append(descLang).append("|");
+                }
+                i++;
+              }
+              questionLangBO.setDisplayText(dispText.toString());
+              questionLangBO.setTextChoiceDescription(desc.toString());
+              studyQuestionnaireDAO.saveOrUpdateObject(questionLangBO);
+            }
+          }
         }
 
         if (FdahpStudyDesignerUtil.isNotEmpty(language)

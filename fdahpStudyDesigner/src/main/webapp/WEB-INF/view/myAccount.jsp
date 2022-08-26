@@ -125,7 +125,7 @@
 	                      </div> 
 	             </div> 
             </div> 
-            <div class="row changepwd dis-none">
+            <div class="row changepwd dis-none" style="display: block;">
 	             <div class="pl-none ">   
 		              <div class="b-bor mt-md">
 			              <div class="ed-user-layout row">

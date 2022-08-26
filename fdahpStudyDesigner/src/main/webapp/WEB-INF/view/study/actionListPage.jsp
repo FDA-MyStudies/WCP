@@ -55,7 +55,7 @@ background:none;
 </style>
 </head>
 
-<div class="col-sm-10  col-lg-9 col-rc white-bg p-none">
+<div class="col-sm-10 col-rc white-bg p-none">
 
 	<!--  Start top tab section-->
 	<div class="right-content-head">
@@ -279,7 +279,7 @@ var idleTime = 0;
                   let timeOutInterval = setInterval(function () {
                   if (i === 0) {
                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                  if ($('#myModal').hasClass('in')) {
+                  if ($('#myModal').hasClass('show')) {
                   $('#backToLoginPage').submit();
                     }
                     clearInterval(timeOutInterval);

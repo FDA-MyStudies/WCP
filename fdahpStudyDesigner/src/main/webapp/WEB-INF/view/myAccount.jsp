@@ -125,7 +125,7 @@
 	                      </div> 
 	             </div> 
             </div> 
-            <div class="row changepwd dis-none">
+            <div class="row changepwd dis-none" style="display: block;">
 	             <div class="pl-none ">   
 		              <div class="b-bor mt-md">
 			              <div class="ed-user-layout row">
@@ -387,7 +387,7 @@ var idleTime = 0;
                   let timeOutInterval = setInterval(function () {
                   if (i === 0) {
                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                  if ($('#myModal').hasClass('in')) {
+                  if ($('#myModal').hasClass('show')) {
                   $('#backToLoginPage').submit();
                     }
                     clearInterval(timeOutInterval);

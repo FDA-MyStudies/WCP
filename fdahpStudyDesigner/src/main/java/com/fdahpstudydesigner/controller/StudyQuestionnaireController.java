@@ -917,15 +917,25 @@ public class StudyQuestionnaireController {
 
             QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
             if (spanishQuestionBo != null) {
-              String[] displayText = spanishQuestionBo.getDisplayText().split("\\|");
-              String[] description = spanishQuestionBo.getTextChoiceDescription().split("\\|");
+              String[] displayText = StringUtils.isNotBlank(spanishQuestionBo.getDisplayText())
+                      ? spanishQuestionBo.getDisplayText().split("\\|")
+                      : null;
+              String[] description = StringUtils.isNotBlank(spanishQuestionBo.getTextChoiceDescription())
+                      ? spanishQuestionBo.getTextChoiceDescription().split("\\|")
+                      : null;
               int i = 0;
-              for (QuestionResponseSubTypeBo subTypeBo : questionsBo.getQuestionResponseSubTypeList()) {
-                if (subTypeBo != null) {
-                  subTypeBo.setDisplayTextLang(Collections.singletonList(displayText.length > i ? displayText[i] : ""));
-                  subTypeBo.setDescriptionLang(Collections.singletonList(description.length > i ? description[i] : ""));
+              if (questionsBo != null && questionsBo.getQuestionResponseSubTypeList() != null) {
+                for (QuestionResponseSubTypeBo subTypeBo : questionsBo.getQuestionResponseSubTypeList()) {
+                  if (subTypeBo != null) {
+                    subTypeBo.setDisplayTextLang(displayText != null
+                            ? Collections.singletonList(displayText.length > i ? displayText[i] : "")
+                            : null);
+                    subTypeBo.setDescriptionLang(description != null
+                            ? Collections.singletonList(description.length > i ? description[i] : "")
+                            : null);
+                  }
+                  i++;
                 }
-                i++;
               }
             }
 
@@ -1634,15 +1644,25 @@ public class StudyQuestionnaireController {
 
           QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
           if (spanishQuestionBo != null) {
-            String[] displayText = spanishQuestionBo.getDisplayText().split("\\|");
-            String[] description = spanishQuestionBo.getTextChoiceDescription().split("\\|");
+            String[] displayText = StringUtils.isNotBlank(spanishQuestionBo.getDisplayText())
+                    ? spanishQuestionBo.getDisplayText().split("\\|")
+                    : null;
+            String[] description = StringUtils.isNotBlank(spanishQuestionBo.getTextChoiceDescription())
+                    ? spanishQuestionBo.getTextChoiceDescription().split("\\|")
+                    : null;
             int i = 0;
-            for (QuestionResponseSubTypeBo subTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()) {
-              if (subTypeBo != null) {
-                subTypeBo.setDisplayTextLang(Collections.singletonList(displayText.length > i ? displayText[i] : ""));
-                subTypeBo.setDescriptionLang(Collections.singletonList(description.length > i ? description[i] : ""));
+            if (questionnairesStepsBo != null && questionnairesStepsBo.getQuestionResponseSubTypeList() != null) {
+              for (QuestionResponseSubTypeBo subTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()) {
+                if (subTypeBo != null) {
+                  subTypeBo.setDisplayTextLang(displayText != null
+                          ? Collections.singletonList(displayText.length > i ? displayText[i] : "")
+                          : null);
+                  subTypeBo.setDescriptionLang(description != null
+                          ? Collections.singletonList(description.length > i ? description[i] : "")
+                          : null);
+                }
+                i++;
               }
-              i++;
             }
           }
 

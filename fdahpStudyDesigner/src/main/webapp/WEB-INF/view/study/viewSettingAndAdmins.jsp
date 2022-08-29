@@ -93,11 +93,11 @@
 .checkbox label {
     display: inline !important;
 }
-.checkbox label::before { top: 2px !important;} 
+.checkbox label::before { top: 1px !important;} 
 
 .checkbox label::after {
     display: inline !important;
-    top: 2px !important;
+    top: 1px !important;
     }
     
 .close {

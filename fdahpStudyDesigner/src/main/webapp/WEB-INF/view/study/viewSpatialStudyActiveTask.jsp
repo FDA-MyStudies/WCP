@@ -288,7 +288,7 @@
                 </c:if>
                 <div class="clearfix"></div>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
-                    <div class="blue-md-f text-uppercase">Results captured from the task b</div>
+                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
                 </c:if>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8}">
                     <input type="hidden" name="taskAttributeValueBos[7].attributeValueId" value="">
@@ -1100,7 +1100,7 @@
                     <div class="clearfix"></div>
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8 && count == 0}">
                         <c:set var="count" value="${count+1}"/>
-                        <div class="blue-md-f text-uppercase">Results captured from the task a</div>
+                        <div class="blue-md-f text-uppercase">Results captured from the task</div>
                     </c:if>
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
                         <input type="hidden" name="taskAttributeValueBos[7].attributeValueId"

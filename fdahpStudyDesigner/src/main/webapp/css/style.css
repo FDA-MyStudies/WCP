@@ -2827,5 +2827,7 @@ button:active {
     outline: none;
     border: none;
 }
+.bootstrap-select>.dropdown-toggle {
 
+    border: 1px solid rgba(0,0,0,.15) !important;
  /* css end here */

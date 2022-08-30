@@ -108,6 +108,9 @@
     opacity: 0 !important;
 }
 
+.checkbox input[type="checkbox"]:disabled+label {
+    opacity: 0.99 !important;
+}
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">

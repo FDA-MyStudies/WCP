@@ -1068,4 +1068,10 @@ display: contents !important;
     cursor: pointer;
 }
 
+.modal-dialog {
+    pointer-events: auto !important;
+}
 
+.hide {
+	display: none !important;
+}

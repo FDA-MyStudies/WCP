@@ -94,7 +94,9 @@
       font-size:15px;
        }
 
-
+.help-block ul {
+    position: inherit !important;
+}
 
     </style>
 </head>

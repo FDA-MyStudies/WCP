@@ -1052,3 +1052,20 @@ button:focus {outline:0;}
 display: contents !important;
 }
 
+.checkbox label::before , .checkbox label::after {
+    cursor: pointer;
+}
+
+.radio label::before , .radio label::after {
+   cursor: pointer;
+}
+
+.checkbox input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.radio input[type="radio"] {
+    cursor: pointer;
+}
+
+

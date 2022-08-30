@@ -104,6 +104,10 @@
     margin-right: 5px;
 }
 
+.radio input[type="radio"] {
+    opacity: 0 !important;
+}
+
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">

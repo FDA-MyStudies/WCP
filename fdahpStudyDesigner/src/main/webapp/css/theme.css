@@ -1075,3 +1075,7 @@ display: contents !important;
 .hide {
 	display: none !important;
 }
+.btn-light.disabled, .btn-light:disabled {
+    background-color: #eee !important;
+    border-color: #f8f9fa;
+}

@@ -854,7 +854,7 @@
                     $('td.sorting_1').removeClass('sorting_disabled');
                     updateCompletionTicksForEnglish();
                     $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-                    if (isLiveStudy) {
+                    if (isLiveStudy === 'true') {
                         $('#inlineRadio1, #inlineRadio2, #inlineRadio3').addClass('ml-disabled').attr('disabled', true);
                     } else {
                         $('#addQaId, #inlineRadio1, #inlineRadio2, #inlineRadio3').removeClass('ml-disabled').attr('disabled', false);
@@ -904,7 +904,7 @@
                     } else {
                         $('#comment').val($('#comment', htmlData).val());
                     }
-                    if (viewPermission == 'view') {
+                    if (viewPermission === 'view') {
                         $('#eleFormId input,textarea').prop('disabled',true);
                     }
                 }

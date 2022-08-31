@@ -132,8 +132,8 @@
             </c:if>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                <div class="dis-line form-group mb-none mr-sm">
+                    <span style="width: 150px;" class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
 						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"

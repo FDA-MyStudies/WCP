@@ -239,14 +239,14 @@ input[type=number] {
 
 			<c:if
 				test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
-				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-					<span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+				<div class="dis-line form-group mb-none mr-sm">
+					<span style="width: 150px;" class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
 						data-placement="bottom"
 						title="Language selection is available in edit screen only">
 						<select
 						class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
 						title="Select" disabled>
-							<option selected></option>
+							<option selected>English</option>
 					</select>
 					</span>
 				</div>
@@ -2760,8 +2760,8 @@ input[type=number] {
                                         <div class="gray-choice-f mb-xs mt-md">
                                           Text Choices
 
-                                          <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
-                                          id="displayTextChoicesequenceNumber0" value="1" />
+                                          <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
+                                          id="displayTextChoicesequenceNumber1" value="2" />
 
                                            <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>

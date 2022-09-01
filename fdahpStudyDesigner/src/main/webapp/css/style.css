@@ -2808,6 +2808,7 @@ font-size:14px !important;
 }
 .paginate_button{
 color:#2d2926 !important;
+cursor: pointer;
 }
 .customTabs > .nav-link{
 background:#f3f6f8 !important;

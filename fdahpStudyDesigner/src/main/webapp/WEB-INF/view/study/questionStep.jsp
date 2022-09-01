@@ -2437,7 +2437,7 @@ input[type=number] {
                               </div>
 
                               <div id="collapse${subtype.index}" class="collapse show" aria-labelledby="heading" data-parent="#accordion">
-                                <div class="panel-body pt-none">
+                                <div class="card-body pt-none">
 
                                   <div class="row mt-xlg" >
                                     <div class="col-md-3 pl-none">
@@ -2948,7 +2948,7 @@ input[type=number] {
                             </div>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse in">
-                            <div class="panel-body pt-none">
+                            <div class="card-body pt-none">
 
                                 <!-- Section Start --
                                 <div class="mt-xlg  ">

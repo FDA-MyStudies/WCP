@@ -83,7 +83,7 @@
             <div>
                  <span>This checklist is meant to serve as a reminder for tasks to be completed before you launch or go-live with a study. Mark tasks as completed as and when you finish them.</span>
             </div>
-            <div class="checkbox__container pt-lg">
+            <div class="checkbox__container pl-3 pt-lg">
                 <div class="checkbox checkbox-inline p-45 pb-md">
                       <div>
 	                       <input type="checkbox" id="inlineCheckbox1" class="class" name="checkbox1" <c:if test="${checklist.checkbox1}">checked</c:if> required>

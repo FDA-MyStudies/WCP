@@ -190,6 +190,21 @@ input[type=number] {
 </script>
 <!-- Start right Content here -->
 <div id="questionPage" class="col-sm-10 col-rc white-bg p-none">
+
+<form:form
+        action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}"
+        name="contentFormId" id="contentFormId" method="post"
+        data-toggle="validator" role="form">
+    <input type="hidden" name="${csrf.parameterName}" value="${csrf.token}">
+    <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+    <input type="hidden" id="nav" name="nav" value="${nav}">
+    <input type="hidden" name="actionTypeForQuestionPage" value="edit">
+    <input type="hidden" name="actionTypeForFormStep" value="edit">
+    <input type="hidden" name="questionnaireId" value="${questionnaireId}">
+    <input type="hidden" name="questionId" id="queId">
+    <input type="hidden" name="formId" id="formId" value="${formId}">
+</form:form>
+
 <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 <!-- Start top tab section-->
 <div class="right-content-head">
@@ -257,12 +272,12 @@ input[type=number] {
     <div class="right-content-body pt-none pl-none pr-none">
         <ul class="nav nav-tabs customTabs gray-bg">
             <li class="nav-item questionLevel active">
-           <a class="btn btnCusto active nav-link" data-toggle="tab" href="#qla">Question-level Attributes</a>
+           <a class="btn btnCusto active nav-link" id="qle" data-toggle="tab" href="#qla">Question-level Attributes</a>
             <!--<button class="nav-link active"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="true">Question-level Attributes</button>
                                             -->
                                                 </li>
             <li class="nav-item responseLevel">
-       <a class="btn btnCusto nav-link" data-toggle="tab" href="#rla">Response-level Attributes</a>
+       <a class="btn btnCusto nav-link" data-toggle="tab" id="rle" href="#rla">Response-level Attributes</a>
        <!-- <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attributes</button>
                 -->
                 </li>
@@ -2212,14 +2227,14 @@ input[type=number] {
                                                      value="${fn:escapeXml(questionResponseSubType.text)}"
                                                      maxlength="100">
 <%--                                              for each for multiple languages--%>
-                                <c:forEach items="${questionResponseSubType.displayTextLang}"
-                                           var="displayTextLang" varStatus="subtype2">
+<%--                                <c:forEach items="${questionResponseSubType.displayTextLang}"--%>
+<%--                                           var="displayTextLang" varStatus="subtype2">--%>
                                     <input type="hidden"
                                            name="questionResponseSubTypeList[${subtype.index}].displayTextLang"
                                            id="displayTextChoiceTextLang${subtype.index}"
-                                           value="${fn:escapeXml(displayTextLang)}"
+                                           value="${fn:escapeXml(questionResponseSubType.displayTextLang)}"
                                            maxlength="100">
-                                </c:forEach>
+<%--                                </c:forEach>--%>
 
                                                      <!-- <input type="hidden"  class="reset_val"
                                                      name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
@@ -2289,14 +2304,14 @@ input[type=number] {
                                                                 value="${fn:escapeXml(questionResponseSubType.description)}"
                                                                 maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
 <%--                                                  for each for multiple other languages--%>
-                                                  <c:forEach items="${questionResponseSubType.descriptionLang}"
-                                                             var="descriptionLang" varStatus="subtype2">
+<%--                                                  <c:forEach items="${questionResponseSubType.descriptionLang}"--%>
+<%--                                                             var="descriptionLang" varStatus="subtype2">--%>
                                                       <input type="hidden"
                                                              name="questionResponseSubTypeList[${subtype.index}].descriptionLang"
                                                              id="displayTextChoiceDescriptionLang${subtype.index}"
-                                                             value="${fn:escapeXml(descriptionLang)}"
+                                                             value="${fn:escapeXml(questionResponseSubType.descriptionLang)}"
                                                              maxlength="100">
-                                                  </c:forEach>
+<%--                                                  </c:forEach>--%>
                                               </div>
                                           </div>
                                           <div class="col-md-2 pl-none pt-xlg">
@@ -4678,12 +4693,8 @@ input[type=number] {
         questionSubResponseType.value = diaplay_value;
         questionSubResponseType.exclusive = exclusioveText;
         questionSubResponseType.description = display_description;
-        let dispLang = new Array();
-        dispLang.push($("#displayTextChoiceTextLang" + id).val());
-        questionSubResponseType.displayTextLang = dispLang;
-        let descLang = new Array();
-        descLang.push($("#displayTextChoiceDescriptionLang" + id).val());
-        questionSubResponseType.descriptionLang = descLang;
+        questionSubResponseType.displayTextLang = $("#displayTextChoiceTextLang" + id).val();
+        questionSubResponseType.descriptionLang = $("#displayTextChoiceDescriptionLang" + id).val();
         questionSubResponseArray.push(questionSubResponseType);
       });
       questionsBo.questionResponseSubTypeList = questionSubResponseArray;
@@ -4748,59 +4759,69 @@ input[type=number] {
         success: function (data) {
           var message = data.message;
           if (message === "SUCCESS") {
-            $("body").removeClass("loading");
-            $("#preShortTitleId").val(short_title);
-            var questionId = data.questionId;
-            var questionResponseId = data.questionResponseId;
+              var questionId = data.questionId;
+              if ($('#responseTypeId').val() === '6') {
+                  $('.nav-link').each( function (index, ele) {
+                      let id = ele.getAttribute('id');
+                      if ($('#' + id).hasClass('active')) {
+                          $('#nav').val(id);
+                      }
+                  });
+                  $('#queId').val(questionId);
+                  document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";
+                  document.contentFormId.submit();
+              } else {
+                  $("body").removeClass("loading");
+                  $("#preShortTitleId").val(short_title);
+                  var questionResponseId = data.questionResponseId;
 
-            $("#questionId").val(questionId);
-            $("#questionResponseTypeId").val(questionResponseId);
-            $("#responseQuestionId").val(questionId);
+                  $("#questionId").val(questionId);
+                  $("#questionResponseTypeId").val(questionResponseId);
+                  $("#responseQuestionId").val(questionId);
 
-            if (statShortName != null && statShortName != '' && typeof statShortName
-                != 'undefined') {
-              $("#prevStatShortNameId").val(statShortName);
-            }
+                  if (statShortName != null && statShortName != '' && typeof statShortName
+                      != 'undefined') {
+                      $("#prevStatShortNameId").val(statShortName);
+                  }
 
-            $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
-            $(item).prop('disabled', false);
-            $('#alertMsg').show();
-            if (callback)
-              callback(true);
-            if ($('.seventhQuestionnaires').find('span').hasClass(
-                'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.seventhQuestionnaires').find('span').removeClass(
-                  'sprites-icons-2 tick pull-right mt-xs');
-            }
-            // pop message after 15 minutes
-            if (data.isAutoSaved === 'true') {
-                $('#myModal').modal('show');
-                let i = 1;
-                let j = 14;
-                let lastSavedInterval = setInterval(function () {
-                    if ((i === 15) || (j === 0)) {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                        if ($('#myModal').hasClass('show')) {
-                            $('#backToLoginPage').submit();
-                        }
-                        clearInterval(lastSavedInterval);
-                    } else {
-                         if ((i === 1) || (j === 14)){
-                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                        }
-                        else if ((i === 14) || (j === 1)) {
-                         $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                        }
-                        else {
-                         $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                        }
-                        idleTime = 0;
-                        i += 1;
-                        j-=1;
-                    }
-                }, 60000);
-                $("#isAutoSaved").val('false');
-            }
+                  $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
+                  $(item).prop('disabled', false);
+                  $('#alertMsg').show();
+                  if (callback)
+                      callback(true);
+                  if ($('.seventhQuestionnaires').find('span').hasClass(
+                      'sprites-icons-2 tick pull-right mt-xs')) {
+                      $('.seventhQuestionnaires').find('span').removeClass(
+                          'sprites-icons-2 tick pull-right mt-xs');
+                  }
+              }
+                  // pop message after 15 minutes
+                  if (data.isAutoSaved === 'true') {
+                      $('#myModal').modal('show');
+                      let i = 1;
+                      let j = 14;
+                      let lastSavedInterval = setInterval(function () {
+                          if ((i === 15) || (j === 0)) {
+                              $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j + ' minutes</span></div>').css("fontSize", "15px");
+                              if ($('#myModal').hasClass('show')) {
+                                  $('#backToLoginPage').submit();
+                              }
+                              clearInterval(lastSavedInterval);
+                          } else {
+                              if ((i === 1) || (j === 14)) {
+                                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
+                              } else if ((i === 14) || (j === 1)) {
+                                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+                              } else {
+                                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j + ' minutes</span></div>').css("fontSize", "15px");
+                              }
+                              idleTime = 0;
+                              i += 1;
+                              j -= 1;
+                          }
+                      }, 60000);
+                      $("#isAutoSaved").val('false');
+                  }
           } else {
             var errMsg = data.errMsg;
             if (errMsg != '' && errMsg != null && typeof errMsg != 'undefined') {
@@ -5999,9 +6020,10 @@ $("#diagnosis_list tbody").sortable({
 
 });
 
-
-
-  
+  let nav = $('#nav').val();
+  if (nav !== null && nav !== '') {
+      $('#' + nav).click();
+  }
 </script>
 
 <script>

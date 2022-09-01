@@ -206,6 +206,17 @@ input[type=number] {
 <!-- Start right Content here -->
 <div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
+	<form:form
+			action="/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}"
+			name="contentFormId" id="contentFormId" method="post"
+			data-toggle="validator" role="form">
+		<input type="hidden" name="${csrf.parameterName}" value="${csrf.token}">
+		<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+		<input type="hidden" id="nav" name="nav" value="${nav}">
+		<input type="hidden" name="actionTypeForQuestionPage" value="edit">
+		<input type="hidden" name="questionnaireId" value="${questionnaireId}">
+		<input type="hidden" name="questionId" id="queId">
+	</form:form>
 	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<div class="right-content-head">
 		<div class="text-right">
@@ -283,19 +294,19 @@ input[type=number] {
 				<!-- <a class="nav-link" data-toggle="tab" href="#sla">Step-level
 
 						Attributes</a>-->
-					 <a class="btn btnCusto nav-link active " data-toggle="tab" href="#sla">Step-level</a>
+					 <a class="btn btnCusto nav-link active " id="sle" data-toggle="tab" href="#sla">Step-level</a>
 						<!--<button class="nav-link active"  data-toggle="tab" data-target="#sla" type="button" role="tab" aria-controls="" aria-selected="true">Step-level Attribute</button>  -->
 
 						</li>
 				<li class="nav-item questionLevel">
-				 <a class="btn btnCusto nav-link" data-toggle="tab" href="#qla">Question-level
+				 <a class="btn btnCusto nav-link" id="qle" data-toggle="tab" href="#qla">Question-level
 						Attributes</a>
 
  <!--- <button class="nav-link"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="false">Question-level Attribute</button> -->
 
 						</li>
 				<li class="nav-item responseLevel">
-			<a class="btn btnCusto nav-link" data-toggle="tab" href="#rla">Response-level
+			<a class="btn btnCusto nav-link" id="rle" data-toggle="tab" href="#rla">Response-level
 						Attributes</a>
  <!-- <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attribute</button>-->
 
@@ -2443,14 +2454,14 @@ input[type=number] {
                                           maxlength="100">
 
 <%--										  for each for multiple languages--%>
-										  <c:forEach items="${questionResponseSubType.displayTextLang}"
-													 var="displayTextLang" varStatus="subtype2">
+<%--										  <c:forEach items="${questionResponseSubType.displayTextLang}"--%>
+<%--													 var="displayTextLang" varStatus="subtype2">--%>
 											  <input type="hidden"
 													 name="questionResponseSubTypeList[${subtype.index}].displayTextLang"
 													 id="displayTextChoiceTextLang${subtype.index}"
-													 value="${fn:escapeXml(displayTextLang)}"
+													 value="${fn:escapeXml(questionResponseSubType.displayTextLang)}"
 													 maxlength="100">
-										  </c:forEach>
+<%--										  </c:forEach>--%>
                                                      <!-- <input type="text"  class="index1 reset_val"
                                                         name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                                         id="displayTextChoicesequenceNumber${subtype.index}"
@@ -2540,14 +2551,14 @@ input[type=number] {
                                             value="${fn:escapeXml(questionResponseSubType.description)}"
                                             maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
 												<%--                                                  for each for multiple other languages--%>
-											<c:forEach items="${questionResponseSubType.descriptionLang}"
-													   var="descriptionLang" varStatus="subtype2">
+<%--											<c:forEach items="${questionResponseSubType.descriptionLang}"--%>
+<%--													   var="descriptionLang" varStatus="subtype2">--%>
 												<input type="hidden"
 													   name="questionResponseSubTypeList[${subtype.index}].descriptionLang"
 													   id="displayTextChoiceDescriptionLang${subtype.index}"
-													   value="${fn:escapeXml(descriptionLang)}"
+													   value="${fn:escapeXml(questionResponseSubType.descriptionLang)}"
 													   maxlength="100">
-											</c:forEach>
+<%--											</c:forEach>--%>
                                         </div>
                                       </div>
                                       <div class="col-md-2 pl-none">
@@ -6043,12 +6054,8 @@ input[type=number] {
             questionSubResponseType.destinationStepId = destination_step;
             questionSubResponseType.exclusive = exclusioveText;
             questionSubResponseType.description = display_description;
-			  let dispLang = new Array();
-			  dispLang.push($("#displayTextChoiceTextLang" + id).val());
-			  questionSubResponseType.displayTextLang = dispLang;
-			  let descLang = new Array();
-			  descLang.push($("#displayTextChoiceDescriptionLang" + id).val());
-			  questionSubResponseType.descriptionLang = descLang;
+			questionSubResponseType.displayTextLang = $("#displayTextChoiceTextLang" + id).val();
+			questionSubResponseType.descriptionLang = $("#displayTextChoiceDescriptionLang" + id).val();
             questionSubResponseArray.push(questionSubResponseType);
             questionReponseTypeBo.otherType = $(
                 '[name="questionReponseTypeBo.otherType"]:checked').val();
@@ -6186,35 +6193,46 @@ input[type=number] {
             },
             success: function (data) {
               var message = data.message;
-              if (message == "SUCCESS") {
-                $("body").removeClass("loading");
-                $("#preShortTitleId").val(shortTitle);
-                var stepId = data.stepId;
-                var questionId = data.questionId;
-                var questionResponseId = data.questionResponseId;
-                var questionsResponseTypeId = data.questionsResponseTypeId;
+              if (message === "SUCCESS") {
+				  var questionId = data.questionId;
+				  if ($('#responseTypeId').val() === '6') {
+					  $('.nav-link').each( function (index, ele) {
+						  let id = ele.getAttribute('id');
+						  if ($('#' + id).hasClass('active')) {
+							  $('#nav').val(id);
+						  }
+					  });
+					  $('#queId').val(questionId);
+					  document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}";
+					  document.contentFormId.submit();
+				  } else {
+					  $("body").removeClass("loading");
+					  $("#preShortTitleId").val(shortTitle);
+					  var stepId = data.stepId;
+					  var questionResponseId = data.questionResponseId;
+					  var questionsResponseTypeId = data.questionsResponseTypeId;
 
-                if (statShortName != null && statShortName != '' && typeof statShortName
-                    != 'undefined') {
-                  $("#prevStatShortNameId").val(statShortName);
-                }
+					  if (statShortName != null && statShortName != '' && typeof statShortName
+							  != 'undefined') {
+						  $("#prevStatShortNameId").val(statShortName);
+					  }
 
-                $("#stepId").val(stepId);
-                $("#questionId").val(questionId);
-                $("#questionResponseTypeId").val(questionResponseId);
-                $("#responseQuestionId").val(questionId);
+					  $("#stepId").val(stepId);
+					  $("#questionId").val(questionId);
+					  $("#questionResponseTypeId").val(questionResponseId);
+					  $("#responseQuestionId").val(questionId);
 
-                $("#alertMsg").removeClass('e-box').addClass('s-box').text(
-                    "Content saved as draft.");
-                $(item).prop('disabled', false);
-                $('#alertMsg').show();
+					  $("#alertMsg").removeClass('e-box').addClass('s-box').text(
+							  "Content saved as draft.");
+					  $(item).prop('disabled', false);
+					  $('#alertMsg').show();
 
-                if ($('.seventhQuestionnaires').find('span').hasClass(
-                    'sprites-icons-2 tick pull-right mt-xs')) {
-                  $('.seventhQuestionnaires').find('span').removeClass(
-                      'sprites-icons-2 tick pull-right mt-xs');
-                }
-
+					  if ($('.seventhQuestionnaires').find('span').hasClass(
+							  'sprites-icons-2 tick pull-right mt-xs')) {
+						  $('.seventhQuestionnaires').find('span').removeClass(
+								  'sprites-icons-2 tick pull-right mt-xs');
+					  }
+				  }
                 if (callback)
                   callback(true);
                    // pop message after 15 minutes
@@ -8315,6 +8333,11 @@ $("#diagnosis_list tbody").sortable({
 }).disableSelection();
 
 });
+
+  let nav = $('#nav').val();
+  if (nav !== null && nav !== '') {
+	  $('#' + nav).click();
+  }
 
 
 </script>

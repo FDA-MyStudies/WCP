@@ -785,6 +785,7 @@ public class StudyQuestionnaireController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionTypeForFormStep"))
                 ? ""
                 : request.getParameter("actionTypeForFormStep");
+        map.addAttribute("nav", request.getParameter("nav"));
         if (StringUtils.isEmpty(actionTypeForFormStep)) {
           actionTypeForFormStep =
               (String)
@@ -928,10 +929,10 @@ public class StudyQuestionnaireController {
                 for (QuestionResponseSubTypeBo subTypeBo : questionsBo.getQuestionResponseSubTypeList()) {
                   if (subTypeBo != null) {
                     subTypeBo.setDisplayTextLang(displayText != null
-                            ? Collections.singletonList(displayText.length > i ? displayText[i] : "")
+                            ? (displayText.length > i ? displayText[i] : "")
                             : null);
                     subTypeBo.setDescriptionLang(description != null
-                            ? Collections.singletonList(description.length > i ? description[i] : "")
+                            ? (description.length > i ? description[i] : "")
                             : null);
                   }
                   i++;
@@ -1515,6 +1516,7 @@ public class StudyQuestionnaireController {
           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
         }
 
+        map.addAttribute("nav", request.getParameter("nav"));
         String actionTypeForQuestionPage =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionTypeForQuestionPage"))
                 ? ""
@@ -1655,10 +1657,10 @@ public class StudyQuestionnaireController {
               for (QuestionResponseSubTypeBo subTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()) {
                 if (subTypeBo != null) {
                   subTypeBo.setDisplayTextLang(displayText != null
-                          ? Collections.singletonList(displayText.length > i ? displayText[i] : "")
+                          ? (displayText.length > i ? displayText[i] : "")
                           : null);
                   subTypeBo.setDescriptionLang(description != null
-                          ? Collections.singletonList(description.length > i ? description[i] : "")
+                          ? (description.length > i ? description[i] : "")
                           : null);
                 }
                 i++;
@@ -2756,6 +2758,9 @@ public class StudyQuestionnaireController {
         String isAutoSaved = request.getParameter("isAutoSaved");
         jsonobject.put("isAutoSaved", isAutoSaved);
       }
+      if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+        request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft.");
+      }
       jsonobject.put("message", message);
       response.setContentType("application/json");
       out = response.getWriter();
@@ -3018,6 +3023,9 @@ public class StudyQuestionnaireController {
             message = FdahpStudyDesignerConstants.SUCCESS;
           }
         }
+      }
+      if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+        request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft.");
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");

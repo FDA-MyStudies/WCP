@@ -940,11 +940,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               }
               for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
                 // for spanish
-                String dispLang = subTypeBo.getDisplayTextLang() != null && !subTypeBo.getDisplayTextLang().isEmpty()
-                        ? subTypeBo.getDisplayTextLang().get(0)
+                String dispLang = StringUtils.isNotBlank(subTypeBo.getDisplayTextLang())
+                        ? subTypeBo.getDisplayTextLang()
                         : "";
-                String descLang = subTypeBo.getDescriptionLang() != null && !subTypeBo.getDescriptionLang().isEmpty()
-                        ? subTypeBo.getDescriptionLang().get(0)
+                String descLang = StringUtils.isNotBlank(subTypeBo.getDescriptionLang())
+                        ? subTypeBo.getDescriptionLang()
                         : "";
                 if (i == size - 1) {
                   dispText.append(dispLang);
@@ -1536,11 +1536,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               }
               for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
                 // for spanish
-                String dispLang = subTypeBo.getDisplayTextLang() != null && !subTypeBo.getDisplayTextLang().isEmpty()
-                        ? subTypeBo.getDisplayTextLang().get(0)
+                String dispLang = StringUtils.isNotBlank(subTypeBo.getDisplayTextLang())
+                        ? subTypeBo.getDisplayTextLang()
                         : "";
-                String descLang = subTypeBo.getDescriptionLang() != null && !subTypeBo.getDescriptionLang().isEmpty()
-                        ? subTypeBo.getDescriptionLang().get(0)
+                String descLang = StringUtils.isNotBlank(subTypeBo.getDescriptionLang())
+                        ? subTypeBo.getDescriptionLang()
                         : "";
                 if (i == size - 1) {
                   dispText.append(dispLang);

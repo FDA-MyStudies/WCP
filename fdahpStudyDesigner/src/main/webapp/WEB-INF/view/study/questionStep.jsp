@@ -1889,6 +1889,7 @@ input[type=number] {
 								</div>
 							</div>
 							<div class=" mt-sm" id="0">
+							<div class="row">
 								<div class="col-md-3 pl-none">
 									<div class="gray-xs-f mb-xs">
 										Display Text (1 to 50 characters)<span class="requiredStar">*</span>
@@ -1899,11 +1900,13 @@ input[type=number] {
 										Value (1 to 50 characters)<span class="requiredStar">*</span>
 									</div>
 								</div>
+
 								<c:if test="${questionnaireBo.branching}">
 									<div class="col-md-4 pl-none">
 										<div class="gray-xs-f mb-xs">Destination Step</div>
 									</div>
 								</c:if>
+								</div>
 
 								<div class="clearfix"></div>
 								<div class="ValuePickerContainer">

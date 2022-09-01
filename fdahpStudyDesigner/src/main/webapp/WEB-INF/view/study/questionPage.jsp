@@ -3125,6 +3125,28 @@ input[type=number] {
         $("#numericMinValueId").trigger('blur');
         $("#numericMaxValueId").trigger('blur');
       }
+
+        if ($('#useStasticData').is(':checked')) {
+            let id = '';
+            let focId = '';
+            if ($('#statTypeId').val() === '') {
+                id = $("#statTypeId").closest('div.form-group');
+                focId = $("#statTypeId");
+            } else if ($('#statFormula').val() === '') {
+                id = $("#statFormula").closest('div.form-group');
+                focId = $("#statFormula");
+            }
+            if (id !== '' && focId !== '') {
+                focId.focus();
+                id.addClass("has-danger").addClass("has-error");
+                id.find(".help-block").empty();
+                id.find(".help-block").append($("<ul><li> </li></ul>").attr("class", "list-unstyled").text("Please fill out this field"));
+                $("#doneId").attr("disabled", false);
+                $("body").removeClass("loading");
+                return false;
+            }
+        }
+
       if (isFromValid("#questionStepId")) {
         $("body").addClass("loading");
         var placeholderText = '';
@@ -3390,6 +3412,18 @@ input[type=number] {
         }
       }
     });
+
+      $('#statFormula, #statTypeId').on('change', function () {
+          if ($(this).val() !== '') {
+              $(this).closest('div.form-group').find(".help-block").empty();
+          } else {
+              $(this).closest('div.form-group').find(".help-block")
+                  .append($("<ul><li> </li></ul>")
+                      .attr("class", "list-unstyled")
+                      .text("Please fill out this field"));
+          }
+      });
+
     $("#saveId").on("click", function (e) {
     autoSaveFormQuestionPage('manual');
     });

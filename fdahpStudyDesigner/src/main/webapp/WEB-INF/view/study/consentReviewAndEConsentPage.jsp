@@ -818,7 +818,7 @@ var idleTime = 0;
       var shareDataPermissions = '${consentBo.shareDataPermissions}';
       var value = $(this).val();
       console.log("value:" + value);
-      if (value == 'Yes') {
+      if (value === 'Yes') {
         $('#rootContainer input').attr('required', true);
         $('#learnMoreTextId').attr('required', true);
         $('.requiredClass').attr('required', true);
@@ -1083,7 +1083,16 @@ var idleTime = 0;
               $('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
               $('#learnMoreTextId').parent().find(".help-block").empty();
             }
-          });
+          },
+              ed.on('init', function() {
+                  if ($('#currentLanguage').val() === 'es') {
+                      let body = tinymce.get('learnMoreTextId').getBody();
+                      if (body !== null && body !== undefined) {
+                          body.setAttribute('contenteditable', 'true')
+                      }
+                  }
+              })
+          )
         },
         <c:if test="${permission eq 'view' || studyLiveStatus}">readonly: 1</c:if>
         /* <c:if test="${studyLiveStatus}">readonly:1</c:if> */
@@ -1698,7 +1707,7 @@ var idleTime = 0;
               $('#longDescriptionId').prop('disabled', false);
               $('#learnMoreTextId').prop('disabled', false).change();
               let body = tinymce.get('learnMoreTextId').getBody();
-              if (body != undefined) {
+              if (body !== null && body !== undefined) {
                   body.setAttribute('contenteditable', 'true')
               }
             }

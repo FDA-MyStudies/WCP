@@ -3049,7 +3049,7 @@ input[type=number] {
 
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
-      $('#currentLanguage').val(currLang);
+        $('[name="language"]').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }
 
@@ -5670,7 +5670,7 @@ input[type=number] {
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
-    $('#currentLanguage').val(currLang);
+      $('[name="language"]').val(currLang);
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 

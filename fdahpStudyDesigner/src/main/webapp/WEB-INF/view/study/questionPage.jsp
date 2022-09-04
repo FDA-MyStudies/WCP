@@ -2170,9 +2170,8 @@ input[type=number] {
 
                                 <div class="text-left dis-inline">
                                   <div class="gray-choice-f mb-xs mt-md">
-                                    Text Choices 
-                                     
-                                    <input type="text" class="index1 reset_val disabled_num"
+                                    Text Choices ${subtype.index+1}
+                                    <input type="hidden" class="index1 reset_val disabled_num"
                                     name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                      id="displayTextChoicesequenceNumber${subtype.index}"
                                     <c:if test="${empty questionResponseSubType.sequenceNumber}">
@@ -2354,8 +2353,8 @@ input[type=number] {
         
                                         <div class="text-left dis-inline">
                                           <div class="gray-choice-f mb-xs mt-md">
-                                            Text Choices 
-                                            <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
+                                            Text Choices 1
+                                            <input type="hidden" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
                                             id="displayTextChoicesequenceNumber0" value="1" />
       
                                              <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -2504,9 +2503,8 @@ input[type=number] {
 
                               <div class="text-left dis-inline">
                                 <div class="gray-choice-f mb-xs mt-md">
-                                  Text Choices   
-                                  
-                                  <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
+                                  Text Choices 2
+                                  <input type="hidden" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
                                   id="displayTextChoicesequenceNumber1" value="2" /> 
 
                                   <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -5097,7 +5095,7 @@ input[type=number] {
       + " <td><div class='clearfix'></div><div class='accordion'><div class='card'><div class='card-header'>" 
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
-              + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
+              + "    Text Choices " + (choiceCount+1) + "<input type='hidden' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' /> "
              
               
               +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "

@@ -64,6 +64,10 @@ public class QuestionResponseSubTypeBo implements Serializable {
 
   @Transient private MultipartFile selectImageFile;
 
+  @Transient private String displayTextLang;
+
+  @Transient private String descriptionLang;
+
   @Column(name = "study_version")
   private Integer studyVersion = 1;
 
@@ -194,5 +198,21 @@ public class QuestionResponseSubTypeBo implements Serializable {
 
   public void setValue(String value) {
     this.value = value;
+  }
+
+  public String getDisplayTextLang() {
+    return displayTextLang;
+  }
+
+  public void setDisplayTextLang(String displayTextLang) {
+    this.displayTextLang = displayTextLang;
+  }
+
+  public String getDescriptionLang() {
+    return descriptionLang;
+  }
+
+  public void setDescriptionLang(String descriptionLang) {
+    this.descriptionLang = descriptionLang;
   }
 }

@@ -92,6 +92,9 @@
        #comprehensionInfoForm{
        display:contents;
        }
+       .right-content-head-wo-z {
+    padding: 12px 30px 0px 30px !important;
+}
     </style>
 </head>
 <script type="text/javascript">
@@ -164,7 +167,7 @@
                         class="ct_panel" id="addHelpNote"><small>(Please
 							save to continue)</small></span>
                 </div>
-                <div class="form-group col-md-5 p-none">
+                <div class="form-group col-md-5 p-none mb-0">
 					<span class="radio radio-info radio-inline p-45 pl-1"> <input
                             type="radio" id="comprehensionTestYes" value="Yes"
                             name="needComprehensionTest"
@@ -472,7 +475,7 @@ var idleTime = 0;
            let timeOutInterval = setInterval(function () {
             if (i === 0) {
              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              if ($('#timeOutModal').hasClass('in')) {
+              if ($('#timeOutModal').hasClass('show')) {
                 $('#backToLoginPage').submit();
              }
               clearInterval(timeOutInterval);
@@ -737,7 +740,7 @@ var idleTime = 0;
                   let lastSavedInterval = setInterval(function () {
                     if ((i === 15) || (j === 0)) {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                          if ($('#myModal').hasClass('in')) {
+                          if ($('#myModal').hasClass('show')) {
                               $('#backToLoginPage').submit();
                           }
                           clearInterval(lastSavedInterval);

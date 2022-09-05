@@ -83,7 +83,7 @@
             <div>
                  <span>This checklist is meant to serve as a reminder for tasks to be completed before you launch or go-live with a study. Mark tasks as completed as and when you finish them.</span>
             </div>
-            <div class="checkbox__container pt-lg">
+            <div class="checkbox__container pl-3 pt-lg">
                 <div class="checkbox checkbox-inline p-45 pb-md">
                       <div>
 	                       <input type="checkbox" id="inlineCheckbox1" class="class" name="checkbox1" <c:if test="${checklist.checkbox1}">checked</c:if> required>
@@ -289,7 +289,7 @@ $(document).ready(function(){
           let timeOutInterval = setInterval(function () {
            if (i === 0) {
             $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-             if ($('#timeOutModal').hasClass('in')) {
+             if ($('#timeOutModal').hasClass('show')) {
                $('#backToLoginPage').submit();
             }
              clearInterval(timeOutInterval);
@@ -312,7 +312,7 @@ $(document).ready(function(){
         let lastSavedInterval = setInterval(function () {
             if ((i === 15) || (j === 0))  {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                if ($('#myModal').hasClass('in')) {
+                if ($('#myModal').hasClass('show')) {
                     $('#backToLoginPage').submit();
                 }
                 clearInterval(lastSavedInterval);

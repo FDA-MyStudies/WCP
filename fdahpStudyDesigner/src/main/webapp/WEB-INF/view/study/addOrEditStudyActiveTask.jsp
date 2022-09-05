@@ -32,6 +32,11 @@
   	  .globe > button{
         padding-left: 30px;
   	  }
+
+      .fade:not(.show)
+      {
+        opacity: 1;
+      }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -163,8 +168,10 @@
     <div class="right-content-body pt-none pl-none pr-none">
 
         <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId">
-            <li class="nav-item contentClass active"><a data-toggle="tab" class="btn btnCusto nav-link active"
-                                               href="#content">Content</a></li>
+            <li class="nav-item contentClass active">
+            <a data-toggle="tab" class="btn btnCusto nav-link active"
+                                               href="#content">Content</a>
+                                               </li>
             <li class="nav-item scheduleTaskClass linkDis" disabled><a class="btn btnCusto nav-link"
                     data-toggle="tab" href="#schedule">Schedule</a></li>
         </ul>
@@ -191,7 +198,9 @@
             </div>
             <!-- End Content-->
             <!---  Schedule --->
-            <div id="schedule" class="tab-pane fade in mt-xlg"></div>
+            <div id="schedule" class="tab-pane fade in mt-xlg">
+              <div class="schedule"></div> 
+            </div>
         </div>
     </div>
     <!--  End body tab section -->
@@ -217,6 +226,7 @@
 
         var selectedTask = $('.targetOption').find(
             "option:selected").text();
+          
 
         if (activeTaskInfoId) {
           $('.targetOption').prop('disabled', true);
@@ -244,8 +254,7 @@
         $("#targetOptionId")
         .change(
             function () {
-            debugger
-              console.log($(this).val());
+              // console.log($(this).val());
               var taskId = $(this).val();
               if (taskId == 1) {
                 $('.activeText')
@@ -280,15 +289,17 @@
               $('.scheduleTaskClass')
               .removeClass('linkDis');
             });
-        if (activeTaskInfoId || selectedTask) {
+        // if (activeTaskInfoId || selectedTask) {
+         
           loadActiveSchedule(changeTabSchedule);
-        }
+        // }
+        
 
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
-            debugger;
           let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
           let isAutoSaved = $('#isAutoSavedParent').val();
+          
           $(".changeContent").load(
               "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}&language="
               + lang+'&isAutoSaved='+isAutoSaved, {
@@ -339,7 +350,6 @@
 
         function loadActiveSchedule(changeTabSchedule) {
           if (changeTabSchedule) {
-          debugger;
             $("#schedule")
             .load(
                 "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}",

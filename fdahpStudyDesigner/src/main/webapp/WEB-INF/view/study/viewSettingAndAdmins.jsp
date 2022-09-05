@@ -79,8 +79,38 @@
        .close{
        background-image: none;
        }
+ /*      
+.checkbox label.addadmin_check::before {
+    margin-left: 0px !important;
+    margin-top: -13px !important;
+    }
+.checkbox label.addadmin_check::after {
+    margin-left: 0px !important;
+    margin-top: -13px !important;
+    }
+*/
 
+.checkbox label {
+    display: inline !important;
+}
+.checkbox label::before { top: 1px !important;} 
 
+.checkbox label::after {
+    display: inline !important;
+    top: 1px !important;
+    }
+    
+.close {
+    margin-right: 5px;
+}
+
+.radio input[type="radio"] {
+    opacity: 0 !important;
+}
+
+.checkbox input[type="checkbox"]:disabled+label {
+    opacity: 0.99 !important;
+}
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
@@ -419,7 +449,7 @@
                     </c:if>
 
                     <table id="studyAdminsTable" class="display bor-none"
-                           cellspacing="0" width="80%">
+                           cellspacing="0" width="85%">
                         <thead>
                         <tr>
                             <th>&nbsp;&nbsp;&nbsp;Admins</th>
@@ -543,12 +573,12 @@
                     <tbody>
                     <c:forEach items="${userList}" var="user">
                         <tr id="user${user.userId}" class="checkCount">
-                            <td style="position: inherit;"><span
-                                    class="checkbox checkbox-inline" style="padding-top: 5px;">
+                            <td><span
+                                    class="checkbox checkbox-inline">
 										<input type="checkbox" class="addAdminCheckbox"
                                                id="inlineCheckboxNew${user.userId}" name="case"
                                                value="${fn:escapeXml(user.userFullName)}"
-                                               userId="${user.userId}"> <label
+                                               userId="${user.userId}"> <label class="addadmin_check"
                                     for="inlineCheckboxNew${user.userId}"></label>
 								</span></td>
                             <td><span class="dis-ellipsis"
@@ -654,7 +684,7 @@ var idleTime = 0;
     });
     </c:if>
 
-    $('[data-toggle="tooltip"]').tooltip();
+   $('[data-toggle="tooltip"]').tooltip(); 
 
     $('#adminsId').hide();
 
@@ -786,7 +816,7 @@ var idleTime = 0;
        let timeOutInterval = setInterval(function () {
         if (i === 0) {
          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-          if ($('#timeOutModal').hasClass('in')) {
+          if ($('#timeOutModal').hasClass('show')) {
             $('#backToLoginPage').submit();
          }
           clearInterval(timeOutInterval);
@@ -809,7 +839,7 @@ var idleTime = 0;
           let lastSavedInterval = setInterval(function () {
               if ((i === 15) || (j === 0)) {
               $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  if ($('#myAutoModal').hasClass('in')) {
+                  if ($('#myAutoModal').hasClass('show')) {
                       $('#backToLoginPage').submit();
                   }
                   clearInterval(lastSavedInterval);
@@ -1153,7 +1183,7 @@ var idleTime = 0;
           + userId + ')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
       domStr = domStr + '</tr>';
       $('#studyAdminId').append(domStr);
-      $('[data-toggle="tooltip"]').tooltip();
+      
       $('.dataTables_empty').remove();
     });
     $('#addAdminsToStudyId').attr('disabled', false);
@@ -1166,9 +1196,16 @@ var idleTime = 0;
       count++;
     });
     if (count == 1) {
+      $('[data-toggle="tooltip"]').tooltip('dispose');
+   
       table.clear().draw();
+     
     }
+    $('[data-toggle="tooltip"]').tooltip('dispose');
     $('#studyAdminRowId' + userId).remove();
+
+    $('[data-toggle="tooltip"]').tooltip('dispose');
+    
     $('#user' + userId).addClass('checkCount').show();
   }
 

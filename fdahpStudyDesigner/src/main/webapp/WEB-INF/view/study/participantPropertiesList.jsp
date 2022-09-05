@@ -113,7 +113,7 @@
     <div class="right-content-body">
         <div class="table-responsive">
             <table id="participantProperties_list"
-                   class="display bor-none dragtbl dataTable no-footer">
+                   class="display bor-none dragtbl dataTable no-footer" style="width:100% !important">
                 <thead>
                 <tr>
                     <th>SHORT TITLE</th>
@@ -276,7 +276,7 @@ var idleTime = 0;
               let timeOutInterval = setInterval(function () {
               if (i === 0) {
               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              if ($('#myModal').hasClass('in')) {
+              if ($('#myModal').hasClass('show')) {
               $('#backToLoginPage').submit();
                 }
                 clearInterval(timeOutInterval);

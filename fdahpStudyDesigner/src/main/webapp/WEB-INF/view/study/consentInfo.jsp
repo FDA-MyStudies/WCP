@@ -441,7 +441,7 @@ var idleTime = 0;
                         let timeOutInterval = setInterval(function () {
                         if (i === 0) {
                         $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                        if ($('#timeOutModal').hasClass('in')) {
+                        if ($('#timeOutModal').hasClass('show')) {
                         $('#backToLoginPage').submit();
                           }
                           clearInterval(timeOutInterval);
@@ -551,7 +551,7 @@ var idleTime = 0;
                      let lastSavedInterval = setInterval(function () {
                          if ((i === 15) || (j === 0)) {
                          $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                             if ($('#myModal').hasClass('in')) {
+                             if ($('#myModal').hasClass('show')) {
                                  $('#backToLoginPage').submit();
                              }
                              clearInterval(lastSavedInterval);

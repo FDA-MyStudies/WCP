@@ -115,8 +115,9 @@
 
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
-         <div class="row">
+        
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
+                  <div class="row">  
                     <div class="col-md-3 col-lg-3 p-none mr-lg ">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
                                 class="requiredStar"> *</span><span
@@ -204,6 +205,8 @@
                     </div>
 
                 </c:if>
+
+                
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
                     <div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
@@ -281,7 +284,9 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
+                  </div>
                 </c:if>
+                <div class="clearfix"></div>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
                     <div class="blue-md-f text-uppercase">Results captured from the task</div>
                 </c:if>
@@ -891,7 +896,7 @@
                     </div>
                     <div class="clearfix"></div>
                 </c:if>
-                </div>
+               
             </c:forEach>
         </c:if>
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) gt 0}">
@@ -899,7 +904,7 @@
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
                 <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var="taskValueAttributeBo">
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-
+                      <div class="row">  
                         <div class="col-md-3 col-lg-3 p-none mr-lg">
                             <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
                                     class="requiredStar"> *</span><span
@@ -1054,6 +1059,7 @@
 
                         <div class="clearfix"></div>
                     </c:if>
+
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 
                         <div class="col-md-3 col-lg-3 p-none">
@@ -1089,7 +1095,9 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
+                      </div>
                     </c:if>
+                    <div class="clearfix"></div>
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8 && count == 0}">
                         <c:set var="count" value="${count+1}"/>
                         <div class="blue-md-f text-uppercase">Results captured from the task</div>
@@ -1787,7 +1795,7 @@ var idleTime = 0;
          let timeOutInterval = setInterval(function () {
           if (i === 0) {
            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-            if ($('#timeOutModal').hasClass('in')) {
+            if ($('#timeOutModal').hasClass('show')) {
               $('#backToLoginPage').submit();
            }
             clearInterval(timeOutInterval);
@@ -1810,7 +1818,7 @@ var idleTime = 0;
           let lastSavedInterval = setInterval(function () {
               if ((i === 15) || (j === 0)){
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  if ($('#myModal').hasClass('in')) {
+                  if ($('#myModal').hasClass('show')) {
                       $('#backToLoginPage').submit();
                   }
                   clearInterval(lastSavedInterval);

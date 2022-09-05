@@ -45,13 +45,25 @@
 	width: 150px; //
 	font-size: 10px !important;
 }
+
+.dailyTimeDiv .align-span-center {
+    position: relative;
+    top: 0px;
+}
+
+.manuallyContainer .align-span-center {
+    position: relative;
+    top: -9px;
+}
+
+
 </style>
 </head>
 
  <div id="schedule" class="tab-pane fade in  mt-xlg">
     <div class="gray-xs-f mb-sm">Activetask Schedule Type</div>
     <div class="pb-lg ">
-	<span class="radio radio-info radio-inline p-40"> <input
+	<span class="radio radio-info radio-inline p-40 pl-1"> <input
 		type="radio" id="schedule1" class="typeofschedule"
 		scheduletype="Regular" value="Regular" name="scheduleType"
 		${empty activeTaskBo.scheduleType  || activeTaskBo.scheduleType=='Regular' ?'checked':''}
@@ -183,7 +195,7 @@
 								<c:when
 									test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}">
 									<input id="onetimexdaysId" type="text"
-										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 										placeholder="X"
 										name="activeTaskFrequenciesBo.timePeriodFromDays" value=""
 										<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy }"> disabled </c:if>
@@ -192,7 +204,7 @@
 								</c:when>
 								<c:otherwise>
 									<input id="onetimexdaysId" type="text"
-										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+										class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 										placeholder="X"
 										name="activeTaskFrequenciesBo.timePeriodFromDays"
 										value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
@@ -206,7 +218,7 @@
 						</span> <span
 							class="form-group m-none dis-inline vertical-align-middle pr-md">
 							<input id="selectTime" type="text"
-							class="mt-sm form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+							class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 							name="activeTaskFrequenciesBo.frequencyTime"
 							value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"
 							<c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>
@@ -390,7 +402,7 @@
 				</c:forEach>
 			</c:if>
 		</div>
-		<div class="mt-md">
+		<div class="mt-md row">
 			<div class="dailyStartCls col-md-3 pl-none">
 				<span
 					class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -422,7 +434,7 @@
 							</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 								<input id="dailyxdaysId" type="text"
-								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 								placeholder="X"
 								name="activeTaskFrequenciesList[0].timePeriodFromDays"
 								value="${(fn:length(activeTaskBo.activeTaskFrequenciesList) gt 0)?activeTaskBo.activeTaskFrequenciesList[0].timePeriodFromDays:''}"
@@ -443,7 +455,7 @@
 					<span class="gray-xs-f">Number of times to repeat the task<span
 						class="requiredStar"> * </span></span><br /> <input id="days"
 					type="text"
-					class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+					class="form-control numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 					name="repeatActiveTask" placeholder="No of Times" required
 					value="${activeTaskBo.repeatActiveTask}"
 					onkeypress="return isNumber(event, this)"
@@ -525,7 +537,7 @@
 				class='help-block with-errors red-txt'></span>
 			</span>
 		</div>
-		<div class="mt-md">
+		<div class="mt-md row">
 			<span class="weeklyStartCls  col-md-3 pl-none"> <span
 				class="form-group m-none dis-inline vertical-align-middle pr-md">
 					<span class="gray-xs-f">Start date<span class="requiredStar">
@@ -555,7 +567,7 @@
 							</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 								<input id="weeklyxdaysId" type="text"
-								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 								placeholder="X"
 								name="activeTaskFrequenciesBo.timePeriodFromDays"
 								value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
@@ -573,7 +585,7 @@
 					<span
 						class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<input id="selectWeeklyTimeAnchor" type="text"
-						class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 						required onclick="timep(this.id)" placeholder="Time"
 						name="activeTaskFrequenciesBo.frequencyTime"
 						value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" />
@@ -586,7 +598,7 @@
 						<span class="gray-xs-f">Number of times to repeat the task
 							<span class="requiredStar"> * </span>
 					</span><br /> <input id="weeksAnchor" type="text"
-						class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						class="form-control numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 						name="repeatActiveTask" placeholder="No of Times"
 						value="${activeTaskBo.repeatActiveTask}" required
 						onkeypress="return isNumber(event, this)"
@@ -674,7 +686,7 @@
 				the selected date is not available in a month, the last day of the
 				month will be used instead</div>
 		</div>
-		<div class="mt-xs">
+		<div class="mt-xs row">
 			<div class="monthlyStartCls  col-md-3 pl-none">
 				<span
 					class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -706,7 +718,7 @@
 							</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 								<input id="monthlyxdaysId" type="text"
-								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+								class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 								placeholder="X"
 								name="activeTaskFrequenciesBo.timePeriodFromDays"
 								value="${activeTaskBo.activeTaskFrequenciesBo.timePeriodFromDays}"
@@ -725,7 +737,7 @@
 					<span
 						class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<input id="selectMonthlyTimeAnchor" type="text"
-						class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 						required onclick="timep(this.id)" placeholder="Time"
 						name="activeTaskFrequenciesBo.frequencyTime"
 						value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" />
@@ -738,7 +750,7 @@
 						<span class="gray-xs-f">Number of times to repeat the task
 							<span class="requiredStar"> * </span>
 					</span><br /> <input id="monthsAnchor" type="text"
-						class="form-control mt-sm numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+						class="form-control numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 						name="repeatActiveTask" placeholder="No of Times" required
 						value="${activeTaskBo.repeatActiveTask}"
 						onkeypress="return isNumber(event, this)"
@@ -906,7 +918,7 @@
 					</select>
 					</span> <span class="form-group m-none dis-inline vertical-align-middle">
 						<input id="xdays0" type="text"
-						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate"
+						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask resetAncDate"
 						count='0' placeholder="X"
 						name="activeTaskCustomScheduleBo[0].timePeriodFromDays"
 						value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
@@ -928,7 +940,7 @@
 					</select>
 					</span> <span class="form-group m-none dis-inline vertical-align-middle">
 						<input id="ydays0" type="text"
-						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate"
+						class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask resetAncDate"
 						count='0' placeholder="Y"
 						name="activeTaskCustomScheduleBo[0].timePeriodToDays"
 						value="${activeTaskCustomScheduleBo.timePeriodToDays}"
@@ -938,7 +950,7 @@
 					</span> <span class="mb-sm pr-md"> <span
 						class="light-txt opacity06"> days </span>
 					</span> <span class="form-group  dis-inline vertical-align-middle pr-md"
-						style="margin-bottom: -13px"> <input id="manualTime0"
+						style="margin-bottom: 0px"> <input id="manualTime0"
 						type="text" class="form-control clock"
 						name="activeTaskCustomScheduleBo[0].frequencyTime"
 						value="${activeTaskCustomScheduleBo.frequencyTime}"
@@ -983,7 +995,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="xdays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave xdays daysMask mt-sm resetAncDate xancorText ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave xdays daysMask resetAncDate xancorText ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="X"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodFromDays"
 							value="${activeTaskCustomScheduleBo.timePeriodFromDays}"
@@ -1008,7 +1020,7 @@
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 							<input id="ydays${customVar.index}" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave ydays daysMask mt-sm resetAncDate yancorText ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
+							class="form-control wid70 disRadBtn1 disBtn1 remove_required remReqOnSave ydays daysMask resetAncDate yancorText ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							count='${customVar.index}' placeholder="Y"
 							name="activeTaskCustomScheduleBo[${customVar.index}].timePeriodToDays"
 							value="${activeTaskCustomScheduleBo.timePeriodToDays}"
@@ -1019,7 +1031,7 @@
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> days </span>
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md"
-							style="margin-bottom: -13px"> <input
+							style="margin-bottom: 0px"> <input
 							id="manualTime${customVar.index}" type="text"
 							class="form-control remove_required clock ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
 							name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"

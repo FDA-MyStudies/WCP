@@ -69,7 +69,7 @@
 <form:form
 	action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do"
 	data-toggle="validator" id="userForm" role="form" method="post"
-	autocomplete="off">
+	autocomplete="off" style="width:100%;">
 	<input type="hidden" name="userId" value="${userBO.userId}">
 	<input type="hidden" id="userStatus" name="enabled"
 		value="${userBO.enabled}">
@@ -215,6 +215,7 @@
 
 				<div class="clearfix"></div>
 				<!-- Assign Permissions -->
+				<div style="width: 80%;">
 				<div class="blue-md-f text-uppercase mt-lg">Assign Permissions</div>
 				<div class="pull-right mb-xs">
 					<span class="gray-xs-f">View Only</span> <span
@@ -365,9 +366,10 @@
 						</div>
 					</div>
 				</div>
+				</div>
 			</div>
 		</div>
-	</div>
+	</div> 
 	<c:if test="${actionPage ne 'VIEW_PAGE'}">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
 			<div class="white-bg box-space t-bor text-right">
@@ -776,7 +778,7 @@ setInterval(function () {
           let timeOutInterval = setInterval(function () {
           if (i === 0) {
           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-          if ($('#myModal').hasClass('in')) {
+          if ($('#myModal').hasClass('show')) {
           $('#backToLoginPage').submit();
             }
             clearInterval(timeOutInterval);
@@ -871,7 +873,8 @@ setInterval(function () {
     	  	<c:if test="${sessionObject.userId eq userBO.userId}">
     	  		$('#ownUser').val('1');
     	  	</c:if>
-      		$('.addUpdate').parents('form').submit();	
+      		//$('.addUpdate').parents('form').submit();	
+			  $('#userForm').submit();
       	}
     }
     function setStudySettingByRole(element){

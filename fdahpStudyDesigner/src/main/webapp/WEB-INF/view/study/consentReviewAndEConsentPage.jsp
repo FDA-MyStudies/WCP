@@ -6,6 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <style>
+    .form-control{
+    margin-bottom:5px;
+    }
+    .addbtn{
+    margin-top:5px;
+    }
       .block__devider {
         padding: 20px 0px;
         border-top: 1px solid #95a2ab;
@@ -94,7 +100,9 @@
       font-size:15px;
        }
 
-
+.help-block ul {
+    position: inherit !important;
+}
 
     </style>
 </head>
@@ -191,15 +199,21 @@
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none">
 
-<ul class="nav nav-tabs customTabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs customTabs gray-bg" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#menu1" type="button" role="tab" aria-controls="#menu1" aria-selected="true">Share Data Permissions</button>
+  <a data-toggle="tab" class="btn btnCusto nav-link active"
+                                                 href="#menu1">Share Data Permissions</a>
+    <!-- <button class="nav-link active"  data-toggle="tab" data-target="#menu1" type="button" role="tab" aria-controls="#menu1" aria-selected="true">Share Data Permissions</button> -->
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#menu2" type="button" role="tab" aria-controls="#menu2" aria-selected="false">Consent Document for Review</button>
+    <a data-toggle="tab" class="btn btnCusto nav-link"
+    href="#menu2">Consent Document for Review</a>
+    <!-- <button class="nav-link"  data-toggle="tab" data-target="#menu2" type="button" role="tab" aria-controls="#menu2" aria-selected="false">Consent Document for Review</button> -->
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="contact-tab" data-toggle="tab" data-target="#menu3" type="button" role="tab" aria-controls="#menu3" aria-selected="false">E-Consent Form </button>
+    <a data-toggle="tab" class="btn btnCusto nav-link"
+    href="#menu3">E-Consent Form</a>
+    <!-- <button class="nav-link"  data-toggle="tab" data-target="#menu3" type="button" role="tab" aria-controls="#menu3" aria-selected="false">E-Consent Form </button> -->
   </li>
 </ul>
 <div class="tab-content pl-xlg pr-xlg" id="myTabContent">
@@ -615,12 +629,12 @@
                     <div class="pp__top">
                         <div id="cancelButtonId" class="pl-lg pr-lg"
                              style="display: none;">
-                            <button class="float__right cancel__close mb-sm"
+                            <button type="button" class="float__right cancel__close mb-sm"
                                     data-dismiss="modal">Cancel
                             </button>
                         </div>
                         <div id="doneButtonId" class="pl-lg pr-lg" style="display: none;">
-                            <button class="float__right cancel__close"
+                            <button type="button" class="float__right cancel__close"
                                     onclick="previewDataSharing();">Done
                             </button>
                         </div>
@@ -810,7 +824,7 @@ var idleTime = 0;
       var shareDataPermissions = '${consentBo.shareDataPermissions}';
       var value = $(this).val();
       console.log("value:" + value);
-      if (value == 'Yes') {
+      if (value === 'Yes') {
         $('#rootContainer input').attr('required', true);
         $('#learnMoreTextId').attr('required', true);
         $('.requiredClass').attr('required', true);
@@ -1075,10 +1089,24 @@ var idleTime = 0;
               $('#learnMoreTextId').parent().removeClass("has-danger").removeClass("has-error");
               $('#learnMoreTextId').parent().find(".help-block").empty();
             }
-          });
+          },
+              ed.on('init', function() {
+                  let body = tinymce.get('learnMoreTextId').getBody();
+                  if ($('#currentLanguage').val() === 'es') {
+                      if (body !== null && body !== undefined) {
+                          body.setAttribute('contenteditable', 'true');
+                          ed.settings.readonly = false;
+                      }
+                  } else {
+                      if (${studyLiveStatus}) {
+                          body.setAttribute('contenteditable', 'false');
+                      }
+                  }
+              })
+          )
         },
-        <c:if test="${permission eq 'view' || studyLiveStatus}">readonly: 1</c:if>
-        /* <c:if test="${studyLiveStatus}">readonly:1</c:if> */
+<%--        <c:if test="${permission eq 'view' || studyLiveStatus}">readonly: 1</c:if>--%>
+        <c:if test="${permission eq 'view'}">readonly:1</c:if>
       });
     }
 
@@ -1148,7 +1176,7 @@ var idleTime = 0;
 
            if (consentDocType === "New") {
              consentDocumentContent = tinymce.get('newDocumentDivId').getContent({format: 'raw'});
-             consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
+             // consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
            }
 
            if (item === "doneId") {
@@ -1258,7 +1286,7 @@ var idleTime = 0;
                  $("#studyId").val(studyId);
                  var consentDocumentType = $('input[name="consentDocType"]:checked').val();
                  $("#newDocumentDivId").val('');
-                 if (consentDocumentType == "New") {
+                 if (consentDocumentType === "New") {
                    $("#newDocumentDivId").val(consentDocumentContent);
                    tinymce.get('newDocumentDivId').setContent('');
                    tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
@@ -1286,7 +1314,7 @@ var idleTime = 0;
                          let lastSavedInterval = setInterval(function () {
                              if ((i === 15) || (j === 0)) {
                                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                                 if ($('#myAutoModal').hasClass('in')) {
+                                 if ($('#myAutoModal').hasClass('show')) {
                                      $('#backToLoginPage').submit();
                                  }
                                  clearInterval(lastSavedInterval);
@@ -1370,7 +1398,7 @@ var idleTime = 0;
         let timeOutInterval = setInterval(function () {
          if (i === 0) {
           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-           if ($('#timeOutModal').hasClass('in')) {
+           if ($('#timeOutModal').hasClass('show')) {
              $('#backToLoginPage').submit();
           }
            clearInterval(timeOutInterval);
@@ -1690,8 +1718,8 @@ var idleTime = 0;
               $('#longDescriptionId').prop('disabled', false);
               $('#learnMoreTextId').prop('disabled', false).change();
               let body = tinymce.get('learnMoreTextId').getBody();
-              if (body != undefined) {
-                  body.setAttribute('contenteditable', 'true')
+              if (body !== null && body !== undefined) {
+                  body.setAttribute('contenteditable', 'true');
               }
             }
             let editor1 = tinymce.get('learnMoreTextId');

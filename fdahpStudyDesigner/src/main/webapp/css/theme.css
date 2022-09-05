@@ -755,7 +755,7 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 }
 
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
-    color: #2d2926 !important;
+    color: #999 !important;
     background-color: #fff !important;
     border-color: #c9d2d6;
      box-shadow: none;
@@ -775,7 +775,7 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 }
 
 .blue-btn{
-    background: #007cba;
+    background: #007cba !important;
     border-color: #007cba !important;
     padding: 4px 20px;
 }
@@ -1052,3 +1052,30 @@ button:focus {outline:0;}
 display: contents !important;
 }
 
+.checkbox label::before , .checkbox label::after {
+    cursor: pointer;
+}
+
+.radio label::before , .radio label::after {
+   cursor: pointer;
+}
+
+.checkbox input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.radio input[type="radio"] {
+    cursor: pointer;
+}
+
+.modal-dialog {
+    pointer-events: auto !important;
+}
+
+.hide {
+	display: none !important;
+}
+.btn-light.disabled, .btn-light:disabled {
+    background-color: #eee !important;
+    border-color: #f8f9fa;
+}

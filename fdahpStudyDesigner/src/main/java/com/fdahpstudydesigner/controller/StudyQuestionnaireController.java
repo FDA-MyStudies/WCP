@@ -27,14 +27,8 @@ import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -791,6 +785,7 @@ public class StudyQuestionnaireController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionTypeForFormStep"))
                 ? ""
                 : request.getParameter("actionTypeForFormStep");
+        map.addAttribute("nav", request.getParameter("nav"));
         if (StringUtils.isEmpty(actionTypeForFormStep)) {
           actionTypeForFormStep =
               (String)
@@ -919,14 +914,39 @@ public class StudyQuestionnaireController {
                       questionnairesStepsBo.getQuestionnairesId(),
                       questionnairesStepsBo.getSequenceNo());
               map.addAttribute("destinationStepList", destionationStepList);
-              if (FdahpStudyDesignerUtil.isNotEmpty(language)
-                  && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-                QuestionLangBO questionLangBO =
-                    studyQuestionnaireService.getQuestionLangBO(
-                        Integer.parseInt(questionId), language);
-                map.addAttribute("questionLangBO", questionLangBO);
-                this.setStudyLangData(studyId, language, map);
+            }
+
+            QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
+            if (spanishQuestionBo != null) {
+              String[] displayText = StringUtils.isNotBlank(spanishQuestionBo.getDisplayText())
+                      ? spanishQuestionBo.getDisplayText().split("\\|")
+                      : null;
+              String[] description = StringUtils.isNotBlank(spanishQuestionBo.getTextChoiceDescription())
+                      ? spanishQuestionBo.getTextChoiceDescription().split("\\|")
+                      : null;
+              int i = 0;
+              if (questionsBo != null && questionsBo.getQuestionResponseSubTypeList() != null) {
+                for (QuestionResponseSubTypeBo subTypeBo : questionsBo.getQuestionResponseSubTypeList()) {
+                  if (subTypeBo != null) {
+                    subTypeBo.setDisplayTextLang(displayText != null
+                            ? (displayText.length > i ? displayText[i] : "")
+                            : null);
+                    subTypeBo.setDescriptionLang(description != null
+                            ? (description.length > i ? description[i] : "")
+                            : null);
+                  }
+                  i++;
+                }
               }
+            }
+
+            if (FdahpStudyDesignerUtil.isNotEmpty(language)
+                    && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+              QuestionLangBO questionLangBO =
+                      studyQuestionnaireService.getQuestionLangBO(
+                              Integer.parseInt(questionId), language);
+              map.addAttribute("questionLangBO", questionLangBO);
+              this.setStudyLangData(studyId, language, map);
             }
           }
           String languages = studyBo.getSelectedLanguages();
@@ -1496,6 +1516,7 @@ public class StudyQuestionnaireController {
           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
         }
 
+        map.addAttribute("nav", request.getParameter("nav"));
         String actionTypeForQuestionPage =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionTypeForQuestionPage"))
                 ? ""
@@ -1622,6 +1643,31 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
           }
+
+          QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
+          if (spanishQuestionBo != null) {
+            String[] displayText = StringUtils.isNotBlank(spanishQuestionBo.getDisplayText())
+                    ? spanishQuestionBo.getDisplayText().split("\\|")
+                    : null;
+            String[] description = StringUtils.isNotBlank(spanishQuestionBo.getTextChoiceDescription())
+                    ? spanishQuestionBo.getTextChoiceDescription().split("\\|")
+                    : null;
+            int i = 0;
+            if (questionnairesStepsBo != null && questionnairesStepsBo.getQuestionResponseSubTypeList() != null) {
+              for (QuestionResponseSubTypeBo subTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()) {
+                if (subTypeBo != null) {
+                  subTypeBo.setDisplayTextLang(displayText != null
+                          ? (displayText.length > i ? displayText[i] : "")
+                          : null);
+                  subTypeBo.setDescriptionLang(description != null
+                          ? (description.length > i ? description[i] : "")
+                          : null);
+                }
+                i++;
+              }
+            }
+          }
+
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "questionId", questionId);
 
@@ -2712,6 +2758,9 @@ public class StudyQuestionnaireController {
         String isAutoSaved = request.getParameter("isAutoSaved");
         jsonobject.put("isAutoSaved", isAutoSaved);
       }
+      if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+        request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft.");
+      }
       jsonobject.put("message", message);
       response.setContentType("application/json");
       out = response.getWriter();
@@ -2974,6 +3023,9 @@ public class StudyQuestionnaireController {
             message = FdahpStudyDesignerConstants.SUCCESS;
           }
         }
+      }
+      if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+        request.getSession().setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft.");
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");

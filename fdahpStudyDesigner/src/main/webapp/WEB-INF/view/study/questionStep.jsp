@@ -158,6 +158,15 @@ input[type=number] {
     background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
     }
+     
+
+.disabled_css ~ button {
+    background-color: #eee  !important;
+    opacity: 1  !important;
+    cursor: not-allowed  !important;
+}
+
+.hide{ display: none;}
     </style>
 </head>
 <script type="text/javascript">
@@ -197,6 +206,17 @@ input[type=number] {
 <!-- Start right Content here -->
 <div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
+	<form:form
+			action="/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}"
+			name="contentFormId" id="contentFormId" method="post"
+			data-toggle="validator" role="form">
+		<input type="hidden" name="${csrf.parameterName}" value="${csrf.token}">
+		<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
+		<input type="hidden" id="nav" name="nav" value="${nav}">
+		<input type="hidden" name="actionTypeForQuestionPage" value="edit">
+		<input type="hidden" name="questionnaireId" value="${questionnaireId}">
+		<input type="hidden" name="questionId" id="queId">
+	</form:form>
 	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<div class="right-content-head">
 		<div class="text-right">
@@ -212,7 +232,7 @@ input[type=number] {
 
 			<c:if
 				test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
-				 <!-- <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+				  <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
 					<select
 						class="selectpicker  aq-select aq-select-form studyLanguage langSpecific"
 						id="studyLanguage" name="studyLanguage" title="Select">
@@ -224,33 +244,20 @@ input[type=number] {
 								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
 						</c:forEach>
 					</select>
-				</div> -->
-				
-				<div class="form-group">
-    <label for="exampleFormControlSelect1">Example select</label>
-    <select class="form-control" id="studyLanguage" name="studyLanguage" title="Select" >
-     <option value="en"
-							${((currLanguage eq null) or (currLanguage eq '') or  (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
-							English</option>
-						<c:forEach items="${languageList}" var="language">
-							<option value="${language.key}"
-								${currLanguage eq language.key ?'selected':''}>${language.value}</option>
-						</c:forEach>
-    </select>
-  </div>
-  
+				</div> 
+				   
 			</c:if>
 
 			<c:if
 				test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
-				<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-					<span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+				<div class="dis-line form-group mb-none mr-sm">
+					<span style="width: 150px;" class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
 						data-placement="bottom"
 						title="Language selection is available in edit screen only">
 						<select
 						class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
 						title="Select" disabled>
-							<option selected></option>
+							<option selected>English</option>
 					</select>
 					</span>
 				</div>
@@ -287,19 +294,19 @@ input[type=number] {
 				<!-- <a class="nav-link" data-toggle="tab" href="#sla">Step-level
 
 						Attributes</a>-->
-					 <a class="btn btnCusto nav-link active " data-toggle="tab" href="#sla">Step-level</a>
+					 <a class="btn btnCusto nav-link active " id="sle" data-toggle="tab" href="#sla">Step-level</a>
 						<!--<button class="nav-link active"  data-toggle="tab" data-target="#sla" type="button" role="tab" aria-controls="" aria-selected="true">Step-level Attribute</button>  -->
 
 						</li>
 				<li class="nav-item questionLevel">
-				 <a class="btn btnCusto nav-link" data-toggle="tab" href="#qla">Question-level
+				 <a class="btn btnCusto nav-link" id="qle" data-toggle="tab" href="#qla">Question-level
 						Attributes</a>
 
  <!--- <button class="nav-link"  data-toggle="tab" data-target="#qla" type="button" role="tab" aria-controls="" aria-selected="false">Question-level Attribute</button> -->
 
 						</li>
 				<li class="nav-item responseLevel">
-			<a class="btn btnCusto nav-link" data-toggle="tab" href="#rla">Response-level
+			<a class="btn btnCusto nav-link" id="rle" data-toggle="tab" href="#rla">Response-level
 						Attributes</a>
  <!-- <button class="nav-link"  data-toggle="tab" data-target="#rla" type="button" role="tab" aria-controls="" aria-selected="false">Response-level Attribute</button>-->
 
@@ -1041,10 +1048,10 @@ input[type=number] {
 												value="${questionnairesStepsBo.questionReponseTypeBo.minImage}">
 											<span id="removeUrl"
 												class="blue-link elaborateHide removeImageId <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.minImage}">hide</c:if>"
-												onclick="removeImage(this);">X<a
-												href="javascript:void(0)"
-												class="blue-link txt-decoration-underline pl-xs">Remove
-													Image</a></span>
+												onclick="removeImage(this);">X
+												<a href="javascript:void(0)"
+												class="blue-link txt-decoration-underline pl-xs">
+												Remove Image</a></span>
 											<div class="help-block with-errors red-txt"></div>
 										</div>
 									</div>
@@ -1387,7 +1394,7 @@ input[type=number] {
 									</div>
 								</div>
 								<div class="col-md-4">
-									<div class="col-md-6 col-lg-4 p-none">
+									<div class="col-md-6  p-none">
 										<div class="gray-xs-f mb-xs">
 											Max Length <span class="ml-xs sprites_v3 filled-tooltip"
 												data-toggle="tooltip"
@@ -1406,13 +1413,14 @@ input[type=number] {
 							<div class="row mt-md">
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
 
-									<div class="col-md-12 col-lg-12 p-none">
-										<div class="gray-xs-f mb-xs">
+									<div class="row p-none">
+										<div class="gray-xs-f mb-xs col-lg-12 col-md-12 col-sm-12 col-xs-12 pl-none">
 											Special Validations<span
 												class="ml-xs sprites_v3 filled-tooltip"
 												data-toggle="tooltip"
 												title="Define any special case rules you wish to be applied for the participant-entered text. If the participant's input does not meet these conditions, an admin-defined error message will be shown asking them to retry. "></span>
 										</div>
+                    
 										<div class="col-md-3 pl-none">
 											<div class="form-group">
 												<select name="questionReponseTypeBo.validationCondition"
@@ -1455,7 +1463,7 @@ input[type=number] {
 											</div>
 										</div>
 
-										<div class="col-md-6 pl-none">
+										<div class="col-md-6 row pl-none">
 											<div class="mr-xs col-md-2 pr-none">except</div>
 											<div class="form-group col-md-9 pl-none pr-none">
 
@@ -1556,7 +1564,7 @@ input[type=number] {
 											id="timeIntervalStepId"
 											value="${questionnairesStepsBo.questionReponseTypeBo.step}"
 											onkeypress="return isNumber(event)" maxlength="2"> <span
-											class="dis-inline mt-sm ml-sm">Min</span>
+											class="dis-inline ml-sm">Min</span>
 										<div class="help-block with-errors red-txt"></div>
 									</div>
 								</div>
@@ -1891,7 +1899,8 @@ input[type=number] {
 										title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span>
 								</div>
 							</div>
-							<div class="row mt-sm" id="0">
+							<div class=" mt-sm" id="0">
+							<div class="row">
 								<div class="col-md-3 pl-none">
 									<div class="gray-xs-f mb-xs">
 										Display Text (1 to 50 characters)<span class="requiredStar">*</span>
@@ -1902,11 +1911,13 @@ input[type=number] {
 										Value (1 to 50 characters)<span class="requiredStar">*</span>
 									</div>
 								</div>
+
 								<c:if test="${questionnaireBo.branching}">
 									<div class="col-md-4 pl-none">
 										<div class="gray-xs-f mb-xs">Destination Step</div>
 									</div>
 								</c:if>
+								</div>
 
 								<div class="clearfix"></div>
 								<div class="ValuePickerContainer">
@@ -2382,8 +2393,8 @@ input[type=number] {
 
                                 <div class="text-left dis-inline">
                                   <div class="gray-choice-f mb-xs mt-md">
-                                    Text Choices
-                                    <input type="text" class="index1 reset_val disabled_num"
+                                    Text Choices ${subtype.index+1}
+                                    <input type="hidden" class="index1 reset_val disabled_num"
                                     name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                      id="displayTextChoicesequenceNumber${subtype.index}"
                                     <c:if test="${empty questionResponseSubType.sequenceNumber}">
@@ -2426,7 +2437,7 @@ input[type=number] {
                               </div>
 
                               <div id="collapse${subtype.index}" class="collapse show" aria-labelledby="heading" data-parent="#accordion">
-                                <div class="panel-body pt-none">
+                                <div class="card-body pt-none">
 
                                   <div class="row mt-xlg" >
                                     <div class="col-md-3 pl-none">
@@ -2441,6 +2452,16 @@ input[type=number] {
                                           id="displayTextChoiceText${subtype.index}"
                                           value="${fn:escapeXml(questionResponseSubType.text)}"
                                           maxlength="100">
+
+<%--										  for each for multiple languages--%>
+<%--										  <c:forEach items="${questionResponseSubType.displayTextLang}"--%>
+<%--													 var="displayTextLang" varStatus="subtype2">--%>
+											  <input type="hidden"
+													 name="questionResponseSubTypeList[${subtype.index}].displayTextLang"
+													 id="displayTextChoiceTextLang${subtype.index}"
+													 value="${fn:escapeXml(questionResponseSubType.displayTextLang)}"
+													 maxlength="100">
+<%--										  </c:forEach>--%>
                                                      <!-- <input type="text"  class="index1 reset_val"
                                                         name="questionResponseSubTypeList[${subtype.index}].sequenceNumber"
                                                         id="displayTextChoicesequenceNumber${subtype.index}"
@@ -2529,6 +2550,15 @@ input[type=number] {
                                             id="displayTextChoiceDescription${subtype.index}"
                                             value="${fn:escapeXml(questionResponseSubType.description)}"
                                             maxlength="150">${fn:escapeXml(questionResponseSubType.description)}</textarea>
+												<%--                                                  for each for multiple other languages--%>
+<%--											<c:forEach items="${questionResponseSubType.descriptionLang}"--%>
+<%--													   var="descriptionLang" varStatus="subtype2">--%>
+												<input type="hidden"
+													   name="questionResponseSubTypeList[${subtype.index}].descriptionLang"
+													   id="displayTextChoiceDescriptionLang${subtype.index}"
+													   value="${fn:escapeXml(questionResponseSubType.descriptionLang)}"
+													   maxlength="100">
+<%--											</c:forEach>--%>
                                         </div>
                                       </div>
                                       <div class="col-md-2 pl-none">
@@ -2575,9 +2605,8 @@ input[type=number] {
 
                                 <div class="text-left dis-inline">
                                   <div class="gray-choice-f mb-xs mt-md">
-                                    Text Choices
-
-                                    <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
+                                    Text Choices 1
+                                    <input type="hidden" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
                                     id="displayTextChoicesequenceNumber0" value="1" />
 
                                      <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -2742,10 +2771,9 @@ input[type=number] {
 
                                       <div class="text-left dis-inline">
                                         <div class="gray-choice-f mb-xs mt-md">
-                                          Text Choices
-
-                                          <input type="text" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[0].sequenceNumber"
-                                          id="displayTextChoicesequenceNumber0" value="1" />
+                                          Text Choices 2
+                                          <input type="hidden" class="index1 reset_val disabled_num" name="questionResponseSubTypeList[1].sequenceNumber"
+                                          id="displayTextChoicesequenceNumber1" value="2" />
 
                                            <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
                                             title="Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire."></span>
@@ -2918,7 +2946,7 @@ input[type=number] {
                             </div>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse in">
-                            <div class="panel-body pt-none">
+                            <div class="card-body pt-none">
 
                                 <!-- Section Start --
                                 <div class="mt-xlg  ">
@@ -4078,7 +4106,7 @@ input[type=number] {
         let currLang = $('#studyLanguage').val();
         if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
             !== 'en') {
-          $('#currentLanguage').val(currLang);
+          $('[name="language"]').val(currLang);
           refreshAndFetchLanguageData(currLang);
         }
 
@@ -4154,6 +4182,7 @@ input[type=number] {
         <c:if test="${actionTypeForQuestionPage == 'view'}">
         $('#questionStepId input,textarea ').prop('disabled', true);
         $('#questionStepId select').addClass('linkDis');
+        $('#responseTypeId').addClass('disabled_css');  
         $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
         $("#trailId").hide();
         $(".removeImageId").css("visibility", "hidden");
@@ -4234,6 +4263,27 @@ input[type=number] {
               $('.OtherOptionCls').find('input:text,select').removeAttr('required');
             }
           }
+
+			if ($('#useStasticData').is(':checked')) {
+				let id = '';
+				let focId = '';
+				if ($('#statTypeId').val() === '') {
+					id = $("#statTypeId").closest('div.form-group');
+					focId = $("#statTypeId");
+				} else if ($('#statFormula').val() === '') {
+					id = $("#statFormula").closest('div.form-group');
+					focId = $("#statFormula");
+				}
+				if (id !== '' && focId !== '') {
+					focId.focus();
+					id.addClass("has-danger").addClass("has-error");
+					id.find(".help-block").empty();
+					id.find(".help-block").append($("<ul><li> </li></ul>").attr("class", "list-unstyled").text("Please fill out this field"));
+					$("#doneId").attr("disabled", false);
+					$("body").removeClass("loading");
+					return false;
+				}
+			}
           if (isFromValid("#questionStepId")) {
             $("body").addClass("loading");
             var placeholderText = '';
@@ -4646,6 +4696,18 @@ input[type=number] {
             $('.selectpicker').selectpicker('refresh');
           }
         });
+
+		$('#statFormula, #statTypeId').on('change', function () {
+			if ($(this).val() !== '') {
+				$(this).closest('div.form-group').find(".help-block").empty();
+			} else {
+				$(this).closest('div.form-group').find(".help-block")
+						.append($("<ul><li> </li></ul>")
+								.attr("class", "list-unstyled")
+								.text("Please fill out this field"));
+			}
+		});
+
         $("#useStasticData").on('change', function () {
           if ($(this).is(":checked")) {
             $(this).val("Yes");
@@ -5363,7 +5425,7 @@ input[type=number] {
                 let timeOutInterval = setInterval(function () {
                  if (i === 0) {
                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                   if ($('#timeOutModal').hasClass('in')) {
+                   if ($('#timeOutModal').hasClass('show')) {
                      $('#backToLoginPage').submit();
                   }
                    clearInterval(timeOutInterval);
@@ -6023,6 +6085,8 @@ input[type=number] {
             questionSubResponseType.destinationStepId = destination_step;
             questionSubResponseType.exclusive = exclusioveText;
             questionSubResponseType.description = display_description;
+			questionSubResponseType.displayTextLang = $("#displayTextChoiceTextLang" + id).val();
+			questionSubResponseType.descriptionLang = $("#displayTextChoiceDescriptionLang" + id).val();
             questionSubResponseArray.push(questionSubResponseType);
             questionReponseTypeBo.otherType = $(
                 '[name="questionReponseTypeBo.otherType"]:checked').val();
@@ -6160,35 +6224,46 @@ input[type=number] {
             },
             success: function (data) {
               var message = data.message;
-              if (message == "SUCCESS") {
-                $("body").removeClass("loading");
-                $("#preShortTitleId").val(shortTitle);
-                var stepId = data.stepId;
-                var questionId = data.questionId;
-                var questionResponseId = data.questionResponseId;
-                var questionsResponseTypeId = data.questionsResponseTypeId;
+              if (message === "SUCCESS") {
+				  var questionId = data.questionId;
+				  if ($('#responseTypeId').val() === '6') {
+					  $('.nav-link').each( function (index, ele) {
+						  let id = ele.getAttribute('id');
+						  if ($('#' + id).hasClass('active')) {
+							  $('#nav').val(id);
+						  }
+					  });
+					  $('#queId').val(questionId);
+					  document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}";
+					  document.contentFormId.submit();
+				  } else {
+					  $("body").removeClass("loading");
+					  $("#preShortTitleId").val(shortTitle);
+					  var stepId = data.stepId;
+					  var questionResponseId = data.questionResponseId;
+					  var questionsResponseTypeId = data.questionsResponseTypeId;
 
-                if (statShortName != null && statShortName != '' && typeof statShortName
-                    != 'undefined') {
-                  $("#prevStatShortNameId").val(statShortName);
-                }
+					  if (statShortName != null && statShortName != '' && typeof statShortName
+							  != 'undefined') {
+						  $("#prevStatShortNameId").val(statShortName);
+					  }
 
-                $("#stepId").val(stepId);
-                $("#questionId").val(questionId);
-                $("#questionResponseTypeId").val(questionResponseId);
-                $("#responseQuestionId").val(questionId);
+					  $("#stepId").val(stepId);
+					  $("#questionId").val(questionId);
+					  $("#questionResponseTypeId").val(questionResponseId);
+					  $("#responseQuestionId").val(questionId);
 
-                $("#alertMsg").removeClass('e-box').addClass('s-box').text(
-                    "Content saved as draft.");
-                $(item).prop('disabled', false);
-                $('#alertMsg').show();
+					  $("#alertMsg").removeClass('e-box').addClass('s-box').text(
+							  "Content saved as draft.");
+					  $(item).prop('disabled', false);
+					  $('#alertMsg').show();
 
-                if ($('.seventhQuestionnaires').find('span').hasClass(
-                    'sprites-icons-2 tick pull-right mt-xs')) {
-                  $('.seventhQuestionnaires').find('span').removeClass(
-                      'sprites-icons-2 tick pull-right mt-xs');
-                }
-
+					  if ($('.seventhQuestionnaires').find('span').hasClass(
+							  'sprites-icons-2 tick pull-right mt-xs')) {
+						  $('.seventhQuestionnaires').find('span').removeClass(
+								  'sprites-icons-2 tick pull-right mt-xs');
+					  }
+				  }
                 if (callback)
                   callback(true);
                    // pop message after 15 minutes
@@ -6199,7 +6274,7 @@ input[type=number] {
 					  let lastSavedInterval = setInterval(function () {
 						  if ((i === 15) || (j === 0)) {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-							  if ($('#myAutoModal').hasClass('in')) {
+							  if ($('#myAutoModal').hasClass('show')) {
 								  $('#backToLoginPage').submit();
 							  }
 							  clearInterval(lastSavedInterval);
@@ -6577,17 +6652,15 @@ input[type=number] {
       //   $('#' + choiceCount).find('input:first').focus();
       // }
 
-
+	  var choiceCount = $('.text-choice').length;
       function addTextChoice() {
-        choiceCount = $('.text-choice').length;
         var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
         var newTextChoice = "<tr class='text-choice' id='" + choiceCount +"''>"
 
           + "<td><div class='clearfix'></div><div class='accordion'><div class='card'><div class='card-header '>"
             + " <div class='text-left dis-inline'>"
              +  " <div class='gray-choice-f mb-xs mt-md'>"
-              + "    Text Choices <input type='text' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' />"
-
+              + "    Text Choices " + (choiceCount+1) + "<input type='hidden' class='index1 reset_val disabled_num' name='questionResponseSubTypeList[" + choiceCount + "].sequenceNumber' id='displayTextChoicesequenceNumber"  + choiceCount +"' value='" + (choiceCount+1) + "' />"
 
               +"<span class='ml-xs sprites_v3 filled-tooltip' data-toggle='tooltip ' "
                 + "    title='Enter text choices in the order you want them to appear. You can enter a display text and description, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire.'></span> "
@@ -6677,6 +6750,7 @@ input[type=number] {
             +
             "</div></div>" +
             "</div></div></div></div></td></tr><div class='clearfix'></div>";
+		choiceCount++;
         $(".text-choice:last").after(newTextChoice);
         $('.selectpicker').selectpicker('refresh');
         $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
@@ -6691,7 +6765,20 @@ input[type=number] {
         $('#' + choiceCount).find('input:first').focus();
       }
 
+	var valueArrayTxtChoice = new Array();
+	$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
+		let val = $(ele).val();
+		if (val !== '' && val !== undefined) {
+			valueArrayTxtChoice.push(val);
+		}
+	});
+
       function removeTextChoice(param) {
+		  let prm =  $(param).parents(".text-choice").find('input.textChoiceVal').val();
+		  let index = valueArrayTxtChoice.indexOf(prm);
+		  if (index > -1) {
+			  valueArrayTxtChoice.splice(index, 1);
+		  }
         if ($("#textchoiceOtherId").is(':checked')) {
           if ($('.text-choice').length > 1) {
             $(param).parents(".text-choice").remove();
@@ -7088,30 +7175,37 @@ input[type=number] {
           });
           callback(isValid);
         } else if (responsetype == "Text Choice") {
-          var valueArray = new Array();
-          $('.text-choice').each(function () {
-            var id = $(this).attr("id");
-            var diaplay_value = $("#displayTextChoiceValue" + id).val();
-            $("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass(
-                "has-error");
-            $("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-            if (diaplay_value != '' && diaplay_value !== undefined) {
-              if (selected_diaplay_value != '' && selected_diaplay_value !== undefined && valueArray.indexOf(selected_diaplay_value.toLowerCase()) != -1) {
-                isValid = false;
-                $("#" + selected_id).val('');
-                $("#" + selected_id).parent().addClass("has-danger").addClass(
-                    "has-error");
-                $("#" + selected_id).parent().find(".help-block").empty();
-                $("#" + selected_id).parent().find(".help-block").append(
-                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                        "The value should be unique "));
-                return false;
-              } else
-                valueArray.push(diaplay_value.toLowerCase());
-            } else {
-
-            }
-          });
+			let id = $("#" + selected_id);
+			let valField = $(id).val();
+			if (valField !== '' && valField !== undefined) {
+				id.parent().removeClass("has-danger").removeClass("has-error");
+				id.parent().find(".help-block").empty();
+				if (valueArrayTxtChoice.includes(valField.toLowerCase())) {
+					id.val('');
+					id.parent().addClass("has-danger").addClass("has-error");
+					id.parent().find(".help-block")
+							.append($("<ul><li> </li></ul>")
+									.attr("class", "list-unstyled")
+									.text("The value should be unique "));
+					return false;
+				} else {
+					valueArrayTxtChoice = new Array();
+					$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
+						let val = $(ele).val();
+						if (val !== '' && val !== undefined) {
+							valueArrayTxtChoice.push(val);
+						}
+					});
+				}
+			} else {
+				valueArrayTxtChoice = new Array();
+				$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
+					let val = $(ele).val();
+					if (val !== '' && val !== undefined) {
+						valueArrayTxtChoice.push(val);
+					}
+				});
+			}
           callback(isValid);
         }
       }
@@ -7878,7 +7972,7 @@ input[type=number] {
 
       $('#studyLanguage').on('change', function () {
         let currLang = $('#studyLanguage').val();
-        $('#currentLanguage').val(currLang);
+        $('[name="language"]').val(currLang);
         refreshAndFetchLanguageData($('#studyLanguage').val());
       })
 
@@ -8186,11 +8280,19 @@ input[type=number] {
 						$('#' + id).val($('#' + id, htmlData).val());
 					});
 					$('#textchoiceOtherId').attr('disabled', false);
+					$('.text-choice').find('input.lang-specific, textarea.lang-specific').each(function (index, ele) {
+						let currId = ele.getAttribute('id');
+						let currVal = ele.getAttribute('value');
+						$('#' + currId).val(currVal).text(currVal);
+					});
                 }
-                $(className).find('input.lang-specific').each(function (index, ele) {
-                  let id = ele.getAttribute('id');
-                  $('#' + id).val($('#' + id, htmlData).val());
-                });
+
+				  if (respType !== '6') {
+					  $(className).find('input.lang-specific').each(function (index, ele) {
+						  let id = ele.getAttribute('id');
+						  $('#' + id).val($('#' + id, htmlData).val());
+					  });
+				  }
               } else if (respType === '8' || respType === '11' || respType === '12' || respType
                   === '14') {
                 let id = '';
@@ -8261,6 +8363,11 @@ $("#diagnosis_list tbody").sortable({
 }).disableSelection();
 
 });
+
+  let nav = $('#nav').val();
+  if (nav !== null && nav !== '') {
+	  $('#' + nav).click();
+  }
 
 
 </script>

@@ -132,8 +132,8 @@
             </c:if>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                <div class="dis-line form-group mb-none mr-sm">
+                    <span style="width: 150px;" class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
 						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
@@ -256,7 +256,7 @@
                                 <div>Form Step</div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="col-lg-3 pl-0">
+                            <div class="col-md-12 pl-0">
                                 <div class="gray-xs-f mb-xs pt-3">
                                     Is this a Skippable Step?<span
                                         class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
@@ -279,7 +279,8 @@
                             </div>
                             <div class="clearfix"></div>
                             <c:if test="${questionnaireBo.branching}">
-                                <div class="col-md-4 col-lg-3 p-none">
+                            
+                                <div class="col-md-4 col-lg-3 p-none mt-2">
                                     <div class="gray-xs-f mb-xs">
                                         Default Destination Step <span class="requiredStar">*</span>
                                         <span
@@ -369,10 +370,10 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="mt-md mb-lg">
+                     
                             <table id="content" class="display" cellspacing="0" width="100%">
                                 <thead style="display: none"></thead>
-                                <c:forEach items="${questionnairesStepsBo.formQuestionMap}"
-                                           var="entry">
+                                <c:forEach items="${questionnairesStepsBo.formQuestionMap}" var="entry">
                                     <tr id="row${entry.value.questionInstructionId}" status="${entry.value.status}">
                                         <td><span id="${entry.key}">${entry.key}</span></td>
                                         <td class="title">
@@ -419,8 +420,9 @@
                                             </div>
                                         </td>
                                     </tr>
-                                </c:forEach>
+                                  </c:forEach>
                             </table>
+                            
                         </div>
 
                 </div>
@@ -710,7 +712,7 @@ var idleTime = 0;
        let timeOutInterval = setInterval(function () {
         if (i === 0) {
          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-          if ($('#timeOutModal').hasClass('in')) {
+          if ($('#timeOutModal').hasClass('show')) {
             $('#backToLoginPage').submit();
          }
           clearInterval(timeOutInterval);
@@ -865,7 +867,7 @@ var idleTime = 0;
                let lastSavedInterval = setInterval(function () {
                    if ((i === 15) || (j === 0))  {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                       if ($('#myModal').hasClass('in')) {
+                       if ($('#myModal').hasClass('show')) {
                            $('#backToLoginPage').submit();
                        }
                        clearInterval(lastSavedInterval);

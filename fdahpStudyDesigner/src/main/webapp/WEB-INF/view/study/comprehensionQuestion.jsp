@@ -411,6 +411,7 @@ var idleTime = 0;
         <c:if test="${actionPage eq 'view'}">
         $('#comprehensionFormId input,textarea,select').prop(
             'disabled', true);
+        $('select, .dropdown-toggle, .selectpicker').attr('disabled', true);
         $('#studyLanguage').attr('disabled', false);
         $('.TestQuestionButtonHide').hide();
         $('.addBtnDis, .remBtnDis').addClass('dis-none');
@@ -449,7 +450,6 @@ var idleTime = 0;
         setInterval(function () {
         idleTime += 1;
         if (idleTime > 3) {
-         debugger
            <c:if test="${actionPage ne 'view'}">
            autoSaveComprehensionQuestionPage('auto');
            </c:if>
@@ -662,7 +662,7 @@ var idleTime = 0;
                 let lastSavedInterval = setInterval(function () {
                    if ((i === 15) || (j === 0)) {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
-                        if ($('#myModal').hasClass('in')) {
+                        if ($('#myModal').hasClass('show')) {
                             $('#backToLoginPage').submit();
                         }
                         clearInterval(lastSavedInterval);

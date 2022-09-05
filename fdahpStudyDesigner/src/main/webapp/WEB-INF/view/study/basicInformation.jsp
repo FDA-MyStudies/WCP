@@ -427,9 +427,10 @@
   var idleTime = 0;
   $(document).ready(function () {
     $('#loader').hide();
-    $('.commonCls').on('click', function () {
+    // unwanted code added here so its caused loader issue
+/* $('.commonCls').on('click', function () {
         $('#loader').show();
-    })
+    }) */
     $('#removeUrl').css("visibility", "hidden");
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();
@@ -713,7 +714,7 @@
                                  let timeOutInterval = setInterval(function () {
                                  if (i === 0) {
                                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                                 if ($('#timeOutModal').hasClass('in')) {
+                                 if ($('#timeOutModal').hasClass('show')) {
                                  $('#backToLoginPage').submit();
                                    }
                                    clearInterval(timeOutInterval);
@@ -737,7 +738,7 @@
             let lastSavedInterval = setInterval(function () {
                 if ((i === 15) || (j === 0)) {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
-                    if ($('#myModal').hasClass('in')) {
+                    if ($('#myModal').hasClass('show')) {
                         $('#backToLoginPage').submit();
                     }
                     clearInterval(lastSavedInterval);

@@ -1103,7 +1103,10 @@ input[type=radio]:disabled+label::after {
 	{
 	color: #001a73;
 }
-
+.overview-panel .panel .panel-heading .panel-title a[aria-expanded=false] div div:first-child
+	{
+	color: #7c868d;
+}
 .overview-panel .panel .panel-heading .panel-title a[aria-expanded=true] div div:last-child
 	{
 	display: none;
@@ -2760,9 +2763,13 @@ outline:none !important;
 	background : transparent !important;
 }
 
-
+/*
 .form-group {
     margin-bottom: 0rem;
+}*/
+.form-control {
+font-size:14px !important;
+
 }
 
 table.dataTable {
@@ -2774,4 +2781,55 @@ table.dataTable {
     border-collapse: separate !important;
 }
 
+.table.dataTable {
+    margin: 0px !important;
+}
+.table.dataTable thead th, table.dataTable thead td {
+    border-bottom: 1px solid #d5dee3 !important;
+}
+
+.table>thead:first-child>tr:first-child>th {
+    border-top: 0 !important;
+    border:none !important;
+}
+/*
+.bootstrap-select .dropdown-toggle .filter-option-inner-inner{
+    overflow: hidden;
+    color: rgba(124, 113, 113, 0.67) !important;
+}*/
+.bootstrap-select>.dropdown-toggle{
+font-size:14px !important;
+}
+.bootstrap-select .dropdown-menu li a span.text {
+    display: inline-block;
+    font-size: 14px;
+}
+.btn{
+font-size:14px !important;
+}
+.paginate_button{
+color:#2d2926 !important;
+cursor: pointer;
+}
+.customTabs > .nav-link{
+background:#f3f6f8 !important;
+}
+
+.fa-angle-down { display:none;}
+
+.radio {
+    padding-left: 0.25rem!important;
+}
+.checkbox {
+     padding-left: 0.25rem!important;
+} 
+.studyCount { color: #333333; }
+
+button:active {
+    outline: none;
+    border: none;
+}
+.bootstrap-select>.dropdown-toggle {
+
+    border: 1px solid rgba(0,0,0,.15) !important;
  /* css end here */

@@ -1233,7 +1233,8 @@ public class StudyServiceImpl implements StudyService {
                 studyLanguageBO.setConsentDocContent(content.toString());
               }
             } else {
-              studyLanguageBO.setConsentDocContent(consentBo.getConsentDocContent());
+              String content = consentBo.getConsentDocContent();
+              studyLanguageBO.setConsentDocContent(content);
             }
             if (consentBo.getAggrementOfTheConsent() != null)
               studyLanguageBO.setAgreementOfConsent(consentBo.getAggrementOfTheConsent());
@@ -1305,8 +1306,9 @@ public class StudyServiceImpl implements StudyService {
           updateConsentBo.setConsentDocType(consentBo.getConsentDocType());
         }
 
-        if (consentBo.getConsentDocContent() != null) {
-          updateConsentBo.setConsentDocContent(consentBo.getConsentDocContent());
+        String content = consentBo.getConsentDocContent();
+        if (StringUtils.isNotBlank(content)) {
+          updateConsentBo.setConsentDocContent(content);
         }
 
         if (consentBo.getAllowWithoutPermission() != null) {

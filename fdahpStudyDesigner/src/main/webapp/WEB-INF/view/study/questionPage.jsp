@@ -5696,7 +5696,7 @@ input[type=number] {
           }
           if ($('#addLineChart').prop('checked') === true) {
               $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled');
-              $('#allowRollbackChartYes, #allowRollbackChartNo').addClass('ml-disabled');
+              $('#allowRollbackChartYes, #allowRollbackChartNo').addClass('ml-disabled').attr('disabled', true);
             }
           if ($('#useStasticData').prop('checked') === true) {
             $('#statShortNameId').addClass('ml-disabled');
@@ -5889,8 +5889,8 @@ input[type=number] {
           }
           if ($('#addLineChart').prop('checked') === true) {
               $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled');
-              $('#allowRollbackChartYes, #allowRollbackChartNo').removeClass('ml-disabled');
-            }
+              $('#allowRollbackChartYes, #allowRollbackChartNo').removeClass('ml-disabled').attr('disabled', false);
+          }
           if ($('#useStasticData').prop('checked') === true) {
             $('#statShortNameId').removeClass('ml-disabled');
             $('[data-id="statTypeId"]').removeClass('ml-disabled');

@@ -623,12 +623,12 @@
                     <div class="pp__top">
                         <div id="cancelButtonId" class="pl-lg pr-lg"
                              style="display: none;">
-                            <button class="float__right cancel__close mb-sm"
+                            <button type="button" class="float__right cancel__close mb-sm"
                                     data-dismiss="modal">Cancel
                             </button>
                         </div>
                         <div id="doneButtonId" class="pl-lg pr-lg" style="display: none;">
-                            <button class="float__right cancel__close"
+                            <button type="button" class="float__right cancel__close"
                                     onclick="previewDataSharing();">Done
                             </button>
                         </div>

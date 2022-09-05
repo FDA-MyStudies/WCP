@@ -6,6 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <style>
+    .form-control{
+    margin-bottom:5px;
+    }
+    .addbtn{
+    margin-top:5px;
+    }
       .block__devider {
         padding: 20px 0px;
         border-top: 1px solid #95a2ab;

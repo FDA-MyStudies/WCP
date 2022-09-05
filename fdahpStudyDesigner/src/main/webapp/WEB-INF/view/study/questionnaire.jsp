@@ -79,7 +79,7 @@
 
       /* error box css start here  */
       .help-block ul {
-        width: 150px;
+        width: 160px;
       / / font-size: 10 px !important;
       }
 
@@ -169,7 +169,8 @@ background:none;
     position: relative;
     top: -9px;
 }
-
+.form-control{
+margin-bottom:5px !important;
     </style>
 </head>
 
@@ -673,7 +674,7 @@ background:none;
                                                                       <c:when
                                                                               test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}">
                       													<input id="onetimexdaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                  placeholder="X"
                                                                                  name="questionnairesFrequenciesBo.timePeriodFromDays"
                                                                                  value=""
@@ -683,7 +684,7 @@ background:none;
                                                                       </c:when>
                                                                       <c:otherwise>
                       													<input id="onetimexdaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                  placeholder="X"
                                                                                  name="questionnairesFrequenciesBo.timePeriodFromDays"
                                                                                  value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodFromDays}"
@@ -698,7 +699,7 @@ background:none;
                       										</span> <span
                                                                   class="form-group m-none dis-inline vertical-align-middle pr-md">
                       											<input id="selectTime" type="text"
-                                                                         class="mt-sm form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                         class=" form-control clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                          name="questionnairesFrequenciesBo.frequencyTime"
                                                                          value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"
                                                                           <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>
@@ -808,7 +809,7 @@ background:none;
                                                                       </c:when>
                                                                       <c:otherwise>
                       													<input id="onetimeydaysId" type="text"
-                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                 class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                  placeholder="Y"
                                                                                  name="questionnairesFrequenciesBo.timePeriodToDays"
                                                                                  value="${questionnaireBo.questionnairesFrequenciesBo.timePeriodToDays}"
@@ -917,7 +918,9 @@ background:none;
                                       										<span
                                                                                       class="form-group m-none dis-inline vertical-align-middle pr-md">
                                       											<span class="gray-xs-f">Start date (pick a date) <span
-                                                                                          class="requiredStar">*</span></span><br/> <span
+                                                                                          class="requiredStar">*</span></span>
+                                                                                             <div class="mt-sm">
+                                                                                           <span
                                                                                       class="pr-md">Anchor
                                       												Date</span> <span> <select
                                                                                       class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
@@ -932,7 +935,7 @@ background:none;
                                       										</span> <span
                                                                                       class="form-group m-none dis-inline vertical-align-middle">
                                       												<input id="dailyxdaysId" type="text"
-                                                                                             class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                             class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                              placeholder="X"
                                                                                              name="questionnairesFrequenciesList[0].timePeriodFromDays"
                                                                                              value="${(fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0)?questionnaireBo.questionnairesFrequenciesList[0].timePeriodFromDays:''}"
@@ -942,6 +945,7 @@ background:none;
                                       										</span> <span class="mb-sm pr-md"> <span
                                                                                       class="light-txt opacity06"> days</span>
                                       										</span>
+                                      										</div>
                                       										</span>
                                                                           </div>
                                                                       </div>
@@ -952,7 +956,7 @@ background:none;
                                                                               class="form-group m-none dis-inline vertical-align-middle pr-md">
                                       									<span class="gray-xs-f">No. of times to repeat the
                                       										questionnaire <span class="requiredStar">*</span>
-                                      								</span><br/> <input id="days" type="text"
+                                      								</span> <div class=""> <input id="days" type="text"
                                                                                           class="form-control mt-sm numChk ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                           name="repeatQuestionnaire"
                                                                                           placeholder="No of Times" required
@@ -963,6 +967,7 @@ background:none;
                                                                                           maxlength="3"/>
                                       									<span class='help-block with-errors red-txt'></span>
                                       								</span>
+                                      								</div>
                                                                   </div>
                                                                   <div class="clearfix"></div>
                                                               </div>
@@ -1066,7 +1071,7 @@ background:none;
                                                                                           class="requiredStar">*</span></span><br/> <span
                                                                                       class="pr-md">Anchor
                                       												Date</span> <span> <select
-                                                                                      class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                      class="signDropDown selectpicker sign-box mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                       title="Select"
                                                                                       name="questionnairesFrequenciesBo.xDaysSign"
                                                                                       id="weeklyXSign">
@@ -1271,7 +1276,7 @@ background:none;
                                                                                                           class="requiredStar">*</span></span><br/> <span
                                                                                                       class="pr-md">Anchor
                                                       												Date</span> <span> <select
-                                                                                                      class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                                      class="signDropDown selectpicker sign-box  mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                                                                                                       title="Select"
                                                                                                       name="questionnairesFrequenciesBo.xDaysSign"
                                                                                                       id="monthlyXSign">
@@ -1485,7 +1490,7 @@ background:none;
                                                                                                   class="mb-sm pr-md"> <span class="light-txt opacity06">
                                                       											Anchor Date </span>
                                                       									</span> <span> <select
-                                                                                              class="signDropDown selectpicker sign-box selectXSign"
+                                                                                              class="signDropDown selectpicker sign-box mt-sm selectXSign"
                                                                                               count='0' title="Select"
                                                                                               name="questionnaireCustomScheduleBo[0].xDaysSign"
                                                                                               id="xSign0">
@@ -1510,7 +1515,7 @@ background:none;
                                                       											Anchor Date
                                                       									</span>
                                                       									</span> <span> <select
-                                                                                              class="signDropDown selectpicker sign-box selectYSign"
+                                                                                              class="signDropDown selectpicker sign-box mt-sm selectYSign"
                                                                                               count='0' title="Select"
                                                                                               name="questionnaireCustomScheduleBo[0].yDaysSign"
                                                                                               id="ySign0">

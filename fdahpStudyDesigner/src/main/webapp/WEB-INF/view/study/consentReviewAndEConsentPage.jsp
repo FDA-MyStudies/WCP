@@ -1091,17 +1091,22 @@ var idleTime = 0;
             }
           },
               ed.on('init', function() {
+                  let body = tinymce.get('learnMoreTextId').getBody();
                   if ($('#currentLanguage').val() === 'es') {
-                      let body = tinymce.get('learnMoreTextId').getBody();
                       if (body !== null && body !== undefined) {
-                          body.setAttribute('contenteditable', 'true')
+                          body.setAttribute('contenteditable', 'true');
+                          ed.settings.readonly = false;
+                      }
+                  } else {
+                      if (${studyLiveStatus}) {
+                          body.setAttribute('contenteditable', 'false');
                       }
                   }
               })
           )
         },
-        <c:if test="${permission eq 'view' || studyLiveStatus}">readonly: 1</c:if>
-        /* <c:if test="${studyLiveStatus}">readonly:1</c:if> */
+<%--        <c:if test="${permission eq 'view' || studyLiveStatus}">readonly: 1</c:if>--%>
+        <c:if test="${permission eq 'view'}">readonly:1</c:if>
       });
     }
 
@@ -1171,7 +1176,7 @@ var idleTime = 0;
 
            if (consentDocType === "New") {
              consentDocumentContent = tinymce.get('newDocumentDivId').getContent({format: 'raw'});
-             consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
+             // consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
            }
 
            if (item === "doneId") {
@@ -1281,7 +1286,7 @@ var idleTime = 0;
                  $("#studyId").val(studyId);
                  var consentDocumentType = $('input[name="consentDocType"]:checked').val();
                  $("#newDocumentDivId").val('');
-                 if (consentDocumentType == "New") {
+                 if (consentDocumentType === "New") {
                    $("#newDocumentDivId").val(consentDocumentContent);
                    tinymce.get('newDocumentDivId').setContent('');
                    tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
@@ -1714,7 +1719,7 @@ var idleTime = 0;
               $('#learnMoreTextId').prop('disabled', false).change();
               let body = tinymce.get('learnMoreTextId').getBody();
               if (body !== null && body !== undefined) {
-                  body.setAttribute('contenteditable', 'true')
+                  body.setAttribute('contenteditable', 'true');
               }
             }
             let editor1 = tinymce.get('learnMoreTextId');

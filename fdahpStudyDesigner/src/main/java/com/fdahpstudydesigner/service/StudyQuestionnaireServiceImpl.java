@@ -1000,7 +1000,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           StringBuilder displayText = new StringBuilder();
           StringBuilder description = new StringBuilder();
           List<QuestionResponseSubTypeBo> subTypeBoList = questionsBo.getQuestionResponseSubTypeList();
-          if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
+          if (subTypeBoList != null && !subTypeBoList.isEmpty()
+                  && FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
             Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
               public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
                 if (StringUtils.isNoneBlank(object1.getSequenceNumber(), object2.getSequenceNumber())) {
@@ -1530,7 +1531,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionnairesStepsBo.getType())) {
                 Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
                   public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
-                    return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                    if (object1.getSequenceNumber() != null)  {
+                      return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                    }
+                    return 0;
                   }
                 });
               }

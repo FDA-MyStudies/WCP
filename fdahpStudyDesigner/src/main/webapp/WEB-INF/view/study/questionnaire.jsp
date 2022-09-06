@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <style>
+
       .cursonMove {
         cursor: move !important;
       }
@@ -171,6 +172,10 @@ background:none;
 }
 .form-control{
 margin-bottom:5px !important;
+}
+  .sign-box{
+    height:40px !important;
+    }
     </style>
 </head>
 
@@ -1012,7 +1017,7 @@ margin-bottom:5px !important;
                                                               <div id="weekDaysId" class="weeklyCls">
                                       							<span class="gray-xs-f">Day/Time (of the week) <span
                                                                           class="requiredStar">*</span><br/> <span
-                                                                          class=" form-group m-none dis-inline vertical-align-middle pr-md">
+                                                                          class=" form-group m-none dis-inline vertical-align-middle pr-lg">
                                       									<span class=""> <select id="startDateWeekly"
                                                                                                   class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
                                                                                                   name="dayOfTheWeek" required>
@@ -1036,7 +1041,7 @@ margin-bottom:5px !important;
                                       								</span>
                                       							</span>
                                       							</span> <span
-                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
+                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md pl-lg">
                                       								<!-- <span class="gray-xs-f">&nbsp;</span><br/> --> <input
                                                                       id="selectWeeklyTime" type="text"
                                                                       class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
@@ -1212,7 +1217,7 @@ margin-bottom:5px !important;
                                                       								<span class='help-block with-errors red-txt'></span>
                                                       							</span>
                                                                                   <div
-                                                                                          class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light monthlyStartCls">
+                                                                                          class="gray-xs-f mt-sm mb-lg italic-txt text-weight-light monthlyStartCls">
                                                                                       If
                                                                                       the selected date is not available in a month, the last day of
                                                                                       the month will be used instead

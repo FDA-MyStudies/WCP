@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
 </head>
 <style>
+.help-block ul {
+        width: 160px !important;
+        }
   .ml-dropdown-disabled {
     background-color: #eee !important;
     opacity: 1;

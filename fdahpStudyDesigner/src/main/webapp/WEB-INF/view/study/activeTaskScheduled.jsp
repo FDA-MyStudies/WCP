@@ -62,7 +62,13 @@
     top: -9px;
 }
 
-
+  .sign-box{
+    height:40px !important;
+    }
+    
+.form-control {
+    height: 33px;
+}
 </style>
 </head>
 
@@ -3138,7 +3144,7 @@ function validateCustTime(dateRef, timeRef) {
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate xancorText'" 
+					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 ml-1 remReqOnSave xdays daysMask resetAncDate xancorText'" 
 						              +"count='"+customAnchorCount+"' placeholder='X' name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodFromDays'"
 						              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='xancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
@@ -3147,11 +3153,11 @@ function validateCustTime(dateRef, timeRef) {
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
+					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 ml-1 disBtn1 remReqOnSave ydays daysMask resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
 						              +"name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='yancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
 						              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days </span></span>"
-						              +"<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: -13px'>"
+						              +"<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: 0px'>"
 					                  +"<input id='manualTime"+customAnchorCount+"' type='text' count='"+customAnchorCount+"' class='form-control clock' name='activeTaskCustomScheduleBo["+customAnchorCount+"].frequencyTime' placeholder='Time' required/>"
 					                  +"<span class='help-block with-errors red-txt'></span>"
 					                  +"</span>"

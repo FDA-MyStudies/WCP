@@ -176,6 +176,10 @@ margin-bottom:5px !important;
   .sign-box{
     height:40px !important;
     }
+    
+.form-control {
+    height: 33px;
+}
     </style>
 </head>
 
@@ -1543,7 +1547,7 @@ margin-bottom:5px !important;
                                                       									</span> <span class="mb-sm pr-md"> <span
                                                                                               class="light-txt opacity06"> days </span>
                                                       									</span> <span
-                                                                                              class="form-group  dis-inline vertical-align-middle pr-md"
+                                                                                              class="form-group  dis-inline vertical-align-middle pr-md mt-sm"
                                                                                               style="margin-bottom: 0px"> <input id="manualTime0"
                                                                                                                                    type="text"
                                                                                                                                    class="form-control clock"
@@ -4549,7 +4553,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + "</select></span>"
         + "<span class='form-group m-none dis-inline vertical-align-middle'>"
         + "<input id='xdays" + customAnchorCount
-        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate'"
+        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask resetAncDate'"
         + "count='" + customAnchorCount + "' placeholder='X' name='questionnaireCustomScheduleBo["
         + customAnchorCount + "].timePeriodFromDays'"
         + "maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
@@ -4562,13 +4566,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + "</select></span>"
         + "<span class='form-group m-none dis-inline vertical-align-middle'>"
         + "<input id='ydays" + customAnchorCount
-        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate' count='"
+        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask resetAncDate' count='"
         + customAnchorCount + "' placeholder='Y'"
         + "name='questionnaireCustomScheduleBo[" + customAnchorCount
         + "].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
         + "</span>"
         + "<span class='mb-sm pr-md'><span class='light-txt opacity06'> days </span></span>"
-        + "<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: -13px'>"
+        + "<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: 0px'>"
         + "<input id='manualTime" + customAnchorCount + "' type='text' count='" + customAnchorCount
         + "' class='form-control clock' name='questionnaireCustomScheduleBo[" + customAnchorCount
         + "].frequencyTime' placeholder='Time' required/>"

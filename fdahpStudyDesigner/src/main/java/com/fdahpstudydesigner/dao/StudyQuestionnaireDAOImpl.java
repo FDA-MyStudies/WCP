@@ -559,6 +559,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         newQuestionnaireBo.setVersion(0f);
         session.save(newQuestionnaireBo);
 
+        query = session.createQuery(" From QuestionnaireLangBO WHERE questionnaireLangPK.id=:questionnaireId");
+        List<QuestionnaireLangBO> questionnaireLangBOList = query.setParameter("questionnaireId", questionnaireId).list();
+        if (questionnaireLangBOList != null) {
+          for (QuestionnaireLangBO questionnaireLangBO : questionnaireLangBOList) {
+            QuestionnaireLangBO newQuestionnaireLang = SerializationUtils.clone(questionnaireLangBO);
+            newQuestionnaireLang.getQuestionnaireLangPK().setId(newQuestionnaireBo.getId());
+            newQuestionnaireLang.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+            newQuestionnaireLang.setCreatedBy(sessionObject.getUserId());
+            newQuestionnaireLang.setModifiedBy(null);
+            newQuestionnaireLang.setModifiedOn(null);
+            newQuestionnaireLang.setStatus(false);
+            session.save(newQuestionnaireLang);
+          }
+        }
+
+
         List<StudySequenceLangBO> studySequenceLangBOS =
             session
                 .createQuery("from StudySequenceLangBO where studySequenceLangPK.studyId=:id")
@@ -685,6 +701,24 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
                   // updating new InstructionId
                   newQuestionnairesStepsBo.setInstructionFormId(newInstructionsBo.getId());
+
+                  // for other languages
+                  List<InstructionsLangBO> instructionsLangBOList = session
+                                          .createQuery("from InstructionsLangBO where instructionLangPK.id = :id and active = true")
+                                          .setParameter("id", questionnairesStepsBo.getInstructionFormId())
+                                          .list();
+
+                  if (instructionsLangBOList != null) {
+                    for (InstructionsLangBO instructionsLangBO : instructionsLangBOList) {
+                      InstructionsLangBO newInstructionsLang = SerializationUtils.clone(instructionsLangBO);
+                      newInstructionsLang.getInstructionLangPK().setId(newInstructionsBo.getId());
+                      newInstructionsLang.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+                      newInstructionsLang.setCreatedBy(sessionObject.getUserId());
+                      newInstructionsLang.setModifiedBy(null);
+                      newInstructionsLang.setModifiedOn(null);
+                      session.save(newInstructionsLang);
+                    }
+                  }
                 }
               } else if (questionnairesStepsBo
                   .getStepType()
@@ -735,6 +769,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   }
                   session.save(newQuestionsBo);
 
+                  List<QuestionLangBO> questionLangBOList = session
+                          .createQuery("from QuestionLangBO where questionLangPK.id = :id and active = true")
+                          .setParameter("id", questionnairesStepsBo.getInstructionFormId())
+                          .list();
+
                   // Question response Type
                   if (questionReponseTypeBo != null) {
                     QuestionReponseTypeBo newQuestionReponseTypeBo =
@@ -784,6 +823,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
                   // updating new InstructionId
                   newQuestionnairesStepsBo.setInstructionFormId(newQuestionsBo.getId());
+
+                  if (questionLangBOList != null) {
+                    for (QuestionLangBO questionLangBO : questionLangBOList) {
+                      QuestionLangBO newQuestionsLang = SerializationUtils.clone(questionLangBO);
+                      newQuestionsLang.getQuestionLangPK().setId(newQuestionsBo.getId());
+                      newQuestionsLang.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+                      newQuestionsLang.setCreatedBy(sessionObject.getUserId());
+                      newQuestionsLang.setModifiedBy(null);
+                      newQuestionsLang.setModifiedOn(null);
+                      session.save(newQuestionsLang);
+                    }
+                  }
                 }
               } else if (questionnairesStepsBo
                   .getStepType()
@@ -800,6 +851,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   FormBo newFormBo = SerializationUtils.clone(formBo);
                   newFormBo.setFormId(null);
                   session.save(newFormBo);
+
+                  List<FormLangBO> formLangBOList = session.createQuery("from FormLangBO where formLangPK.formId = :id and active = true")
+                          .setParameter("id", questionnairesStepsBo.getInstructionFormId())
+                          .list();
+
+                  if (formLangBOList != null) {
+                    for (FormLangBO formLangBO : formLangBOList) {
+                      FormLangBO newFormLangBo = SerializationUtils.clone(formLangBO);
+                      newFormLangBo.getFormLangPK().setFormId(newFormBo.getFormId());
+                      session.save(newFormBo);
+                    }
+                  }
 
                   List<FormMappingBo> formMappingBoList =
                       session
@@ -879,6 +942,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                         // adding questionId
                         newMappingBo.setQuestionId(newQuestionsBo.getId());
                         session.save(newMappingBo);
+
+                        List<QuestionLangBO> questionLangBOList =
+                                        session.createQuery("from QuestionLangBO where questionLangPK.id = :id and active = true")
+                                                .setParameter("id", questionsBo.getId())
+                                                .list();
+
+                        if (questionLangBOList != null) {
+                          for (QuestionLangBO questionLangBO : questionLangBOList) {
+                            QuestionLangBO newQuestionsLang = SerializationUtils.clone(questionLangBO);
+                            newQuestionsLang.getQuestionLangPK().setId(newQuestionsBo.getId());
+                            newQuestionsLang.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+                            newQuestionsLang.setCreatedBy(sessionObject.getUserId());
+                            newQuestionsLang.setModifiedBy(null);
+                            newQuestionsLang.setModifiedOn(null);
+                            session.save(newQuestionsLang);
+                          }
+                        }
                       }
                     }
                   }

@@ -8,7 +8,12 @@
      #autoSavedMessage{
      width:257px;
      }
-
+.help-block ul {
+        width: 160px !important;
+        }
+        .form-control{
+        margin-bottom:5px !important;
+        }
      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
      position:relative !important;
      right:-14px !important;

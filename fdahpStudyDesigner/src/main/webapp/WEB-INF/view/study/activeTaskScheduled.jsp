@@ -9,6 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <style>
+.help-block ul {
+        width: 160px !important;
+        }
+        .form-control{
+        margin-bottom:5px !important;
+        }
 .time-opts .addBtnDis {
 	display: none;
 }
@@ -56,7 +62,13 @@
     top: -9px;
 }
 
-
+  .sign-box{
+    height:40px !important;
+    }
+    
+.form-control {
+    height: 33px;
+}
 </style>
 </head>
 
@@ -503,7 +515,7 @@
 			<span class="gray-xs-f">Day/Time (of the week)<span
 				class="requiredStar"> * </span></span><br />
 			<div
-				class=" form-group m-none dis-inline vertical-align-middle pr-md">
+				class=" form-group m-none dis-inline vertical-align-middle pr-lg">
 				<span class=""> <select id="startDateWeekly"
 					class="form-control mt-sm ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 					name="dayOfTheWeek" required>
@@ -527,7 +539,7 @@
 				</span>
 			</div>
 			<span
-				class="form-group m-none dis-inline vertical-align-middle pr-md">
+				class="form-group m-none dis-inline vertical-align-middle pr-md pl-lg">
 				<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> --> <input
 				id="selectWeeklyTime" type="text"
 				class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
@@ -682,7 +694,7 @@
 				value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" /> <span
 				class='help-block with-errors red-txt'></span>
 			</span>
-			<div class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light">If
+			<div class="gray-xs-f mt-sm mb-lg italic-txt text-weight-light">If
 				the selected date is not available in a month, the last day of the
 				month will be used instead</div>
 		</div>
@@ -706,7 +718,9 @@
 						<span
 							class="form-group m-none dis-inline vertical-align-middle pr-md">
 							<span class="gray-xs-f">Start date (pick a date) <span
-								class="requiredStar">*</span></span><br /> <span class="pr-md">Anchor
+								class="requiredStar">*</span></span>
+								 <div class="mt-sm">
+								 <span class="pr-md">Anchor
 								Date</span> <span> <select
 								class="signDropDown selectpicker sign-box ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 								title="Select" name="activeTaskFrequenciesBo.xDaysSign"
@@ -728,12 +742,14 @@
 						</span> <span class="mb-sm pr-md"> <span
 								class="light-txt opacity06"> days</span>
 						</span>
+						</div>
 						</span>
 					</div>
 				</div>
 
 				<div class="dis_inlinetop">
-					<span class="gray-xs-f">Time <span class="requiredStar">*</span></span><br />
+					<span class="gray-xs-f">Time <span class="requiredStar">*</span></span>
+					<div class="mt-sm">
 					<span
 						class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<input id="selectMonthlyTimeAnchor" type="text"
@@ -743,13 +759,16 @@
 						value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" />
 						<span class='help-block with-errors red-txt'></span>
 					</span>
+					</div>
 				</div>
 				<div class="dis_inlinetop">
 					<span
 						class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<span class="gray-xs-f">Number of times to repeat the task
 							<span class="requiredStar"> * </span>
-					</span><br /> <input id="monthsAnchor" type="text"
+					</span>
+					 <div class="mt-sm">
+					 <input id="monthsAnchor" type="text"
 						class="form-control numChk ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
 						name="repeatActiveTask" placeholder="No of Times" required
 						value="${activeTaskBo.repeatActiveTask}"
@@ -757,6 +776,7 @@
 						pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
 						data-pattern-error="Please enter valid number." maxlength="3" />
 						<span class='help-block with-errors red-txt'></span>
+						</div>
 					</span>
 				</div>
 
@@ -3124,7 +3144,7 @@ function validateCustTime(dateRef, timeRef) {
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate xancorText'" 
+					                  +"<input id='xdays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 ml-1 remReqOnSave xdays daysMask resetAncDate xancorText'" 
 						              +"count='"+customAnchorCount+"' placeholder='X' name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodFromDays'"
 						              +"maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='xancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
@@ -3133,11 +3153,11 @@ function validateCustTime(dateRef, timeRef) {
 					                  +"<option value='0' selected>+</option><option value='1'>-</option>"
 					                  +"</select></span>"
 					                  +"<span class='form-group m-none dis-inline vertical-align-middle'>"
-					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
+					                  +"<input id='ydays"+customAnchorCount+"' type='text' class='form-control wid70 disRadBtn1 ml-1 disBtn1 remReqOnSave ydays daysMask resetAncDate yancorText' count='"+customAnchorCount+"' placeholder='Y'" 
 						              +"name='activeTaskCustomScheduleBo["+customAnchorCount+"].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.' data-type='yancorText'/><span class='help-block with-errors red-txt'></span>"
 						              +"</span>"
 						              +"<span class='mb-sm pr-md'><span class='light-txt opacity06'> days </span></span>"
-						              +"<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: -13px'>"
+						              +"<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: 0px'>"
 					                  +"<input id='manualTime"+customAnchorCount+"' type='text' count='"+customAnchorCount+"' class='form-control clock' name='activeTaskCustomScheduleBo["+customAnchorCount+"].frequencyTime' placeholder='Time' required/>"
 					                  +"<span class='help-block with-errors red-txt'></span>"
 					                  +"</span>"

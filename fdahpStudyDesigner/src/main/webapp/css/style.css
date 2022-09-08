@@ -2832,4 +2832,15 @@ button:active {
 .bootstrap-select>.dropdown-toggle {
 
     border: 1px solid rgba(0,0,0,.15) !important;
+    }
+
+    @media screen
+      and (min-device-width: 1500px)
+      and (max-device-width: 1600px)
+      {
+      .fifthConsentReview {
+          display:flex !important
+          }
+    }
+
  /* css end here */

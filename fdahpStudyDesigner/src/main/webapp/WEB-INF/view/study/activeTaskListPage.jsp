@@ -6,6 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <style>
+    .help-block ul {
+            width: 160px !important;
+            }
       .cursonMove {
         cursor: move !important;
       }

@@ -1079,3 +1079,7 @@ display: contents !important;
     background-color: #eee !important;
     border-color: #f8f9fa;
 }
+
+.dataTables_wrapper .dataTables_paginate .ellipsis {
+    padding: 0 1em !important;
+}

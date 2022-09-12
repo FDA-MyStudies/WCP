@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <style>
+
       .cursonMove {
         cursor: move !important;
       }
@@ -171,6 +172,14 @@ background:none;
 }
 .form-control{
 margin-bottom:5px !important;
+}
+  .sign-box{
+    height:40px !important;
+    }
+    
+.form-control {
+    height: 33px;
+}
     </style>
 </head>
 
@@ -1012,7 +1021,7 @@ margin-bottom:5px !important;
                                                               <div id="weekDaysId" class="weeklyCls">
                                       							<span class="gray-xs-f">Day/Time (of the week) <span
                                                                           class="requiredStar">*</span><br/> <span
-                                                                          class=" form-group m-none dis-inline vertical-align-middle pr-md">
+                                                                          class=" form-group m-none dis-inline vertical-align-middle pr-lg">
                                       									<span class=""> <select id="startDateWeekly"
                                                                                                   class="form-control mt-sm ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
                                                                                                   name="dayOfTheWeek" required>
@@ -1036,7 +1045,7 @@ margin-bottom:5px !important;
                                       								</span>
                                       							</span>
                                       							</span> <span
-                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md">
+                                                                      class="form-group m-none dis-inline vertical-align-middle pr-md pl-lg">
                                       								<!-- <span class="gray-xs-f">&nbsp;</span><br/> --> <input
                                                                       id="selectWeeklyTime" type="text"
                                                                       class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
@@ -1212,7 +1221,7 @@ margin-bottom:5px !important;
                                                       								<span class='help-block with-errors red-txt'></span>
                                                       							</span>
                                                                                   <div
-                                                                                          class="gray-xs-f mt-xs mb-lg italic-txt text-weight-light monthlyStartCls">
+                                                                                          class="gray-xs-f mt-sm mb-lg italic-txt text-weight-light monthlyStartCls">
                                                                                       If
                                                                                       the selected date is not available in a month, the last day of
                                                                                       the month will be used instead
@@ -1538,7 +1547,7 @@ margin-bottom:5px !important;
                                                       									</span> <span class="mb-sm pr-md"> <span
                                                                                               class="light-txt opacity06"> days </span>
                                                       									</span> <span
-                                                                                              class="form-group  dis-inline vertical-align-middle pr-md"
+                                                                                              class="form-group  dis-inline vertical-align-middle pr-md mt-sm"
                                                                                               style="margin-bottom: 0px"> <input id="manualTime0"
                                                                                                                                    type="text"
                                                                                                                                    class="form-control clock"
@@ -4544,7 +4553,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + "</select></span>"
         + "<span class='form-group m-none dis-inline vertical-align-middle'>"
         + "<input id='xdays" + customAnchorCount
-        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask mt-sm resetAncDate'"
+        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave xdays daysMask resetAncDate'"
         + "count='" + customAnchorCount + "' placeholder='X' name='questionnaireCustomScheduleBo["
         + customAnchorCount + "].timePeriodFromDays'"
         + "maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
@@ -4557,13 +4566,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + "</select></span>"
         + "<span class='form-group m-none dis-inline vertical-align-middle'>"
         + "<input id='ydays" + customAnchorCount
-        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask mt-sm resetAncDate' count='"
+        + "' type='text' class='form-control wid70 disRadBtn1 disBtn1 remReqOnSave ydays daysMask resetAncDate' count='"
         + customAnchorCount + "' placeholder='Y'"
         + "name='questionnaireCustomScheduleBo[" + customAnchorCount
         + "].timePeriodToDays' maxlength='3' required pattern='[0-9]+' data-pattern-error='Please enter valid number.'/><span class='help-block with-errors red-txt'></span>"
         + "</span>"
         + "<span class='mb-sm pr-md'><span class='light-txt opacity06'> days </span></span>"
-        + "<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: -13px'>"
+        + "<span class='form-group  dis-inline vertical-align-middle pr-md' style='margin-bottom: 0px'>"
         + "<input id='manualTime" + customAnchorCount + "' type='text' count='" + customAnchorCount
         + "' class='form-control clock' name='questionnaireCustomScheduleBo[" + customAnchorCount
         + "].frequencyTime' placeholder='Time' required/>"

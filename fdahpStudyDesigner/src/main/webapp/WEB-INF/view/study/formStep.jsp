@@ -367,9 +367,9 @@
                                 </button>
                             </div>
                         </div>
-                        </div>
+                        
                         <div class="clearfix"></div>
-                        <div class="mt-md mb-lg">
+                        <div class="col-12 mt-md mb-lg">
                      
                             <table id="content" class="display" cellspacing="0" width="100%">
                                 <thead style="display: none"></thead>
@@ -424,7 +424,7 @@
                             </table>
                             
                         </div>
-
+                      </div>
                 </div>
          </div>
 

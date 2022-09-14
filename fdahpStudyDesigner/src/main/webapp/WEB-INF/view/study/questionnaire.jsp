@@ -390,6 +390,10 @@ margin-bottom:5px !important;
                                       class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Form');">Add Form Step
                               </div>
+                              <div
+                                       class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                        onclick="getQuestionnaireStep('Groups');">Groups
+                               </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
       							<span class="checkbox checkbox-inline"> <input
@@ -4271,7 +4275,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     } else if (stepType == 'Question') {
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}";
       document.contentFormId.submit();
-    }
+    }else if (stepType == 'Groups') {
+       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
+       document.contentFormId.submit();
+           }
   }
 
   function editStep(stepId, stepType) {

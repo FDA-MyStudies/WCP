@@ -6,6 +6,7 @@ import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.FormLangPK;
+import com.fdahpstudydesigner.bo.GroupsBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionLangPK;
 import com.fdahpstudydesigner.bo.InstructionsBo;
@@ -2146,4 +2147,22 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     }
     logger.info("StudyServiceImpl - updateStudyLangSequence() - Ends");
   }
+
+ 
+@Override
+public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) {
+	logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
+	List<GroupsBo> groups = null;
+    
+    try {
+      groups = studyQuestionnaireDAO.getGroupsByStudyId(studyId,questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsByStudyId() - ERROR ", e);
+    }
+    logger.exit("getGroupsByStudyId() - Ends");
+    return groups;
+	
+}
+  
+ 
 }

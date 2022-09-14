@@ -5,6 +5,7 @@ import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormLangBO;
+import com.fdahpstudydesigner.bo.GroupsBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
@@ -178,4 +179,6 @@ public interface StudyQuestionnaireService {
 
   List<InstructionsLangBO> getInstructionLangByQuestionnaireId(
       int questionnaireId, String language);
+  
+  public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
 }

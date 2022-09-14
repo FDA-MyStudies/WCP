@@ -8,6 +8,7 @@ import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormLangBO;
 import com.fdahpstudydesigner.bo.FormMappingBo;
+import com.fdahpstudydesigner.bo.GroupsBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
@@ -5794,5 +5795,30 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     }
     logger.info("StudyQuestionnaireDAOImpl - getInstructionLangByQuestionnaireId - Ends");
     return instructionsLangBOS;
+  }
+  
+  @Override
+  public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId) {
+  	logger.entry("begin getGroupsByStudyId()");
+      Session session = null;
+      List<GroupsBo> groups = null;
+      String searchQuery = "";
+      try {
+      	
+        session = hibernateTemplate.getSessionFactory().openSession();
+            searchQuery =
+                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId";
+            query = session.createQuery(searchQuery).setString("studyId", studyId).setString("questionnaireId", questionnaireId);
+          groups = query.list();
+        
+      } catch (Exception e) {
+        logger.error("StudyQuestionnaireDAOImpl - getGroupsByStudyId() - ERROR ", e);
+      } finally {
+        if (session != null) {
+          session.close();
+        }
+      }
+      logger.exit("getGroupsByStudyId() - Ends");
+      return groups;
   }
 }

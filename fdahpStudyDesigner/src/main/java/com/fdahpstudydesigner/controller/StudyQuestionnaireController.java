@@ -5,6 +5,7 @@ import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.FormLangBO;
+import com.fdahpstudydesigner.bo.GroupsBo;
 import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.InstructionsLangBO;
@@ -3727,4 +3728,129 @@ public class StudyQuestionnaireController {
     map.addAttribute("studyLanguageBO", studyLanguageBO);
     map.addAttribute("sequenceLangBO", studySequenceLangBO);
   }
+  
+  @RequestMapping(value = "/adminStudies/viewGroups.do")
+  public ModelAndView viewGroups1(HttpServletRequest request, HttpServletResponse response) {
+    logger.info("StudyQuestionnaireController - viewGroups - Starts");
+    ModelAndView mav = new ModelAndView("redirect:viewBasicInfo.do");
+    ModelMap map = new ModelMap();
+    StudyBo studyBo = null;
+    String sucMsg = "";
+    String errMsg = "";
+    List<GroupsBo> groupsList = null;
+    String customStudyId = "";
+    String questionnaireId="";
+    try {
+        SessionObject sesObj =
+                (SessionObject)
+                        request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+        Integer sessionStudyCount =
+                StringUtils.isNumeric(request.getParameter("_S"))
+                        ? Integer.parseInt(request.getParameter("_S"))
+                        : 0;
+        if (sesObj != null
+                && sesObj.getStudySession() != null
+                && sesObj.getStudySession().contains(sessionStudyCount)) {
+          
+          if (null
+                  != request
+                  .getSession()
+                  .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG)) {
+            sucMsg =
+                    (String)
+                            request
+                                    .getSession()
+                                    .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG);
+            map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+            request
+                    .getSession()
+                    .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG);
+          }
+          if (null
+                  != request
+                  .getSession()
+                  .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG)) {
+            errMsg =
+                    (String)
+                            request
+                                    .getSession()
+                                    .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG);
+            map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+            request
+                    .getSession()
+                    .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG);
+          }
+          String actionType =
+                  FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
+                      ? ""
+                      : request.getParameter("actionType");
+              if (StringUtils.isEmpty(actionType)) {
+                actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
+              }
+          String studyId =
+                  (String)
+                          request
+                                  .getSession()
+                                  .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+          
+          if (StringUtils.isEmpty(studyId)) {
+            studyId =
+                    FdahpStudyDesignerUtil.isEmpty(
+                            request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+                            == true
+                            ? "0"
+                            : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+          }
+         
+          questionnaireId =
+                  FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
+                      ? ""
+                      : request.getParameter("questionnaireId");
+           if (StringUtils.isEmpty(questionnaireId)) {
+        	   questionnaireId =
+                   (String) request.getSession().getAttribute(sessionStudyCount + "questionnaireId");
+               request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
+             }
+            customStudyId =
+                    (String)
+                            request
+                                    .getSession()
+                                    .getAttribute(
+                                            sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+          
+            
+          
+          if (StringUtils.isNotEmpty(studyId)) {
+            request.getSession().removeAttribute(sessionStudyCount + "actionType");
+            studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+            
+          }
+          if ("edit".equals(actionType)) {
+              map.addAttribute("actionType", "edit");
+              request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+            } else {
+              map.addAttribute("actionType", "view");
+              request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+            }
+          if (StringUtils.isNotEmpty(questionnaireId)) {
+				groupsList =
+                      studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId); 
+          }
+          }
+          
+          map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+          map.addAttribute("groupsList", groupsList);
+          map.addAttribute("_S", sessionStudyCount);
+          mav = new ModelAndView("viewGroupsPage", map);
+          
+      } catch (Exception e) {
+        logger.error("StudyQuestionnaireController - viewGroups - ERROR", e);
+      }
+      logger.info("StudyQuestionnaireController - viewGroups - Ends");
+      return mav;
+    
+
+  }
+
 }
+

@@ -101,7 +101,7 @@
 </div>
 <!-- End right Content here -->
 <form:form
-        action="/fdahpStudyDesigner/adminStudies/viewGroups1.do?_S=${param._S}"
+        action="/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}"
         name="groupsInfoForm" id="groupsInfoForm" method="post">
     <input type="hidden" name="groupId" id="groupId"
            value="">
@@ -193,7 +193,7 @@ var idleTime = 0;
 function refresh() {
 	  debugger
 	$.ajax({
-		url: '/fdahpStudyDesigner/adminStudies/viewGroups1.do?_S=${param._S}',
+		url: '/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}',
 		type: "GET",
 		data: {
 			questionnaireId: questionnaireId

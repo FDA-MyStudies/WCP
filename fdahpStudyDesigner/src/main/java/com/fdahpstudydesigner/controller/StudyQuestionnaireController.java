@@ -3730,7 +3730,7 @@ public class StudyQuestionnaireController {
   }
   
   @RequestMapping(value = "/adminStudies/viewGroups.do")
-  public ModelAndView viewGroups1(HttpServletRequest request, HttpServletResponse response) {
+  public ModelAndView viewGroups(HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyQuestionnaireController - viewGroups - Starts");
     ModelAndView mav = new ModelAndView("redirect:viewBasicInfo.do");
     ModelMap map = new ModelMap();

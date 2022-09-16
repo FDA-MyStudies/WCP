@@ -5775,7 +5775,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       	
         session = hibernateTemplate.getSessionFactory().openSession();
             searchQuery =
-                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId";
+                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId and GBO.isgroupDelted=false";
             query = session.createQuery(searchQuery).setString("studyId", studyId).setString("questionnaireId", questionnaireId);
           groups = query.list();
         
@@ -5885,6 +5885,38 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     logger.exit("getGroupsById() - Ends");
     return groupsBo;
   }
+
+@Override
+public String deleteGroup(String groupId, SessionObject sessionObject) {
+	logger.info("StudyQuestionnaireDAOImpl - deleteGroupId() - Starts");
+    Session session = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    int count = 0;
+    String queryString = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (StringUtils.isNotEmpty(groupId)) {
+    	  queryString  =
+            		"update GroupsBo GBO set GBO.modifiedBy =:userId,GBO.modifiedOn =now(),GBO.isgroupDelted = true where GBO.groupId=:groupId ";
+        query = session.createQuery(queryString);
+        query.setParameter("userId", sessionObject.getUserId());
+
+        count = query.setString("groupId", groupId).executeUpdate();
+        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyQuestionnaireDAOImpl - deleteGroupId() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupId() - Ends");
+    return message;
+}
 
 
 }

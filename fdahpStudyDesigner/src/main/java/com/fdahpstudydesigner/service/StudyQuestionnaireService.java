@@ -178,4 +178,6 @@ public interface StudyQuestionnaireService {
 
   public String addOrUpdateGroupsDetails(
           GroupsBean groupsBean, SessionObject userSession);
+  
+  public String deleteGroup(String groupId,SessionObject sessionObject);
 }

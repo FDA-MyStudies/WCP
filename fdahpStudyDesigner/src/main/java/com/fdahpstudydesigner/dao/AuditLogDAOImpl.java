@@ -203,11 +203,12 @@ public class AuditLogDAOImpl implements AuditLogDAO {
     return message;
   }
 
-  public String saveToAuditLogs(
+/*  public String saveToAuditLogs(
           Session session,
           Transaction transaction,
           SessionObject sessionObject,
-          String activity
+          String activity,
+          String activitydetails
           ) {
     logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
@@ -218,9 +219,10 @@ public class AuditLogDAOImpl implements AuditLogDAO {
         newSession = hibernateTemplate.getSessionFactory().openSession();
         transaction = newSession.beginTransaction();
       }
-      if (FdahpStudyDesignerUtil.isNotEmpty(activity)) {
-        auditLog = new AuditLogBO();
+        if (FdahpStudyDesignerUtil.isNotEmpty(activity)) {
+          auditLog = new AuditLogBO();
         auditLog.setActivity(activity);
+        auditLog.setActivityDetails(activitydetails);
         if (newSession != null) {
           newSession.save(auditLog);
         } else {
@@ -242,5 +244,5 @@ public class AuditLogDAOImpl implements AuditLogDAO {
     }
     logger.info("AuditLogDAOImpl - saveToAuditLog - Ends");
     return message;
-  }
+  } */
 }

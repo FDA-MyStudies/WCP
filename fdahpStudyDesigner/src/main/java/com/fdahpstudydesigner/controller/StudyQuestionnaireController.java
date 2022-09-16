@@ -3901,6 +3901,7 @@ public class StudyQuestionnaireController {
           HttpServletRequest request, GroupsBean groupsBean) {
     logger.info("UsersController - addOrUpdateGroupsDetails() - Starts");
     ModelAndView mav = new ModelAndView();
+    ModelMap map = new ModelMap();
     String msg = "";
     int count = 1;
     boolean addFlag = false;
@@ -3918,10 +3919,10 @@ public class StudyQuestionnaireController {
                       request
                               .getSession()
                               .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-     String questionnaireId =
-              FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
-                      ? ""
-                      : request.getParameter("questionnaireId");
+      System.out.println(request.getSession().getAttribute(sessionStudyCount +"questionnaireId"));
+     String questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount +"questionnaireId");
+
+                    
       if (null != userSession) {
 
         if (null == groupsBean.getId()) {
@@ -3929,6 +3930,8 @@ public class StudyQuestionnaireController {
           groupsBean.setCreatedBy(userSession.getUserId().intValue());
          // groupsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           groupsBean.setCreatedOn(userSession.getCreatedDate());
+          groupsBean.setQuestionnaireId(Integer.valueOf(questionnaireId));
+          groupsBean.setStudyId(Integer.valueOf(studyId));
           System.out.println("groupsBean: "+groupsBean);
         } else {
           groupsBean.setModifiedBy(userSession.getUserId());
@@ -3938,7 +3941,7 @@ public class StudyQuestionnaireController {
                 studyQuestionnaireService.addOrUpdateGroupsDetails(
                         groupsBean,
                         userSession);
-        if (FdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
+        /*if (FdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
           if (addFlag) {
             request
                     .getSession()
@@ -3953,14 +3956,53 @@ public class StudyQuestionnaireController {
           }
         } else {
           request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, msg);
-        }
-        mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
+        } */
+        map.addAttribute("_S", sessionStudyCount);
+        mav = new ModelAndView("redirect:/adminStudies/viewGroups.do",map);
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireController - addOrUpdateGroupsDetails() - ERROR", e);
     }
     logger.info("StudyQuestionnaireController - addOrUpdateGroupsDetails() - Ends");
     return mav;
+  }
+  
+  @RequestMapping(value = "/adminStudies/deleteGroup.do", method = RequestMethod.POST)
+  public void deleteGroup(HttpServletRequest request, HttpServletResponse response) {
+    logger.info("StudyQuestionnaireController - deleteGroup - Starts");
+    JSONObject jsonobject = new JSONObject();
+    PrintWriter out = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      SessionObject sesObj =
+          (SessionObject)
+              request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+      Integer sessionStudyCount =
+          StringUtils.isNumeric(request.getParameter("_S"))
+              ? Integer.parseInt(request.getParameter("_S"))
+              : 0;
+      if (sesObj != null
+          && sesObj.getStudySession() != null
+          && sesObj.getStudySession().contains(sessionStudyCount)) {
+        String groupId =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("groupId"))
+                ? ""
+                : request.getParameter("groupId");
+        if (!groupId.isEmpty()) {
+          message =
+              studyQuestionnaireService.deleteGroup(
+                  groupId,sesObj);
+        }
+        
+      }
+      jsonobject.put("message", message);
+      response.setContentType("application/json");
+      out = response.getWriter();
+      out.print(jsonobject);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireController - deleteGroup - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireController - deleteGroup - Ends");
   }
 
 }

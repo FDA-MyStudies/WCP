@@ -130,6 +130,7 @@
     <input type="hidden" name="actionType" id="actionType">
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
     <input type="hidden" id="checkRefreshFlag" name="checkRefreshFlag">
+    <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
 </form:form>
 
 
@@ -154,9 +155,6 @@ var idleTime = 0;
       refreshAndFetchLanguageData(currLang);
     }
 
-
-
-    
     $('#groups_list').DataTable({
       "paging": true,
       "abColumns": [
@@ -216,7 +214,6 @@ var idleTime = 0;
   
  
 function refresh() {
-	  debugger
 	$.ajax({
 		url: '/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}',
 		type: "GET",
@@ -224,7 +221,6 @@ function refresh() {
 			questionnaireId: questionnaireId
 		},
 		success: function (data) {
-			debugger
           let htmlData = document.createElement('html');
           htmlData.innerHTML = data;
 			if (language !== 'en') {
@@ -309,14 +305,12 @@ function refresh() {
       }
 
      /* function addGroups() {
-      debugger
               $('#groupId').val($(this).attr('groupId'));
               $('#checkRefreshFlag').val('Y');
               $("#addgroupsInfoForm").submit();
             } */
 
 	$('.addOrEditGroups').on('click',function(){
-	debugger
 			$('#id').val($(this).attr('id'));
 			$('#checkRefreshFlag').val('Y');
 			$('#addgroupsInfoForm').submit();

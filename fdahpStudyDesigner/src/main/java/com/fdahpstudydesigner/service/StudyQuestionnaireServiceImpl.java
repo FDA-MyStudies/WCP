@@ -2164,6 +2164,7 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
     String msg = FdahpStudyDesignerConstants.FAILURE;
     boolean addFlag = false;
     String activity = "";
+    String activitydetails = "";
 
     try {
       GroupsBo groupsBo = null;
@@ -2174,26 +2175,34 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
       if (groupsBo == null) {
         addFlag = true;
         groupsBo = new GroupsBo();
-        groupsBo.setCreatedBy(groupsBo.getCreatedBy());
-        groupsBo.setCreatedOn(groupsBo.getCreatedOn());
+        groupsBo.setCreatedBy(groupsBean.getCreatedBy());
+        groupsBo.setCreatedOn(groupsBean.getCreatedOn());
+        groupsBo.setQuestionnaireId(groupsBean.getQuestionnaireId());
+        groupsBo.setStudyId(groupsBean.getStudyId());
       } else {
-        groupsBo.setModifiedBy(groupsBo.getModifiedBy());
-        groupsBo.setModifiedOn(groupsBo.getModifiedOn());
+        groupsBo.setModifiedBy(groupsBean.getModifiedBy());
+        groupsBo.setModifiedOn(groupsBean.getModifiedOn());
       }
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
       studyQuestionnaireDAO.saveOrUpdateObject(groupsBo);
       if (addFlag) {
         activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
+        activitydetails =
+                " groups saved";
       }
       if (!addFlag) {
         activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
+        activitydetails =
+                "updated group";
       }
-      auditLogDAO.saveToAuditLogs(
+      msg=auditLogDAO.saveToAuditLog(
               null,
               null,
               userSession,
-              activity);
+              activity,
+              activitydetails,
+              "StudyQuestionnaireServiceImpl - addOrUpdateGroupsDetails");
 
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - ERROR", e);
@@ -2201,6 +2210,21 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
     logger.info("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - Ends");
     return msg;
   }
+
+@Override
+public String deleteGroup(String groupId, SessionObject sessionObject) {
+logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
+	
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message =
+          studyQuestionnaireDAO.deleteGroup( groupId,sessionObject);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Ends");
+    return message;
+}
 
 
 }

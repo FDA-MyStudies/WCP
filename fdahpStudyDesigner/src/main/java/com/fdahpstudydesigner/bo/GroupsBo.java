@@ -41,7 +41,7 @@ public class GroupsBo implements Serializable {
     private String modifiedOn;
 
     @Column(name = "is_group_deleted", length = 1)
-    private Boolean groupDeleted = false;
+    private Boolean isgroupDelted = false;
 
     @Transient
     private String userId;
@@ -120,11 +120,11 @@ public class GroupsBo implements Serializable {
     }
 
     public boolean isGroupDeleted() {
-        return groupDeleted;
+        return isgroupDelted;
     }
 
     public void setGroupDeleted(boolean groupDeleted) {
-        this.groupDeleted = groupDeleted;
+        this.isgroupDelted = groupDeleted;
     }
 
 }

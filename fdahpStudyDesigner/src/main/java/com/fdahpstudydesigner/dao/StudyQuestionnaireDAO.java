@@ -165,5 +165,8 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
           GroupsBo groupsBo);
 
   public GroupsBo getGroupById(int id);
+  
+  public String deleteGroup(String groupId,SessionObject sessionObject);
+
 
 }

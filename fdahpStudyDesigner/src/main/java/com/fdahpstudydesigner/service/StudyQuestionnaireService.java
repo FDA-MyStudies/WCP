@@ -2,20 +2,12 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
+import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.GroupsBo;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.SessionObject;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -181,4 +173,9 @@ public interface StudyQuestionnaireService {
       int questionnaireId, String language);
   
   public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
+
+  public GroupsBo getGroupsDetails(Integer id);
+
+  public String addOrUpdateGroupsDetails(
+          GroupsBean groupsBean, SessionObject userSession);
 }

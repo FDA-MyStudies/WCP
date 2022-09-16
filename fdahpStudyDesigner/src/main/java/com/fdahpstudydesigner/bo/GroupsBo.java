@@ -1,5 +1,7 @@
 package com.fdahpstudydesigner.bo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -9,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+@Data
 @Entity
 @Table(name = "grouppp")
 public class GroupsBo implements Serializable {
@@ -18,13 +20,13 @@ public class GroupsBo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    private Integer id = 0;
+    private Integer id;
 
     @Column(name = "groupId")
-    private Integer groupId = 0;
+    private Integer groupId;
     
     @Column(name = "group_name")
-    private String groupName = "";
+    private String groupName;
 
     @Column(name = "created_on")
     private String createdOn = "";
@@ -42,10 +44,10 @@ public class GroupsBo implements Serializable {
     private Boolean groupDeleted = false;
 
     @Transient
-    private String userIds  ;
+    private String userId;
 
     @Transient
-    private String userName  ;
+    private String userName;
     
     @Column(name = "study_id")
     private Integer studyId;
@@ -54,11 +56,11 @@ public class GroupsBo implements Serializable {
     private Integer questionnaireId;
 
     public String getUserIds() {
-        return userIds;
+        return userId;
     }
 
     public void setUserIds(String userIds) {
-        this.userIds = userIds;
+        this.userId = userId;
     }
 
     public String getUserName() {

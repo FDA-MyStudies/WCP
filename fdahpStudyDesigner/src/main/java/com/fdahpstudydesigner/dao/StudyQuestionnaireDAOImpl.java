@@ -2,46 +2,14 @@
 package com.fdahpstudydesigner.dao;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
-import com.fdahpstudydesigner.bo.ActiveTaskBo;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.FormMappingBo;
-import com.fdahpstudydesigner.bo.GroupsBo;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.NotificationBO;
-import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudySequenceBo;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
-import com.fdahpstudydesigner.bo.StudyVersionBo;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
+
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -5821,4 +5789,102 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       logger.exit("getGroupsByStudyId() - Ends");
       return groups;
   }
+
+  @Override
+  public GroupsBo getGroupsDetails(int id) {
+    logger.info("StudyDAOImpl - getGroupDetails() - Starts");
+    GroupsBo groupsBo = null;
+    Session session = null;
+    Query query = null;
+    String queryString = "";
+    try{
+      session = hibernateTemplate.getSessionFactory().openSession();
+      queryString = " FROM  GroupsBo GBO WHERE GBO.id = "+id;
+      query = session.createQuery(queryString);
+      groupsBo = (GroupsBo) query.uniqueResult();
+    }catch(Exception e){
+      logger.error("StudyDAOImpl - getGroupDetails() - ERROR",e);
+    }finally{
+      if(session != null){
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getGroupDetails() - Ends");
+    return groupsBo;
+  }
+
+  @Override
+  public String addOrUpdateGroupsDetails(GroupsBo groupsBo) {
+      logger.info("StudyDAOImpl - addOrUpdateGroupsDetails() - Starts");
+      Session session = null;
+      Integer groupId = 0;
+      String msg = FdahpStudyDesignerConstants.FAILURE;
+      Query query = null;
+       GroupsBo groupsBo2 = null;
+       boolean updateFlag = false;
+
+      try {
+        session = hibernateTemplate.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+        if (null == groupsBo.getId()) {
+          groupId = (Integer) session.save(groupsBo);
+        } else {
+          session.update(groupsBo);
+          groupId = groupsBo.getGroupId();
+          updateFlag = true;
+        }
+
+        query = session.createQuery(" FROM GroupsBo GBO where GBO.groupId = :groupId");
+        query.setInteger("groupId", groupId);
+        groupsBo2 = (GroupsBo) query.uniqueResult();
+
+        session.update(groupsBo2);
+
+        transaction.commit();
+        msg = FdahpStudyDesignerConstants.SUCCESS;
+      } catch (Exception e) {
+        transaction.rollback();
+        logger.error("studyDAOImpl - addOrUpdateGroupsDetails() - ERROR", e);
+      } finally {
+        if (null != session) {
+          session.close();
+        }
+      }
+      logger.info("studyDAOImpl - addOrUpdateGroupsDetails() - Ends");
+      return msg;
+  }
+
+  @Override
+  public GroupsBo getGroupById(int id) {
+    logger.entry("begin getGroupsById()");
+    Session session = null;
+    GroupsBo groupsBo = null;
+    String searchQuery = "";
+    try {
+
+      session = hibernateTemplate.getSessionFactory().openSession();
+      searchQuery =
+              "From GroupsBo GBO WHERE GBO.id=:id";
+      groupsBo = (GroupsBo) query.uniqueResult();
+     /*
+     groupsBo =
+          (GroupsBo)
+              session
+                  .createQuery(
+                      "From GroupsBo GBO WHERE GBO.id=:id")
+                  .setInteger("id", id)
+                  .uniqueResult();
+           */
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getGroupsById() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    logger.exit("getGroupsById() - Ends");
+    return groupsBo;
+  }
+
+
 }

@@ -48,11 +48,17 @@
 				<img src="../images/icons/back-b.png" class="pr-md"/></span>
                                     
             </div>
-            <div class="black-md-f text-uppercase dis-line pull-left line34">GROUPS</div>  
+            <div class="black-md-f text-uppercase dis-line pull-left line34">GROUPS</div>
           <div class="dis-line form-group mb-none">
-                            <button type="button" class="btn btn-primary blue-btn"
+
+                         <!--   <button type="button" class="btn btn-primary blue-btn"
                                     id="addButton" onclick="addGroups();">+ Add Group
-                            </button>
+                            </button> -->
+
+                            <button type="button"
+                            							class="btn btn-primary blue-btn addOrEditGroups"
+                            							style="margin-top: 12px;">+ Add Group</button>
+
                         </div>
         </div>
     </div>
@@ -74,10 +80,14 @@
                  <tr id="row${groupsList.groupId}">
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
-                 <td style="width: 200px !important;"> <span
-                                class="${groupInfo.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
-                                data-toggle="tooltip" data-placement="top" title="Edit"
-                                onclick="editGroups(${groupInfo.groupId});"></span> <span
+                 <td style="width: 200px !important;">
+                  <span class="sprites_icon edit-g addOrEditGroups"
+                  id="${groupsList.id}" data-toggle="tooltip"
+                  	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                  	</span>
+
+
+                  <span
                                 class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                                 data-toggle="tooltip" data-placement="top" title="Delete"
                                 onclick="deleteGroups(${groupInfo.groupId});"></span></td>
@@ -111,6 +121,19 @@
 </form:form>
 
 <form:form
+        action="/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}"
+        name="addgroupsInfoForm" id="addgroupsInfoForm" method="post">
+    <input type="hidden" name="groupId" id="groupId"
+           value="${groupId}">
+ <input type="hidden" name="id" id="id"
+                      value="${id}">
+    <input type="hidden" name="actionType" id="actionType">
+    <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
+    <input type="hidden" id="checkRefreshFlag" name="checkRefreshFlag">
+</form:form>
+
+
+<form:form
              action="/fdahpStudyDesigner/sessionOut.do"
               id="backToLoginPage"
               name="backToLoginPage"
@@ -130,6 +153,8 @@ var idleTime = 0;
       $('#currentLanguage').val(currLang);
       refreshAndFetchLanguageData(currLang);
     }
+
+
 
     
     $('#groups_list').DataTable({
@@ -279,8 +304,23 @@ function refresh() {
           var a = document.createElement('a'); 
               a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
               document.body.appendChild(a).click();
-           
+           actionOn
         
       }
+
+     /* function addGroups() {
+      debugger
+              $('#groupId').val($(this).attr('groupId'));
+              $('#checkRefreshFlag').val('Y');
+              $("#addgroupsInfoForm").submit();
+            } */
+
+	$('.addOrEditGroups').on('click',function(){
+	debugger
+			$('#id').val($(this).attr('id'));
+			$('#checkRefreshFlag').val('Y');
+			$('#addgroupsInfoForm').submit();
+	});
+
 </script>
 

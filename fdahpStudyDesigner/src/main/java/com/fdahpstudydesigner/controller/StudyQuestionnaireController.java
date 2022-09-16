@@ -1,6 +1,7 @@
 package com.fdahpstudydesigner.controller;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
+import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
@@ -32,6 +33,8 @@ import java.util.*;
 import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -3850,6 +3853,114 @@ public class StudyQuestionnaireController {
       return mav;
     
 
+  }
+
+  @RequestMapping(value = "/adminStudies/addOrEditGroupsDetails.do")
+  public ModelAndView addOrEditGroupsDetails(HttpServletRequest request) {
+    logger.info("UsersController - addOrEditGroupsDetails() - Starts");
+    ModelAndView mav = new ModelAndView();
+    ModelMap map = new ModelMap();
+    GroupsBo groupsBo = null;
+    String actionType = "";
+    int grpId = 0;
+    try {
+      if (FdahpStudyDesignerUtil.isSession(request)) {
+        String id =
+                FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
+                        ? ""
+                        : request.getParameter("id");
+        String checkRefreshFlag =
+                FdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag"))
+                        ? ""
+                        : request.getParameter("checkRefreshFlag");
+        if (!"".equalsIgnoreCase(checkRefreshFlag)) {
+          if (!"".equals(id)) {
+            grpId = Integer.valueOf(id);
+            actionType = FdahpStudyDesignerConstants.EDIT_PAGE;
+            groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
+
+          } else {
+            actionType = FdahpStudyDesignerConstants.ADD_PAGE;
+          }
+          map.addAttribute("actionType", actionType);
+          map.addAttribute("groupsBo", groupsBo);
+          mav = new ModelAndView("addOrEditGroupsPage", map);
+        } else {
+          mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireController - addOrEditGroupsDetails() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireController - addOrEditGroupsDetails() - Ends");
+    return mav;
+  }
+
+  @RequestMapping("/adminStudies/addOrUpdateGroupsDetails.do")
+  public ModelAndView addOrUpdateGroupsDetails(
+          HttpServletRequest request, GroupsBean groupsBean) {
+    logger.info("UsersController - addOrUpdateGroupsDetails() - Starts");
+    ModelAndView mav = new ModelAndView();
+    String msg = "";
+    int count = 1;
+    boolean addFlag = false;
+    Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+    try {
+      HttpSession session = request.getSession();
+      SessionObject userSession =
+              (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+      Integer sessionStudyCount =
+              StringUtils.isNumeric(request.getParameter("_S"))
+                      ? Integer.parseInt(request.getParameter("_S"))
+                      : 0;
+      String studyId =
+              (String)
+                      request
+                              .getSession()
+                              .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+     String questionnaireId =
+              FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
+                      ? ""
+                      : request.getParameter("questionnaireId");
+      if (null != userSession) {
+
+        if (null == groupsBean.getId()) {
+          addFlag = true;
+          groupsBean.setCreatedBy(userSession.getUserId().intValue());
+         // groupsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+          groupsBean.setCreatedOn(userSession.getCreatedDate());
+          System.out.println("groupsBean: "+groupsBean);
+        } else {
+          groupsBean.setModifiedBy(userSession.getUserId());
+          groupsBean.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        }
+        msg =
+                studyQuestionnaireService.addOrUpdateGroupsDetails(
+                        groupsBean,
+                        userSession);
+        if (FdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
+          if (addFlag) {
+            request
+                    .getSession()
+                    .setAttribute(
+                            FdahpStudyDesignerConstants.SUC_MSG, propMap.get("add.groups.success.message"));
+          } else {
+            request
+                    .getSession()
+                    .setAttribute(
+                            FdahpStudyDesignerConstants.SUC_MSG,
+                            propMap.get("update.groups.success.message"));
+          }
+        } else {
+          request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, msg);
+        }
+        mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireController - addOrUpdateGroupsDetails() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireController - addOrUpdateGroupsDetails() - Ends");
+    return mav;
   }
 
 }

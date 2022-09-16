@@ -1,20 +1,8 @@
 package com.fdahpstudydesigner.dao;
 
+import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.GroupsBo;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.StudyVersionBo;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
 import java.util.SortedMap;
@@ -170,5 +158,12 @@ public interface StudyQuestionnaireDAO {
   void deleteQuestionStep(int id, String language);
   
 public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
+
+  public GroupsBo getGroupsDetails(int id);
+
+  public String addOrUpdateGroupsDetails(
+          GroupsBo groupsBo);
+
+  public GroupsBo getGroupById(int id);
 
 }

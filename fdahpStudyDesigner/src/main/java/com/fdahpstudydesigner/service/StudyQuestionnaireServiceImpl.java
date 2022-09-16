@@ -1,34 +1,13 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
+import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.FormLangPK;
-import com.fdahpstudydesigner.bo.GroupsBo;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionLangPK;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionLangPK;
-import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnaireLangPK;
-import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
+import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -42,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 /** @author BTC */
 @Service
@@ -2163,6 +2144,63 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
     return groups;
 	
 }
-  
- 
+
+  @Override
+  public GroupsBo getGroupsDetails(Integer id) {
+    logger.info("UsersServiceImpl - getGroupsDetails() - Starts");
+    GroupsBo groupsBo = null;
+    try {
+      groupsBo = studyQuestionnaireDAO.getGroupsDetails(id);
+    } catch (Exception e) {
+      logger.error("UsersServiceImpl - getGroupsDetails() - ERROR", e);
+    }
+    logger.info("UsersServiceImpl - getGroupsDetails() - Ends");
+    return groupsBo;
+  }
+
+  @Override
+  public String addOrUpdateGroupsDetails(GroupsBean groupsBean, SessionObject userSession) {
+    logger.info("UsersServiceImpl - addOrUpdateGroupsDetails() - Starts");
+    String msg = FdahpStudyDesignerConstants.FAILURE;
+    boolean addFlag = false;
+    String activity = "";
+
+    try {
+      GroupsBo groupsBo = null;
+      if(groupsBean.getId() != null){
+         groupsBo = studyQuestionnaireDAO.getGroupById(groupsBean.getId());
+      }
+
+      if (groupsBo == null) {
+        addFlag = true;
+        groupsBo = new GroupsBo();
+        groupsBo.setCreatedBy(groupsBo.getCreatedBy());
+        groupsBo.setCreatedOn(groupsBo.getCreatedOn());
+      } else {
+        groupsBo.setModifiedBy(groupsBo.getModifiedBy());
+        groupsBo.setModifiedOn(groupsBo.getModifiedOn());
+      }
+      groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
+      groupsBo.setGroupId(groupsBean.getGroupId());
+      studyQuestionnaireDAO.saveOrUpdateObject(groupsBo);
+      if (addFlag) {
+        activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
+      }
+      if (!addFlag) {
+        activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
+      }
+      auditLogDAO.saveToAuditLogs(
+              null,
+              null,
+              userSession,
+              activity);
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - Ends");
+    return msg;
+  }
+
+
 }

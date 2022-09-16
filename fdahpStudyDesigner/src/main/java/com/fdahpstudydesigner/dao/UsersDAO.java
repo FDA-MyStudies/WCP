@@ -32,4 +32,6 @@ public interface UsersDAO {
   public RoleBO getUserRole(int roleId);
 
   public List<RoleBO> getUserRoleList();
+
+
 }

@@ -167,6 +167,7 @@ $(document).ready(function(){
 	</c:if>
 	
 	$('.addOrEditUser').on('click',function(){
+	debugger
 			$('#userId').val($(this).attr('userId'));
 			$('#checkRefreshFlag').val('Y');
 			$('#addOrEditUserForm').submit();

@@ -330,6 +330,8 @@ public class FdahpStudyDesignerConstants {
   // Button Name
   public static final String SAVE_BUTTON = "save";
   public static final String SAVE_STUDY_SUCCESS_MESSAGE = "save.study.success.message";
+  public static final String SAVE_GROUP_SUCCESS_MESSAGE = "Group created successfully.";
+  public static final String UPDATE_GROUP_SUCCESS_MESSAGE = "Group updated successfully.";
   public static final String SCHEDULE = "schedule";
   public static final String SCHEDULE_ERROR_MSG =
       "Activity Run duration must be greater than fetal kick record time duration.";

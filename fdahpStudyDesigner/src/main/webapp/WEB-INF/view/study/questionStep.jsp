@@ -15,6 +15,10 @@
 	display: inline-block;
 }
 
+.text-normal > button > .filter-option{
+	text-transform: inherit !important;
+}
+
 .tool-tip [disabled] {
 	pointer-events: none;
 }
@@ -117,6 +121,14 @@
     margin-bottom: 10px !important;
 }
 
+.formula-box {
+	height: 50px;
+	border:1px solid #bfdceb;
+	border-bottom:0;
+	padding: 15px;
+	color: #007cba;
+}
+
 input[type=button] {
     -webkit-appearance: button;
     cursor: pointer;
@@ -167,6 +179,20 @@ input[type=number] {
 }
 
 .hide{ display: none;}
+
+.operator {
+	width: 63% !important;
+}
+
+.dest-label {
+	padding-left: 0 !important;
+	padding-top: 7px;
+}
+
+
+.dest-row {
+	margin-top: 12px;
+}
     </style>
 </head>
 <script type="text/javascript">
@@ -419,6 +445,90 @@ input[type=number] {
 								</div>
 							</div>
 						</c:if>
+
+						<div>
+							<div class="gray-xs-f mb-xs">Group Default Visibility</div>
+							<div>
+								<label class="switch bg-transparent mt-xs">
+									<input type="checkbox" class="switch-input"
+										   value="1" checked id="groupDefaultVisibility">
+									<span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+									<span class="switch-handle"></span>
+								</label>
+							</div>
+						</div>
+					</div><br>
+
+					<div id="logicDiv">
+						<div class="row">
+							<div class="gray-xs-f mb-xs">Pre-Load Logic</div>
+						</div>
+						<div class="row dest-row">
+							<div class="col-md-3 dest-label">
+								If True, Destination step =
+							</div>
+							<div class="col-md-4">
+								<select class="selectpicker text-normal"
+										id="trueDestinationStep" name="trueDestinationStep" title="-select-">
+									<option>Destination Step 1</option>
+									<option>Destination Step 2</option>
+								</select>
+							</div>
+							<div class="col-md-5"></div>
+						</div>
+						<div class="row dest-row">
+							<div class="col-md-3 dest-label">
+								If False, Destination step =
+							</div>
+							<div class="col-md-4">
+								<select class="selectpicker text-normal"
+										id="falseDestinationStep" name="falseDestinationStep" title="-select-">
+									<option>Destination Step 1</option>
+									<option>Destination Step 2</option>
+								</select>
+							</div>
+							<div class="col-md-5"></div>
+						</div>
+
+						<br>
+						<div id="formulaContainer">
+							<div style="height: 150px">
+								<div class="row formula-box">
+									<div class="col-md-2">
+										<strong class="font-family: arial;">Formula</strong>
+									</div>
+								</div>
+								<div style="height: 100px; border:1px solid #bfdceb;">
+									<div class="row">
+										<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+										<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+										<div class="col-md-6"></div>
+									</div>
+									<div class="row">
+										<div class="col-md-1" style="padding-top: 7px">Operator</div>
+										<div class="col-md-2">
+											<select class="selectpicker operator text-normal"
+													id="operator0" name="operator" title="-select-">
+												<option> < </option>
+												<option> > </option>
+												<option> = </option>
+												<option> != </option>
+												<option> >= </option>
+												<option> <= </option>
+											</select>
+										</div>
+
+										<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="value0" name="value" placeholder="Enter">
+										</div>
+									</div>
+								</div>
+							</div>
+							<br>
+						</div>
+						<br>
+						<button type="button" id="addFormula" class="btn btn-primary blue-btn">Add Formula</button>
 					</div>
 				</div>
 				<!---  Form-level Attributes --->
@@ -8374,7 +8484,6 @@ $("#diagnosis_list tbody").sortable({
 
 <script>
 
-
 // $(document).on('click','.remove',function(){
 //       $(this).parents('tr').remove();
 //   delete_reorder();
@@ -8391,6 +8500,85 @@ $('.text-choice').each(function(i){
 });
 
     }
+
+	$('#addFormula').on('click', function () {
+		let formContainer = $('#formulaContainer');
+		var count = formContainer.find('div.formula-box').length;
+		let formula =
+				'<div id="form-div' + count + '">'+
+				'<div>'+
+						'<span class="radio radio-info radio-inline p-45 pl-2">'+
+							'<input type="radio" value="and" name="logicalOperator"/>'+
+							'<label for="and">AND</label>'+
+						'</span>'+
+					'<span class="radio radio-inline">'+
+							'<input type="radio" value="or" name="logicalOperator"/>'+
+							'<label for="or">OR</label>'+
+						'</span>'+
+					'<div class="help-block with-errors red-txt"></div>'+
+				'</div>'+
+				'<div style="height: 150px">'+
+					'<div class="row formula-box">'+
+				        '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>'+
+				        '<div class="col-md-10 text-right">'+
+						     '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div' + count + '" onclick="removeFormulaContainer(this)"></span>'+
+					    '</div>'+
+					'</div>'+
+					'<div style="height: 100px; border:1px solid #bfdceb;">'+
+						'<div class="row">'+
+							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>'+
+							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
+							'<div class="col-md-6"></div>'+
+						'</div>'+
+						'<div class="row">'+
+							'<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
+							'<div class="col-md-2">'+
+								'<select class="selectpicker operator text-normal" '+
+										'id="operator' + count + '" name="operator" title="-select-">'+
+									'<option><</option>'+
+									'<option>></option>'+
+								'</select>'+
+							'</div>'+
+
+							'<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
+							'<div class="col-md-3">'+
+								'<input type="text" class="form-control" id="value' + count + '" name="value" placeholder="Enter">'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+				'</div>'+
+				'<br>';
+		formContainer.append(formula);
+		$('.selectpicker').selectpicker();
+	});
+
+let defaultVisibility = $('#groupDefaultVisibility');
+if (defaultVisibility.val() === '1') {
+	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
+		$(this).addClass('ml-disabled');
+	});
+	$('#addFormula').attr('disabled', true);
+}
+
+defaultVisibility.on('change', function () {
+	let toggle = $(this);
+	let logicDiv = $('#logicDiv');
+	let addForm = $('#addFormula');
+	if  (toggle.is(':checked')) {
+		logicDiv.find('div.bootstrap-select, input, select').each( function () {
+			$(this).addClass('ml-disabled');
+		});
+		addForm.attr('disabled', true);
+	} else {
+		logicDiv.find('div.bootstrap-select, input, select').each( function () {
+			$(this).removeClass('ml-disabled');
+		});
+		toggle.val('0');
+		toggle.attr('checked', false);
+		addForm.attr('disabled', false);
+	}
+})
 </script>
 
 
@@ -8426,6 +8614,11 @@ $("#diagnosis_list tbody").sortable({
   helper: fixHelperModified,
   stop: updateIndex
 }).disableSelection();
+}
+
+function removeFormulaContainer(object) {
+	let id = object.getAttribute('data-id');
+	$('#'+id).remove();
 }
   </script>
 

@@ -180,6 +180,15 @@ margin-bottom:5px !important;
 .form-control {
     height: 33px;
 }
+
+.dis-ellipsis { display: contents; }
+
+#content_wrapper>table>tbody>tr :after {
+    position: absolute;
+   margin: 0px;
+   margin-left: -20px
+}
+
     </style>
 </head>
 
@@ -407,6 +416,8 @@ margin-bottom:5px !important;
                               <tbody>
                               <c:forEach items="${qTreeMap}" var="entry">
                                   <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}" status="${entry.value.status}">
+                                      
+                                     
                                       <c:choose>
                                           <c:when test="${entry.value.stepType eq 'Instruction'}">
                                               <td><span id="${entry.key}" data="round blue-round"
@@ -425,18 +436,36 @@ margin-bottom:5px !important;
                                           </c:otherwise>
                                       </c:choose>
                                       <td class="title"><c:choose>
+                                      
+                                     
+                                      
                                           <c:when test="${entry.value.stepType eq 'Form'}">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
+                                              
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
-                                                       title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+                                                       title="${fn:escapeXml(subentry.value.title)}">  
+                                                       <span class="checkbox checkbox-inline pl-1"> 
+                      								<input type="checkbox" id="isLaunchStudy" name="" value="" required=""> 
+                      								<label for="isLaunchStudy"></label>
+                      							</span>
+                                                       ${subentry.value.title}</div>
                                                   <div class="clearfix"></div>
                                               </c:forEach>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
-                                                   title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
+                                                   title="${fn:escapeXml(entry.value.title)}">  
+                                                   <span class="checkbox checkbox-inline pl-1"> 
+                      								<input type="checkbox" id="isLaunchStudy" name="" value="" required=""> 
+                      								<label for="isLaunchStudy"></label>
+                      							</span>
+                      							
+                                                   ${entry.value.title}</div>
                                           </c:otherwise>
                                       </c:choose></td>
+                                      
+                                      
+                                       
                                       <td>
                                           <div class="destinationStep questionnaireStepClass"
                                                style="display: none;">${entry.value.destinationText}</div>
@@ -4173,11 +4202,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           var title = "";
           if (value.stepType == 'Form') {
             $.each(value.fromMap, function (key, value) {
-              title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title)
-                  + '</div><br/>';
+              title += '<div class="dis-ellipsis" > <span class="checkbox checkbox-inline pl-1"><input type="checkbox" id="isLaunchStudy" name="" value="" required=""> <label for="isLaunchStudy"></label></span>' + DOMPurify.sanitize(value.title) + '</div><br/>';
             });
           } else {
-            title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div>';
+            title += '<div class="dis-ellipsis" >  <span class="checkbox checkbox-inline pl-1"><input type="checkbox" id="isLaunchStudy" name="" value="" required=""> <label for="isLaunchStudy"></label></span>' + DOMPurify.sanitize(value.title) + '</div>';
           }
           datarow.push(title);
         }

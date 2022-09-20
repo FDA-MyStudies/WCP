@@ -88,6 +88,7 @@ public class QuestionnairesStepsBo implements Serializable {
 
   @Transient private QuestionsBo questionsBo;
 
+   @Transient private GroupsBo groupBo;
   @Column(name = "repeatable")
   private String repeatable = "No";
 

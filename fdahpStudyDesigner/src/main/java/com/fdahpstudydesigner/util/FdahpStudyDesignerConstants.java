@@ -280,6 +280,7 @@ public class FdahpStudyDesignerConstants {
   public static final String PW_DATE_FORMAT = "MMddyy";
   public static final String QUESTION_ID = "questionId";
   public static final String QUESTION_STEP = "Question";
+  public static final String GROUP = "group";
   public static final String QUESTION_STEP_IMAGE = "QuestionImage";
   public static final String QUESTION_STEP_SELECTEDIMAGE = "QuestionSelectedImage";
 

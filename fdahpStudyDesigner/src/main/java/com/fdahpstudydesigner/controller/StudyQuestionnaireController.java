@@ -1218,6 +1218,7 @@ public class StudyQuestionnaireController {
     String sucMsg = "";
     String errMsg = "";
     StudyBo studyBo = null;
+    List<GroupsBo> groupsList = null;
     QuestionnaireBo questionnaireBo = null;
     Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
     String customStudyId = "";
@@ -1246,6 +1247,9 @@ public class StudyQuestionnaireController {
         request
             .getSession()
             .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.QUESTION_STEP);
+        request
+                .getSession()
+                .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.GROUP);
         if (null
             != request
                 .getSession()
@@ -1328,6 +1332,11 @@ public class StudyQuestionnaireController {
         }
         customStudyId =
             (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          groupsList =
+                  studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId);
+        }
+        map.addAttribute("groupsList", groupsList);
         if (null != questionnaireId && !questionnaireId.isEmpty()) {
           questionnaireBo =
               studyQuestionnaireService.getQuestionnaireById(
@@ -3861,10 +3870,50 @@ public class StudyQuestionnaireController {
     ModelAndView mav = new ModelAndView();
     ModelMap map = new ModelMap();
     GroupsBo groupsBo = null;
-    String actionType = "";
+    String sucMsg = "";
+    String errMsg = "";
+    String actionPage = "";
     int grpId = 0;
     try {
-      if (FdahpStudyDesignerUtil.isSession(request)) {
+      SessionObject sesObj =
+              (SessionObject)
+                      request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+      Integer sessionStudyCount =
+              StringUtils.isNumeric(request.getParameter("_S"))
+                      ? Integer.parseInt(request.getParameter("_S"))
+                      : 0;
+      if (sesObj != null
+              && sesObj.getStudySession() != null
+              && sesObj.getStudySession().contains(sessionStudyCount)) {
+
+        if (null
+                != request
+                .getSession()
+                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG)) {
+          sucMsg =
+                  (String)
+                          request
+                                  .getSession()
+                                  .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG);
+          map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+          request
+                  .getSession()
+                  .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG);
+        }
+        if (null
+                != request
+                .getSession()
+                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG)) {
+          errMsg =
+                  (String)
+                          request
+                                  .getSession()
+                                  .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG);
+          map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+          request
+                  .getSession()
+                  .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG);
+        }
         String id =
                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
                         ? ""
@@ -3873,28 +3922,45 @@ public class StudyQuestionnaireController {
                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag"))
                         ? ""
                         : request.getParameter("checkRefreshFlag");
+        String actionType =
+                FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
+                        ? ""
+                        : request.getParameter("actionType");
+        if (StringUtils.isEmpty(actionType)) {
+          actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
+        }
         if (!"".equalsIgnoreCase(checkRefreshFlag)) {
           if (!"".equals(id)) {
             grpId = Integer.valueOf(id);
-            actionType = FdahpStudyDesignerConstants.EDIT_PAGE;
+            actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
+            request.getSession().removeAttribute(sessionStudyCount + "actionType");
             groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
 
           } else {
-            actionType = FdahpStudyDesignerConstants.ADD_PAGE;
+            request.getSession().removeAttribute(sessionStudyCount + "actionType");
+            actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
           }
-          map.addAttribute("actionType", actionType);
+          if ("edit".equals(actionType)) {
+            map.addAttribute("actionType", "edit");
+            request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+          } else {
+            map.addAttribute("actionType", "view");
+            request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+          }
+        }
+          map.addAttribute("actionPage", actionPage);
           map.addAttribute("groupsBo", groupsBo);
           mav = new ModelAndView("addOrEditGroupsPage", map);
         } else {
           mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
         }
+
+      } catch(Exception e){
+        logger.error("StudyQuestionnaireController - addOrEditGroupsDetails() - ERROR", e);
       }
-    } catch (Exception e) {
-      logger.error("StudyQuestionnaireController - addOrEditGroupsDetails() - ERROR", e);
+      logger.info("StudyQuestionnaireController - addOrEditGroupsDetails() - Ends");
+      return mav;
     }
-    logger.info("StudyQuestionnaireController - addOrEditGroupsDetails() - Ends");
-    return mav;
-  }
 
   @RequestMapping("/adminStudies/addOrUpdateGroupsDetails.do")
   public ModelAndView addOrUpdateGroupsDetails(
@@ -4004,6 +4070,7 @@ public class StudyQuestionnaireController {
     }
     logger.info("StudyQuestionnaireController - deleteGroup - Ends");
   }
+
 
 }
 

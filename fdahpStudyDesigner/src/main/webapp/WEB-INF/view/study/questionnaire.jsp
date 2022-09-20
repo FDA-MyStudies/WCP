@@ -180,6 +180,19 @@ margin-bottom:5px !important;
 .form-control {
     height: 33px;
 }
+.assignGroup{
+position:relative;
+top:30%;
+}
+
+.darkblue-bg{
+background:#007cba;
+
+}
+@media only screen and  (max-width:1366px)and  (min-width:1300px) {
+.custoWidth{
+width:142px !important;
+}
     </style>
 </head>
 
@@ -312,6 +325,7 @@ margin-bottom:5px !important;
                           <input type="hidden" name="status" id="status" value="true">
                           <input type="hidden" name="questionnaireId" id="questionnaireId"
                                  value="${questionnaireBo.id}">
+                                  <input type="hidden" id="groupId" value="${groupBo.groupId}">
                           <input type="hidden" name="studyId" id="studyId"
                                  value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
                           <input type="hidden" id="customStudyId"
@@ -377,23 +391,24 @@ margin-bottom:5px !important;
                           </div>
                           <div class="mt-lg" id="stepContainer">
                               <div
-                                      class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                      class="add-steps-btn blue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Instruction');">Add
                                   Instruction Step
                               </div>
                               <div
-                                      class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                      class="add-steps-btn green-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Question');">Add Question
                                   Step
                               </div>
                               <div
-                                      class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                      class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Form');">Add Form Step
                               </div>
                               <div
-                                       class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                         onclick="getQuestionnaireStep('Groups');">Groups
                                </div>
+                                <div class="add-steps-btn darkblue-bg custoWidth" data-toggle="modal" data-target="#assignGroup" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
       							<span class="checkbox checkbox-inline"> <input
@@ -1793,6 +1808,30 @@ margin-bottom:5px !important;
             </div>
         </div>
     </div>
+</div>
+
+<!-- assignGroup -->
+<div id ="assignGroup"class="modal" tabindex="-1" role="dialog">
+   <div class="modal-dialog assignGroup" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:40px;">
+          <div class="form-group">
+            <c:if test="${actionPage ne 'VIEW_PAGE'}">
+              <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}"></c:if> data-error="Please choose one option" required"
+                   title="- select group -">
+                  <c:forEach items="${groupsList}" var="group">
+                     <option value="${group.groupId}" id="selectGroup${group.groupId}">${group.groupName}&nbsp;</option>
+                  </c:forEach>
+              </select>
+            </c:if>
+          </div>
+          <div class="text-right mt-xlg">
+             <button type="button" class="btn btn-default gray-btn" data-dismiss="modal">Cancel</button>
+             <button type="button" class="btn btn-primary blue-btn" onclick="assign(stepId,groupId);">OK</button>
+          </div>
+        </div>
+      </div>
+   </div>
 </div>
 <script type="text/javascript">
 
@@ -5138,4 +5177,57 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       }
     });
   }
+  //assignGroup code
+        function assign(stepId,groupId){
+        debugger
+           $("#instructionId").val(stepId);
+           $("#formId").val(stepId);
+           $("#questionId").val(stepId);
+           var groupId = $("#groupId").val();
+           if (stepId != null && stepId != '' && groupId != null && groupId != '') {
+          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+          $(thisAttr).parent().find(".help-block").empty();
+          if (existedKey != shortTitle) {
+            $.ajax({
+              url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
+              type: "POST",
+              datatype: "json",
+              data: {
+                stepId: stepId,
+                groupId: groupId
+              },
+              beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+              },
+              success: function getResponse(data) {
+                var message = data.message;
+
+                if ('SUCCESS' != message) {
+                  $(thisAttr).validator('validate');
+                  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                  $(thisAttr).parent().find(".help-block").empty();
+                  callback(true);
+                } else {
+                  $(thisAttr).val('');
+                  $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                  $(thisAttr).parent().find(".help-block").empty();
+                  $(thisAttr).parent().find(".help-block").append(
+                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                          shortTitle
+                          + " has already been used in the past."));
+                  callback(false);
+                }
+              },
+              global: false
+            });
+          } else {
+            callback(true);
+            $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+            $(thisAttr).parent().find(".help-block").empty();
+          }
+        } else {
+          callback(false);
+        }
+        }
+        //end
 </script>

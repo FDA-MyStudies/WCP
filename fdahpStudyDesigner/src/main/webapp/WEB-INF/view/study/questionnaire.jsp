@@ -180,15 +180,6 @@ margin-bottom:5px !important;
 .form-control {
     height: 33px;
 }
-
-.dis-ellipsis { display: contents; }
-
-#content_wrapper>table>tbody>tr :after {
-    position: absolute;
-   margin: 0px;
-   margin-left: -20px
-}
-
     </style>
 </head>
 
@@ -443,24 +434,13 @@ margin-bottom:5px !important;
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
                                               
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
-                                                       title="${fn:escapeXml(subentry.value.title)}">  
-                                                       <span class="checkbox checkbox-inline pl-1"> 
-                      								<input type="checkbox" id="isLaunchStudy" name="" value="" required=""> 
-                      								<label for="isLaunchStudy"></label>
-                      							</span>
-                                                       ${subentry.value.title}</div>
+                                                       title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
                                                   <div class="clearfix"></div>
                                               </c:forEach>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
-                                                   title="${fn:escapeXml(entry.value.title)}">  
-                                                   <span class="checkbox checkbox-inline pl-1"> 
-                      								<input type="checkbox" id="isLaunchStudy" name="" value="" required=""> 
-                      								<label for="isLaunchStudy"></label>
-                      							</span>
-                      							
-                                                   ${entry.value.title}</div>
+                                                   title="${fn:escapeXml(entry.value.title)}"> ${entry.value.title}</div>
                                           </c:otherwise>
                                       </c:choose></td>
                                       
@@ -4202,10 +4182,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           var title = "";
           if (value.stepType == 'Form') {
             $.each(value.fromMap, function (key, value) {
-              title += '<div class="dis-ellipsis" > <span class="checkbox checkbox-inline pl-1"><input type="checkbox" id="isLaunchStudy" name="" value="" required=""> <label for="isLaunchStudy"></label></span>' + DOMPurify.sanitize(value.title) + '</div><br/>';
+              title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div><br/>';
             });
           } else {
-            title += '<div class="dis-ellipsis" >  <span class="checkbox checkbox-inline pl-1"><input type="checkbox" id="isLaunchStudy" name="" value="" required=""> <label for="isLaunchStudy"></label></span>' + DOMPurify.sanitize(value.title) + '</div>';
+            title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div>';
           }
           datarow.push(title);
         }

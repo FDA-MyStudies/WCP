@@ -65,11 +65,13 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <div class="form-group"></div>
                 <div class="row form-group">
                   <div class="col-md-6 pl-none">
+                  <input type="hidden" name="id" id="id" value="${fn:escapeXml(groupsBo.id)}">
                     <div class="gray-xs-f mb-xs">Group ID * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
                       <input type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required>
+
                       <div class="help-block with-errors red-txt"></div>
                     </div>
                   </div>

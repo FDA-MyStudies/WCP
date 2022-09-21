@@ -2169,7 +2169,7 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
     try {
       GroupsBo groupsBo = null;
       if(groupsBean.getId() != null){
-         groupsBo = studyQuestionnaireDAO.getGroupById(groupsBean.getId());
+         groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
       }
 
       if (groupsBo == null) {

@@ -117,9 +117,8 @@
                 <c:forEach items="${questionnaires}" var="questionnaryInfo">
                     <tr id="row${questionnaryInfo.id}" status="${questionnaryInfo.status}">
                         <td>${questionnaryInfo.createdDate}</td>
-                        <td class="title">
-                            <div class="dis-ellipsis pr-100"
-                                 title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div>
+                        <td class="title dis-ellipsis pr-100"
+                                 title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}
                         </td>
                         <td>${questionnaryInfo.frequency == 'Manually Schedule' ? 'Custom Schedule' :questionnaryInfo.frequency}</td>
                         <td style="width: 200px !important;"><span

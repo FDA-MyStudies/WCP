@@ -436,7 +436,7 @@ width:142px !important;
                                  style="border-color: #ffffff;">
                               <thead style="display: none;"></thead>
                               <tbody>
-                              <c:forEach items="${qTreeMap}" var="entry">
+                              <c:forEach items="${qTreeMap}" var="entry" varStatus="loop">
                                   <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}" status="${entry.value.status}">
                                       <c:choose>
                                           <c:when test="${entry.value.stepType eq 'Instruction'}">
@@ -461,8 +461,8 @@ width:142px !important;
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
                                                        title="${fn:escapeXml(subentry.value.title)}">
                                                        <span class="checkbox selectbox_chk checkbox-inline pl-1">
-														<input type="checkbox" id="selectbox" name="" value="" required=""> 
-														<label for="selectbox"></label></span>
+														<input type="checkbox" id="selectbox${loop.index}" name="" value="" required="">
+														<label for="selectbox${loop.index}"></label></span>
                                                       <span class="ml-lg"> ${subentry.value.title} </span></div>
                                                   <div class="clearfix"></div>
                                               </c:forEach>
@@ -471,8 +471,8 @@ width:142px !important;
                                               <div class="dis-ellipsis"
                                                    title="${fn:escapeXml(entry.value.title)}">
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-													<input type="checkbox" id="selectbox" name="" value="" required=""> 
-													<label for="selectbox"></label></span>
+													<input type="checkbox" id="check${loop.index}" name="" value="" required="">
+													<label for="check${loop.index}"></label></span>
                                                    <span class="ml-lg">${entry.value.title}</span></div>
                                           </c:otherwise>
                                       </c:choose></td>

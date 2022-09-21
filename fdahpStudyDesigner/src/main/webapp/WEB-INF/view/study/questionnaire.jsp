@@ -193,6 +193,18 @@ background:#007cba;
 .custoWidth{
 width:142px !important;
 }
+}
+.dis-ellipsis { display: contents; }
+
+.selectbox_chk label::before {
+    margin-left: 0px;
+    }
+
+.selectbox_chk label::after {
+     position: absolute;
+   margin: 0px !important;
+    }
+    
     </style>
 </head>
 
@@ -447,13 +459,21 @@ width:142px !important;
                                           <c:when test="${entry.value.stepType eq 'Form'}">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
-                                                       title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+                                                       title="${fn:escapeXml(subentry.value.title)}">
+                                                       <span class="checkbox selectbox_chk checkbox-inline pl-1">
+														<input type="checkbox" id="selectbox" name="" value="" required=""> 
+														<label for="selectbox"></label></span>
+                                                      <span class="ml-lg"> ${subentry.value.title} </span></div>
                                                   <div class="clearfix"></div>
                                               </c:forEach>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
-                                                   title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
+                                                   title="${fn:escapeXml(entry.value.title)}">
+                                                   <span class="checkbox selectbox_chk checkbox-inline pl-1">
+													<input type="checkbox" id="selectbox" name="" value="" required=""> 
+													<label for="selectbox"></label></span>
+                                                   <span class="ml-lg">${entry.value.title}</span></div>
                                           </c:otherwise>
                                       </c:choose></td>
                                       <td>
@@ -4216,11 +4236,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           var title = "";
           if (value.stepType == 'Form') {
             $.each(value.fromMap, function (key, value) {
-              title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title)
-                  + '</div><br/>';
+              title += '<div class="dis-ellipsis" ><span class="checkbox selectbox_chk checkbox-inline pl-1"><input type="checkbox" id="selectbox" name="" value="" required=""><label for="selectbox"></label></span>' + '<span class="ml-lg">' + DOMPurify.sanitize(value.title) + '</span></div><br/>';
             });
           } else {
-            title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div>';
+            title += '<div class="dis-ellipsis" ><span class="checkbox selectbox_chk checkbox-inline pl-1"><input type="checkbox" id="selectbox" name="" value="" required=""><label for="selectbox"></label></span>' + '<span class="ml-lg">' + DOMPurify.sanitize(value.title) + '</span></div>';
           }
           datarow.push(title);
         }

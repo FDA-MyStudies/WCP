@@ -227,6 +227,9 @@
                                         ${destinationStep.sequenceNo} :
                                         ${destinationStep.stepShortTitle}</option>
                             </c:forEach>
+                            <c:forEach items="${groupsList}" var="group" varStatus="status">
+                                <option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                            </c:forEach>
                             <option value="0"
                                 ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
                                 Completion

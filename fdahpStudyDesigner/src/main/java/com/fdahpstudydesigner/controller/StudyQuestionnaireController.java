@@ -485,6 +485,7 @@ public class StudyQuestionnaireController {
     String sucMsg = "";
     String errMsg = "";
     ModelMap map = new ModelMap();
+    List<GroupsBo> groupsList = null;
     QuestionnaireBo questionnaireBo = null;
     QuestionnairesStepsBo questionnairesStepsBo = null;
     StudyBo studyBo = null;
@@ -616,6 +617,11 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("languageList", langMap);
         }
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          groupsList =
+                  studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId);
+        }
+        map.addAttribute("groupsList", groupsList);
         String language = request.getParameter("language");
         map.addAttribute("currLanguage", language);
         map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
@@ -727,6 +733,7 @@ public class StudyQuestionnaireController {
     QuestionnairesStepsBo questionnairesStepsBo = null;
     StudyBo studyBo = null;
     QuestionsBo questionsBo = null;
+    List<GroupsBo> groupsList = null;
     List<String> timeRangeList = new ArrayList<String>();
     List<StatisticImageListBo> statisticImageList = new ArrayList<>();
     List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
@@ -844,6 +851,7 @@ public class StudyQuestionnaireController {
           map.addAttribute("isAnchorDate", isExists);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         }
+
         if (StringUtils.isEmpty(formId)) {
           formId = (String) request.getSession().getAttribute(sessionStudyCount + "formId");
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
@@ -895,6 +903,11 @@ public class StudyQuestionnaireController {
             timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(frequency);
           }
         }
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          groupsList =
+                  studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId);
+        }
+        map.addAttribute("groupsList", groupsList);
         if (formId != null && !formId.isEmpty()) {
           questionnairesStepsBo =
               studyQuestionnaireService.getQuestionnaireStep(
@@ -1462,6 +1475,7 @@ public class StudyQuestionnaireController {
     QuestionnairesStepsBo questionnairesStepsBo = null;
     StudyBo studyBo = null;
     List<String> timeRangeList = new ArrayList<>();
+    List<GroupsBo> groupsList = null;
     List<StatisticImageListBo> statisticImageList = new ArrayList<>();
     List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
     List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = new ArrayList<>();
@@ -1593,6 +1607,11 @@ public class StudyQuestionnaireController {
           }
           map.addAttribute("languageList", langMap);
         }
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          groupsList =
+                  studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId);
+        }
+        map.addAttribute("groupsList", groupsList);
         String language = request.getParameter("language");
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
             && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {

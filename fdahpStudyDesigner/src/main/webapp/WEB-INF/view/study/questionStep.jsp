@@ -445,19 +445,20 @@ input[type=number] {
 								</div>
 							</div>
 						</c:if>
+					</div>
 
+					<div>
+						<div class="gray-xs-f mb-xs">Group Default Visibility</div>
 						<div>
-							<div class="gray-xs-f mb-xs">Group Default Visibility</div>
-							<div>
-								<label class="switch bg-transparent mt-xs">
-									<input type="checkbox" class="switch-input"
-										   value="1" checked id="groupDefaultVisibility">
-									<span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
-									<span class="switch-handle"></span>
-								</label>
-							</div>
+							<label class="switch bg-transparent mt-xs">
+								<input type="checkbox" class="switch-input"
+									   id="groupDefaultVisibility" name="defaultVisibility"
+									   <c:if test="${questionnairesStepsBo.defaultVisibility eq true}">checked</c:if>>
+								<span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+								<span class="switch-handle"></span>
+							</label>
 						</div>
-					</div><br>
+					</div>
 
 					<div id="logicDiv">
 						<div class="row">
@@ -468,67 +469,122 @@ input[type=number] {
 								If True, Destination step =
 							</div>
 							<div class="col-md-4">
-								<select class="selectpicker text-normal"
-										id="trueDestinationStep" name="trueDestinationStep" title="-select-">
-									<option>Destination Step 1</option>
-									<option>Destination Step 2</option>
+								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
+										data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
+									<c:forEach items="${destinationStepList}" var="destinationStep">
+										<option value="${destinationStep.stepId}"
+											${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
+											Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
+										</option>
+									</c:forEach>
+									<option value="0"
+										${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
+										Completion Step</option>
 								</select>
 							</div>
 							<div class="col-md-5"></div>
 						</div>
-						<div class="row dest-row">
-							<div class="col-md-3 dest-label">
-								If False, Destination step =
-							</div>
-							<div class="col-md-4">
-								<select class="selectpicker text-normal"
-										id="falseDestinationStep" name="falseDestinationStep" title="-select-">
-									<option>Destination Step 1</option>
-									<option>Destination Step 2</option>
-								</select>
-							</div>
-							<div class="col-md-5"></div>
-						</div>
-
 						<br>
-						<div id="formulaContainer">
-							<div style="height: 150px">
-								<div class="row formula-box">
-									<div class="col-md-2">
-										<strong class="font-family: arial;">Formula</strong>
-									</div>
-								</div>
-								<div style="height: 100px; border:1px solid #bfdceb;">
-									<div class="row">
-										<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-										<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
-										<div class="col-md-6"></div>
-									</div>
-									<div class="row">
-										<div class="col-md-1" style="padding-top: 7px">Operator</div>
-										<div class="col-md-2">
-											<select class="selectpicker operator text-normal"
-													id="operator0" name="operator" title="-select-">
-												<option> < </option>
-												<option> > </option>
-												<option> = </option>
-												<option> != </option>
-												<option> >= </option>
-												<option> <= </option>
-											</select>
-										</div>
 
-										<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-										<div class="col-md-3">
-											<input type="text" class="form-control" id="value0" name="value" placeholder="Enter">
+						<div id="formulaContainer${status.index}">
+							<c:choose>
+								<c:when test="${questionnairesStepsBo.preLoadLogicBeans.size() gt 0}">
+									<c:forEach items="${questionnairesStepsBo.preLoadLogicBeans}" var="preLoadLogicBean" varStatus="status">
+										<div id="form-div${status.index}"
+											 <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
+											 <c:if test="${status.index eq 0}">style="height: 150px;"</c:if> class="form-div">
+											<c:if test="${status.index gt 0}">
+												<div class="form-group">
+												<span class="radio radio-info radio-inline p-45 pl-2">
+													<input type="radio" id="andRadio${status.index}" value="&&" class="con-op-and" name="preLoadLogicBeans[${status.index}].conditionOperator"
+														   <c:if test="${preLoadLogicBean.conditionOperator eq '&&'}">checked </c:if> />
+													<label for="andRadio${status.index}">AND</label>
+												</span>
+													<span class="radio radio-inline">
+													<input type="radio" id="orRadio${status.index}" value="||" class="con-op-or" name="preLoadLogicBeans[${status.index}].conditionOperator"
+														   <c:if test="${preLoadLogicBean.conditionOperator eq '||'}">checked </c:if> />
+													<label for="orRadio${status.index}">OR</label>
+												</span>
+												</div>
+											</c:if>
+											<div>
+												<div class="row formula-box">
+													<div class="col-md-2">
+														<strong class="font-family: arial;">Formula</strong>
+													</div>
+													<div class="col-md-10 text-right">
+														<c:if test="${status.index gt 0}">
+															<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div${status.index}" onclick="removeFormulaContainer(this)"></span>
+														</c:if>
+													</div>
+												</div>
+												<div style="height: 100px; border:1px solid #bfdceb;">
+													<div class="row">
+														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+														<div class="col-md-6"></div>
+													</div>
+													<div class="row data-div">
+														<div class="col-md-1" style="padding-top: 7px">Operator</div>
+														<div class="col-md-2">
+															<select class="selectpicker operator text-normal" required
+																	id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
+																<c:forEach items="${operators}" var="operator">
+																	<option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
+																</c:forEach>
+															</select>
+														</div>
+
+														<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+														<div class="col-md-3">
+															<input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
+															<input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" placeholder="Enter">
+														</div>
+													</div>
+												</div>
+											</div>
+											<br>
 										</div>
-									</div>
-								</div>
-							</div>
-							<br>
+									</c:forEach>
+								</c:when>
+
+								<c:otherwise>
+										<div style="height: 150px" class="form-div">
+											<div class="row formula-box">
+												<div class="col-md-2">
+													<strong class="font-family: arial;">Formula</strong>
+												</div>
+											</div>
+											<div style="height: 100px; border:1px solid #bfdceb;">
+												<div class="row">
+													<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+													<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+													<div class="col-md-6"></div>
+												</div>
+												<div class="row data-div">
+													<div class="col-md-1" style="padding-top: 7px">Operator</div>
+													<div class="col-md-2">
+														<select required class="selectpicker operator text-normal"
+																id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+															<c:forEach items="${operators}" var="operator">
+																<option value="${operator}">${operator}</option>
+															</c:forEach>
+														</select>
+													</div>
+
+													<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+													<div class="col-md-3">
+														<input type="hidden" id="id${status.index}">
+														<input type="text" required class="form-control" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+													</div>
+												</div>
+											</div>
+										</div>
+										<br>
+								</c:otherwise>
+							</c:choose>
 						</div>
-						<br>
-						<button type="button" id="addFormula" class="btn btn-primary blue-btn">Add Formula</button>
+						<button type="button" id="addFormula" style="margin-top:10px" class="btn btn-primary blue-btn">Add Formula</button>
 					</div>
 				</div>
 				<!---  Form-level Attributes --->
@@ -6316,12 +6372,30 @@ input[type=number] {
         questionReponseTypeBo.questionsResponseTypeId = question_response_type_id;
 
         questionnaireStep.questionReponseTypeBo = questionReponseTypeBo;
+		  questionnaireStep.defaultVisibility = $('#groupDefaultVisibility').is(':checked');
+		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+		  let beanArray = [];
+		  $('#formulaContainer').find('div.form-div').each(function (index) {
+			  let preLoadBean = {};
+			  preLoadBean.operator = $(this).find('select.operator').val();
+			  preLoadBean.id = $(this).find('input.id').val();
+			  preLoadBean.inputValue = $(this).find('input.value').val();
+			  if (index > 0) {
+				  let isOr = $(this).find('input.con-op-or');
+				  let coop = '&&';
+				  if (isOr.val() !== undefined && isOr.is(':checked')) {
+					  coop = '||';
+				  }
+				  preLoadBean.conditionOperator = coop;
+			  }
+			  beanArray.push(preLoadBean);
+		  });
+		  questionnaireStep.preLoadLogicBeans = beanArray;
         if (quesstionnaireId && shortTitle) {
 
           formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep));
           formData.append('language', $('#studyLanguage').val());
 		  formData.append('isAutoSaved', $('#isAutoSaved').val());
-          var data = JSON.stringify(questionnaireStep);
           $.ajax({
             url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do?_S=${param._S}",
             type: "POST",
@@ -8503,19 +8577,18 @@ $('.text-choice').each(function(i){
 
 	$('#addFormula').on('click', function () {
 		let formContainer = $('#formulaContainer');
-		var count = formContainer.find('div.formula-box').length;
+		let count = formContainer.find('div.formula-box').length;
 		let formula =
-				'<div id="form-div' + count + '">'+
-				'<div>'+
+				'<div id="form-div' + count + '" class="form-div" style="height: 200px; margin-top:20px">'+
+				'<div class="form-group">'+
 						'<span class="radio radio-info radio-inline p-45 pl-2">'+
-							'<input type="radio" value="and" name="logicalOperator"/>'+
-							'<label for="and">AND</label>'+
+							'<input type="radio" id="andRadio' + count + '" value="&&" class="con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
+							'<label for="andRadio' + count + '">AND</label>'+
 						'</span>'+
 					'<span class="radio radio-inline">'+
-							'<input type="radio" value="or" name="logicalOperator"/>'+
-							'<label for="or">OR</label>'+
-						'</span>'+
-					'<div class="help-block with-errors red-txt"></div>'+
+							'<input type="radio" id="orRadio' + count + '" value="||" class="con-op-or" name="preLoadLogicBeans['+count+'].conditionOperator" />'+
+							'<label for="orRadio' + count + '">OR</label>'+
+				    '</span>'+
 				'</div>'+
 				'<div style="height: 150px">'+
 					'<div class="row formula-box">'+
@@ -8530,25 +8603,28 @@ $('.text-choice').each(function(i){
 							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
 							'<div class="col-md-6"></div>'+
 						'</div>'+
-						'<div class="row">'+
+						'<div class="row data-div">'+
 							'<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
 							'<div class="col-md-2">'+
-								'<select class="selectpicker operator text-normal" '+
-										'id="operator' + count + '" name="operator" title="-select-">'+
-									'<option><</option>'+
-									'<option>></option>'+
+								'<select required class="selectpicker operator text-normal" '+
+										'id="operator' + count + '" name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
+									'<option> < </option>'+
+									'<option> > </option>'+
+				                    '<option> = </option>'+
+				                    '<option> != </option>'+
+				                    '<option> >= </option>'+
+				                    '<option> <= </option>'+
 								'</select>'+
 							'</div>'+
-
 							'<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
 							'<div class="col-md-3">'+
-								'<input type="text" class="form-control" id="value' + count + '" name="value" placeholder="Enter">'+
+				                '<input type="hidden" class="id"/>'+
+								'<input type="text" required class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter">'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
-				'</div>'+
-				'<br>';
+				'</div>';
 		formContainer.append(formula);
 		$('.selectpicker').selectpicker();
 	});

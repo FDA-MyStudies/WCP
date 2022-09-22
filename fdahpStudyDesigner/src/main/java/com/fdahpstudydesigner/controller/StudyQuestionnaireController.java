@@ -1682,6 +1682,7 @@ public class StudyQuestionnaireController {
           }
 
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
+          map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
           request.getSession().setAttribute(sessionStudyCount + "questionId", questionId);
 
           QuestionLangBO questionLangBO =

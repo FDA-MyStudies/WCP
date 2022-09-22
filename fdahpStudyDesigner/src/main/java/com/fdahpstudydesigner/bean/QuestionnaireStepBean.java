@@ -20,6 +20,11 @@ public class QuestionnaireStepBean {
   private String title;
 
   private Boolean useAnchorDate;
+  private Boolean defaultVisibility;
+  private Boolean destinationTrueAsGroup;
+  private Integer isPiping;
+  private String pipingSnippet;
+  private String pipingSourceQuestionKey;
 
   public Integer getDestinationStep() {
     return destinationStep;
@@ -131,5 +136,45 @@ public class QuestionnaireStepBean {
 
   public void setUseAnchorDate(Boolean useAnchorDate) {
     this.useAnchorDate = useAnchorDate;
+  }
+
+  public Boolean getDefaultVisibility() {
+    return defaultVisibility;
+  }
+
+  public void setDefaultVisibility(Boolean defaultVisibility) {
+    this.defaultVisibility = defaultVisibility;
+  }
+
+  public Boolean getDestinationTrueAsGroup() {
+    return destinationTrueAsGroup;
+  }
+
+  public void setDestinationTrueAsGroup(Boolean destinationTrueAsGroup) {
+    this.destinationTrueAsGroup = destinationTrueAsGroup;
+  }
+
+  public Integer getIsPiping() {
+    return isPiping;
+  }
+
+  public void setIsPiping(Integer isPiping) {
+    this.isPiping = isPiping;
+  }
+
+  public String getPipingSnippet() {
+    return pipingSnippet;
+  }
+
+  public void setPipingSnippet(String pipingSnippet) {
+    this.pipingSnippet = pipingSnippet;
+  }
+
+  public String getPipingSourceQuestionKey() {
+    return pipingSourceQuestionKey;
+  }
+
+  public void setPipingSourceQuestionKey(String pipingSourceQuestionKey) {
+    this.pipingSourceQuestionKey = pipingSourceQuestionKey;
   }
 }

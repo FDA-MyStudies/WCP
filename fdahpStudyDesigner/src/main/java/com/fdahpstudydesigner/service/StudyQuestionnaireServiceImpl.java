@@ -2,6 +2,7 @@ package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.GroupsBean;
+import com.fdahpstudydesigner.bean.PreLoadLogicBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
@@ -468,29 +469,39 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       questionnairesStepsBo =
           studyQuestionnaireDAO.getQuestionnaireStep(
               stepId, stepType, questionnaireShortTitle, customStudyId, questionnaireId);
-      if (questionnairesStepsBo != null
-          && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)
-          && questionnairesStepsBo.getFormQuestionMap() != null) {
-        List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList =
-            studyQuestionnaireDAO.getQuestionReponseTypeList();
-        if (questionResponseTypeMasterInfoList != null
-            && !questionResponseTypeMasterInfoList.isEmpty()) {
-          for (QuestionResponseTypeMasterInfoBo questionResponseTypeMasterInfoBo :
-              questionResponseTypeMasterInfoList) {
-            for (Entry<Integer, QuestionnaireStepBean> entry :
-                questionnairesStepsBo.getFormQuestionMap().entrySet()) {
-              QuestionnaireStepBean questionnaireStepBean = entry.getValue();
-              if (questionnaireStepBean.getResponseType() != null
-                  && questionnaireStepBean
-                      .getResponseType()
-                      .equals(questionResponseTypeMasterInfoBo.getId())) {
-                if (FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(
-                    questionResponseTypeMasterInfoBo.getResponseType())) {
-                  questionnaireStepBean.setResponseTypeText(
-                      questionResponseTypeMasterInfoBo.getResponseType());
-                } else {
-                  questionnaireStepBean.setResponseTypeText(
-                      questionResponseTypeMasterInfoBo.getDataType());
+
+      if (questionnairesStepsBo != null) {
+        List<PreLoadLogicBo> preLoadLogicBos = studyQuestionnaireDAO.getPreLoadLogicByStep(questionnairesStepsBo.getStepId());
+        List<PreLoadLogicBean> preLoadLogicBeans = new ArrayList<>();
+        for (PreLoadLogicBo bo : preLoadLogicBos) {
+          PreLoadLogicBean bean = new PreLoadLogicBean();
+          BeanUtils.copyProperties(bo, bean);
+          preLoadLogicBeans.add(bean);
+        }
+        questionnairesStepsBo.setPreLoadLogicBeans(preLoadLogicBeans);
+        if (stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)
+                && questionnairesStepsBo.getFormQuestionMap() != null) {
+          List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList =
+                  studyQuestionnaireDAO.getQuestionReponseTypeList();
+          if (questionResponseTypeMasterInfoList != null
+                  && !questionResponseTypeMasterInfoList.isEmpty()) {
+            for (QuestionResponseTypeMasterInfoBo questionResponseTypeMasterInfoBo :
+                    questionResponseTypeMasterInfoList) {
+              for (Entry<Integer, QuestionnaireStepBean> entry :
+                      questionnairesStepsBo.getFormQuestionMap().entrySet()) {
+                QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+                if (questionnaireStepBean.getResponseType() != null
+                        && questionnaireStepBean
+                        .getResponseType()
+                        .equals(questionResponseTypeMasterInfoBo.getId())) {
+                  if (FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(
+                          questionResponseTypeMasterInfoBo.getResponseType())) {
+                    questionnaireStepBean.setResponseTypeText(
+                            questionResponseTypeMasterInfoBo.getResponseType());
+                  } else {
+                    questionnaireStepBean.setResponseTypeText(
+                            questionResponseTypeMasterInfoBo.getDataType());
+                  }
                 }
               }
             }
@@ -1499,6 +1510,38 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addQuestionsBo.setActive(true);
           this.updateStudyLangSequence(
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
+        }
+
+        List<PreLoadLogicBean> preLoadLogicBeans = questionnairesStepsBo.getPreLoadLogicBeans();
+        if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
+          List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(questionnairesStepsBo.getStepId());
+          for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
+            PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+            if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+              if (preLoadLogicBo == null) {
+                preLoadLogicBo = new PreLoadLogicBo();
+                preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.STEP);
+                preLoadLogicBo.setStepGroupId(questionnairesStepsBo.getStepId());
+              } else {
+                preLoadIds.remove(preLoadLogicBo.getId());
+              }
+              preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
+                      ? "&&" :logicBean.getOperator());
+              preLoadLogicBo.setInputValue(logicBean.getInputValue());
+              preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
+              studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
+            }
+          }
+          studyQuestionnaireDAO.deleteFormula(preLoadIds);
+          QuestionnairesStepsBo persistentStepsBo =
+                  studyQuestionnaireDAO.getQuestionnaireStep(
+                          questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getStepType(), null,
+                          customStudyId, questionnairesStepsBo.getQuestionnairesId());
+          if (persistentStepsBo != null) {
+            persistentStepsBo.setDefaultVisibility(questionnairesStepsBo.getDefaultVisibility());
+            persistentStepsBo.setDestinationTrueAsGroup(questionnairesStepsBo.getDestinationTrueAsGroup());
+            studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
+          }
         }
 
         if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {

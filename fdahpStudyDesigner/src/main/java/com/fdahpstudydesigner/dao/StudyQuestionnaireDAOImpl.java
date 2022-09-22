@@ -5918,5 +5918,91 @@ public String deleteGroup(String groupId, SessionObject sessionObject) {
     return message;
 }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<PreLoadLogicBo> getPreLoadLogicByStep(Integer stepGroupId) {
+    logger.info("StudyQuestionnaireDAOImpl - getPreLoadLogicByStep() - Starts");
+    Session session = null;
+    List<PreLoadLogicBo> preLoadLogicBos = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (stepGroupId != null) {
+        String queryString  = "from PreLoadLogicBo where stepGroupId=:stepGroupId";
+        preLoadLogicBos = session.createQuery(queryString).setParameter("stepGroupId", stepGroupId).list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getPreLoadLogicByStep() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getPreLoadLogicByStep() - Ends");
+    return preLoadLogicBos;
+  }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Integer> getPreLoadIds(Integer stepId) {
+    logger.info("StudyQuestionnaireDAOImpl - getPreLoadIds() - Starts");
+    Session session = null;
+    List<Integer> preLoadIds = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (stepId != null) {
+        String queryString  = "select id from PreLoadLogicBo where stepGroupId=:stepGroupId";
+        preLoadIds = session.createQuery(queryString).setParameter("stepGroupId", stepId).list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getPreLoadIds() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getPreLoadIds() - Ends");
+    return preLoadIds;
+  }
+
+  @Override
+  public PreLoadLogicBo getPreLoadLogicById(Integer id) {
+    logger.info("StudyQuestionnaireDAOImpl - getPreLoadLogicById() - Starts");
+    Session session = null;
+    PreLoadLogicBo preLoadLogicBo = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (id != null) {
+        String queryString  = "from PreLoadLogicBo where id=:id";
+        preLoadLogicBo = (PreLoadLogicBo) session.createQuery(queryString).setParameter("id", id).uniqueResult();
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getPreLoadLogicById() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getPreLoadLogicById() - Ends");
+    return preLoadLogicBo;
+  }
+
+  @Override
+  public void deleteFormula(List<Integer> ids) {
+    logger.info("StudyQuestionnaireDAOImpl - deleteFormula - Starts");
+    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+      transaction = session.beginTransaction();
+      session.createQuery(
+                      "delete from PreLoadLogicBo where id in (:id)")
+              .setParameterList("id", ids)
+              .executeUpdate();
+      transaction.commit();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFormula - Error : ", e);
+      transaction.rollback();
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteFormula - Ends");
+  }
 }

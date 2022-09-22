@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.bo;
 
+import com.fdahpstudydesigner.bean.PreLoadLogicBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import java.io.Serializable;
 import java.util.List;
@@ -115,7 +116,24 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "step_type")
   private String stepType;
 
+  @Column(name = "default_visibility")
+  private Boolean defaultVisibility;
+
+  @Column(name = "destination_true_as_group")
+  private Integer destinationTrueAsGroup;
+
+  @Column(name = "is_piping")
+  private Integer isPiping;
+
+  @Column(name = "piping_snippet")
+  private String pipingSnippet;
+
+  @Column(name = "piping_source_question_key")
+  private String pipingSourceQuestionKey;
+
   @Transient private String type;
+
+  @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
 
   public Boolean getActive() {
     return active;
@@ -301,5 +319,61 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public GroupsBo getGroupBo() {
+    return groupBo;
+  }
+
+  public void setGroupBo(GroupsBo groupBo) {
+    this.groupBo = groupBo;
+  }
+
+  public Boolean getDefaultVisibility() {
+    return defaultVisibility;
+  }
+
+  public void setDefaultVisibility(Boolean defaultVisibility) {
+    this.defaultVisibility = defaultVisibility;
+  }
+
+  public Integer getDestinationTrueAsGroup() {
+    return destinationTrueAsGroup;
+  }
+
+  public void setDestinationTrueAsGroup(Integer destinationTrueAsGroup) {
+    this.destinationTrueAsGroup = destinationTrueAsGroup;
+  }
+
+  public Integer getIsPiping() {
+    return isPiping;
+  }
+
+  public void setIsPiping(Integer isPiping) {
+    this.isPiping = isPiping;
+  }
+
+  public String getPipingSnippet() {
+    return pipingSnippet;
+  }
+
+  public void setPipingSnippet(String pipingSnippet) {
+    this.pipingSnippet = pipingSnippet;
+  }
+
+  public String getPipingSourceQuestionKey() {
+    return pipingSourceQuestionKey;
+  }
+
+  public void setPipingSourceQuestionKey(String pipingSourceQuestionKey) {
+    this.pipingSourceQuestionKey = pipingSourceQuestionKey;
+  }
+
+  public List<PreLoadLogicBean> getPreLoadLogicBeans() {
+    return preLoadLogicBeans;
+  }
+
+  public void setPreLoadLogicBeans(List<PreLoadLogicBean> preLoadLogicBeans) {
+    this.preLoadLogicBeans = preLoadLogicBeans;
   }
 }

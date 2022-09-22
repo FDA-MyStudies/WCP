@@ -457,6 +457,7 @@ public class FdahpStudyDesignerConstants {
   // Multiple Languages
   public static final String STUDY_LANGUAGE_ENGLISH = "English";
   public static final String STUDY_LANGUAGE_SPANISH = "Spanish";
+  public static final String STEP = "step";
 
   private FdahpStudyDesignerConstants() {
     // Do nothing

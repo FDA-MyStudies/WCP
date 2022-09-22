@@ -42,14 +42,6 @@ public class PreLoadLogicBean {
         this.conditionOperator = conditionOperator;
     }
 
-    public Integer getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
-    }
-
     public Integer getStepGroupId() {
         return stepGroupId;
     }

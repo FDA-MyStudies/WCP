@@ -23,7 +23,7 @@ public class GroupsBo implements Serializable {
     private Integer id;
 
     @Column(name = "groupId")
-    private Integer groupId;
+    private String groupId;
     
     @Column(name = "group_name")
     private String groupName;
@@ -42,9 +42,16 @@ public class GroupsBo implements Serializable {
 
     @Column(name = "is_group_deleted", length = 1)
     private Boolean isgroupDelted = false;
-
+    
     @Transient
     private String userId;
+    
+    @Transient private String buttonText;
+
+    @Transient private String type;
+    
+    @Column(name = "action", length = 1)
+    private boolean action;
 
     @Transient
     private String userName;
@@ -71,11 +78,11 @@ public class GroupsBo implements Serializable {
         this.userName = userName;
     }
 
-    public Integer getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 

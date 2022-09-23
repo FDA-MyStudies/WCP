@@ -72,12 +72,12 @@
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
                  <td style="width: 200px !important;">
-                  <span class="sprites_icon edit-g addOrEditGroups"
+                  <span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> addOrEditGroups"
                   id="${groupsList.id}" data-toggle="tooltip"
                   	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
                   	</span>
                   <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.groupId}" onclick=deleteGroup(${groupsList.groupId});></span></td>
+                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span></td>
                  </tr>
                  </c:forEach>
             </table>
@@ -151,17 +151,17 @@ function goToBackPage(item) {
 			$('#addgroupsInfoForm').submit();
 	});
 
-	function deleteGroup(groupId) {
+	function deleteGroup(id) {
           bootbox.confirm("Are you sure you want to delete this group?", function (result) {
             if (result) {
               var studyId = $("#studyId").val();
-              if (groupId != '' && groupId != null && typeof groupId != 'undefined') {
+              if (id != '' && id != null && typeof id != 'undefined') {
                 $.ajax({
                   url: "/fdahpStudyDesigner/adminStudies/deleteGroup.do?_S=${param._S}",
                   type: "POST",
                   datatype: "json",
                   data: {
-                    groupId: groupId,
+                    id: id,
                     studyId: studyId,
                     "${_csrf.parameterName}": "${_csrf.token}",
                   },

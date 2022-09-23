@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 public class GroupsBean {
     private Integer id;
-    private Integer groupId;
+    private String groupId;
     private String groupName;
     private String createdOn = "";
     private Integer createdBy;
@@ -15,12 +15,40 @@ public class GroupsBean {
     private String userName;
     private Integer studyId;
     private Integer questionnaireId;
+	private boolean action;
+	private String type;
+	private String buttonText;
+
+    public String getButtonText() {
+		return buttonText;
+	}
+
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
+	}
+
+    public boolean isAction() {
+		return action;
+	}
+
+	public void setAction(boolean action) {
+		this.action = action;
+	}
+
+     public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+   
 
     public Integer getId() {
         return id;
     }
 
-    public Integer getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
@@ -44,7 +72,7 @@ public class GroupsBean {
         this.id = id;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 

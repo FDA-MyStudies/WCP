@@ -328,8 +328,8 @@
                                                         ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
                                             <c:forEach items="${groupsList}" var="group" varStatus="status">
-                                                                                             <option value="${group.groupId}" id="selectGroup${group.groupId}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
-                                                                                          </c:forEach>
+                                                <option value="${group.groupId}" id="selectGroup${group.groupId}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                            </c:forEach>
                                             <option value="0"
                                                 ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
                                                 Completion
@@ -343,7 +343,7 @@
                         </div>
 
          <div>
-             <div class="gray-xs-f mb-xs">Group Default Visibility</div>
+             <div class="gray-xs-f mb-xs">Default Visibility</div>
              <div>
                  <input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${questionnairesStepsBo.defaultVisibility}"/>
                  <label class="switch bg-transparent mt-xs">
@@ -372,6 +372,9 @@
                                  ${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
                                  Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
                              </option>
+                         </c:forEach>
+                         <c:forEach items="${groupsList}" var="group" varStatus="status">
+                             <option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                          </c:forEach>
                          <option value="0"
                              ${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>

@@ -5932,8 +5932,7 @@ public String checkGroupId(String questionnaireId, String groupId, String studyI
     	groupsBo =
           session
               .createQuery(
-                  "From GroupsBo GBO WHERE  GBO.groupId= :groupId and GBO.studyId = :studyId and GBO.questionnaireId= :questionnaireId")
-              .setString("studyId", studyId)
+                  "From GroupsBo GBO WHERE  GBO.groupId= :groupId and GBO.questionnaireId= :questionnaireId")
               .setString("questionnaireId", questionnaireId)
               .setString("groupId", groupId)
               .list();
@@ -5967,8 +5966,9 @@ public String saveOrUpdateGroup(GroupsBo groupsBO) {
     	  if (StringUtils.isNotEmpty(groupsBO.getGroupId())) {
     		  
     		  GroupsBo groupsBo1 = 
-    				  (GroupsBo) session.getSession().createQuery(" from GroupsBo GBO where GBO.groupId=:groupId")
+    				  (GroupsBo) session.getSession().createQuery(" from GroupsBo GBO where GBO.groupId=:groupId and GBO.questionnaireId= :questionnaireId")
 			           .setString("groupId", groupsBO.getGroupId())
+			           .setInteger("questionnaireId",(groupsBO.getQuestionnaireId()))
 			           .uniqueResult();
     		  
     	    if(null != groupsBo1 && null != groupsBo1.getGroupId() && groupsBo1.getGroupId().equalsIgnoreCase(groupsBO.getGroupId()) )
@@ -6023,8 +6023,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 	    	groupsBo =
 	          session
 	              .createQuery(
-	                  "From GroupsBo GBO WHERE  GBO.groupName= :groupName and GBO.studyId = :studyId and GBO.questionnaireId= :questionnaireId")
-	              .setString("studyId", studyId)
+	                  "From GroupsBo GBO WHERE  GBO.groupName= :groupName and GBO.questionnaireId= :questionnaireId")
 	              .setString("questionnaireId", questionnaireId)
 	              .setString("groupName", groupName)
 	              .list();

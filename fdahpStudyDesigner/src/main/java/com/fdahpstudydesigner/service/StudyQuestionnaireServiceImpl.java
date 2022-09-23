@@ -2323,4 +2323,17 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 	  return message;
 }
 
+  @Override
+  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - assignQuestionsteps - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    List<GroupMappingBo> groupMappingBo = new ArrayList<>();;
+    try {
+      groupMappingBo = studyQuestionnaireDAO.assignQuestionSteps(arr,grpId,questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - assignQuestionSteps() - ERROR ", e);
+    }
+    logger.exit("assignQuestionSteps() - Ends");
+    return groupMappingBo;
+  }
 }

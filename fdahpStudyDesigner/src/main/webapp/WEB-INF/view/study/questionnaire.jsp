@@ -337,7 +337,7 @@ width:142px !important;
                           <input type="hidden" name="status" id="status" value="true">
                           <input type="hidden" name="questionnaireId" id="questionnaireId"
                                  value="${questionnaireBo.id}">
-                                  <input type="hidden" id="groupId" value="${groupBo.groupId}">
+                                  <input type="hidden" id="groupId" value="${groupBean.groupId}">
                           <input type="hidden" name="studyId" id="studyId"
                                  value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
                           <input type="hidden" id="customStudyId"
@@ -463,16 +463,28 @@ width:142px !important;
                                                        <span class="checkbox selectbox_chk checkbox-inline pl-1">
 														<input type="checkbox" id="selectbox${loop.index}" name="" value="" required="">
 														<label for="selectbox${loop.index}"></label></span>
-                                                      <span class="ml-lg"> ${subentry.value.title} </span></div>
+                                                      <span class="ml-lg"> ${subentry.value.title} </span>
+                                                      </div>
                                                   <div class="clearfix"></div>
                                               </c:forEach>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
                                                    title="${fn:escapeXml(entry.value.title)}">
+                                                   <c:choose>
+													<c:when test="${entry.value.groupFlag eq true}">
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-													<input type="checkbox" id="check${loop.index}" name="" value="" required="">
-													<label for="check${loop.index}"></label></span>
+                                                    <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
+                                                    <label for="${entry.value.stepId}"></label>
+                                                    </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                   <span class="checkbox selectbox_chk checkbox-inline pl-1">
+													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
+													<label for="${entry.value.stepId}"></label>
+													</span>
+                                                    </c:otherwise>
+                                                    </c:choose>
                                                    <span class="ml-lg">${entry.value.title}</span></div>
                                           </c:otherwise>
                                       </c:choose></td>
@@ -1837,24 +1849,91 @@ width:142px !important;
         <div class="modal-body" style="padding:40px;">
           <div class="form-group">
             <c:if test="${actionPage ne 'VIEW_PAGE'}">
-              <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}"></c:if> data-error="Please choose one option" required"
+              <select id="group" class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}"></c:if> data-error="Please choose one option" required"
                    title="- select group -">
                   <c:forEach items="${groupsList}" var="group">
-                     <option value="${group.groupId}" id="selectGroup${group.groupId}">${group.groupName}&nbsp;</option>
+                     <option value="${group.id}" id="selectGroup${group.id}">${group.groupName}&nbsp;</option>
                   </c:forEach>
               </select>
             </c:if>
           </div>
           <div class="text-right mt-xlg">
              <button type="button" class="btn btn-default gray-btn" data-dismiss="modal">Cancel</button>
-             <button type="button" class="btn btn-primary blue-btn" onclick="assign(stepId,groupId);">OK</button>
+             <button type="button" class="btn btn-primary blue-btn" onclick="assign();">OK</button>
           </div>
         </div>
       </div>
    </div>
 </div>
 <script type="text/javascript">
+      //assignGroup code
+                function assign(){
+                debugger
+                   var grpId = $("#group :selected").val();
+                   var steparray = new Array();
+                   $('#content').find('tbody input.step-check').each(function () {
+                   debugger
+                   console.log($(this));
+                    if ($(this).is(':checked')) {
+                    console.log("push id in array")
+                    let id = $(this).attr('id');
+                    console.log("id :"+id);
+                    steparray.push(id);
+                       }
+                   })
+                   var stepList = steparray;
+                   if (stepList != null && stepList != '' && grpId != null && grpId != '') {
+                   debugger
+                    $.ajax({
+                      url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
+                      type: "POST",
+                      datatype: "json",
+                      data: {
+                        steparray:JSON.stringify(stepList),
+                        grpId: grpId
+                      },
+                      beforeSend: function (xhr, settings) {
+                                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                                    },
+                      success: function (data) {
+                        var status = data.message;
+                        var groupArray = new Array();
+                        groupArray = data.groupMappingBo;
+                        console.log("grpArray : "+groupArray);
+                        console.log("status: " +status);
+                        debugger
 
+                                    if (status == "SUCCESS") {
+                                      debugger
+                                      for(var i=0; groupArray.length>i; i++){
+                                     $('#'+groupArray[i].stepId).prop('disabled', true);
+                                     $('#'+groupArray[i].stepId).prop('checked', true);
+                                      console.log("groupArray : "+groupArray[i].stepId);
+                                       }
+                                      $('#alertMsg').show();
+                                      $("#alertMsg").removeClass('e-box').addClass('s-box').text(
+                                          "Group assigned successfully");
+                                    } else {
+                                      $('#alertMsg').show();
+                                      $("#alertMsg").removeClass('s-box').addClass('e-box').text(
+                                          "Unable to assign the group");
+                                    }
+                                    setTimeout(hideDisplayMessage, 4000);
+                      },
+                      error: function (xhr, status, error) {
+                                      debugger
+                                      console.log("error : "+ error);
+                                        $("body").removeClass("loading");
+                                        if (callback)
+                                          callback(false);
+                                      },
+                      global: false
+                    });
+                } else {
+                  callback(false);
+                }
+                }
+                //end
   <c:if test="${actionType == 'view'}">
   $('#contentFormId input[type="text"]').prop('disabled', true);
   $('#contentFormId input[type="checkbox"]').prop('disabled', true);
@@ -5196,57 +5275,5 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       }
     });
   }
-  //assignGroup code
-        function assign(stepId,groupId){
-        debugger
-           $("#instructionId").val(stepId);
-           $("#formId").val(stepId);
-           $("#questionId").val(stepId);
-           var groupId = $("#groupId").val();
-           if (stepId != null && stepId != '' && groupId != null && groupId != '') {
-          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-          $(thisAttr).parent().find(".help-block").empty();
-          if (existedKey != shortTitle) {
-            $.ajax({
-              url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
-              type: "POST",
-              datatype: "json",
-              data: {
-                stepId: stepId,
-                groupId: groupId
-              },
-              beforeSend: function (xhr, settings) {
-                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-              },
-              success: function getResponse(data) {
-                var message = data.message;
 
-                if ('SUCCESS' != message) {
-                  $(thisAttr).validator('validate');
-                  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                  $(thisAttr).parent().find(".help-block").empty();
-                  callback(true);
-                } else {
-                  $(thisAttr).val('');
-                  $(thisAttr).parent().addClass("has-danger").addClass("has-error");
-                  $(thisAttr).parent().find(".help-block").empty();
-                  $(thisAttr).parent().find(".help-block").append(
-                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                          shortTitle
-                          + " has already been used in the past."));
-                  callback(false);
-                }
-              },
-              global: false
-            });
-          } else {
-            callback(true);
-            $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-            $(thisAttr).parent().find(".help-block").empty();
-          }
-        } else {
-          callback(false);
-        }
-        }
-        //end
 </script>

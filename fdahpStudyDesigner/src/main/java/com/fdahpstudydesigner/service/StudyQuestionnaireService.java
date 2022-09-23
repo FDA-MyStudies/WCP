@@ -184,4 +184,6 @@ public interface StudyQuestionnaireService {
 String checkGroupId(String questionnaireId, String groupId, String studyId);
 
 String checkGroupName(String questionnaireId, String groupName, String studyId);
+
+  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 }

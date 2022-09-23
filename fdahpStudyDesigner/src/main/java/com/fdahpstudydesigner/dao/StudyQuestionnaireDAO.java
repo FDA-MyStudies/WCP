@@ -183,4 +183,6 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
 
 String saveOrUpdateGroup(GroupsBo groupsBO);
 
+  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
+
 }

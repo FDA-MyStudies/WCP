@@ -3984,13 +3984,13 @@ public class StudyQuestionnaireController {
 
   @RequestMapping("/adminStudies/addOrUpdateGroupsDetails.do")
   public ModelAndView addOrUpdateGroupsDetails(
-          HttpServletRequest request, GroupsBean groupsBean) {
+          HttpServletRequest request, GroupsBean groupsBo) {
     logger.info("UsersController - addOrUpdateGroupsDetails() - Starts");
     ModelAndView mav = new ModelAndView();
     ModelMap map = new ModelMap();
-    String msg = "";
-    int count = 1;
+    String msg = FdahpStudyDesignerConstants.FAILURE;
     boolean addFlag = false;
+     //GroupsBean groupsBo = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     try {
       HttpSession session = request.getSession();
@@ -4000,52 +4000,98 @@ public class StudyQuestionnaireController {
               StringUtils.isNumeric(request.getParameter("_S"))
                       ? Integer.parseInt(request.getParameter("_S"))
                       : 0;
+      if ((userSession != null)
+              && (userSession.getStudySession() != null)
+              && userSession.getStudySession().contains(sessionStudyCount)) {
+
       String studyId =
               (String)
                       request
                               .getSession()
                               .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-      System.out.println(request.getSession().getAttribute(sessionStudyCount +"questionnaireId"));
      String questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount +"questionnaireId");
+     String id =
+             FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
+                     ? ""
+                     : request.getParameter("id");
+     if (StringUtils.isEmpty(id)) {
+    	 id =
+             (String) request.getSession().getAttribute(sessionStudyCount + "id");
+         request.getSession().setAttribute(sessionStudyCount + "id", id);
+       }
+     String buttonText =
+             FdahpStudyDesignerUtil.isEmpty(
+                     request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))
+                 ? ""
+                 : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
+         if (!("").equals(buttonText)) {
+           if (("save").equalsIgnoreCase(buttonText)) {
+        	   groupsBo.setAction(false);
+           } else if (("done").equalsIgnoreCase(buttonText)) {
+        	   groupsBo.setAction(true);
+           }
+         }
+         groupsBo.setQuestionnaireId(Integer.parseInt(questionnaireId));
+         groupsBo.setStudyId(Integer.parseInt(studyId));
+         msg = studyQuestionnaireService.addOrUpdateGroupsDetails(groupsBo, userSession);
+         
 
-                    
-      if (null != userSession) {
-
-        if (null == groupsBean.getId()) {
-          addFlag = true;
-          groupsBean.setCreatedBy(userSession.getUserId().intValue());
-         // groupsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-          groupsBean.setCreatedOn(userSession.getCreatedDate());
-          groupsBean.setQuestionnaireId(Integer.valueOf(questionnaireId));
-          groupsBean.setStudyId(Integer.valueOf(studyId));
-          System.out.println("groupsBean: "+groupsBean);
-        } else {
-          groupsBean.setModifiedBy(userSession.getUserId());
-          groupsBean.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-        }
-        msg =
-                studyQuestionnaireService.addOrUpdateGroupsDetails(
-                        groupsBean,
-                        userSession);
-        /*if (FdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
-          if (addFlag) {
+        if (!msg.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE) ) {
+            if ((groupsBo != null) && (groupsBo.getId() == null)) {
+              if (("save").equalsIgnoreCase(buttonText)) {
+                request
+                .getSession()
+                .setAttribute(
+                		sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+                        propMap.get(FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE));
+                } else {
             request
                     .getSession()
                     .setAttribute(
-                            FdahpStudyDesignerConstants.SUC_MSG, propMap.get("add.groups.success.message"));
+                         sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG, "Group successfully added.");
+          }
+            
+        } else {
+          if (("save").equalsIgnoreCase(buttonText)) {
+            request
+                .getSession()
+                .setAttribute(
+                    sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+                    propMap.get(FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE));
           } else {
             request
-                    .getSession()
-                    .setAttribute(
-                            FdahpStudyDesignerConstants.SUC_MSG,
-                            propMap.get("update.groups.success.message"));
+                .getSession()
+                .setAttribute(
+                    sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
+                    "Group successfully updated.");
           }
+        }
+      } else {
+        if ((groupsBo != null) && (groupsBo.getId() == null)) {
+          request
+              .getSession()
+              .setAttribute(
+                  sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
+                  "Failed to add group.");
         } else {
-          request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, msg);
-        } */
-        map.addAttribute("_S", sessionStudyCount);
-        mav = new ModelAndView("redirect:/adminStudies/viewGroups.do",map);
+          request
+              .getSession()
+              .setAttribute(
+                  sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
+                  "Failed to update group.");
+        }
+        
       }
+       // groupsBo = groupsBean;
+        map.addAttribute("_S", sessionStudyCount);
+        map.addAttribute("groupsBo", groupsBo);
+        if (("save").equalsIgnoreCase(buttonText)) {
+          mav = new ModelAndView("addOrEditGroupsPage", map);
+        } else {
+          mav = new ModelAndView("redirect:viewGroups.do", map);
+        }
+      }
+      
     } catch (Exception e) {
       logger.error("StudyQuestionnaireController - addOrUpdateGroupsDetails() - ERROR", e);
     }
@@ -4070,14 +4116,14 @@ public class StudyQuestionnaireController {
       if (sesObj != null
           && sesObj.getStudySession() != null
           && sesObj.getStudySession().contains(sessionStudyCount)) {
-        String groupId =
-            FdahpStudyDesignerUtil.isEmpty(request.getParameter("groupId"))
+        String id =
+            FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
                 ? ""
-                : request.getParameter("groupId");
-        if (!groupId.isEmpty()) {
+                : request.getParameter("id");
+        if (!id.isEmpty()) {
           message =
               studyQuestionnaireService.deleteGroup(
-                  groupId,sesObj);
+                  id,sesObj);
         }
         
       }
@@ -4089,6 +4135,137 @@ public class StudyQuestionnaireController {
       logger.error("StudyQuestionnaireController - deleteGroup - ERROR", e);
     }
     logger.info("StudyQuestionnaireController - deleteGroup - Ends");
+  }
+
+  
+  @RequestMapping(
+	      value = "/adminStudies/validateGroupIdKey.do",
+	      method = RequestMethod.POST)
+	  public void validateGroupId(
+	      HttpServletRequest request, HttpServletResponse response) {
+	    logger.info("StudyQuestionnaireController - validateGroupId - Starts");
+	    String message = FdahpStudyDesignerConstants.FAILURE;
+	    JSONObject jsonobject = new JSONObject();
+	    PrintWriter out = null;
+	    try {
+	        SessionObject sesObj =
+	            (SessionObject)
+	                request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+	        Integer sessionStudyCount =
+	            StringUtils.isNumeric(request.getParameter("_S"))
+	                ? Integer.parseInt(request.getParameter("_S"))
+	                : 0;
+	        if ((sesObj != null)
+	            && (sesObj.getStudySession() != null)
+	            && sesObj.getStudySession().contains(sessionStudyCount)) {
+	        	String  questionnaireId =
+	                    FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
+	                      ? ""
+	                      : request.getParameter("questionnaireId");
+	           if (StringUtils.isEmpty(questionnaireId)) {
+	        	   questionnaireId =
+	                   (String) request.getSession().getAttribute(sessionStudyCount + "questionnaireId");
+	               request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
+	             }
+	          String groupId =
+	              FdahpStudyDesignerUtil.isEmpty(request.getParameter("groupId"))
+	                  ? ""
+	                  : request.getParameter("groupId");
+	          String studyId =
+	                  (String)
+	                      request
+	                          .getSession()
+	                          .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+	              if (StringUtils.isEmpty(studyId)) {
+	            	  studyId =
+	                    FdahpStudyDesignerUtil.isEmpty(
+	                            request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+	                        ? ""
+	                        : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+	              }
+	              if (!questionnaireId.isEmpty() && !groupId.isEmpty()) {
+	                  message =
+	                      studyQuestionnaireService.checkGroupId(
+	                          questionnaireId,
+	                          groupId,
+	                          studyId);
+	                }
+	          
+	          
+	        }
+	        jsonobject.put("message", message);
+	        response.setContentType("application/json");
+	        out = response.getWriter();
+	        out.print(jsonobject);
+	      } catch (Exception e) {
+	        logger.error("StudyQuestionnaireController - validateGroupId - ERROR", e);
+	      }
+	      logger.info("StudyQuestionnaireController - validateGroupId - Ends");
+  }
+  
+  @RequestMapping(
+	      value = "/adminStudies/validateGroupName.do",
+	      method = RequestMethod.POST)
+	  public void validateGroupName(
+	      HttpServletRequest request, HttpServletResponse response) {
+	    logger.info("StudyQuestionnaireController - validateGroupName - Starts");
+	    String message = FdahpStudyDesignerConstants.FAILURE;
+	    JSONObject jsonobject = new JSONObject();
+	    PrintWriter out = null;
+	    try {
+	        SessionObject sesObj =
+	            (SessionObject)
+	                request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+	        Integer sessionStudyCount =
+	            StringUtils.isNumeric(request.getParameter("_S"))
+	                ? Integer.parseInt(request.getParameter("_S"))
+	                : 0;
+	        if ((sesObj != null)
+	            && (sesObj.getStudySession() != null)
+	            && sesObj.getStudySession().contains(sessionStudyCount)) {
+	        	String  questionnaireId =
+	                    FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
+	                      ? ""
+	                      : request.getParameter("questionnaireId");
+	           if (StringUtils.isEmpty(questionnaireId)) {
+	        	   questionnaireId =
+	                   (String) request.getSession().getAttribute(sessionStudyCount + "questionnaireId");
+	               request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
+	             }
+	          String groupName =
+	              FdahpStudyDesignerUtil.isEmpty(request.getParameter("groupName"))
+	                  ? ""
+	                  : request.getParameter("groupName");
+	          String studyId =
+	                  (String)
+	                      request
+	                          .getSession()
+	                          .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+	              if (StringUtils.isEmpty(studyId)) {
+	            	  studyId =
+	                    FdahpStudyDesignerUtil.isEmpty(
+	                            request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+	                        ? ""
+	                        : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+	              }
+	              if (!questionnaireId.isEmpty() && !groupName.isEmpty()) {
+	                  message =
+	                      studyQuestionnaireService.checkGroupName(
+	                          questionnaireId,
+	                          groupName,
+	                          studyId);
+	                }
+	          
+	          
+	        }
+	        jsonobject.put("message", message);
+	        response.setContentType("application/json");
+	        out = response.getWriter();
+	        out.print(jsonobject);
+	      } catch (Exception e) {
+	        logger.error("StudyQuestionnaireController - validateGroupId - ERROR", e);
+	      }
+	      logger.info("StudyQuestionnaireController - validateGroupId - Ends");
   }
 
 

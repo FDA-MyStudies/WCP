@@ -1,6 +1,7 @@
 /** */
 package com.fdahpstudydesigner.dao;
 
+import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -5817,7 +5818,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public String addOrUpdateGroupsDetails(GroupsBo groupsBo) {
       logger.info("StudyDAOImpl - addOrUpdateGroupsDetails() - Starts");
       Session session = null;
-      Integer groupId = 0;
+      String groupId = "";
       String msg = FdahpStudyDesignerConstants.FAILURE;
       Query query = null;
        GroupsBo groupsBo2 = null;
@@ -5827,7 +5828,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         session = hibernateTemplate.getSessionFactory().openSession();
         transaction = session.beginTransaction();
         if (null == groupsBo.getId()) {
-          groupId = (Integer) session.save(groupsBo);
+          groupId = (String) session.save(groupsBo);
         } else {
           session.update(groupsBo);
           groupId = groupsBo.getGroupId();
@@ -5835,7 +5836,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         }
 
         query = session.createQuery(" FROM GroupsBo GBO where GBO.groupId = :groupId");
-        query.setInteger("groupId", groupId);
+        query.setString("groupId", groupId);
         groupsBo2 = (GroupsBo) query.uniqueResult();
 
         session.update(groupsBo2);
@@ -5887,7 +5888,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
 @Override
-public String deleteGroup(String groupId, SessionObject sessionObject) {
+public String deleteGroup(String id, SessionObject sessionObject) {
 	logger.info("StudyQuestionnaireDAOImpl - deleteGroupId() - Starts");
     Session session = null;
     String message = FdahpStudyDesignerConstants.FAILURE;
@@ -5896,13 +5897,13 @@ public String deleteGroup(String groupId, SessionObject sessionObject) {
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      if (StringUtils.isNotEmpty(groupId)) {
+      if (StringUtils.isNotEmpty(id)) {
     	  queryString  =
-            		"update GroupsBo GBO set GBO.modifiedBy =:userId,GBO.modifiedOn =now(),GBO.isgroupDelted = true where GBO.groupId=:groupId ";
+            		"update GroupsBo GBO set GBO.modifiedBy =:userId,GBO.modifiedOn =now(),GBO.isgroupDelted = true where GBO.id=:id ";
         query = session.createQuery(queryString);
         query.setParameter("userId", sessionObject.getUserId());
 
-        count = query.setString("groupId", groupId).executeUpdate();
+        count = query.setString("id", id).executeUpdate();
         if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
       }
       transaction.commit();
@@ -5917,6 +5918,131 @@ public String deleteGroup(String groupId, SessionObject sessionObject) {
     logger.info("StudyQuestionnaireDAOImpl - deleteGroupId() - Ends");
     return message;
 }
+
+@SuppressWarnings("unchecked")
+@Override
+public String checkGroupId(String questionnaireId, String groupId, String studyId) {
+  logger.info("StudyQuestionnaireDAOImpl - checkGroupId() - Starts");
+  String message = FdahpStudyDesignerConstants.FAILURE;
+  Session session = null;
+  List<GroupsBo> groupsBo = null;
+  try {
+    session = hibernateTemplate.getSessionFactory().openSession();
+    if (StringUtils.isNotEmpty(questionnaireId) && StringUtils.isNotEmpty(groupId)) {
+    	groupsBo =
+          session
+              .createQuery(
+                  "From GroupsBo GBO WHERE  GBO.groupId= :groupId and GBO.studyId = :studyId and GBO.questionnaireId= :questionnaireId")
+              .setString("studyId", studyId)
+              .setString("questionnaireId", questionnaireId)
+              .setString("groupId", groupId)
+              .list();
+      if (groupsBo != null && !groupsBo.isEmpty()) {
+        message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+    }
+  } catch (Exception e) {
+    logger.error("StudyQuestionnaireDAOImpl - checkGroupId() - ERROR ", e);
+  } finally {
+    if (session != null) {
+      session.close();
+    }
+  }
+  logger.info("StudyQuestionnaireDAOImpl - checkGroupId() - Ends");
+  return message;
+}
+
+@Override
+public String saveOrUpdateGroup(GroupsBo groupsBO) {
+	logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateGroup() - Starts");
+    Session session = null;
+    String groupId = "";
+    String msg = FdahpStudyDesignerConstants.FAILURE;
+    AnchorDateTypeBo anchorDateTypeBo = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      
+      if (null == groupsBO.getId()) {
+    	  if (StringUtils.isNotEmpty(groupsBO.getGroupId())) {
+    		  
+    		  GroupsBo groupsBo1 = 
+    				  (GroupsBo) session.getSession().createQuery(" from GroupsBo GBO where GBO.groupId=:groupId")
+			           .setString("groupId", groupsBO.getGroupId())
+			           .uniqueResult();
+    		  
+    	    if(null != groupsBo1 && null != groupsBo1.getGroupId() && groupsBo1.getGroupId().equalsIgnoreCase(groupsBO.getGroupId()) )
+    	    {
+    	    	groupsBo1.setGroupId(groupsBO.getGroupId());
+    	    	groupsBo1.setGroupName(groupsBO.getGroupName());
+    	    	groupsBo1.setAction(groupsBO.isAction());
+    	    	session.saveOrUpdate(groupsBo1);
+
+    	    	  
+    	    }
+    	    else {
+    	    	session.saveOrUpdate(groupsBO);
+    	    	msg = FdahpStudyDesignerConstants.SUC_MSG;
+    	 }
+    	  }
+      }
+    	    else {
+    	   
+    	  groupsBO.setGroupId(groupsBO.getGroupId());
+    	  groupsBO.setGroupName(groupsBO.getGroupName());
+    	  groupsBO.setAction(groupsBO.isAction());
+
+
+        session.saveOrUpdate(groupsBO);
+ 	   msg = FdahpStudyDesignerConstants.SUC_MSG;
+
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyQuestionnaireDAOImpl - saveOrUpdateGroup() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateGroup() - Ends");
+    return msg;
+
+}
+
+@Override
+public String checkGroupName(String questionnaireId, String groupName, String studyId) {
+	 logger.info("StudyQuestionnaireDAOImpl - checkGroupName() - Starts");
+	  String message = FdahpStudyDesignerConstants.FAILURE;
+	  Session session = null;
+	  List<GroupsBo> groupsBo = null;
+	  try {
+	    session = hibernateTemplate.getSessionFactory().openSession();
+	    if (StringUtils.isNotEmpty(questionnaireId) && StringUtils.isNotEmpty(groupName)) {
+	    	groupsBo =
+	          session
+	              .createQuery(
+	                  "From GroupsBo GBO WHERE  GBO.groupName= :groupName and GBO.studyId = :studyId and GBO.questionnaireId= :questionnaireId")
+	              .setString("studyId", studyId)
+	              .setString("questionnaireId", questionnaireId)
+	              .setString("groupName", groupName)
+	              .list();
+	      if (groupsBo != null && !groupsBo.isEmpty()) {
+	        message = FdahpStudyDesignerConstants.SUCCESS;
+	      }
+	    }
+	  } catch (Exception e) {
+	    logger.error("StudyQuestionnaireDAOImpl - checkGroupName() - ERROR ", e);
+	  } finally {
+	    if (session != null) {
+	      session.close();
+	    }
+	  }
+	  logger.info("StudyQuestionnaireDAOImpl - checkGroupName() - Ends");
+	  return message;
+}
+
 
   @Override
   @SuppressWarnings("unchecked")

@@ -166,13 +166,21 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
 
   public GroupsBo getGroupById(int id);
   
-  public String deleteGroup(String groupId,SessionObject sessionObject);
+  public String deleteGroup(String id,SessionObject sessionObject);
 
   List<PreLoadLogicBo> getPreLoadLogicByStep(Integer stepId);
 
   List<Integer> getPreLoadIds(Integer stepId);
+  
+  public String checkGroupId(String questionnaireId, String groupId, String studyId);
+
 
   PreLoadLogicBo getPreLoadLogicById(Integer id);
 
   void deleteFormula(List<Integer> ids);
+  
+  public String checkGroupName(String questionnaireId, String groupName, String studyId);
+
+String saveOrUpdateGroup(GroupsBo groupsBO);
+
 }

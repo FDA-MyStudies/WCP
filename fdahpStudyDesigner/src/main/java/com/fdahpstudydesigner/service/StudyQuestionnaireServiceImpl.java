@@ -2211,34 +2211,45 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
 
     try {
       GroupsBo groupsBo = null;
-      if(groupsBean.getId() != null){
-         groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
-      }
+      if(groupsBean.getId() != null ){
+          groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
 
+    	  if(groupsBean.isAction() == true)
+    	  {
+    		  groupsBo.setAction(groupsBean.isAction());
+    	  }
+    	  else
+    	  {
+    		  groupsBo.setAction(groupsBean.isAction());
+
+    	  }
+      }
+      
       if (groupsBo == null) {
         addFlag = true;
         groupsBo = new GroupsBo();
-        groupsBo.setCreatedBy(groupsBean.getCreatedBy());
-        groupsBo.setCreatedOn(groupsBean.getCreatedOn());
+        groupsBo.setCreatedBy(userSession.getUserId().intValue());
+        groupsBo.setCreatedOn(userSession.getCreatedDate());
+        groupsBo.setAction(groupsBean.isAction());
         groupsBo.setQuestionnaireId(groupsBean.getQuestionnaireId());
         groupsBo.setStudyId(groupsBean.getStudyId());
       } else {
-        groupsBo.setModifiedBy(groupsBean.getModifiedBy());
-        groupsBo.setModifiedOn(groupsBean.getModifiedOn());
+          groupsBo.setModifiedBy(userSession.getUserId());
+          groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
       }
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
-      studyQuestionnaireDAO.saveOrUpdateObject(groupsBo);
+      studyQuestionnaireDAO.saveOrUpdateGroup(groupsBo);
       if (addFlag) {
-        activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
-        activitydetails =
-                " groups saved";
-      }
-      if (!addFlag) {
-        activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
-        activitydetails =
-                "updated group";
-      }
+          activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
+          activitydetails =
+                  " groups saved";
+        }
+        if (!addFlag) {
+          activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
+          activitydetails =
+                  "updated group";
+        }
       msg=auditLogDAO.saveToAuditLog(
               null,
               null,
@@ -2255,13 +2266,13 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
   }
 
 @Override
-public String deleteGroup(String groupId, SessionObject sessionObject) {
+public String deleteGroup(String id, SessionObject sessionObject) {
 logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
 	
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
-          studyQuestionnaireDAO.deleteGroup( groupId,sessionObject);
+          studyQuestionnaireDAO.deleteGroup( id,sessionObject);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error", e);
     }
@@ -2269,5 +2280,31 @@ logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
     return message;
 }
 
+
+@Override
+public String checkGroupId(String questionnaireId, String groupId, String studyId) {
+  logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Starts");
+  String message = FdahpStudyDesignerConstants.FAILURE;
+  try {
+    message = studyQuestionnaireDAO.checkGroupId(questionnaireId, groupId,studyId);
+  } catch (Exception e) {
+    logger.error("StudyQuestionnaireServiceImpl - checkGroupId() - Error", e);
+  }
+  logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Ends");
+  return message;
+}
+
+@Override
+public String checkGroupName(String questionnaireId, String groupName, String studyId) {
+	logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Starts");
+	  String message = FdahpStudyDesignerConstants.FAILURE;
+	  try {
+	    message = studyQuestionnaireDAO.checkGroupName(questionnaireId, groupName,studyId);
+	  } catch (Exception e) {
+	    logger.error("StudyQuestionnaireServiceImpl - checkGroupName() - Error", e);
+	  }
+	  logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Ends");
+	  return message;
+}
 
 }

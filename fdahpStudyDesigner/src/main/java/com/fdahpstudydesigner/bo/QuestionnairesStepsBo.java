@@ -135,6 +135,8 @@ public class QuestionnairesStepsBo implements Serializable {
 
   @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
 
+  @Transient private String groupDefaultVisibility;
+
   public Boolean getActive() {
     return active;
   }
@@ -375,5 +377,13 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setPreLoadLogicBeans(List<PreLoadLogicBean> preLoadLogicBeans) {
     this.preLoadLogicBeans = preLoadLogicBeans;
+  }
+
+  public String getGroupDefaultVisibility() {
+    return groupDefaultVisibility;
+  }
+
+  public void setGroupDefaultVisibility(String groupDefaultVisibility) {
+    this.groupDefaultVisibility = groupDefaultVisibility;
   }
 }

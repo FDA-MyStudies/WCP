@@ -753,11 +753,55 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       addOrUpdateQuestionnairesStepsBo =
           studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(
               questionnairesStepsBo, sesObj, customStudyId, studyId);
+      if (questionnairesStepsBo.getInstructionFormId() == null) {
+        questionnairesStepsBo.setInstructionFormId(addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
+        questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
+      }
+      this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error", e);
     }
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
     return addOrUpdateQuestionnairesStepsBo;
+  }
+
+  private void doPreLoadLogic(QuestionnairesStepsBo questionnairesStepsBo, String customStudyId) throws Exception{
+    try {
+      List<PreLoadLogicBean> preLoadLogicBeans = questionnairesStepsBo.getPreLoadLogicBeans();
+      if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
+        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(questionnairesStepsBo.getStepId());
+        for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+            if (preLoadLogicBo == null) {
+              preLoadLogicBo = new PreLoadLogicBo();
+              preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.STEP);
+              preLoadLogicBo.setStepGroupId(questionnairesStepsBo.getStepId());
+            } else {
+              preLoadIds.remove(preLoadLogicBo.getId());
+            }
+            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
+                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setInputValue(logicBean.getInputValue());
+            preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
+            studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
+          }
+        }
+        studyQuestionnaireDAO.deleteFormula(preLoadIds);
+        QuestionnairesStepsBo persistentStepsBo =
+                studyQuestionnaireDAO.getQuestionnaireStep(
+                        questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getStepType(), null,
+                        customStudyId, questionnairesStepsBo.getQuestionnairesId());
+        if (persistentStepsBo != null) {
+          persistentStepsBo.setDefaultVisibility("true".equals(questionnairesStepsBo.getGroupDefaultVisibility()));
+          persistentStepsBo.setDestinationTrueAsGroup(questionnairesStepsBo.getDestinationTrueAsGroup());
+          studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("Exception : ", e);
+      throw e;
+    }
   }
 
   /**
@@ -1511,39 +1555,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           this.updateStudyLangSequence(
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
-
-        List<PreLoadLogicBean> preLoadLogicBeans = questionnairesStepsBo.getPreLoadLogicBeans();
-        if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
-          List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(questionnairesStepsBo.getStepId());
-          for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
-            PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
-            if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
-              if (preLoadLogicBo == null) {
-                preLoadLogicBo = new PreLoadLogicBo();
-                preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.STEP);
-                preLoadLogicBo.setStepGroupId(questionnairesStepsBo.getStepId());
-              } else {
-                preLoadIds.remove(preLoadLogicBo.getId());
-              }
-              preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
-                      ? "&&" :logicBean.getOperator());
-              preLoadLogicBo.setInputValue(logicBean.getInputValue());
-              preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
-              studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
-            }
-          }
-          studyQuestionnaireDAO.deleteFormula(preLoadIds);
-          QuestionnairesStepsBo persistentStepsBo =
-                  studyQuestionnaireDAO.getQuestionnaireStep(
-                          questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getStepType(), null,
-                          customStudyId, questionnairesStepsBo.getQuestionnairesId());
-          if (persistentStepsBo != null) {
-            persistentStepsBo.setDefaultVisibility(questionnairesStepsBo.getDefaultVisibility());
-            persistentStepsBo.setDestinationTrueAsGroup(questionnairesStepsBo.getDestinationTrueAsGroup());
-            studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
-          }
-        }
-
         if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
@@ -1744,6 +1755,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateQuestionnairesStepsBo =
               studyQuestionnaireDAO.saveOrUpdateQuestionStep(
                   questionnairesStepsBo, sessionObject, customStudyId);
+          if (questionnairesStepsBo.getInstructionFormId() == null) {
+            questionnairesStepsBo.setInstructionFormId(addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
+            questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
+          }
+          this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
         }
       }
     } catch (Exception e) {

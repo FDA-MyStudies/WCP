@@ -5994,11 +5994,13 @@ public String deleteGroup(String groupId, SessionObject sessionObject) {
     logger.info("StudyQuestionnaireDAOImpl - deleteFormula - Starts");
     try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
       transaction = session.beginTransaction();
-      session.createQuery(
-                      "delete from PreLoadLogicBo where id in (:id)")
-              .setParameterList("id", ids)
-              .executeUpdate();
-      transaction.commit();
+      if (ids != null && ids.size()>0) {
+        session.createQuery(
+                        "delete from PreLoadLogicBo where id in (:id)")
+                .setParameterList("id", ids)
+                .executeUpdate();
+        transaction.commit();
+      }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - deleteFormula - Error : ", e);
       transaction.rollback();

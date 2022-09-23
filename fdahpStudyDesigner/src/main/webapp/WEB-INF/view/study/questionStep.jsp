@@ -453,10 +453,11 @@ input[type=number] {
 					<div>
 						<div class="gray-xs-f mb-xs">Group Default Visibility</div>
 						<div>
+							<input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${questionnairesStepsBo.defaultVisibility}"/>
 							<label class="switch bg-transparent mt-xs">
 								<input type="checkbox" class="switch-input"
-									   id="groupDefaultVisibility" name="defaultVisibility"
-									   <c:if test="${questionnairesStepsBo.defaultVisibility eq true}">checked</c:if>>
+									   id="groupDefaultVisibility"
+									   <c:if test="${empty questionnairesStepsBo.defaultVisibility || questionnairesStepsBo.defaultVisibility eq 'true'}"> checked</c:if>>
 								<span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
 								<span class="switch-handle"></span>
 							</label>
@@ -481,7 +482,7 @@ input[type=number] {
 										</option>
 									</c:forEach>
 									<option value="0"
-										${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
+										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
 										Completion Step</option>
 								</select>
 							</div>
@@ -499,12 +500,12 @@ input[type=number] {
 											<c:if test="${status.index gt 0}">
 												<div class="form-group">
 												<span class="radio radio-info radio-inline p-45 pl-2">
-													<input type="radio" id="andRadio${status.index}" value="&&" class="con-op-and" name="preLoadLogicBeans[${status.index}].conditionOperator"
+													<input type="radio" id="andRadio${status.index}" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans[${status.index}].conditionOperator"
 														   <c:if test="${preLoadLogicBean.conditionOperator eq '&&'}">checked </c:if> />
 													<label for="andRadio${status.index}">AND</label>
 												</span>
 													<span class="radio radio-inline">
-													<input type="radio" id="orRadio${status.index}" value="||" class="con-op-or" name="preLoadLogicBeans[${status.index}].conditionOperator"
+													<input type="radio" id="orRadio${status.index}" value="||" class="con-radio con-op-or" name="preLoadLogicBeans[${status.index}].conditionOperator"
 														   <c:if test="${preLoadLogicBean.conditionOperator eq '||'}">checked </c:if> />
 													<label for="orRadio${status.index}">OR</label>
 												</span>
@@ -578,7 +579,7 @@ input[type=number] {
 													<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
 													<div class="col-md-3">
 														<input type="hidden" id="id${status.index}">
-														<input type="text" required class="form-control" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+														<input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
 													</div>
 												</div>
 											</div>
@@ -4634,6 +4635,9 @@ input[type=number] {
             }
             $("#placeholderTextId").val(placeholderText);
             $("#stepValueId").val(stepText);
+			  $('input.con-radio').each(function(e) {
+				  $(this).removeAttr('disabled');
+			  })
             if (isValid && isImageValid && validateResponseDataElement()
                 && validateSingleResponseDataElement()) {
               validateQuestionShortTitle('', function (val) {
@@ -6375,7 +6379,7 @@ input[type=number] {
         questionReponseTypeBo.questionsResponseTypeId = question_response_type_id;
 
         questionnaireStep.questionReponseTypeBo = questionReponseTypeBo;
-		  questionnaireStep.defaultVisibility = $('#groupDefaultVisibility').is(':checked');
+		  questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
 		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
 		  let beanArray = [];
 		  $('#formulaContainer').find('div.form-div').each(function (index) {
@@ -8585,11 +8589,11 @@ $('.text-choice').each(function(i){
 				'<div id="form-div' + count + '" class="form-div" style="height: 200px; margin-top:20px">'+
 				'<div class="form-group">'+
 						'<span class="radio radio-info radio-inline p-45 pl-2">'+
-							'<input type="radio" id="andRadio' + count + '" value="&&" class="con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
+							'<input type="radio" id="andRadio' + count + '" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
 							'<label for="andRadio' + count + '">AND</label>'+
 						'</span>'+
 					'<span class="radio radio-inline">'+
-							'<input type="radio" id="orRadio' + count + '" value="||" class="con-op-or" name="preLoadLogicBeans['+count+'].conditionOperator" />'+
+							'<input type="radio" id="orRadio' + count + '" value="||" class="con-radio con-op-or" name="preLoadLogicBeans['+count+'].conditionOperator" />'+
 							'<label for="orRadio' + count + '">OR</label>'+
 				    '</span>'+
 				'</div>'+
@@ -8633,10 +8637,14 @@ $('.text-choice').each(function(i){
 	});
 
 let defaultVisibility = $('#groupDefaultVisibility');
-if (defaultVisibility.val() === '1') {
+if (defaultVisibility.is(':checked')) {
 	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
 		$(this).addClass('ml-disabled');
+		if ($(this).is("input.con-radio")) {
+			$(this).attr('disabled', true);
+		}
 	});
+	$('#defaultVisibility').val('true');
 	$('#addFormula').attr('disabled', true);
 }
 
@@ -8647,13 +8655,20 @@ defaultVisibility.on('change', function () {
 	if  (toggle.is(':checked')) {
 		logicDiv.find('div.bootstrap-select, input, select').each( function () {
 			$(this).addClass('ml-disabled');
+			if ($(this).is("input.con-radio")) {
+				$(this).attr('disabled', true);
+			}
 		});
+		$('#defaultVisibility').val('true');
 		addForm.attr('disabled', true);
 	} else {
 		logicDiv.find('div.bootstrap-select, input, select').each( function () {
 			$(this).removeClass('ml-disabled');
+			if ($(this).is("input.con-radio ")) {
+				$(this).attr('disabled', false);
+			}
 		});
-		toggle.val('0');
+		$('#defaultVisibility').val('false');
 		toggle.attr('checked', false);
 		addForm.attr('disabled', false);
 	}

@@ -603,6 +603,7 @@ public class StudyQuestionnaireController {
               .getSession()
               .setAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID, studyId);
         }
+        map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
@@ -1701,13 +1702,13 @@ public class StudyQuestionnaireController {
           }
 
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
-          map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
           request.getSession().setAttribute(sessionStudyCount + "questionId", questionId);
 
           QuestionLangBO questionLangBO =
               studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), language);
           map.addAttribute("questionLangBO", questionLangBO);
         }
+        map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         statisticImageList = studyActiveTasksService.getStatisticImages();
         activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
         questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();

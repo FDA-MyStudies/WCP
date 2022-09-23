@@ -6369,6 +6369,19 @@ public class StudyDAOImpl implements StudyDAO {
                         newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
                         newQuestionnairesStepsBo.setStepId(null);
                         session.save(newQuestionnairesStepsBo);
+
+                        List<PreLoadLogicBo> preLoadLogicBoList = session.createQuery("from PreLoadLogicBo where stepGroupId=:stepId and stepOrGroup=:step")
+                                .setParameter("stepId", questionnairesStepsBo.getStepId())
+                                .setParameter(FdahpStudyDesignerConstants.STEP, FdahpStudyDesignerConstants.STEP)
+                                .list();
+
+                        for (PreLoadLogicBo preLoadLogicBo : preLoadLogicBoList) {
+                          PreLoadLogicBo newPreLoadLogicBo = SerializationUtils.clone(preLoadLogicBo);
+                          newPreLoadLogicBo.setId(null);
+                          newPreLoadLogicBo.setStepGroupId(newQuestionnairesStepsBo.getStepId());
+                          session.save(newPreLoadLogicBo);
+                        }
+
                         if (questionnairesStepsBo
                             .getStepType()
                             .equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)) {

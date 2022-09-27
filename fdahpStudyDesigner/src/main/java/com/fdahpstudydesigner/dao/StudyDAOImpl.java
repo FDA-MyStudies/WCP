@@ -6341,10 +6341,15 @@ public class StudyDAOImpl implements StudyDAO {
                           .getNamedQuery("getQuestionnaireStepSequenceNo")
                           .setInteger("questionnairesId", questionnaireBo.getId());
                   existedQuestionnairesStepsBoList = query.list();
+                Map<Integer, Integer> oldNewDestMap = new HashMap<>();
+                List<Integer> preLoadDestList = new ArrayList<>();
                   if (existedQuestionnairesStepsBoList != null
                       && !existedQuestionnairesStepsBoList.isEmpty()) {
                     for (QuestionnairesStepsBo questionnairesStepsBo :
                         existedQuestionnairesStepsBoList) {
+                      if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
+                        preLoadDestList.add(questionnairesStepsBo.getDestinationTrueAsGroup());
+                      }
                       Integer destionStep = questionnairesStepsBo.getDestinationStep();
                       if (destionStep.equals(0)) {
                         destinationList.add(-1);
@@ -6369,6 +6374,14 @@ public class StudyDAOImpl implements StudyDAO {
                         newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
                         newQuestionnairesStepsBo.setStepId(null);
                         session.save(newQuestionnairesStepsBo);
+
+                        if (!preLoadDestList.isEmpty() && preLoadDestList.contains(questionnairesStepsBo.getStepId())) {
+                          for (Integer oldDestId : preLoadDestList) {
+                            if (oldDestId.equals(questionnairesStepsBo.getStepId())) {
+                              oldNewDestMap.put(oldDestId, newQuestionnairesStepsBo.getStepId());
+                            }
+                          }
+                        }
 
                         List<PreLoadLogicBo> preLoadLogicBoList = session.createQuery("from PreLoadLogicBo where stepGroupId=:stepId and stepOrGroup=:step")
                                 .setParameter("stepId", questionnairesStepsBo.getStepId())
@@ -6691,6 +6704,18 @@ public class StudyDAOImpl implements StudyDAO {
                       }
                     }
                   }
+
+                  if (!oldNewDestMap.isEmpty()) {
+                    for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
+                      for (Integer oldDestId : oldNewDestMap.keySet()) {
+                        if (oldDestId.equals(questionnairesStepsBo.getDestinationTrueAsGroup())) {
+                          questionnairesStepsBo.setDestinationTrueAsGroup(oldNewDestMap.get(oldDestId));
+                          break;
+                        }
+                      }
+                    }
+                  }
+
                   if (destinationList != null && !destinationList.isEmpty()) {
                     for (int i = 0; i < destinationList.size(); i++) {
                       int desId = 0;

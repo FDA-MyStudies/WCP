@@ -200,9 +200,14 @@ width:142px !important;
     margin-left: 0px;
     }
 
+.selectbox_chk label::before {
+    margin-left: 0px;
+    margin-top: -5px;
+}
+
 .selectbox_chk label::after {
      position: absolute;
-   margin: 0px !important;
+   margin: -5px 0px 0px 0px !important;
     }
     
     </style>

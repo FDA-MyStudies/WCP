@@ -99,7 +99,10 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                            value="${fn:escapeXml(groupsBo.groupName)}"/>
                     </div>
                   </div>
-
+				</div>
+			</div>
+		</div>
+	</div>
 
         <!-- End right Content here -->
 </form:form>

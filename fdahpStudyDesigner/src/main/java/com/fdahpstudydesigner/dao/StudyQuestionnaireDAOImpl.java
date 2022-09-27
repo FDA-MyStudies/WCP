@@ -2563,6 +2563,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         instructionsList = query.setParameterList("instructionIdList", instructionIdList).list();
         if (instructionsList != null && !instructionsList.isEmpty()) {
           for (InstructionsBo instructionsBo : instructionsList) {
+            query =
+                    session
+                            .getNamedQuery("getQuestionnaireGroupStep")
+                            .setInteger("instructionFormId", instructionsBo.getId())
+                            .setInteger("questionnairesId", questionnaireId);
+            QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
             QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
             questionnaireStepBean.setStepId(instructionsBo.getId());
             questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
@@ -2571,6 +2577,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     instructionsBo.getId() + FdahpStudyDesignerConstants.INSTRUCTION_STEP));
             questionnaireStepBean.setTitle(instructionsBo.getInstructionTitle());
             questionnaireStepBean.setStatus(instructionsBo.getStatus());
+            questionnaireStepBean.setGroupFlag(questionnairesStepsBo.getGroupFlag());
             questionnaireStepBean.setDestinationStep(
                 destinationMap.get(
                     instructionsBo.getId() + FdahpStudyDesignerConstants.INSTRUCTION_STEP));
@@ -2594,6 +2601,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         questionsList = query.setParameterList("questionIdList", questionIdList).list();
         if (questionsList != null && !questionsList.isEmpty()) {
           for (QuestionsBo questionsBo : questionsList) {
+            query =
+                    session
+                            .getNamedQuery("getQuestionnaireGroupStep")
+                            .setInteger("instructionFormId", questionsBo.getId())
+                            .setInteger("questionnairesId", questionnaireId);
+            QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
             QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
             questionnaireStepBean.setStepId(questionsBo.getId());
             questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
@@ -2604,6 +2617,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             questionnaireStepBean.setLineChart(questionsBo.getAddLineChart());
             questionnaireStepBean.setStatData(questionsBo.getUseStasticData());
             questionnaireStepBean.setStatus(questionsBo.getStatus());
+            questionnaireStepBean.setGroupFlag(questionnairesStepsBo.getGroupFlag());
             questionnaireStepBean.setDestinationStep(
                 destinationMap.get(
                     questionsBo.getId() + FdahpStudyDesignerConstants.QUESTION_STEP));
@@ -2641,6 +2655,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             Boolean status = (Boolean) objects[8];
             Boolean useAnchorDate = (Boolean) objects[9];
             if (formIdList.get(i).equals(formId)) {
+              query =
+                      session
+                              .getNamedQuery("getQuestionnaireGroupStep")
+                              .setInteger("instructionFormId", formId)
+                              .setInteger("questionnairesId", questionnaireId);
+              QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
               QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
               questionnaireStepBean.setStepId(formId);
               questionnaireStepBean.setQuestionInstructionId(questionId);
@@ -2651,6 +2671,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               questionnaireStepBean.setLineChart(lineChart);
               questionnaireStepBean.setStatData(statData);
               questionnaireStepBean.setStatus(status);
+              questionnaireStepBean.setGroupFlag(questionnairesStepsBo.getGroupFlag());
               questionnaireStepBean.setUseAnchorDate(useAnchorDate);
               formQuestionMap.put(sequenceNo, questionnaireStepBean);
             }
@@ -5932,9 +5953,10 @@ public String checkGroupId(String questionnaireId, String groupId, String studyI
     	groupsBo =
           session
               .createQuery(
-                  "From GroupsBo GBO WHERE  GBO.groupId= :groupId and GBO.questionnaireId= :questionnaireId")
+                  "From GroupsBo GBO WHERE  GBO.groupId= :groupId and GBO.questionnaireId= :questionnaireId and GBO.studyId = :studyId")
               .setString("questionnaireId", questionnaireId)
               .setString("groupId", groupId)
+                  .setString("studyId" , (studyId))
               .list();
       if (groupsBo != null && !groupsBo.isEmpty()) {
         message = FdahpStudyDesignerConstants.SUCCESS;
@@ -5966,9 +5988,10 @@ public String saveOrUpdateGroup(GroupsBo groupsBO) {
     	  if (StringUtils.isNotEmpty(groupsBO.getGroupId())) {
     		  
     		  GroupsBo groupsBo1 = 
-    				  (GroupsBo) session.getSession().createQuery(" from GroupsBo GBO where GBO.groupId=:groupId and GBO.questionnaireId= :questionnaireId")
+    				  (GroupsBo) session.getSession().createQuery(" from GroupsBo GBO where GBO.groupId=:groupId and GBO.questionnaireId= :questionnaireId and GBO.studyId = :studyId")
 			           .setString("groupId", groupsBO.getGroupId())
 			           .setInteger("questionnaireId",(groupsBO.getQuestionnaireId()))
+                              .setInteger("studyId" , (groupsBO.getStudyId()))
 			           .uniqueResult();
     		  
     	    if(null != groupsBo1 && null != groupsBo1.getGroupId() && groupsBo1.getGroupId().equalsIgnoreCase(groupsBO.getGroupId()) )
@@ -6023,9 +6046,10 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 	    	groupsBo =
 	          session
 	              .createQuery(
-	                  "From GroupsBo GBO WHERE  GBO.groupName= :groupName and GBO.questionnaireId= :questionnaireId")
+	                  "From GroupsBo GBO WHERE  GBO.groupName= :groupName and GBO.questionnaireId= :questionnaireId and GBO.studyId = :studyId")
 	              .setString("questionnaireId", questionnaireId)
 	              .setString("groupName", groupName)
+                      .setString("studyId" , (studyId))
 	              .list();
 	      if (groupsBo != null && !groupsBo.isEmpty()) {
 	        message = FdahpStudyDesignerConstants.SUCCESS;
@@ -6131,5 +6155,46 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       transaction.rollback();
     }
     logger.info("StudyQuestionnaireDAOImpl - deleteFormula - Ends");
+  }
+
+  @Override
+  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId) {
+    logger.info("StudyDAOImpl - assignQuestionSteps() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
+    List<GroupMappingBo> listGroupMappingBo = new ArrayList<>();
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      for(String s : arr) {
+        String stepId = s.replaceAll("^\"|\"$", "");
+        GroupMappingBo groupMappingBo = new GroupMappingBo();
+        groupMappingBo.setGrpId(grpId);
+        groupMappingBo.setStepId(s.replaceAll("^\"|\"$", ""));
+        groupMappingBo.setStatus(true);
+        session.saveOrUpdate(groupMappingBo);
+        query =
+                session
+                        .getNamedQuery("getQuestionnaireGroupStep")
+                        .setInteger("instructionFormId", Integer.parseInt(stepId))
+                        .setInteger("questionnairesId", Integer.parseInt(questionnaireId));
+
+        QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+        questionnairesStepsBo.setGroupFlag(true);
+        session.saveOrUpdate(questionnairesStepsBo);
+        listGroupMappingBo.add(groupMappingBo);
+      }
+      //groupMappingBo = FdahpStudyDesignerConstants.SUCCESS;
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - assignQuestionSteps() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - assignQuestionSteps() - Ends");
+    return listGroupMappingBo;
   }
 }

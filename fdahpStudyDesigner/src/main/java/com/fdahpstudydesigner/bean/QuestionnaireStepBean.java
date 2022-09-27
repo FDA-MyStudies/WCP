@@ -14,6 +14,8 @@ public class QuestionnaireStepBean {
   private Integer sequenceNo;
   private String statData;
   private Boolean status;
+
+  private  Boolean groupFlag;
   private Integer stepId;
   private String stepType;
 
@@ -176,5 +178,13 @@ public class QuestionnaireStepBean {
 
   public void setPipingSourceQuestionKey(String pipingSourceQuestionKey) {
     this.pipingSourceQuestionKey = pipingSourceQuestionKey;
+  }
+
+  public Boolean getGroupFlag() {
+    return groupFlag;
+  }
+
+  public void setGroupFlag(Boolean groupFlag) {
+    this.groupFlag = groupFlag;
   }
 }

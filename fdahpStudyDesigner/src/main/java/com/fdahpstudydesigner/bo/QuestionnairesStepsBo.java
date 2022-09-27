@@ -32,6 +32,10 @@ import javax.persistence.Transient;
       name = "getQuestionnaireStep",
       query =
           "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
+ @NamedQuery(
+       name = "getQuestionnaireGroupStep",
+       query =
+          "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.questionnairesId=:questionnairesId"),
   @NamedQuery(
       name = "getQuestionnaireStepList",
       query =
@@ -105,6 +109,8 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "status")
   private Boolean status;
 
+  @Column(name = "group_flag")
+  private  Boolean groupFlag;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "step_id")
@@ -385,5 +391,13 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setGroupDefaultVisibility(String groupDefaultVisibility) {
     this.groupDefaultVisibility = groupDefaultVisibility;
+  }
+
+  public Boolean getGroupFlag() {
+    return groupFlag;
+  }
+
+  public void setGroupFlag(Boolean groupFlag) {
+    this.groupFlag = groupFlag;
   }
 }

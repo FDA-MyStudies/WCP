@@ -210,6 +210,10 @@ width:142px !important;
    margin: -5px 0px 0px 0px !important;
     }
     
+#content tbody tr td:first-child {
+    max-width: 10% !important;
+    width: 100% !important;
+}
     </style>
 </head>
 

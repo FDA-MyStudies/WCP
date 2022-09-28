@@ -134,8 +134,17 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "piping_snippet")
   private String pipingSnippet;
 
+  // for piping
   @Column(name = "is_different_survey")
   private Boolean differentSurvey;
+
+  // for preload
+  @Column(name = "is_different_survey_pre_load")
+  private Boolean differentSurveyPreLoad;
+
+  //pre-load survey id
+  @Column(name = "pre_load_survey_Id")
+  private Integer preLoadSurveyId;
 
   @Column(name = "piping_survey_Id")
   private Integer pipingSurveyId;
@@ -413,6 +422,22 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setDifferentSurvey(Boolean differentSurvey) {
     this.differentSurvey = differentSurvey;
+  }
+
+  public Boolean getDifferentSurveyPreLoad() {
+    return differentSurveyPreLoad;
+  }
+
+  public void setDifferentSurveyPreLoad(Boolean differentSurveyPreLoad) {
+    this.differentSurveyPreLoad = differentSurveyPreLoad;
+  }
+
+  public Integer getPreLoadSurveyId() {
+    return preLoadSurveyId;
+  }
+
+  public void setPreLoadSurveyId(Integer preLoadSurveyId) {
+    this.preLoadSurveyId = preLoadSurveyId;
   }
 
   public Integer getPipingSurveyId() {

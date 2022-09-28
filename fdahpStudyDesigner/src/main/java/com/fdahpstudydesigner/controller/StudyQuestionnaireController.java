@@ -662,6 +662,15 @@ public class StudyQuestionnaireController {
                   customStudyId);
             }
           }
+          int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+          int seqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+          if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
+                  && questionnairesStepsBo.getDifferentSurvey()) {
+            queId = questionnairesStepsBo.getPipingSurveyId();
+            seqNo = -1;
+          }
+          map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId, seqNo));
+          map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
           if (FdahpStudyDesignerUtil.isNotEmpty(language)

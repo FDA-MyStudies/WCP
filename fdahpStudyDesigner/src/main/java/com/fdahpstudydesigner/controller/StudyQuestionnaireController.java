@@ -1012,6 +1012,7 @@ public class StudyQuestionnaireController {
     ModelMap map = new ModelMap();
     InstructionsBo instructionsBo = null;
     QuestionnaireBo questionnaireBo = null;
+    QuestionnairesStepsBo questionnairesStepsBo = null;
     StudyBo studyBo = null;
     try {
       SessionObject sesObj =
@@ -1186,7 +1187,24 @@ public class StudyQuestionnaireController {
               studyQuestionnaireService.getInstructionLangBO(
                   Integer.parseInt(instructionId), language);
           map.addAttribute("instructionsLangBO", instructionsLangBO);
+
+          questionnairesStepsBo =
+                  studyQuestionnaireService.getQuestionnaireStep(
+                          Integer.parseInt(instructionId),
+                          FdahpStudyDesignerConstants.INSTRUCTION_STEP,
+                          questionnaireBo.getShortTitle(),
+                          studyBo.getCustomStudyId(),
+                          questionnaireBo.getId());
         }
+        int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+        int seqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+        if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
+                && questionnairesStepsBo.getDifferentSurvey()) {
+          queId = questionnairesStepsBo.getPipingSurveyId();
+          seqNo = -1;
+        }
+        map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId, seqNo));
+        map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
         map.addAttribute("questionnaireId", questionnaireId);
         map.addAttribute("_S", sessionStudyCount);
         mav = new ModelAndView("instructionsStepPage", map);
@@ -1695,12 +1713,13 @@ public class StudyQuestionnaireController {
           map.addAttribute("questionLangBO", questionLangBO);
         }
         int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+        int seqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
         if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
                 && questionnairesStepsBo.getDifferentSurvey()) {
           queId = questionnairesStepsBo.getPipingSurveyId();
+          seqNo = -1;
         }
-        map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId,
-                questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : null));
+        map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId, seqNo));
         map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
         map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         statisticImageList = studyActiveTasksService.getStatisticImages();
@@ -4349,7 +4368,7 @@ public class StudyQuestionnaireController {
   }
 
   @RequestMapping("/adminStudies/refreshSourceKeys.do")
-  public void refreshSourceKeys(HttpServletRequest request, HttpServletResponse response, String questionnaireId)
+  public void refreshSourceKeys(HttpServletResponse response, String questionnaireId)
           throws IOException {
     logger.info("StudyQuestionnaireController - refreshSourceKeys() - Starts");
     String msg = FdahpStudyDesignerConstants.FAILURE;
@@ -4357,7 +4376,7 @@ public class StudyQuestionnaireController {
     PrintWriter out;
     try {
       if (StringUtils.isNotBlank(questionnaireId)) {
-        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(Integer.parseInt(questionnaireId), null);
+        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(Integer.parseInt(questionnaireId), -1);
         jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
         msg = FdahpStudyDesignerConstants.SUCCESS;
       }

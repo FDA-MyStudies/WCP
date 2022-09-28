@@ -6200,7 +6200,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, Integer seq) {
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq) {
     logger.info("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - Starts");
     Session session = null;
     List<QuestionnairesStepsBo> list = null;
@@ -6208,7 +6208,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       session = hibernateTemplate.getSessionFactory().openSession();
       if (queId != 0) {
         org.hibernate.query.Query<QuestionnairesStepsBo> query;
-        if (seq != null) {
+        if (seq != -1) {
           query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo < :seq")
                   .setParameter("queId", queId)
                   .setParameter("seq", seq);

@@ -185,7 +185,7 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
 
   List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 
-  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, Integer seq);
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq);
 
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId);
 

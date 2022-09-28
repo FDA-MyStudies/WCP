@@ -2338,7 +2338,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, Integer seq) {
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq) {
     return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq);
   }
 

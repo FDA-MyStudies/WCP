@@ -1,7 +1,10 @@
 package com.fdahpstudydesigner.bean;
 
+import lombok.Data;
+
 import java.util.Map;
 
+@Data
 public class QuestionnaireStepBean {
 
   private Integer destinationStep;
@@ -24,167 +27,9 @@ public class QuestionnaireStepBean {
   private Boolean useAnchorDate;
   private Boolean defaultVisibility;
   private Boolean destinationTrueAsGroup;
-  private Integer isPiping;
+  private Boolean isPiping;
   private String pipingSnippet;
-  private String pipingSourceQuestionKey;
-
-  public Integer getDestinationStep() {
-    return destinationStep;
-  }
-
-  public String getDestinationText() {
-    return destinationText;
-  }
-
-  public Map<Integer, QuestionnaireStepBean> getFromMap() {
-    return fromMap;
-  }
-
-  public String getLineChart() {
-    return lineChart;
-  }
-
-  public Integer getQuestionInstructionId() {
-    return questionInstructionId;
-  }
-
-  public Integer getResponseType() {
-    return responseType;
-  }
-
-  public String getResponseTypeText() {
-    return responseTypeText;
-  }
-
-  public Integer getSequenceNo() {
-    return sequenceNo;
-  }
-
-  public String getStatData() {
-    return statData;
-  }
-
-  public Boolean getStatus() {
-    return status;
-  }
-
-  public Integer getStepId() {
-    return stepId;
-  }
-
-  public String getStepType() {
-    return stepType;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public Boolean getUseAnchorDate() {
-    return useAnchorDate;
-  }
-
-  public void setDestinationStep(Integer destinationStep) {
-    this.destinationStep = destinationStep;
-  }
-
-  public void setDestinationText(String destinationText) {
-    this.destinationText = destinationText;
-  }
-
-  public void setFromMap(Map<Integer, QuestionnaireStepBean> fromMap) {
-    this.fromMap = fromMap;
-  }
-
-  public void setLineChart(String lineChart) {
-    this.lineChart = lineChart;
-  }
-
-  public void setQuestionInstructionId(Integer questionInstructionId) {
-    this.questionInstructionId = questionInstructionId;
-  }
-
-  public void setResponseType(Integer responseType) {
-    this.responseType = responseType;
-  }
-
-  public void setResponseTypeText(String responseTypeText) {
-    this.responseTypeText = responseTypeText;
-  }
-
-  public void setSequenceNo(Integer sequenceNo) {
-    this.sequenceNo = sequenceNo;
-  }
-
-  public void setStatData(String statData) {
-    this.statData = statData;
-  }
-
-  public void setStatus(Boolean status) {
-    this.status = status;
-  }
-
-  public void setStepId(Integer stepId) {
-    this.stepId = stepId;
-  }
-
-  public void setStepType(String stepType) {
-    this.stepType = stepType;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setUseAnchorDate(Boolean useAnchorDate) {
-    this.useAnchorDate = useAnchorDate;
-  }
-
-  public Boolean getDefaultVisibility() {
-    return defaultVisibility;
-  }
-
-  public void setDefaultVisibility(Boolean defaultVisibility) {
-    this.defaultVisibility = defaultVisibility;
-  }
-
-  public Boolean getDestinationTrueAsGroup() {
-    return destinationTrueAsGroup;
-  }
-
-  public void setDestinationTrueAsGroup(Boolean destinationTrueAsGroup) {
-    this.destinationTrueAsGroup = destinationTrueAsGroup;
-  }
-
-  public Integer getIsPiping() {
-    return isPiping;
-  }
-
-  public void setIsPiping(Integer isPiping) {
-    this.isPiping = isPiping;
-  }
-
-  public String getPipingSnippet() {
-    return pipingSnippet;
-  }
-
-  public void setPipingSnippet(String pipingSnippet) {
-    this.pipingSnippet = pipingSnippet;
-  }
-
-  public String getPipingSourceQuestionKey() {
-    return pipingSourceQuestionKey;
-  }
-
-  public void setPipingSourceQuestionKey(String pipingSourceQuestionKey) {
-    this.pipingSourceQuestionKey = pipingSourceQuestionKey;
-  }
-
-  public Boolean getGroupFlag() {
-    return groupFlag;
-  }
-
-  public void setGroupFlag(Boolean groupFlag) {
-    this.groupFlag = groupFlag;
-  }
+  private Integer pipingSourceQuestionKey;
+  private Boolean differentSurvey;
+  private Integer pipingSurveyId;
 }

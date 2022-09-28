@@ -2336,4 +2336,19 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     logger.exit("assignQuestionSteps() - Ends");
     return groupMappingBo;
   }
+
+  @Override
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, Integer seq) {
+    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq);
+  }
+
+  @Override
+  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId){
+    return studyQuestionnaireDAO.getQuestionnairesForPiping(queId, studyId);
+  }
+
+  @Override
+  public void saveOrUpdatePipingData(QuestionnaireStepBean questionnaireStepBean) {
+    studyQuestionnaireDAO.saveOrUpdatePipingData(questionnaireStepBean);
+  }
 }

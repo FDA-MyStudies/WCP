@@ -129,13 +129,19 @@ public class QuestionnairesStepsBo implements Serializable {
   private Integer destinationTrueAsGroup;
 
   @Column(name = "is_piping")
-  private Integer isPiping;
+  private Boolean isPiping;
 
   @Column(name = "piping_snippet")
   private String pipingSnippet;
 
+  @Column(name = "is_different_survey")
+  private Boolean differentSurvey;
+
+  @Column(name = "piping_survey_Id")
+  private Integer pipingSurveyId;
+
   @Column(name = "piping_source_question_key")
-  private String pipingSourceQuestionKey;
+  private Integer pipingSourceQuestionKey;
 
   @Transient private String type;
 
@@ -353,11 +359,11 @@ public class QuestionnairesStepsBo implements Serializable {
     this.destinationTrueAsGroup = destinationTrueAsGroup;
   }
 
-  public Integer getIsPiping() {
+  public Boolean getIsPiping() {
     return isPiping;
   }
 
-  public void setIsPiping(Integer isPiping) {
+  public void setIsPiping(Boolean isPiping) {
     this.isPiping = isPiping;
   }
 
@@ -369,11 +375,11 @@ public class QuestionnairesStepsBo implements Serializable {
     this.pipingSnippet = pipingSnippet;
   }
 
-  public String getPipingSourceQuestionKey() {
+  public Integer getPipingSourceQuestionKey() {
     return pipingSourceQuestionKey;
   }
 
-  public void setPipingSourceQuestionKey(String pipingSourceQuestionKey) {
+  public void setPipingSourceQuestionKey(Integer pipingSourceQuestionKey) {
     this.pipingSourceQuestionKey = pipingSourceQuestionKey;
   }
 
@@ -399,5 +405,21 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setGroupFlag(Boolean groupFlag) {
     this.groupFlag = groupFlag;
+  }
+
+  public Boolean getDifferentSurvey() {
+    return differentSurvey;
+  }
+
+  public void setDifferentSurvey(Boolean differentSurvey) {
+    this.differentSurvey = differentSurvey;
+  }
+
+  public Integer getPipingSurveyId() {
+    return pipingSurveyId;
+  }
+
+  public void setPipingSurveyId(Integer pipingSurveyId) {
+    this.pipingSurveyId = pipingSurveyId;
   }
 }

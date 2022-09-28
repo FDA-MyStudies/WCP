@@ -666,6 +666,9 @@ input[type=number] {
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<button type="button" class="btn btn-primary blue-btn" id="piping">Piping</button>
+					</div><br>
 					<div class="clearfix"></div>
 					<div class="row">
 						<div class="col-md-6 pl-none mb-lg">
@@ -4232,7 +4235,7 @@ input[type=number] {
 					</div>
 
 				</div>
-			</div>
+			</div
 	</form:form>
     <div class="modal fade" id="myAutoModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
@@ -4258,6 +4261,82 @@ input[type=number] {
                                             </div>
                                         </div>
                             </div>
+</div>
+
+
+<div class="modal fade" id="pipingModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="width: 65%; margin-left: 17%;">
+			<div class="pl-xlg cust-hdr pt-xl">
+				<h5 class="modal-title">
+					<b>Piping</b>
+				</h5>
+			</div>
+			<br>
+			<div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+				<div class="gray-xs-f mb-xs">Target Element</div>
+				<div class="mb-xs" id="titleText">Have you taken the medication?</div>
+				<br>
+
+				<div class="gray-xs-f mb-xs">Snippet</div>
+				<div class="mb-xs">
+					<input type="text" class="form-control" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${questionnairesStepsBo.pipingSnippet}"/>
+				</div>
+				<br>
+
+				<div class="mb-xs">
+					<span class="checkbox checkbox-inline">
+						<input type="checkbox" id="differentSurvey" name="differentSurvey"
+								<c:if test="${not empty questionnairesStepsBo.differentSurvey
+								and questionnairesStepsBo.differentSurvey}">checked</c:if> />
+						<label for="differentSurvey"> Is different survey? </label>
+					</span>
+				</div>
+				<br>
+
+				<div id="surveyBlock">
+					<div class="gray-xs-f mb-xs">Survey ID</div>
+					<div class="mb-xs">
+						<select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">
+							<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+								<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+								<c:if test="${key.id eq questionnairesStepsBo.pipingSurveyId}"> selected</c:if>>
+									Survey ${loop.index+1} : ${key.shortTitle}
+								</option>
+							</c:forEach>
+							<c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+								<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+							</c:if>
+						</select>
+					</div>
+					<br>
+				</div>
+
+				<div class="gray-xs-f mb-xs">Source Question</div>
+				<div class="mb-xs">
+					<select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
+						<c:forEach items="${sameSurveySourceKeys}" var="key" varStatus="loop">
+							<option data-id="${key.stepId}" value="${key.stepShortTitle}"
+									<c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
+								Step ${loop.index+1} : ${key.stepShortTitle}
+							</option>
+						</c:forEach>
+						<c:if test="${sameSurveySourceKeys eq null || sameSurveySourceKeys.size() eq 0}">
+							<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+						</c:if>
+					</select>
+				</div>
+				<br><br>
+
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-default gray-btn" id="cancelPiping">Cancel</button>
+				</div>
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-primary blue-btn" id="savePiping" onclick="submitPiping();">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- End right Content here -->
@@ -5617,6 +5696,12 @@ input[type=number] {
                         }, 60000);
                         }
       });
+
+	$('#piping').on('click', function() {
+		$('#titleText').text($('#questionTextId').val());
+		$('#pipingModal').modal('toggle');
+	});
+
         function autoSaveQuestionStep(mode){
            	  $("body").addClass("loading");
                  validateQuestionShortTitle('', function (val) {
@@ -8676,6 +8761,65 @@ defaultVisibility.on('change', function () {
 		addForm.attr('disabled', false);
 	}
 })
+
+$('#cancelPiping').on('click', function() {
+	$('#pipingModal').modal('hide');
+})
+
+$('#differentSurvey').on('change', function(e) {
+	if($(this).is(':checked')) {
+		$('#surveyBlock').show();
+	} else {
+		$('#surveyBlock').hide();
+	}
+});
+
+$('#surveyId').on('change', function () {
+	refreshSourceKeys();
+})
+
+function refreshSourceKeys() {
+	$('#sourceQuestion').empty().selectpicker('refresh');
+	let surveyId = $('#surveyId option:selected').attr('data-id');
+	if (surveyId !== '') {
+		$.ajax({
+			url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
+			type : "GET",
+			datatype : "json",
+			data : {
+				questionnaireId : surveyId,
+				"${_csrf.parameterName}":"${_csrf.token}"
+			},
+			success : function(data) {
+				let message = data.message;
+				console.log(data)
+				if(message === 'SUCCESS'){
+					let options = data.sourceKeys;
+					if (options != null && options.length > 0) {
+						$.each(options, function(index, option) {
+							let $option = $("<option></option>")
+									.attr("value", option.stepShortTitle)
+									.attr("data-id", option.stepId)
+									.text("Step " + (index+1) + " : " + option.stepShortTitle);
+							$('#sourceQuestion').append($option).selectpicker('refresh');
+						});
+					} else {
+						let $option = $("<option></option>")
+								.attr("style", "text-align: center; color: #000000")
+								.attr("disabled", true)
+								.text("- No items found -");
+						$('#sourceQuestion').append($option).selectpicker('refresh');
+					}
+				}else {
+					showErrMsg('Server error while fetching data.');
+				}
+			},
+			error : function status(data, status) {
+				console.log(data, status);
+			},
+		});
+	}
+}
 </script>
 
 
@@ -8715,7 +8859,51 @@ $("#diagnosis_list tbody").sortable({
 
 function removeFormulaContainer(object) {
 	let id = object.getAttribute('data-id');
-	$('#'+id).remove();
+	$('#'+id).remove()
+}
+
+function submitPiping() {
+	if ($('#stepId').val() !== '') {
+		let formData = new FormData();
+		let pipingObject = {};
+		pipingObject.pipingSnippet = $('#pipingSnippet').val();
+		pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+		if ($('#differentSurvey').is(':checked')) {
+			pipingObject.differentSurvey = true;
+			pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+		}
+		pipingObject.stepId = $('#stepId').val();
+		let dataObject = JSON.stringify(pipingObject);
+		$.ajax({
+			url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
+			type: "POST",
+			datatype: "json",
+			data: {
+				dataObject : dataObject
+			},
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+			},
+			success: function (data) {
+				let message = data.message;
+				let status = data.status
+				$('#pipingModal').modal('hide');
+				if (status === 'SUCCESS') {
+					showSucMsg(message);
+				} else {
+					showErrMsg(message);
+				}
+
+			},
+			error: function (xhr, status, error) {
+				$('#pipingModal').modal('hide');
+				showErrMsg("Error while saving piping details");
+			}
+		});
+	} else {
+		$('#pipingModal').modal('hide');
+		showErrMsg("Please save step first!");
+	}
 }
   </script>
 

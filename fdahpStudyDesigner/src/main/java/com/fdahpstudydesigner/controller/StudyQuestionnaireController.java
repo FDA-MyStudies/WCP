@@ -10,6 +10,8 @@ import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
+
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.Map.Entry;
@@ -17,7 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.entity.ContentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -1690,6 +1694,14 @@ public class StudyQuestionnaireController {
               studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), language);
           map.addAttribute("questionLangBO", questionLangBO);
         }
+        int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+        if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
+                && questionnairesStepsBo.getDifferentSurvey()) {
+          queId = questionnairesStepsBo.getPipingSurveyId();
+        }
+        map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId,
+                questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : null));
+        map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
         map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         statisticImageList = studyActiveTasksService.getStatisticImages();
         activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
@@ -4336,5 +4348,62 @@ public class StudyQuestionnaireController {
     logger.info("StudyQuestionnaireController - assignGroup - Ends");
   }
 
+  @RequestMapping("/adminStudies/refreshSourceKeys.do")
+  public void refreshSourceKeys(HttpServletRequest request, HttpServletResponse response, String questionnaireId)
+          throws IOException {
+    logger.info("StudyQuestionnaireController - refreshSourceKeys() - Starts");
+    String msg = FdahpStudyDesignerConstants.FAILURE;
+    JSONObject jsonobject = new JSONObject();
+    PrintWriter out;
+    try {
+      if (StringUtils.isNotBlank(questionnaireId)) {
+        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(Integer.parseInt(questionnaireId), null);
+        jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
+        msg = FdahpStudyDesignerConstants.SUCCESS;
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireController - refreshSourceKeys() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireController - refreshSourceKeys() - Ends");
+    jsonobject.put("message", msg);
+    response.setContentType("application/json");
+    out = response.getWriter();
+    out.print(jsonobject);
+  }
+
+  @RequestMapping(value = "/adminStudies/submitPiping.do", method = RequestMethod.POST)
+  public void submitPiping(
+          HttpServletRequest request,
+          HttpServletResponse response) throws IOException {
+    logger.info("StudyQuestionnaireController - submitPiping() - Starts");
+    String status = FdahpStudyDesignerConstants.FAILURE;
+    String message;
+    JSONObject jsonobject = new JSONObject();
+    PrintWriter out;
+    try {
+      String pipingData = request.getParameter("dataObject");
+      if (StringUtils.isNotBlank(pipingData)) {
+        QuestionnaireStepBean questionnaireStepBean = new ObjectMapper().readValue(pipingData, QuestionnaireStepBean.class);
+        if (questionnaireStepBean != null && questionnaireStepBean.getStepId() != null) {
+          studyQuestionnaireService.saveOrUpdatePipingData(questionnaireStepBean);
+          status = FdahpStudyDesignerConstants.SUCCESS;
+          message = "Piping details saved successfully.";
+        } else {
+          message = "Invalid request data";
+        }
+      } else {
+        message = "Invalid request data";
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireController - submitPiping() - ERROR", e);
+      message = "Error while saving piping data.";
+    }
+    logger.info("StudyQuestionnaireController - submitPiping() - Ends");
+    jsonobject.put("status", status);
+    jsonobject.put("message", message);
+    response.setContentType("application/json");
+    out = response.getWriter();
+    out.print(jsonobject);
+  }
 }
 

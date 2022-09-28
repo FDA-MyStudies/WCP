@@ -51,7 +51,7 @@ public class GroupsBo implements Serializable {
     @Transient private String type;
     
     @Column(name = "action", length = 1)
-    private boolean action;
+    private Boolean action;
 
     @Transient
     private String userName;
@@ -61,77 +61,5 @@ public class GroupsBo implements Serializable {
     
     @Column(name="questionnaire_id")
     private Integer questionnaireId;
-
-    public String getUserIds() {
-        return userId;
-    }
-
-    public void setUserIds(String userIds) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Integer getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Integer getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(Integer modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public String getModifiedOn() {
-        return modifiedOn;
-    }
-
-    public void setModifiedOn(String modifiedOn) {
-        this.modifiedOn = modifiedOn;
-    }
-
-    public boolean isGroupDeleted() {
-        return isgroupDelted;
-    }
-
-    public void setGroupDeleted(boolean groupDeleted) {
-        this.isgroupDelted = groupDeleted;
-    }
 
 }

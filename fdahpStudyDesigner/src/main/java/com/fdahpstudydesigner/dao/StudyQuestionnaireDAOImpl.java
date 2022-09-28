@@ -5998,7 +5998,7 @@ public String saveOrUpdateGroup(GroupsBo groupsBO) {
     	    {
     	    	groupsBo1.setGroupId(groupsBO.getGroupId());
     	    	groupsBo1.setGroupName(groupsBO.getGroupName());
-    	    	groupsBo1.setAction(groupsBO.isAction());
+    	    	groupsBo1.setAction(groupsBO.getAction());
     	    	session.saveOrUpdate(groupsBo1);
 
     	    	  
@@ -6013,7 +6013,7 @@ public String saveOrUpdateGroup(GroupsBo groupsBO) {
     	   
     	  groupsBO.setGroupId(groupsBO.getGroupId());
     	  groupsBO.setGroupName(groupsBO.getGroupName());
-    	  groupsBO.setAction(groupsBO.isAction());
+    	  groupsBO.setAction(groupsBO.getAction());
 
 
         session.saveOrUpdate(groupsBO);
@@ -6196,5 +6196,92 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     }
     logger.info("StudyDAOImpl - assignQuestionSteps() - Ends");
     return listGroupMappingBo;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, Integer seq) {
+    logger.info("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - Starts");
+    Session session = null;
+    List<QuestionnairesStepsBo> list = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (queId != 0) {
+        org.hibernate.query.Query<QuestionnairesStepsBo> query;
+        if (seq != null) {
+          query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo < :seq")
+                  .setParameter("queId", queId)
+                  .setParameter("seq", seq);
+        } else {
+          query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
+                  .setParameter("queId", queId);
+        }
+        list = query.list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - Ends");
+    return list;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId) {
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnairesForPiping() - Starts");
+    Session session = null;
+    List<QuestionnaireBo> list = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (StringUtils.isNoneBlank(queId, studyId)) {
+        list = session.createQuery("from QuestionnaireBo where id <> :id and studyId = :studyId and active = :active")
+                .setParameter("id", Integer.parseInt(queId))
+                .setParameter("studyId", Integer.parseInt(studyId))
+                .setParameter("active", true)
+                .list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getQuestionnairesForPiping() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnairesForPiping() - Ends");
+    return list;
+  }
+
+  @Override
+  public void saveOrUpdatePipingData(QuestionnaireStepBean bean) {
+      logger.info("StudyDAOImpl - saveOrUpdatePipingData() - Starts");
+      Session session = null;
+      try {
+        session = hibernateTemplate.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+        QuestionnairesStepsBo questionnairesStepsBo = session.get(QuestionnairesStepsBo.class, bean.getStepId());
+        if (questionnairesStepsBo != null) {
+          questionnairesStepsBo.setIsPiping(true);
+          questionnairesStepsBo.setPipingSnippet(bean.getPipingSnippet());
+          questionnairesStepsBo.setDifferentSurvey(bean.getDifferentSurvey());
+          questionnairesStepsBo.setPipingSurveyId(bean.getPipingSurveyId());
+          questionnairesStepsBo.setPipingSourceQuestionKey(bean.getPipingSourceQuestionKey());
+          session.saveOrUpdate(questionnairesStepsBo);
+          transaction.commit();
+        } else {
+          throw new Exception("Step does not exist");
+        }
+      } catch (Exception e) {
+        transaction.rollback();
+        logger.error("StudyDAOImpl - saveOrUpdatePipingData() - ERROR ", e);
+      } finally {
+        if (null != session && session.isOpen()) {
+          session.close();
+        }
+      }
+      logger.info("StudyDAOImpl - saveOrUpdatePipingData() - Ends");
   }
 }

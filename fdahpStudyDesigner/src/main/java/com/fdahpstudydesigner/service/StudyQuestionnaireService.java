@@ -186,4 +186,10 @@ String checkGroupId(String questionnaireId, String groupId, String studyId);
 String checkGroupName(String questionnaireId, String groupName, String studyId);
 
   public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
+
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, Integer seq);
+
+  List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId);
+
+  void saveOrUpdatePipingData(QuestionnaireStepBean questionnaireStepBean);
 }

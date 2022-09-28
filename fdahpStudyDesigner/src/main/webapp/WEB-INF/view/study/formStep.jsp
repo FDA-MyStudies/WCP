@@ -360,11 +360,42 @@
              <div class="row">
                  <div class="gray-xs-f mb-xs">Pre-Load Logic</div>
              </div>
-             <div class="row dest-row">
+             <div class="row">
                  <div class="col-md-3 dest-label">
                      If True, Destination step =
                  </div>
-                 <div class="col-md-4">
+                 <div class="col-md-1"></div>
+                 <div class="col-md-3">
+                        <span class="checkbox checkbox-inline">
+                                            <input type="checkbox" id="chkSelect" name="differentSurvey"
+                                                        <c:if test="${not empty questionnairesStepsBo.differentSurvey
+                                                        and questionnairesStepsBo.differentSurvey}">checked</c:if> />
+                                            <label for="chkSelect"> Is different survey? </label>
+                        </span>
+                 </div>
+                 <div class="col-md-5"></div>
+             </div>
+                    <div class="row">
+                            <div class="col-md-4"></div>
+                                   <div class="col-md-5" id="contents" style="display:none">
+                                                   <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
+                                                            <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+                                                            <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+                                                            <c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
+                                                            Survey ${loop.index+1} : ${key.shortTitle}
+                                                            </option>
+                                                            </c:forEach>
+                                                            <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+                                                            <option style="text-align: center; color: #000000" disabled>- No items found -</option>
+                                                            </c:if>
+                                                   </select>
+                                   </div>
+                            <div class="col-md-3"></div>
+                            </div>
+                                                <br>
+                                                <div class="row">
+                                                 <div class="col-md-4"></div>
+                                                  <div class="col-md-5">
                      <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                              data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
                          <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -381,7 +412,8 @@
                              Completion Step</option>
                      </select>
                  </div>
-                 <div class="col-md-5"></div>
+                 <div class="col-md-3"></div>
+             </div>
              </div>
              <br>
 
@@ -1674,6 +1706,18 @@ $('#differentSurvey').on('change', function(e) {
 $('#surveyId').on('change', function () {
     refreshSourceKeys();
 })
+
+$('#preLoadSurveyId').on('change', function () {
+	refreshSourceKeys();
+})
+
+$('#chkSelect').on('change', function(e) {
+    if($(this).is(':checked')) {
+        $('#contents').show();
+    } else {
+        $('#contents').hide();
+    }
+});
 
 function refreshSourceKeys() {
     $('#sourceQuestion').empty().selectpicker('refresh');

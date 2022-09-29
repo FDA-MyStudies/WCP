@@ -653,6 +653,10 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getQuestionnairesId(),
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
+            if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
+              destionationStepList = studyQuestionnaireService.getSameSurveySourceKeys(questionnairesStepsBo.getPreLoadSurveyId(), -1);
+            }
+            map.addAttribute("destinationStepsPreLoad", destionationStepList);
             if (!questionnairesStepsBo.getStatus() && StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
                   Integer.valueOf(studyId),
@@ -1688,6 +1692,10 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getQuestionnairesId(),
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
+            if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
+              destionationStepList = studyQuestionnaireService.getSameSurveySourceKeys(questionnairesStepsBo.getPreLoadSurveyId(), -1);
+            }
+            map.addAttribute("destinationStepsPreLoad", destionationStepList);
           }
 
           QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");

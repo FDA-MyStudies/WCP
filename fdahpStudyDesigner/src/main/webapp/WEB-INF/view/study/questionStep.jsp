@@ -488,7 +488,7 @@ input[type=number] {
                             <div class="row">
 								<div class="col-md-4"></div>
 								<div class="col-md-5" id="content" style="display:none">
-									<select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
+									<select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select survey id-">
 										<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
 											<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
 													<c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
@@ -507,8 +507,8 @@ input[type=number] {
                              <div class="col-md-4"></div>
                               <div class="col-md-5">
 								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
-										data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
-									<c:forEach items="${destinationStepList}" var="destinationStep">
+										data-error="Please choose one option" class="selectpicker text-normal" required title="-select destination step-">
+									<c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
 
 										<option value="${destinationStep.stepId}"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
@@ -8834,6 +8834,16 @@ $('#differentSurvey').on('change', function(e) {
 		$('#surveyBlock').show();
 	} else {
 		$('#surveyBlock').hide();
+		refreshSourceKeys($('#questionnairesId').val(), null);
+	}
+});
+
+$('#differentSurveyPreLoad').on('change', function() {
+	if($(this).is(':checked')) {
+		$('#content').show();
+	} else {
+		$('#content').hide();
+		refreshSourceKeys($('#questionnairesId').val(), 'preload');
 	}
 });
 
@@ -8977,15 +8987,5 @@ function submitPiping() {
 		showErrMsg("Please save step first!");
 	}
 }
-
-
-
-$('#differentSurveyPreLoad').on('change', function(e) {
-    if($(this).is(':checked')) {
-        $('#content').show();
-    } else {
-        $('#content').hide();
-    }
-});
   </script>
 

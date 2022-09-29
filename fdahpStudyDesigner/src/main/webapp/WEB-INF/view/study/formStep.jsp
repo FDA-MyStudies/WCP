@@ -377,7 +377,7 @@
              <div class="row">
                  <div class="col-md-4"></div>
                  <div class="col-md-5" id="contents" style="display:none">
-                     <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
+                     <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select survey id-">
                          <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
                              <option data-id="${key.id}" value="${key.id}" id="${key.shortTitle}"
                                      <c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
@@ -396,8 +396,8 @@
                  <div class="col-md-4"></div>
                  <div class="col-md-5">
                      <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
-                             data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
-                         <c:forEach items="${destinationStepList}" var="destinationStep">
+                             data-error="Please choose one option" class="selectpicker text-normal" required title="-select destination step-">
+                         <c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
                              <option value="${destinationStep.stepId}"
                                  ${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
                                  Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
@@ -691,7 +691,7 @@
                     <div class="mb-xs">
                         <select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
                             <c:forEach items="${sameSurveySourceKeys}" var="key" varStatus="loop">
-                                <option data-id="${key.stepId}" value="${key.stepShortTitle}"
+                                <option data-id="${key.stepId}" value="${key.stepId}"
                                         <c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
                                     Step ${loop.index+1} : ${key.stepShortTitle}
                                 </option>
@@ -1102,7 +1102,6 @@ var idleTime = 0;
     questionnaireStep.type = "save";
     questionnaireStep.stepType = step_type;
       questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
-      questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
       questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
       questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
       questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
@@ -1715,6 +1714,7 @@ $('#differentSurvey').on('change', function(e) {
         $('#surveyBlock').show();
     } else {
         $('#surveyBlock').hide();
+        refreshSourceKeys($('#questionnairesId').val(), null);
     }
 });
 
@@ -1723,6 +1723,7 @@ $('#differentSurveyPreLoad').on('change', function(e) {
         $('#contents').show();
     } else {
         $('#contents').hide();
+        refreshSourceKeys($('#questionnairesId').val(), 'preload');
     }
 });
 
@@ -1732,19 +1733,13 @@ if($('#differentSurveyPreLoad').is(':checked')){
 
 $('#surveyId').on('change', function () {
     let surveyId = $('#surveyId option:selected').attr('data-id');
-    	refreshSourceKeys(surveyId);
-    })
-
-    $('#preLoadSurveyId').on('change', function () {
-        let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
-    	refreshSourceKeys(surveyId);
+    refreshSourceKeys(surveyId, null);
 })
 
 $('#preLoadSurveyId').on('change', function () {
-	refreshSourceKeys();
+    let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
+    refreshSourceKeys(surveyId, 'preload');
 })
-
-
 
 function refreshSourceKeys(surveyId, type) {
 	let id = $('#sourceQuestion');
@@ -1769,7 +1764,7 @@ function refreshSourceKeys(surveyId, type) {
                     if (options != null && options.length > 0) {
                         $.each(options, function(index, option) {
                             let $option = $("<option></option>")
-                                .attr("value", option.stepShortTitle)
+                                .attr("value", option.stepId)
                                 .attr("data-id", option.stepId)
                                 .text("Step " + (index+1) + " : " + option.stepShortTitle);
                             id.append($option).selectpicker('refresh');

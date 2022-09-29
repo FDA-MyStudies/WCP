@@ -2352,4 +2352,45 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   public void saveOrUpdatePipingData(QuestionnaireStepBean questionnaireStepBean) {
     studyQuestionnaireDAO.saveOrUpdatePipingData(questionnaireStepBean);
   }
+
+  @Override
+  public List<GroupMappingBo> getStepId(String id, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - getStepId() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    List<GroupMappingBo> stepId = new ArrayList<>();;
+    try {
+      stepId = studyQuestionnaireDAO.getStepId(id, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getStepId() - ERROR ", e);
+    }
+    logger.exit("getStepId() - Ends");
+    return stepId;
+  }
+
+  @Override
+  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      result = studyQuestionnaireDAO.groupFlagDisable(groupMappingBo, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
+    }
+    logger.exit("groupFlagDisable() - Ends");
+    return result;  }
+
+  @Override
+  public String deleteGroupMaprecords(String id) {
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
+
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message =
+              studyQuestionnaireDAO.deleteGroupMaprecords(id);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
+    return message;
+  }
 }

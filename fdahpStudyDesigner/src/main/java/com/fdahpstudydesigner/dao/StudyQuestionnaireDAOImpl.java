@@ -19,6 +19,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -2655,12 +2656,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             Boolean status = (Boolean) objects[8];
             Boolean useAnchorDate = (Boolean) objects[9];
             if (formIdList.get(i).equals(formId)) {
-              query =
-                      session
-                              .getNamedQuery("getQuestionnaireGroupStep")
-                              .setInteger("instructionFormId", formId)
-                              .setInteger("questionnairesId", questionnaireId);
-              QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
               QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
               questionnaireStepBean.setStepId(formId);
               questionnaireStepBean.setQuestionInstructionId(questionId);
@@ -2671,17 +2666,24 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               questionnaireStepBean.setLineChart(lineChart);
               questionnaireStepBean.setStatData(statData);
               questionnaireStepBean.setStatus(status);
-              questionnaireStepBean.setGroupFlag(questionnairesStepsBo.getGroupFlag());
               questionnaireStepBean.setUseAnchorDate(useAnchorDate);
               formQuestionMap.put(sequenceNo, questionnaireStepBean);
             }
           }
+          query =
+                  session
+                          .getNamedQuery("getQuestionnaireGroupStep")
+                          .setInteger("instructionFormId", formIdList.get(i))
+                          .setInteger("questionnairesId", questionnaireId);
+
+          QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
           fQuestionnaireStepBean.setStepId(formIdList.get(i));
           fQuestionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
           fQuestionnaireStepBean.setSequenceNo(
               sequenceNoMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP));
           fQuestionnaireStepBean.setFromMap(formQuestionMap);
           fQuestionnaireStepBean.setStatus(formStatusMap.get(formIdList.get(i)));
+          fQuestionnaireStepBean.setGroupFlag(questionnairesStepsBo.getGroupFlag());
           fQuestionnaireStepBean.setQuestionInstructionId(formIdList.get(i));
           fQuestionnaireStepBean.setDestinationStep(
               destinationMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP));
@@ -5797,7 +5799,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       	
         session = hibernateTemplate.getSessionFactory().openSession();
             searchQuery =
-                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId and GBO.isgroupDelted=false";
+                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId";
             query = session.createQuery(searchQuery).setString("studyId", studyId).setString("questionnaireId", questionnaireId);
           groups = query.list();
         
@@ -5920,9 +5922,8 @@ public String deleteGroup(String id, SessionObject sessionObject) {
       transaction = session.beginTransaction();
       if (StringUtils.isNotEmpty(id)) {
     	  queryString  =
-            		"update GroupsBo GBO set GBO.modifiedBy =:userId,GBO.modifiedOn =now(),GBO.isgroupDelted = true where GBO.id=:id ";
+                  "delete GroupsBo GBO where GBO.id=:id ";
         query = session.createQuery(queryString);
-        query.setParameter("userId", sessionObject.getUserId());
 
         count = query.setString("id", id).executeUpdate();
         if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
@@ -6283,5 +6284,99 @@ public String checkGroupName(String questionnaireId, String groupName, String st
         }
       }
       logger.info("StudyDAOImpl - saveOrUpdatePipingData() - Ends");
+  }
+
+  @Override
+  public List<GroupMappingBo> getStepId(String id, String questionnaireId) {
+    logger.info("StudyDAOImpl - getStepId() - Starts");
+    List<GroupMappingBo> stepId = new ArrayList<>();
+    Session session = null;
+    Query query = null;
+    String queryString = "";
+    try{
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      queryString = "FROM  GroupMappingBo GBO WHERE GBO.grpId = "+id;
+      query = session.createQuery(queryString);
+      stepId = (List<GroupMappingBo>) query.getResultList();
+    }
+    catch(Exception e){
+      logger.error("StudyDAOImpl - getStepId() - ERROR",e);
+    }finally{
+      if(session != null){
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStepId() - Ends");
+    return stepId;
+  }
+
+  @Override
+  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId) {
+    logger.info("StudyDAOImpl - groupFlagDisable() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
+    Query query = null;
+    try{
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      for(GroupMappingBo el : groupMappingBo){
+        String  stepId=el.getStepId();
+        query = session
+                .createQuery(
+                        "update QuestionnairesStepsBo Q set Q.groupFlag=0"
+                                + " where Q.instructionFormId=:stepId and Q.questionnairesId=:questionnaireId");
+        query.setString("stepId",stepId);
+        query.setString("questionnaireId",questionnaireId);
+        query.executeUpdate();
+      }
+      message = FdahpStudyDesignerConstants.SUCCESS;
+      if (transaction.getStatus().equals(TransactionStatus.ACTIVE)) {
+        transaction.commit();
+      }
+      // transaction.commit();
+    }
+    catch(Exception e){
+      transaction.rollback();
+      logger.error("StudyDAOImpl - groupFlagDisable() - ERROR",e);
+    }finally{
+      if(session != null){
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - groupFlagDisable() - Ends");
+    return message;
+  }
+
+  @Override
+  public String deleteGroupMaprecords(String id) {
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
+    Session session = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    int count = 0;
+    String queryString = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+
+      if (StringUtils.isNotEmpty(id)) {
+        //delete the qroup based on id
+        queryString  =
+                "delete GroupMappingBo GBO where GBO.grpId=:id ";
+        query = session.createQuery(queryString);
+        count = query.setString("id", id).executeUpdate();
+        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
+    return message;
   }
 }

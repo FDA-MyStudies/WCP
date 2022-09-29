@@ -40,9 +40,6 @@ public class GroupsBo implements Serializable {
     @Column(name = "modified_on")
     private String modifiedOn;
 
-    @Column(name = "is_group_deleted", length = 1)
-    private Boolean isgroupDelted = false;
-    
     @Transient
     private String userId;
     

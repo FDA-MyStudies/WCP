@@ -4139,11 +4139,23 @@ public class StudyQuestionnaireController {
       if (sesObj != null
           && sesObj.getStudySession() != null
           && sesObj.getStudySession().contains(sessionStudyCount)) {
+        String questionnaireId = (String) request
+                .getSession()
+                .getAttribute(sessionStudyCount +"questionnaireId");
         String id =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
                 ? ""
                 : request.getParameter("id");
         if (!id.isEmpty()) {
+
+          //getting the List<step id's> based on the id from group_mapping table
+          List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
+          //disabling the flag based on the step id in questionnaires_steps table
+          String msg = studyQuestionnaireService.groupFlagDisable(groupMappingBo,questionnaireId);
+          // Delete all the steps in mapping table based on group id
+          String msgg = studyQuestionnaireService.deleteGroupMaprecords(id);
+          //Delete group from the table
+
           message =
               studyQuestionnaireService.deleteGroup(
                   id,sesObj);

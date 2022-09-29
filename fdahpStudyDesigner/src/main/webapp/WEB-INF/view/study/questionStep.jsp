@@ -6515,6 +6515,7 @@ input[type=number] {
 		  questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
 		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
 		  questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
+		  questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
 		  let beanArray = [];
 		  $('#formulaContainer').find('div.form-div').each(function (index) {
 			  let preLoadBean = {};
@@ -8699,7 +8700,11 @@ $("#diagnosis_list tbody").sortable({
   stop: updateIndex
 }).disableSelection();
 
+    if($('#differentSurveyPreLoad').is(':checked')){
+        $('#content').show();
+    }
 });
+
 
   let nav = $('#nav').val();
   if (nav !== null && nav !== '') {

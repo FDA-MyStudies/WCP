@@ -796,6 +796,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           persistentStepsBo.setDefaultVisibility("true".equals(questionnairesStepsBo.getGroupDefaultVisibility()));
           persistentStepsBo.setDestinationTrueAsGroup(questionnairesStepsBo.getDestinationTrueAsGroup());
           persistentStepsBo.setDifferentSurveyPreLoad(questionnairesStepsBo.getDifferentSurveyPreLoad());
+          persistentStepsBo.setPreLoadSurveyId(questionnairesStepsBo.getPreLoadSurveyId());
           studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
         }
       }

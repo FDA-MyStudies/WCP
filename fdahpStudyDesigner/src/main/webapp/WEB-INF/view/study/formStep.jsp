@@ -366,10 +366,10 @@
                  <div class="col-md-1"></div>
                  <div class="col-md-3">
                         <span class="checkbox checkbox-inline">
-                                            <input type="checkbox" id="chkSelect" name="differentSurvey"
+                                            <input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
                                                    <c:if test="${not empty questionnairesStepsBo.differentSurvey
                                                         and questionnairesStepsBo.differentSurvey}">checked</c:if> />
-                                            <label for="chkSelect"> Is different survey? </label>
+                                            <label for="differentSurveyPreLoad"> Is different survey? </label>
                         </span>
                  </div>
                  <div class="col-md-5"></div>
@@ -379,7 +379,7 @@
                  <div class="col-md-5" id="contents" style="display:none">
                      <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
                          <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
-                             <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+                             <option data-id="${key.id}" value="${key.id}" id="${key.shortTitle}"
                                      <c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
                                  Survey ${loop.index+1} : ${key.shortTitle}
                              </option>
@@ -1103,6 +1103,9 @@ var idleTime = 0;
     questionnaireStep.stepType = step_type;
       questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
       questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+      questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+      questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
+      questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
       let beanArray = [];
       $('#formulaContainer').find('div.form-div').each(function (index) {
           let preLoadBean = {};
@@ -1715,15 +1718,7 @@ $('#differentSurvey').on('change', function(e) {
     }
 });
 
-$('#surveyId').on('change', function () {
-    refreshSourceKeys();
-})
-
-$('#preLoadSurveyId').on('change', function () {
-	refreshSourceKeys();
-})
-
-$('#chkSelect').on('change', function(e) {
+$('#differentSurveyPreLoad').on('change', function(e) {
     if($(this).is(':checked')) {
         $('#contents').show();
     } else {
@@ -1731,9 +1726,32 @@ $('#chkSelect').on('change', function(e) {
     }
 });
 
-function refreshSourceKeys() {
-    $('#sourceQuestion').empty().selectpicker('refresh');
+if($('#differentSurveyPreLoad').is(':checked')){
+        $('#contents').show();
+    }
+
+$('#surveyId').on('change', function () {
     let surveyId = $('#surveyId option:selected').attr('data-id');
+    	refreshSourceKeys(surveyId);
+    })
+
+    $('#preLoadSurveyId').on('change', function () {
+        let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
+    	refreshSourceKeys(surveyId);
+})
+
+$('#preLoadSurveyId').on('change', function () {
+	refreshSourceKeys();
+})
+
+
+
+function refreshSourceKeys(surveyId, type) {
+	let id = $('#sourceQuestion');
+	if (type === 'preload') {
+		id = $('#destinationTrueAsGroup');
+	}
+	id.empty().selectpicker('refresh');
     if (surveyId !== '') {
         $.ajax({
             url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
@@ -1754,14 +1772,14 @@ function refreshSourceKeys() {
                                 .attr("value", option.stepShortTitle)
                                 .attr("data-id", option.stepId)
                                 .text("Step " + (index+1) + " : " + option.stepShortTitle);
-                            $('#sourceQuestion').append($option).selectpicker('refresh');
+                            id.append($option).selectpicker('refresh');
                         });
                     } else {
                         let $option = $("<option></option>")
                             .attr("style", "text-align: center; color: #000000")
                             .attr("disabled", true)
                             .text("- No items found -");
-                        $('#sourceQuestion').append($option).selectpicker('refresh');
+                        id.append($option).selectpicker('refresh');
                     }
                 }else {
                     showErrMsg('Server error while fetching data.');

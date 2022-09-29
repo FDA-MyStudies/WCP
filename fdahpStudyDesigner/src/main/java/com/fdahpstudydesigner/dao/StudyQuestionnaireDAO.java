@@ -190,4 +190,10 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId);
 
   void saveOrUpdatePipingData(QuestionnaireStepBean questionnaireStepBean);
+
+  public List<GroupMappingBo> getStepId(String id, String questionnaireId);
+
+  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
+
+  public String deleteGroupMaprecords(String id);
 }

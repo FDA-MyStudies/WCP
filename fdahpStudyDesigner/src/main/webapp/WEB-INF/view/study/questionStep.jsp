@@ -4466,19 +4466,23 @@ input[type=number] {
         });
 
         <c:if test="${actionTypeForQuestionPage == 'view'}">
-        $('#questionStepId input,textarea ').prop('disabled', true);
-        $('#questionStepId select').addClass('linkDis');
-        $('#responseTypeId').addClass('disabled_css');  
-        $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
-        $("#trailId").hide();
-        $(".removeImageId").css("visibility", "hidden");
-        $("tbody").removeClass('ui-sortable');
-    $("tr").removeClass('ui-sortable-handle');
-    $('table.order_sequenceNumber').removeAttr('id');
-    $('tr.text-choice').removeAttr('id');
-    $(".table").removeClass('order_sequenceNumber ');
-    $(".table").removeClass('TextChoiceContainer  ');
-    $("span.delete").addClass('disabled');
+		  $('#questionStepId input,textarea ').prop('disabled', true);
+		  $('#questionStepId select').addClass('linkDis');
+		  $('#responseTypeId').addClass('disabled_css');
+		  $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
+		  $("#trailId").hide();
+		  $(".removeImageId").css("visibility", "hidden");
+		  $("tbody").removeClass('ui-sortable');
+		  $("tr").removeClass('ui-sortable-handle');
+		  $('table.order_sequenceNumber').removeAttr('id');
+		  $('tr.text-choice').removeAttr('id');
+		  $(".table").removeClass('order_sequenceNumber ');
+		  $(".table").removeClass('TextChoiceContainer  ');
+		  $("span.delete").addClass('disabled');
+		  $('#logicDiv').find('div.bootstrap-select').each( function () {
+			  $(this).addClass('ml-disabled');
+		  });
+		  $('#addFormula').attr('disabled', true);
         </c:if>
 
         if ($('.value-picker').length > 2) {
@@ -8308,6 +8312,12 @@ input[type=number] {
 					  '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 					  '[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
                   'ml-disabled').attr('disabled', true);
+				$('#logicDiv').find('div.bootstrap-select, input').each( function () {
+					$(this).addClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', true);
+					}
+				});
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
               // $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
               $('#trailId, #removeUrl').addClass('cursor-none');
@@ -8341,7 +8351,7 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn').addClass('cursor-none');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, #piping, .switch').addClass('cursor-none');
 
               // setting ml data
               $('#questionTextId').val($('#mlQuestion', htmlData).val());
@@ -8516,6 +8526,12 @@ input[type=number] {
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 						'[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
 						'ml-disabled').attr('disabled', false);
+				$('#logicDiv').find('div.bootstrap-select, input').each( function () {
+					$(this).removeClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', false);
+					}
+				});
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
               // $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
@@ -8550,7 +8566,7 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn').removeClass('cursor-none');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, #piping, .switch').removeClass('cursor-none');
 
               // setting english data
               $('#questionTextId').val($('#questionTextId', htmlData).val());
@@ -8811,16 +8827,20 @@ $('#differentSurvey').on('change', function(e) {
 
 $('#surveyId').on('change', function () {
     let surveyId = $('#surveyId option:selected').attr('data-id');
-	refreshSourceKeys(surveyId);
+	refreshSourceKeys(surveyId, null);
 })
 
 $('#preLoadSurveyId').on('change', function () {
     let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
-	refreshSourceKeys(surveyId);
+	refreshSourceKeys(surveyId,  'preload');
 })
 
-function refreshSourceKeys(surveyId) {
-	$('#sourceQuestion').empty().selectpicker('refresh');
+function refreshSourceKeys(surveyId, type) {
+	let id = $('#sourceQuestion');
+	if (type === 'preload') {
+		id = $('#destinationTrueAsGroup');
+	}
+	id.empty().selectpicker('refresh');
 	if (surveyId !== '') {
 		$.ajax({
 			url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
@@ -8841,14 +8861,14 @@ function refreshSourceKeys(surveyId) {
 									.attr("value", option.stepShortTitle)
 									.attr("data-id", option.stepId)
 									.text("Step " + (index+1) + " : " + option.stepShortTitle);
-							$('#sourceQuestion').append($option).selectpicker('refresh');
+							id.append($option).selectpicker('refresh');
 						});
 					} else {
 						let $option = $("<option></option>")
 								.attr("style", "text-align: center; color: #000000")
 								.attr("disabled", true)
 								.text("- No items found -");
-						$('#sourceQuestion').append($option).selectpicker('refresh');
+						id.append($option).selectpicker('refresh');
 					}
 				}else {
 					showErrMsg('Server error while fetching data.');

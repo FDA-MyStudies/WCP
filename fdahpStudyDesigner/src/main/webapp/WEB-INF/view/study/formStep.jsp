@@ -205,7 +205,6 @@
                                 <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
 					</span>
                 </div>
-
             </c:if>
         </div>
     </div>
@@ -368,34 +367,34 @@
                  <div class="col-md-3">
                         <span class="checkbox checkbox-inline">
                                             <input type="checkbox" id="chkSelect" name="differentSurvey"
-                                                        <c:if test="${not empty questionnairesStepsBo.differentSurvey
+                                                   <c:if test="${not empty questionnairesStepsBo.differentSurvey
                                                         and questionnairesStepsBo.differentSurvey}">checked</c:if> />
                                             <label for="chkSelect"> Is different survey? </label>
                         </span>
                  </div>
                  <div class="col-md-5"></div>
              </div>
-                    <div class="row">
-                            <div class="col-md-4"></div>
-                                   <div class="col-md-5" id="contents" style="display:none">
-                                                   <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
-                                                            <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
-                                                            <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
-                                                            <c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
-                                                            Survey ${loop.index+1} : ${key.shortTitle}
-                                                            </option>
-                                                            </c:forEach>
-                                                            <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
-                                                            <option style="text-align: center; color: #000000" disabled>- No items found -</option>
-                                                            </c:if>
-                                                   </select>
-                                   </div>
-                            <div class="col-md-3"></div>
-                            </div>
-                                                <br>
-                                                <div class="row">
-                                                 <div class="col-md-4"></div>
-                                                  <div class="col-md-5">
+             <div class="row">
+                 <div class="col-md-4"></div>
+                 <div class="col-md-5" id="contents" style="display:none">
+                     <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
+                         <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+                             <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+                                     <c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
+                                 Survey ${loop.index+1} : ${key.shortTitle}
+                             </option>
+                         </c:forEach>
+                         <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+                             <option style="text-align: center; color: #000000" disabled>- No items found -</option>
+                         </c:if>
+                     </select>
+                 </div>
+                 <div class="col-md-3"></div>
+             </div>
+             <br>
+             <div class="row">
+                 <div class="col-md-4"></div>
+                 <div class="col-md-5">
                      <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                              data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
                          <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -413,9 +412,8 @@
                      </select>
                  </div>
                  <div class="col-md-3"></div>
-             </div>
-             </div>
-             <br>
+         </div>
+         <br>
 
              <div id="formulaContainer${status.index}">
                  <c:choose>
@@ -747,12 +745,15 @@ var idleTime = 0;
   $(document).ready(function () {
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
-    $('#formStepId input[type="text"]').prop('disabled', true);
-    $('#formStepId input[type="radio"]').prop('disabled', true);
-    $('#formStepId select').addClass('linkDis');
-    $('#studyLanguage').removeClass('linkDis');
-    $('.hideButtonOnView').addClass('dis-none');
-    $('.selectpicker').selectpicker('refresh');
+      $('#formStepId input[type="text"], input[type="checkbox"], input[type="radio"]').prop('disabled', true);
+      $('#formStepId select').addClass('linkDis');
+      $('#studyLanguage').removeClass('linkDis');
+      $('.hideButtonOnView').addClass('dis-none');
+      $('#logicDiv').find('div.bootstrap-select').each( function () {
+          $(this).addClass('ml-disabled');
+      });
+      $('#addFormula').attr('disabled', true);
+      $('.selectpicker').selectpicker('refresh');
     </c:if>
     var id = "${questionnairesStepsBo.stepId}";
     if (id != '' && id != null && typeof id != 'undefined') {
@@ -1498,6 +1499,12 @@ var idleTime = 0;
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').addClass("ml-disabled").attr('disabled', true);
+            $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+                $(this).addClass('ml-disabled');
+                if ($(this).is("input")) {
+                    $(this).attr('disabled', true);
+                }
+            });
           $('#addQuestionId').attr('disabled', true);
           if ($('#repeatableYes').prop('checked') === true) {
             $('#repeatableText').val($('#mlText', htmlData).val());
@@ -1505,7 +1512,7 @@ var idleTime = 0;
           if (isBranching) {
             $('[data-id="destinationStepId"]').addClass("ml-disabled");
           }
-          $('.delete').addClass('cursor-none');
+          $('.delete, #addFormula, #piping, .switch').addClass('cursor-none');
           let mark=true;
           $('#questionLangBOList option', htmlData).each(function (index, value) {
             let id = '#row' + value.getAttribute('id');
@@ -1542,13 +1549,18 @@ var idleTime = 0;
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').removeClass("ml-disabled").attr('disabled', false);
+            $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+                $(this).removeClass('ml-disabled');
+                if ($(this).is("input")) {
+                    $(this).attr('disabled', false);
+                }
+            });
             $('#addQuestionId').attr('disabled', false);
           $('#repeatableText').val($('#repeatableText', htmlData).val());
           if (isBranching) {
             $('[data-id="destinationStepId"]').removeClass("ml-disabled");
           }
-          $('.delete').removeClass('cursor-none');
-
+          $('.delete, #addFormula, #piping, .switch').removeClass('cursor-none');
           <c:if test="${actionTypeForQuestionPage == 'view'}">
           $('#formStepId input[type="text"]').prop('disabled', true);
           $('#formStepId input[type="radio"]').prop('disabled', true);

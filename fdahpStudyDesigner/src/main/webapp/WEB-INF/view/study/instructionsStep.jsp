@@ -696,12 +696,14 @@
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').addClass('ml-disabled');
+          $('#piping').addClass('cursor-none');
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
           $('#instructionText').val($('#mlText', htmlData).val());
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').removeClass('ml-disabled');
+          $('#piping').removeClass('cursor-none');
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
 

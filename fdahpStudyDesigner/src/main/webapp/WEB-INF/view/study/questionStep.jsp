@@ -486,21 +486,21 @@ input[type=number] {
                             <div class="col-md-5"></div>
                         </div>
                             <div class="row">
-                                        <div class="col-md-4"></div>
-                                                                <div class="col-md-5" id="content" style="display:none">
-                                                                        <select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
-                                                                        							<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
-                                                                        								<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
-                                                                        								<c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
-                                                                        									Survey ${loop.index+1} : ${key.shortTitle}
-                                                                        								</option>
-                                                                        							</c:forEach>
-                                                                        							<c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
-                                                                        								<option style="text-align: center; color: #000000" disabled>- No items found -</option>
-                                                                        							</c:if>
-                                                                        </select>
-                                                                </div>
-                                                                 <div class="col-md-3"></div>
+								<div class="col-md-4"></div>
+								<div class="col-md-5" id="content" style="display:none">
+									<select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select-">
+										<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+											<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+													<c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
+												Survey ${loop.index+1} : ${key.shortTitle}
+											</option>
+										</c:forEach>
+										<c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+											<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+										</c:if>
+									</select>
+								</div>
+								<div class="col-md-3"></div>
                             </div>
                             <br>
                             <div class="row">
@@ -4357,7 +4357,7 @@ input[type=number] {
 				<div class="mb-xs">
 					<select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
 						<c:forEach items="${sameSurveySourceKeys}" var="key" varStatus="loop">
-							<option data-id="${key.stepId}" value="${key.stepShortTitle}"
+							<option data-id="${key.stepId}" value="${key.stepId}"
 									<c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
 								Step ${loop.index+1} : ${key.stepShortTitle}
 							</option>
@@ -8865,7 +8865,7 @@ function refreshSourceKeys(surveyId, type) {
 					if (options != null && options.length > 0) {
 						$.each(options, function(index, option) {
 							let $option = $("<option></option>")
-									.attr("value", option.stepShortTitle)
+									.attr("value", option.stepId)
 									.attr("data-id", option.stepId)
 									.text("Step " + (index+1) + " : " + option.stepShortTitle);
 							id.append($option).selectpicker('refresh');

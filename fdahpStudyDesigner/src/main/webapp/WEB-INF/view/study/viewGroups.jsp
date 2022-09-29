@@ -61,14 +61,16 @@
                    cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th style="display: none;"></th>
+                  
                     <th>GROUP ID<span class="sort"></span></th>
                     <th>GROUP NAME<span class="sort"></span></th>
                     <th>ACTION</th>
                 </tr>
                 </thead>
+                <tbody>
                  <c:forEach items="${groupsList}" var="groupsList">
                  <tr id="row${groupsList.groupId}">
+                 
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
                  <td style="width: 200px !important;">
@@ -77,9 +79,12 @@
                   	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
                   	</span>
                   <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span></td>
+                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
+                  </td>
+                
                  </tr>
                  </c:forEach>
+                  </tbody>
             </table>
         </div>
     </div>
@@ -134,7 +139,7 @@ name="groupsInfoForm" id="groupsInfoForm" method="post">
       "searching": false,
       "pageLength": 10,
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-        $('td:eq(0)', nRow).addClass("dis-none");
+       // $('td:eq(0)', nRow).addClass("dis-none");
       }
     });
 

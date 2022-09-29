@@ -429,7 +429,7 @@ width:142px !important;
                                        class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                         onclick="getQuestionnaireStep('Groups');">Groups
                                </div>
-                                <div class="add-steps-btn darkblue-bg custoWidth" data-toggle="modal" data-target="#assignGroup" >Assign groups </div>
+                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" data-target="#assignGroup" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
       							<span class="checkbox checkbox-inline"> <input
@@ -466,12 +466,23 @@ width:142px !important;
                                       </c:choose>
                                       <td class="title"><c:choose>
                                           <c:when test="${entry.value.stepType eq 'Form'}">
+                                          <c:choose>
+                                          <c:when test="${entry.value.groupFlag eq true}">
+                                          <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                          <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
+                                          <label for="${entry.value.stepId}"></label></span>
+                                          </c:when>
+                                           <c:otherwise>
+                                          <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                          <c:if test="${actionType ne 'view'}">
+                                          <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
+                                          </c:if>
+                                          <label for="${entry.value.stepId}"></label></span>
+                                           </c:otherwise>
+                                           </c:choose>
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
                                                        title="${fn:escapeXml(subentry.value.title)}">
-                                                       <span class="checkbox selectbox_chk checkbox-inline pl-1">
-														<input type="checkbox" id="selectbox${loop.index}" name="" value="" required="">
-														<label for="selectbox${loop.index}"></label></span>
                                                       <span class="ml-lg"> ${subentry.value.title} </span>
                                                       </div>
                                                   <div class="clearfix"></div>
@@ -483,13 +494,15 @@ width:142px !important;
                                                    <c:choose>
 													<c:when test="${entry.value.groupFlag eq true}">
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                                    <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
+                                                    <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
                                                     <label for="${entry.value.stepId}"></label>
                                                     </span>
                                                     </c:when>
                                                     <c:otherwise>
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                                   <c:if test="${actionType ne 'view'}">
 													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
+													</c:if>
 													<label for="${entry.value.stepId}"></label>
 													</span>
                                                     </c:otherwise>
@@ -1877,22 +1890,23 @@ width:142px !important;
 <script type="text/javascript">
       //assignGroup code
                 function assign(){
-                debugger
+                   location.reload();
                    var grpId = $("#group :selected").val();
+                   var count = 0 ;
                    var steparray = new Array();
                    $('#content').find('tbody input.step-check').each(function () {
-                   debugger
                    console.log($(this));
                     if ($(this).is(':checked')) {
                     console.log("push id in array")
                     let id = $(this).attr('id');
                     console.log("id :"+id);
                     steparray.push(id);
+                      count++;
                        }
                    })
                    var stepList = steparray;
+                   if(count >=2){
                    if (stepList != null && stepList != '' && grpId != null && grpId != '') {
-                   debugger
                     $.ajax({
                       url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
                       type: "POST",
@@ -1910,10 +1924,8 @@ width:142px !important;
                         groupArray = data.groupMappingBo;
                         console.log("grpArray : "+groupArray);
                         console.log("status: " +status);
-                        debugger
 
                                     if (status == "SUCCESS") {
-                                      debugger
                                       for(var i=0; groupArray.length>i; i++){
                                      $('#'+groupArray[i].stepId).prop('disabled', true);
                                      $('#'+groupArray[i].stepId).prop('checked', true);
@@ -1930,7 +1942,6 @@ width:142px !important;
                                     setTimeout(hideDisplayMessage, 4000);
                       },
                       error: function (xhr, status, error) {
-                                      debugger
                                       console.log("error : "+ error);
                                         $("body").removeClass("loading");
                                         if (callback)
@@ -1939,10 +1950,23 @@ width:142px !important;
                       global: false
                     });
                 } else {
-                  callback(false);
+                  $('#alertMsg').show();
+                  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to assign the group,Please select the mandatory values");
                 }
+                setTimeout(hideDisplayMessage, 4000);
+                }
+                else{
+                $('#alertMsg').show();
+                $("#alertMsg").removeClass('s-box').addClass('e-box').text("Atleast two steps should be required in order to create a group");
+                }
+                setTimeout(hideDisplayMessage, 4000);
                 }
                 //end
+/* $("#assignGroup .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function(){
+	         if($(this).text()=="- All items are already selected -"){
+	           $(this).hide();
+	         } */
+
   <c:if test="${actionType == 'view'}">
   $('#contentFormId input[type="text"]').prop('disabled', true);
   $('#contentFormId input[type="checkbox"]').prop('disabled', true);

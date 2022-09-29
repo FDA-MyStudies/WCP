@@ -539,7 +539,8 @@ input[type=number] {
 									<c:forEach items="${questionnairesStepsBo.preLoadLogicBeans}" var="preLoadLogicBean" varStatus="status">
 										<div id="form-div${status.index}"
 											 <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
-											 <c:if test="${status.index eq 0}">style="height: 150px;"</c:if> class="form-div">
+											 <c:if test="${status.index eq 0}">style="height: 150px;"</c:if>
+											 class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
 											<c:if test="${status.index gt 0}">
 												<div class="form-group">
 												<span class="radio radio-info radio-inline p-45 pl-2">
@@ -8736,7 +8737,7 @@ $('.text-choice').each(function(i){
 		let formContainer = $('#formulaContainer');
 		let count = formContainer.find('div.formula-box').length;
 		let formula =
-				'<div id="form-div' + count + '" class="form-div" style="height: 200px; margin-top:20px">'+
+				'<div id="form-div' + count + '" class="form-div deletable" style="height: 200px; margin-top:20px">'+
 				'<div class="form-group">'+
 						'<span class="radio radio-info radio-inline p-45 pl-2">'+
 							'<input type="radio" id="andRadio' + count + '" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
@@ -8788,12 +8789,15 @@ $('.text-choice').each(function(i){
 
 let defaultVisibility = $('#groupDefaultVisibility');
 if (defaultVisibility.is(':checked')) {
+	$('.deletable').remove();
 	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
 		$(this).addClass('ml-disabled');
 		if ($(this).is("input.con-radio")) {
 			$(this).attr('disabled', true);
 		}
 	});
+	$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
 	$('#defaultVisibility').val('true');
 	$('#addFormula').attr('disabled', true);
 }
@@ -8803,18 +8807,27 @@ defaultVisibility.on('change', function () {
 	let logicDiv = $('#logicDiv');
 	let addForm = $('#addFormula');
 	if  (toggle.is(':checked')) {
+		$('.deletable').remove();
 		logicDiv.find('div.bootstrap-select, input, select').each( function () {
 			$(this).addClass('ml-disabled');
-			if ($(this).is("input.con-radio")) {
-				$(this).attr('disabled', true);
+			if ($(this).is("select")) {
+				$(this).val('').selectpicker('refresh');
+			}
+			if ($(this).is("input")) {
+				$(this).val('').attr('disabled', true);
 			}
 		});
 		$('#defaultVisibility').val('true');
+		$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+		$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
 		addForm.attr('disabled', true);
 	} else {
 		logicDiv.find('div.bootstrap-select, input, select').each( function () {
 			$(this).removeClass('ml-disabled');
-			if ($(this).is("input.con-radio ")) {
+			if ($(this).is("select")) {
+				$(this).selectpicker('refresh');
+			}
+			if ($(this).is("input")) {
 				$(this).attr('disabled', false);
 			}
 		});

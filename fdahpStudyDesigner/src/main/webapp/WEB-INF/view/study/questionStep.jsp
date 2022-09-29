@@ -511,12 +511,19 @@ input[type=number] {
 									<c:forEach items="${destinationStepList}" var="destinationStep">
 
 										<option value="${destinationStep.stepId}"
-											${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
-											Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
+												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
+													selected
+												</c:if>>
+											Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}
 										</option>
 									</c:forEach>
 									<c:forEach items="${groupsList}" var="group" varStatus="status">
-										<option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+										<option value="${group.groupId}" id="selectGroup${group.groupId}"
+												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.groupId}">
+													selected
+												</c:if>>
+											Group  ${status.index + 1} :  ${group.groupName}&nbsp;
+										</option>
 									</c:forEach>
 									<option value="0"
 										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>

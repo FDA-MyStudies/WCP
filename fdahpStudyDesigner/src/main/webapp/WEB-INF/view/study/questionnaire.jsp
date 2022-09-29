@@ -429,7 +429,7 @@ width:142px !important;
                                        class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                         onclick="getQuestionnaireStep('Groups');">Groups
                                </div>
-                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" data-target="#assignGroup" >Assign groups </div>
+                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
       							<span class="checkbox checkbox-inline"> <input
@@ -1919,6 +1919,7 @@ width:142px !important;
                                       xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
                                     },
                       success: function (data) {
+                      window.location.reload();
                         var status = data.message;
                         var groupArray = new Array();
                         groupArray = data.groupMappingBo;
@@ -1951,13 +1952,13 @@ width:142px !important;
                     });
                 } else {
                   $('#alertMsg').show();
-                  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to assign the group,Please select the mandatory values");
+                  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to assign the group,Please select the group");
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }
                 else{
                 $('#alertMsg').show();
-                $("#alertMsg").removeClass('s-box').addClass('e-box').text("Atleast two steps should be required in order to create a group");
+                $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two step to form a group.");
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }
@@ -5107,7 +5108,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           // $('#shortTitleId, #branchingId').attr('disabled', true);
-          $('#shortTitleId, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+          $('#shortTitleId, #assigndisable, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor, ' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +

@@ -475,7 +475,7 @@ input[type=number] {
 								If True, Destination step =
 							</div>
 							<div class="col-md-1"></div>
-							<div class="col-md-3">
+							<div class="col-md-3 mt__8">
 
                                 <span class="checkbox checkbox-inline">
                                 						<input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
@@ -490,7 +490,7 @@ input[type=number] {
 								<div class="col-md-5" id="content" style="display:none">
 									<select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select survey id-">
 										<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
-											<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+											<option data-id="${key.id}" value="${key.id}" id="${key.shortTitle}"
 													<c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
 												Survey ${loop.index+1} : ${key.shortTitle}
 											</option>
@@ -509,7 +509,6 @@ input[type=number] {
 								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
 										data-error="Please choose one option" class="selectpicker text-normal" required title="-select destination step-">
 									<c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
-
 										<option value="${destinationStep.stepId}"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
 													selected
@@ -8835,6 +8834,8 @@ $('#differentSurvey').on('change', function(e) {
 	} else {
 		$('#surveyBlock').hide();
 		refreshSourceKeys($('#questionnairesId').val(), null);
+		$('#surveyId').val('').selectpicker('refresh');
+		$('#sourceQuestion').val('').selectpicker('refresh');
 	}
 });
 
@@ -8844,6 +8845,8 @@ $('#differentSurveyPreLoad').on('change', function() {
 	} else {
 		$('#content').hide();
 		refreshSourceKeys($('#questionnairesId').val(), 'preload');
+		$('#preLoadSurveyId').val('').selectpicker('refresh');
+		$('#destinationTrueAsGroup').val('').selectpicker('refresh');
 	}
 });
 
@@ -8975,7 +8978,6 @@ function submitPiping() {
 				} else {
 					showErrMsg(message);
 				}
-
 			},
 			error: function (xhr, status, error) {
 				$('#pipingModal').modal('hide');

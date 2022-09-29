@@ -653,7 +653,8 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getQuestionnairesId(),
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
-            if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
+            if (questionnairesStepsBo.getPreLoadSurveyId() != null && questionnairesStepsBo.getDifferentSurveyPreLoad() != null
+                    && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
               destionationStepList = studyQuestionnaireService.getSameSurveySourceKeys(questionnairesStepsBo.getPreLoadSurveyId(), -1);
             }
             map.addAttribute("destinationStepsPreLoad", destionationStepList);
@@ -1692,7 +1693,8 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getQuestionnairesId(),
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
-            if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
+            if (questionnairesStepsBo.getPreLoadSurveyId() != null && questionnairesStepsBo.getDifferentSurveyPreLoad() != null
+                    && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
               destionationStepList = studyQuestionnaireService.getSameSurveySourceKeys(questionnairesStepsBo.getPreLoadSurveyId(), -1);
             }
             map.addAttribute("destinationStepsPreLoad", destionationStepList);

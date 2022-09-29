@@ -364,11 +364,11 @@
                      If True, Destination step =
                  </div>
                  <div class="col-md-1"></div>
-                 <div class="col-md-3">
+                 <div class="col-md-3 mt__8">
                         <span class="checkbox checkbox-inline">
                                             <input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
-                                                   <c:if test="${not empty questionnairesStepsBo.differentSurvey
-                                                        and questionnairesStepsBo.differentSurvey}">checked</c:if> />
+                                                   <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad
+                                                        and questionnairesStepsBo.differentSurveyPreLoad}">checked</c:if> />
                                             <label for="differentSurveyPreLoad"> Is different survey? </label>
                         </span>
                  </div>
@@ -1554,7 +1554,7 @@ var idleTime = 0;
             $('#logicDiv').find('div.bootstrap-select, input').each( function () {
                 $(this).removeClass('ml-disabled');
                 if ($(this).is("input")) {
-                    $(this).attr('disabled', false);
+                    $(this).attr('disabled', false).removeClass('cursor-none');;
                 }
             });
             $('#addQuestionId').attr('disabled', false);
@@ -1715,6 +1715,8 @@ $('#differentSurvey').on('change', function(e) {
     } else {
         $('#surveyBlock').hide();
         refreshSourceKeys($('#questionnairesId').val(), null);
+        $('#surveyId').val('').selectpicker('refresh');
+        $('#sourceQuestion').val('').selectpicker('refresh');
     }
 });
 
@@ -1724,12 +1726,14 @@ $('#differentSurveyPreLoad').on('change', function(e) {
     } else {
         $('#contents').hide();
         refreshSourceKeys($('#questionnairesId').val(), 'preload');
+        $('#preLoadSurveyId').val('').selectpicker('refresh');
+        $('#destinationTrueAsGroup').val('').selectpicker('refresh');
     }
 });
 
 if($('#differentSurveyPreLoad').is(':checked')){
-        $('#contents').show();
-    }
+    $('#contents').show();
+}
 
 $('#surveyId').on('change', function () {
     let surveyId = $('#surveyId option:selected').attr('data-id');

@@ -6394,6 +6394,20 @@ public class StudyDAOImpl implements StudyDAO {
                           newPreLoadLogicBo.setStepGroupId(newQuestionnairesStepsBo.getStepId());
                           session.save(newPreLoadLogicBo);
                         }
+                        
+						
+						List<GroupsBo> groupsBoList = session
+								.createQuery("from GroupsBo where  studyId=:id and questionnaireId=:questionnaireId")
+								.setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
+								.setParameter("id", studyBo.getId()).list();
+						for (GroupsBo groupsBo : groupsBoList) {
+							GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
+							newGroupsBo.setId(null);
+							newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
+							newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+							session.save(newGroupsBo);
+						}
+						 
 
                         if (questionnairesStepsBo
                             .getStepType()

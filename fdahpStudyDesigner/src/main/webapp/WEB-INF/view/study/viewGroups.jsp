@@ -49,7 +49,15 @@
             </div>
             <div class="black-md-f text-uppercase dis-line pull-left line34">GROUPS</div>
           <div class="dis-line form-group mb-none">
-         <button type="button" class="btn btn-primary blue-btn addOrEditGroups" style="margin-top: 12px;">+ Add Group</button>
+          <c:choose>
+          <c:when test="${actionType eq 'view'}">
+             <button type="button" class="btn btn-primary blue-btn addOrEditGroups <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" style="margin-top: 12px;">+ Add Group</button>
+				</c:when>
+				<c:otherwise>
+                        <button type="button" class="btn btn-primary blue-btn addOrEditGroups" style="margin-top: 12px;">+ Add Group</button>
+                        </c:otherwise>
+                    </c:choose>
+         
           </div>
         </div>
     </div>

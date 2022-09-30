@@ -426,7 +426,7 @@ width:142px !important;
                                       onclick="getQuestionnaireStep('Form');">Add Form Step
                               </div>
                               <div
-                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>"
                                         onclick="getQuestionnaireStep('Groups');">Groups
                                </div>
                                 <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>

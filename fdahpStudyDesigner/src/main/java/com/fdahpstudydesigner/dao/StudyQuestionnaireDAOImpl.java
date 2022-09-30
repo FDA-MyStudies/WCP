@@ -1,7 +1,6 @@
 /** */
 package com.fdahpstudydesigner.dao;
 
-import com.fdahpstudydesigner.bean.GroupMappingBean;
 import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;

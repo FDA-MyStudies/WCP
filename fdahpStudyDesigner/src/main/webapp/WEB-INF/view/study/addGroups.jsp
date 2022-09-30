@@ -75,7 +75,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <div class="row form-group">
                   <div class="col-md-6 pl-none">
                   <input type="hidden" name="id" id="id" value="${fn:escapeXml(groupsBo.id)}">
-                    <div class="gray-xs-f mb-xs" >Group ID <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+                    <div class="gray-xs-f mb-xs" >Group ID <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="The identification number of the group shall be mentioned in this text box."></span>
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
@@ -87,7 +87,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     </div>
                   </div>
                   <div class="col-md-6 pl-none">
-                    <div class="gray-xs-f mb-xs">Group Name <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="The Tooltip plugin is small pop-up box that appears when the user moves."></span>
+                    <div class="gray-xs-f mb-xs">Group Name <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="The name of the group can be mentioned in this text box."></span>
                     <div class="help-block with-errors red-txt"></div>
 
 

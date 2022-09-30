@@ -4336,6 +4336,13 @@ public class StudyQuestionnaireController {
               && sesObj.getStudySession() != null
               && sesObj.getStudySession().contains(sessionStudyCount)) {
 
+        String actionType =
+                FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
+                        ? ""
+                        : request.getParameter("actionType");
+        if (StringUtils.isEmpty(actionType)) {
+          actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
+        }
         Integer grpId =
                 Integer.valueOf(FdahpStudyDesignerUtil.isEmpty(request.getParameter("grpId"))
                         ? ""
@@ -4380,6 +4387,14 @@ public class StudyQuestionnaireController {
         if (StringUtils.isNotEmpty(studyId)) {
           groupMappingBo =
                   studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+        }
+
+        if ("edit".equals(actionType)) {
+          jsonobject.put("actionType", "edit");
+          request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+        } else {
+          jsonobject.put("actionType", "view");
+          request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
         }
         if(groupMappingBo != null){
           message = FdahpStudyDesignerConstants.SUCCESS;

@@ -3857,7 +3857,9 @@ public class StudyQuestionnaireController {
                           request
                                   .getSession()
                                   .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-          
+
+
+
           if (StringUtils.isEmpty(studyId)) {
             studyId =
                     FdahpStudyDesignerUtil.isEmpty(
@@ -3923,7 +3925,9 @@ public class StudyQuestionnaireController {
     ModelAndView mav = new ModelAndView();
     ModelMap map = new ModelMap();
     GroupsBo groupsBo = null;
+    String questionnaireId = "";
     String sucMsg = "";
+    List<GroupsBo> groupsList = null;
     String errMsg = "";
     String actionPage = "";
     int grpId = 0;
@@ -3967,6 +3971,32 @@ public class StudyQuestionnaireController {
                   .getSession()
                   .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG);
         }
+        String studyId =
+                (String)
+                        request
+                                .getSession()
+                                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+
+
+
+        if (StringUtils.isEmpty(studyId)) {
+          studyId =
+                  FdahpStudyDesignerUtil.isEmpty(
+                          request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+                          == true
+                          ? "0"
+                          : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+        }
+
+        questionnaireId =
+                FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
+                        ? ""
+                        : request.getParameter("questionnaireId");
+        if (StringUtils.isEmpty(questionnaireId)) {
+          questionnaireId =
+                  (String) request.getSession().getAttribute(sessionStudyCount + "questionnaireId");
+          request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
+        }
         String id =
                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
                         ? ""
@@ -3982,6 +4012,11 @@ public class StudyQuestionnaireController {
         if (StringUtils.isEmpty(actionType)) {
           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
         }
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          groupsList =
+                  studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId);
+        }
+        map.addAttribute("groupsList", groupsList);
         if (!"".equalsIgnoreCase(checkRefreshFlag)) {
           if (!"".equals(id)) {
             grpId = Integer.valueOf(id);
@@ -4003,6 +4038,7 @@ public class StudyQuestionnaireController {
         }
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("groupsBo", groupsBo);
+          map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
           mav = new ModelAndView("addOrEditGroupsPage", map);
         } else {
           mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");

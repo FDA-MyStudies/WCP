@@ -806,6 +806,43 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     }
   }
 
+  private void doGroupPreLoadLogic(GroupsBean groupsBo) throws Exception{
+    try {
+      List<PreLoadLogicBean> preLoadLogicBeans = groupsBo.getPreLoadLogicBeans();
+      if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
+        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(Integer.valueOf(groupsBo.getGroupId()));
+        for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+            if (preLoadLogicBo == null) {
+              preLoadLogicBo = new PreLoadLogicBo();
+              preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.GROUP);
+              preLoadLogicBo.setStepGroupId(Integer.valueOf(groupsBo.getGroupId()));
+            } else {
+              preLoadIds.remove(preLoadLogicBo.getId());
+            }
+            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
+                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setInputValue(logicBean.getInputValue());
+            preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
+            studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
+          }
+        }
+        studyQuestionnaireDAO.deleteFormula(preLoadIds);
+        GroupsBo persistentStepsBo =
+                studyQuestionnaireDAO.getGroupsDetails(Integer.parseInt(groupsBo.getGroupId()));
+        if (persistentStepsBo != null) {
+          persistentStepsBo.setDefaultVisibility("true".equals(groupsBo.getDefaultVisibility()));
+          persistentStepsBo.setDestinationTrueAsGroup(groupsBo.getDestinationTrueAsGroup());
+          studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("Exception : ", e);
+      throw e;
+    }
+  }
+
   /**
    * Create the instruction step in Questionnaire which lays the instruction to user in mobile
    * app.Admin would needs to fill the short title instruction title and instruction text.
@@ -2246,11 +2283,14 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
       if (groupsBo == null) {
         addFlag = true;
         groupsBo = new GroupsBo();
-        groupsBo.setCreatedBy(userSession.getUserId().intValue());
+        groupsBo.setCreatedBy(userSession.getUserId());
         groupsBo.setCreatedOn(userSession.getCreatedDate());
         groupsBo.setAction(groupsBean.isAction());
         groupsBo.setQuestionnaireId(groupsBean.getQuestionnaireId());
         groupsBo.setStudyId(groupsBean.getStudyId());
+        groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
+        groupsBo.setGroupDefaultVisibility(Boolean.valueOf(groupsBean.getGroupDefaultVisibility()));
+        groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       } else {
           groupsBo.setModifiedBy(userSession.getUserId());
           groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2258,6 +2298,7 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) 
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
       studyQuestionnaireDAO.saveOrUpdateGroup(groupsBo);
+      this.doGroupPreLoadLogic(groupsBean);
       if (addFlag) {
           activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
           activitydetails =

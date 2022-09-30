@@ -1,6 +1,7 @@
 package com.fdahpstudydesigner.bean;
 
 import javax.persistence.*;
+import java.util.List;
 
 public class GroupsBean {
     private Integer id;
@@ -18,6 +19,28 @@ public class GroupsBean {
 	private boolean action;
 	private String type;
 	private String buttonText;
+    private Boolean defaultVisibility;
+    private Integer destinationTrueAsGroup;
+
+    @Transient private String groupDefaultVisibility;
+
+    @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
+
+    public List<PreLoadLogicBean> getPreLoadLogicBeans() {
+        return preLoadLogicBeans;
+    }
+
+    public void setPreLoadLogicBeans(List<PreLoadLogicBean> preLoadLogicBeans) {
+        this.preLoadLogicBeans = preLoadLogicBeans;
+    }
+
+    public String getGroupDefaultVisibility() {
+        return groupDefaultVisibility;
+    }
+
+    public void setGroupDefaultVisibility(String groupDefaultVisibility) {
+        this.groupDefaultVisibility = groupDefaultVisibility;
+    }
 
     public String getButtonText() {
 		return buttonText;
@@ -42,6 +65,22 @@ public class GroupsBean {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+    public Integer getDestinationTrueAsGroup() {
+        return destinationTrueAsGroup;
+    }
+
+    public void setDestinationTrueAsGroup(Integer destinationTrueAsGroup) {
+        this.destinationTrueAsGroup = destinationTrueAsGroup;
+    }
+
+    public Boolean getDefaultVisibility() {
+        return defaultVisibility;
+    }
+
+    public void setDefaultVisibility(Boolean defaultVisibility) {
+        this.defaultVisibility = defaultVisibility;
+    }
    
 
     public Integer getId() {

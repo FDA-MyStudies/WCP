@@ -1,8 +1,10 @@
 package com.fdahpstudydesigner.bo;
 
+import com.fdahpstudydesigner.bean.PreLoadLogicBean;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,6 +48,18 @@ public class GroupsBo implements Serializable {
     @Transient private String buttonText;
 
     @Transient private String type;
+
+
+    @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
+
+    public List<PreLoadLogicBean> getPreLoadLogicBeans() {
+        return preLoadLogicBeans;
+    }
+
+    public void setPreLoadLogicBeans(List<PreLoadLogicBean> preLoadLogicBeans) {
+        this.preLoadLogicBeans = preLoadLogicBeans;
+    }
+
     
     @Column(name = "action", length = 1)
     private Boolean action;
@@ -58,5 +72,38 @@ public class GroupsBo implements Serializable {
     
     @Column(name="questionnaire_id")
     private Integer questionnaireId;
+
+    @Column(name = "destination_true_as_group")
+    private Integer destinationTrueAsGroup;
+
+    @Column(name = "default_visibility")
+    private Boolean defaultVisibility;
+
+    @Column(name = "group_default_visibility")
+    private Boolean groupdefaultVisibility;
+
+    public Integer getDestinationTrueAsGroup() {
+        return destinationTrueAsGroup;
+    }
+
+    public void setDestinationTrueAsGroup(Integer destinationTrueAsGroup) {
+        this.destinationTrueAsGroup = destinationTrueAsGroup;
+    }
+
+    public Boolean getDefaultVisibility() {
+        return defaultVisibility;
+    }
+
+    public void setDefaultVisibility(Boolean defaultVisibility) {
+        this.defaultVisibility = defaultVisibility;
+    }
+
+    public Boolean getGroupDefaultVisibility() {
+        return groupdefaultVisibility;
+    }
+
+    public void setGroupDefaultVisibility(Boolean groupdefaultVisibility) {
+        this.groupdefaultVisibility = groupdefaultVisibility;
+    }
 
 }

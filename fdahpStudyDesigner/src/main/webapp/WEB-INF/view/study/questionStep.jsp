@@ -8810,6 +8810,7 @@ if (defaultVisibility.is(':checked')) {
 	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
 	$('#defaultVisibility').val('true');
 	$('#addFormula').attr('disabled', true);
+	$('#skiappableYes').prop('disabled', false);
 } else {
 	$('#skiappableYes').prop('checked', false).prop('disabled', true);
 	$('#skiappableNo').prop('checked', true);
@@ -8834,8 +8835,7 @@ defaultVisibility.on('change', function () {
 		$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
 		$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
 		addForm.attr('disabled', true);
-		$('#skiappableYes').prop('checked', false).prop('disabled', true);
-		$('#skiappableNo').prop('checked', true);
+		$('#skiappableYes').prop('disabled', false);
 	} else {
 		logicDiv.find('div.bootstrap-select, input, select').each( function () {
 			$(this).removeClass('ml-disabled');
@@ -8849,7 +8849,8 @@ defaultVisibility.on('change', function () {
 		$('#defaultVisibility').val('false');
 		toggle.attr('checked', false);
 		addForm.attr('disabled', false);
-		$('#skiappableYes').prop('disabled', false);
+		$('#skiappableYes').prop('checked', false).prop('disabled', true);
+		$('#skiappableNo').prop('checked', true);
 	}
 })
 

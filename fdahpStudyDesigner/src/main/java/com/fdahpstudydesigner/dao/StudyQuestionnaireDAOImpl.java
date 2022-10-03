@@ -691,6 +691,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     }
                   }
                 }
+				
+				List<GroupsBo> groupsBoList = null;
+				searchQuery = "From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId";
+				query = session.createQuery(searchQuery).setInteger("questionnaireId", questionnaireId);
+				groupsBoList = query.list();
+				for (GroupsBo groupsBo : groupsBoList) {
+					if (groupsBo != null) {
+						GroupsBo newgroupsBo = SerializationUtils.clone(groupsBo);
+						newgroupsBo.setId(null);
+						newgroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+						session.save(newgroupsBo);
+					}
+				}
+				 
               } else if (questionnairesStepsBo
                   .getStepType()
                   .equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)) {
@@ -5799,7 +5813,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       	
         session = hibernateTemplate.getSessionFactory().openSession();
             searchQuery =
-                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId";
+                "From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId order by GBO.id desc";
             query = session.createQuery(searchQuery).setString("studyId", studyId).setString("questionnaireId", questionnaireId);
           groups = query.list();
         

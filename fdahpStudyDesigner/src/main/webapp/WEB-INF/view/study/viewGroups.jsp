@@ -49,7 +49,15 @@
             </div>
             <div class="black-md-f text-uppercase dis-line pull-left line34">GROUPS</div>
           <div class="dis-line form-group mb-none">
-         <button type="button" class="btn btn-primary blue-btn addOrEditGroups" style="margin-top: 12px;">+ Add Group</button>
+          <c:choose>
+          <c:when test="${actionType eq 'view'}">
+             <button type="button" class="btn btn-primary blue-btn addOrEditGroups <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" style="margin-top: 12px;">+ Add Group</button>
+				</c:when>
+				<c:otherwise>
+                        <button type="button" class="btn btn-primary blue-btn addOrEditGroups" style="margin-top: 12px;">+ Add Group</button>
+                        </c:otherwise>
+                    </c:choose>
+         
           </div>
         </div>
     </div>
@@ -74,12 +82,33 @@
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
                  <td style="width: 200px !important;">
-                  <span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> addOrEditGroups"
+                 <c:choose>
+          			<c:when test="${actionType eq 'view'}">
+					<span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${actionType eq 'view'}"> cursor-none </c:if> addOrEditGroups"
                   id="${groupsList.id}" data-toggle="tooltip"
                   	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
                   	</span>
-                  <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+                  	</c:when>
+				<c:otherwise>
+					<span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> addOrEditGroups"
+                  id="${groupsList.id}" data-toggle="tooltip"
+                  	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                  	</span>
+                  	</c:otherwise>
+                    </c:choose>
+                  
+                  	
+                  	<c:choose>
+          			<c:when test="${actionType eq 'view'}">
+					<span class="sprites_icon copy delete <c:if test="${actionType eq 'view'}"> cursor-none </c:if>"
                   data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
+                  </c:when>
+				<c:otherwise>
+					<span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
+                    </c:otherwise>
+                    </c:choose>
+                    
                   </td>
                 
                  </tr>

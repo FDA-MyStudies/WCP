@@ -426,7 +426,7 @@ width:142px !important;
                                       onclick="getQuestionnaireStep('Form');">Add Form Step
                               </div>
                               <div
-                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>"
                                         onclick="getQuestionnaireStep('Groups');">Groups
                                </div>
                                 <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
@@ -1876,12 +1876,15 @@ width:142px !important;
                   <c:forEach items="${groupsList}" var="group">
                      <option value="${group.id}" id="selectGroup${group.id}">${group.groupName}&nbsp;</option>
                   </c:forEach>
+                  <c:if test="${groupsList eq null || groupsList.size() eq 0}">
+                     <option style="text-align: center; color: #000000" disabled>- No data available -</option>
+                  </c:if>
               </select>
             </c:if>
           </div>
           <div class="text-right mt-xlg">
              <button type="button" class="btn btn-default gray-btn" data-dismiss="modal">Cancel</button>
-             <button type="button" class="btn btn-primary blue-btn" onclick="assign();">OK</button>
+             <button type="button" class="btn btn-primary blue-btn" data-dismiss="modal" onclick="assign();">OK</button>
           </div>
         </div>
       </div>
@@ -1963,10 +1966,7 @@ width:142px !important;
                 setTimeout(hideDisplayMessage, 4000);
                 }
                 //end
-/* $("#assignGroup .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function(){
-	         if($(this).text()=="- All items are already selected -"){
-	           $(this).hide();
-	         } */
+
 
   <c:if test="${actionType == 'view'}">
   $('#contentFormId input[type="text"]').prop('disabled', true);

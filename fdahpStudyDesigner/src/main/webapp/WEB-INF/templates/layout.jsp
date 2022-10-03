@@ -31,7 +31,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400"	rel="stylesheet">
 
 <!-- Vendor CSS -->
-<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.css">
+<link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
 <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.css">
 
 <link rel="stylesheet" rel="stylesheet"href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-timepicker.min.css">
@@ -101,7 +101,7 @@
  <script type="text/javascript" src="/fdahpStudyDesigner/vendor/jquery/jquery-3.6.0.min.js"></script> 
 <script type="text/javascript" src="/fdahpStudyDesigner/vendor/jquery/jquery.popper.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/fdahpStudyDesigner/vendor/boostrap/bootstrap4.min.js"></script>
+<script type="text/javascript" src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="/fdahpStudyDesigner/vendor/select2/bootstrap-select13.min.js"></script>
 
 

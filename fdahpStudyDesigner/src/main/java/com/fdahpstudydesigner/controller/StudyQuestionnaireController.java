@@ -4001,19 +4001,35 @@ public class StudyQuestionnaireController {
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
         }
-          map.addAttribute("actionPage", actionPage);
-          map.addAttribute("groupsBo", groupsBo);
-          mav = new ModelAndView("addOrEditGroupsPage", map);
-        } else {
-          mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
+        String studyId =
+                (String)
+                        request
+                                .getSession()
+                                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+        if (StringUtils.isEmpty(studyId)) {
+          studyId =
+                  FdahpStudyDesignerUtil.isEmpty(
+                          request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+                          ? "0"
+                          : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
         }
-
-      } catch(Exception e){
-        logger.error("StudyQuestionnaireController - addOrEditGroupsDetails() - ERROR", e);
+        if (StringUtils.isNotEmpty(studyId)) {
+          request.getSession().removeAttribute(sessionStudyCount + "actionType");
+          StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+          map.addAttribute("studyBo", studyBo);
+        }
+        map.addAttribute("actionPage", actionPage);
+        map.addAttribute("groupsBo", groupsBo);
+        mav = new ModelAndView("addOrEditGroupsPage", map);
+      } else {
+        mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
       }
-      logger.info("StudyQuestionnaireController - addOrEditGroupsDetails() - Ends");
-      return mav;
+    } catch(Exception e){
+      logger.error("StudyQuestionnaireController - addOrEditGroupsDetails() - ERROR", e);
     }
+    logger.info("StudyQuestionnaireController - addOrEditGroupsDetails() - Ends");
+    return mav;
+  }
 
   @RequestMapping("/adminStudies/addOrUpdateGroupsDetails.do")
   public ModelAndView addOrUpdateGroupsDetails(

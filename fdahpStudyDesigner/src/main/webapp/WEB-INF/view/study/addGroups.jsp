@@ -109,6 +109,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 
 <script>
  $(document).ready(function () {
+     $(".menuNav li.active").removeClass('active');
+     $(".seventhQuestionnaires").addClass('active');
   $("#saveId").click(function () {
   var questnId = $('#questionnaireId').val();
      var groupId = $('#groupId').val();

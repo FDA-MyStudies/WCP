@@ -478,17 +478,19 @@ input[type=number] {
 							<div class="col-md-3 mt__8">
 
                                 <span class="checkbox checkbox-inline">
-                                						<input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
-                                								<c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> checked</c:if> />
-                                						<label for="differentSurveyPreLoad"> Is different survey? </label>
+									<input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
+											<c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> checked</c:if> />
+									<label for="differentSurveyPreLoad"> Is different survey? </label>
                                 </span>
                             </div>
                             <div class="col-md-5"></div>
                         </div>
                             <div class="row">
 								<div class="col-md-4"></div>
-								<div class="col-md-5" id="content" style="display:none">
-									<select class="selectpicker text-normal" name="preLoadSurveyId" id="preLoadSurveyId" title="-select survey id-">
+								<div class="col-md-5 form-group" id="content" style="display:none">
+									<select class="selectpicker text-normal" name="preLoadSurveyId" data-error="Please select an option"
+                                            <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> required</c:if>
+											id="preLoadSurveyId" title="-select survey id-">
 										<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
 											<option data-id="${key.id}" value="${key.id}" id="${key.shortTitle}"
 													<c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
@@ -499,15 +501,16 @@ input[type=number] {
 											<option style="text-align: center; color: #000000" disabled>- No items found -</option>
 										</c:if>
 									</select>
+									<div class="help-block with-errors red-txt"></div>
 								</div>
 								<div class="col-md-3"></div>
                             </div>
                             <br>
                             <div class="row">
                              <div class="col-md-4"></div>
-                              <div class="col-md-5">
-								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
-										data-error="Please choose one option" class="selectpicker text-normal" required title="-select destination step-">
+                              <div class="col-md-5 form-group">
+								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup" required
+										data-error="Please select an option" class="selectpicker text-normal" required title="-select destination step-">
 									<c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
 										<option value="${destinationStep.stepId}"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
@@ -528,6 +531,7 @@ input[type=number] {
 										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
 										Completion Step</option>
 								</select>
+								  <div class="help-block with-errors red-txt"></div>
 								</div>
 								 <div class="col-md-3"></div>
 							</div>
@@ -574,19 +578,21 @@ input[type=number] {
 													</div>
 													<div class="row data-div">
 														<div class="col-md-1" style="padding-top: 7px">Operator</div>
-														<div class="col-md-2">
-															<select class="selectpicker operator text-normal" required
+														<div class="col-md-2 form-group">
+															<select class="selectpicker operator text-normal" data-error="Please select an option" required
 																	id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
 																<c:forEach items="${operators}" var="operator">
 																	<option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
 																</c:forEach>
 															</select>
+															<div class="help-block with-errors red-txt"></div>
 														</div>
 
 														<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-														<div class="col-md-3">
+														<div class="col-md-3 form-group">
 															<input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
-															<input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" placeholder="Enter">
+															<input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" required placeholder="Enter">
+															<div class="help-block with-errors red-txt"></div>
 														</div>
 													</div>
 												</div>
@@ -597,37 +603,39 @@ input[type=number] {
 								</c:when>
 
 								<c:otherwise>
-										<div style="height: 150px" class="form-div">
-											<div class="row formula-box">
-												<div class="col-md-2">
-													<strong class="font-family: arial;">Formula</strong>
-												</div>
+									<div style="height: 150px" class="form-div">
+										<div class="row formula-box">
+											<div class="col-md-2">
+												<strong class="font-family: arial;">Formula</strong>
 											</div>
-											<div style="height: 100px; border:1px solid #bfdceb;">
-												<div class="row">
-													<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-													<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
-													<div class="col-md-6"></div>
+										</div>
+										<div style="height: 100px; border:1px solid #bfdceb;">
+											<div class="row">
+												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+												<div class="col-md-6"></div>
+											</div>
+											<div class="row data-div">
+												<div class="col-md-1" style="padding-top: 7px">Operator</div>
+												<div class="col-md-2 form-group">
+													<select required class="selectpicker operator text-normal" data-error="Please select an option"
+															id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+														<c:forEach items="${operators}" var="operator">
+															<option value="${operator}">${operator}</option>
+														</c:forEach>
+													</select>
+													<div class="help-block with-errors red-txt"></div>
 												</div>
-												<div class="row data-div">
-													<div class="col-md-1" style="padding-top: 7px">Operator</div>
-													<div class="col-md-2">
-														<select required class="selectpicker operator text-normal"
-																id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
-															<c:forEach items="${operators}" var="operator">
-																<option value="${operator}">${operator}</option>
-															</c:forEach>
-														</select>
-													</div>
 
-													<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-													<div class="col-md-3">
-														<input type="hidden" id="id${status.index}">
-														<input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
-													</div>
+												<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+												<div class="col-md-3 form-group">
+													<input type="hidden" id="id${status.index}">
+													<input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" required placeholder="Enter">
+													<div class="help-block with-errors red-txt"></div>
 												</div>
 											</div>
 										</div>
+									</div>
 										<br>
 								</c:otherwise>
 							</c:choose>
@@ -8763,9 +8771,9 @@ $('.text-choice').each(function(i){
 						'</div>'+
 						'<div class="row data-div">'+
 							'<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
-							'<div class="col-md-2">'+
-								'<select required class="selectpicker operator text-normal" '+
-										'id="operator' + count + '" name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
+							'<div class="col-md-2 form-group">'+
+								'<select class="selectpicker operator text-normal" data-error="Please select an option" '+
+										' id="operator' + count + '" required name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
 									'<option> < </option>'+
 									'<option> > </option>'+
 				                    '<option> = </option>'+
@@ -8773,12 +8781,14 @@ $('.text-choice').each(function(i){
 				                    '<option> >= </option>'+
 				                    '<option> <= </option>'+
 								'</select>'+
+				                '<div class="help-block with-errors red-txt"></div>'+
 							'</div>'+
 							'<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
-							'<div class="col-md-3">'+
+							'<div class="col-md-3 form-group">'+
+								'<input type="text" data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" required placeholder="Enter" />'+
 				                '<input type="hidden" class="id"/>'+
-								'<input type="text" required class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter">'+
-							'</div>'+
+				                '<div class="help-block with-errors red-txt"></div>'+
+				            '</div>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
@@ -8800,6 +8810,9 @@ if (defaultVisibility.is(':checked')) {
 	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
 	$('#defaultVisibility').val('true');
 	$('#addFormula').attr('disabled', true);
+} else {
+	$('#skiappableYes').prop('checked', false).prop('disabled', true);
+	$('#skiappableNo').prop('checked', true);
 }
 
 defaultVisibility.on('change', function () {
@@ -8821,6 +8834,8 @@ defaultVisibility.on('change', function () {
 		$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
 		$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
 		addForm.attr('disabled', true);
+		$('#skiappableYes').prop('checked', false).prop('disabled', true);
+		$('#skiappableNo').prop('checked', true);
 	} else {
 		logicDiv.find('div.bootstrap-select, input, select').each( function () {
 			$(this).removeClass('ml-disabled');
@@ -8834,6 +8849,7 @@ defaultVisibility.on('change', function () {
 		$('#defaultVisibility').val('false');
 		toggle.attr('checked', false);
 		addForm.attr('disabled', false);
+		$('#skiappableYes').prop('disabled', false);
 	}
 })
 
@@ -8855,10 +8871,11 @@ $('#differentSurvey').on('change', function(e) {
 $('#differentSurveyPreLoad').on('change', function() {
 	if($(this).is(':checked')) {
 		$('#content').show();
+        $('#preLoadSurveyId').prop('required', true);
 	} else {
 		$('#content').hide();
 		refreshSourceKeys($('#questionnairesId').val(), 'preload');
-		$('#preLoadSurveyId').val('').selectpicker('refresh');
+		$('#preLoadSurveyId').val('').prop('required', false).selectpicker('refresh');
 		$('#destinationTrueAsGroup').val('').selectpicker('refresh');
 	}
 });
@@ -8890,7 +8907,6 @@ function refreshSourceKeys(surveyId, type) {
 			},
 			success : function(data) {
 				let message = data.message;
-				console.log(data)
 				if(message === 'SUCCESS'){
 					let options = data.sourceKeys;
 					if (options != null && options.length > 0) {
@@ -8899,8 +8915,17 @@ function refreshSourceKeys(surveyId, type) {
 									.attr("value", option.stepId)
 									.attr("data-id", option.stepId)
 									.text("Step " + (index+1) + " : " + option.stepShortTitle);
-							id.append($option).selectpicker('refresh');
+							id.append($option);
 						});
+						if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
+							<c:forEach items="${groupsList}" var="group" varStatus="status">
+							id.append('<option value="${group.groupId}" id="selectGroup${group.groupId}">'+
+							'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+						    '</option>')
+							</c:forEach>
+							id.append('<option value="0"> Completion Step</option>')
+						}
+						id.selectpicker('refresh');
 					} else {
 						let $option = $("<option></option>")
 								.attr("style", "text-align: center; color: #000000")

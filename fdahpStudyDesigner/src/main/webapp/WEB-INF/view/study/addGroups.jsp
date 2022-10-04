@@ -121,7 +121,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     </div>
 
                     <div class="form-group">
-                      <input type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required>
+                      <input type="text"  type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required>
                     <div class="help-block with-errors red-txt"></div>
                      <input type="hidden" id="preGroupName"
                            value="${fn:escapeXml(groupsBo.groupName)}"/>

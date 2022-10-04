@@ -3857,9 +3857,7 @@ public class StudyQuestionnaireController {
                           request
                                   .getSession()
                                   .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-
-
-
+          
           if (StringUtils.isEmpty(studyId)) {
             studyId =
                     FdahpStudyDesignerUtil.isEmpty(
@@ -4035,6 +4033,11 @@ public class StudyQuestionnaireController {
             map.addAttribute("actionType", "view");
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
+        }
+        if (StringUtils.isNotEmpty(studyId)) {
+          request.getSession().removeAttribute(sessionStudyCount + "actionType");
+          StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+          map.addAttribute("studyBo", studyBo);
         }
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("groupsBo", groupsBo);

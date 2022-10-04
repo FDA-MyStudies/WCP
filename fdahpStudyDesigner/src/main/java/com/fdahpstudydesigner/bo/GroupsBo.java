@@ -24,7 +24,7 @@ public class GroupsBo implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "groupId")
+    @Column(name = "group_id")
     private String groupId;
     
     @Column(name = "group_name")

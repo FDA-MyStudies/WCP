@@ -474,19 +474,23 @@ width:142px !important;
                                           </c:when>
                                            <c:otherwise>
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                          <c:if test="${actionType ne 'view'}">
+                                        <!--  <c:if test="${actionType ne 'view'}"> </c:if>-->
                                           <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
-                                          </c:if>
+                                      
                                           <label for="${entry.value.stepId}"></label></span>
                                            </c:otherwise>
                                            </c:choose>
+                                            <div class="ml-xlg" style="margin-top: -20px;">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
+                                             
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
                                                        title="${fn:escapeXml(subentry.value.title)}">
                                                       <span class="ml-lg"> ${subentry.value.title} </span>
                                                       </div>
                                                   <div class="clearfix"></div>
+                                                  
                                               </c:forEach>
+                                              </div>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
@@ -500,9 +504,9 @@ width:142px !important;
                                                     </c:when>
                                                     <c:otherwise>
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                                   <c:if test="${actionType ne 'view'}">
+                                                  <!-- <c:if test="${actionType ne 'view'}">  </c:if> -->
 													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
-													</c:if>
+													
 													<label for="${entry.value.stepId}"></label>
 													</span>
                                                     </c:otherwise>
@@ -1978,6 +1982,8 @@ width:142px !important;
   $('#monthlyFormId input[type="text"]').prop('disabled', true);
   $('#customFormId input[type="text"]').prop('disabled', true);
   $('select').prop('disabled', true);
+  $('.selectbox_chk input[type="checkbox"]').attr('disabled', true);
+  
   $('#schedule1,#schedule2,#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5,#inlineRadio6').prop(
       'disabled', true);
   $('.addBtnDis, .remBtnDis').addClass('dis-none');

@@ -53,7 +53,7 @@ display:contents !important;
 <form:form
 action="/fdahpStudyDesigner/adminStudies/addOrUpdateGroupsDetails.do?_S=${param._S}"
 name="addGroupFormId" id="addGroupFormId" method="post">
-
+<input type="hidden" name="language" value="${currLanguage}">
 <input type="hidden" id="actionType" name="actionType"
                            value="${fn:escapeXml(actionType)}">
                     <input type="hidden" id="buttonText" name="buttonText"
@@ -74,13 +74,34 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <img src="../images/icons/back-b.png" class="pr-md"/></span>
                 Group-Level Attributes
             </div>
+                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                  <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip" data-placement="bottom" title="Language selection is available in edit screen only">
-                    <select class="selectpicker aq-select aq-select-form studyLanguage langSpecific" title="Select" disabled>
-                      <option selected>English</option>
+                    <select
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            id="studyLanguage" name="studyLanguage" title="Select">
+                        <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+                            English
+                        </option>
+                        <c:forEach items="${languageList}" var="language">
+                            <option value="${language.key}"
+                                ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+                        </c:forEach>
                     </select>
-                  </span>
                 </div>
+            </c:if>
+
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                </div>
+            </c:if>
                 <div class="dis-line form-group mb-none mr-sm">
                   <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel </button>
                 </div>
@@ -106,7 +127,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
-                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required>
+                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required
+                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
 
                       <div class="help-block with-errors red-txt"></div>
                       <input type="hidden" id="preGroupId"
@@ -121,7 +143,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     </div>
 
                     <div class="form-group">
-                      <input type="text"  type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required>
+                      <input type="text"  type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required
+                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
                     <div class="help-block with-errors red-txt"></div>
                      <input type="hidden" id="preGroupName"
                            value="${fn:escapeXml(groupsBo.groupName)}"/>
@@ -329,10 +352,17 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                });
        });
 
+ let currLang = $('#studyLanguage').val();
+ if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+   $('#currentLanguage').val(currLang);
+   refreshAndFetchLanguageData(currLang);
+ }
          function goToBackPage(item) {
                  var a = document.createElement('a');
-                     a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
-                     document.body.appendChild(a).click();
+                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                 a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
+                     + lang;;
+                 document.body.appendChild(a).click();
              }
 
          $('#preLoadSurveyId').on('change', function () {
@@ -617,6 +647,69 @@ name="addGroupFormId" id="addGroupFormId" method="post">
         	    }
         	  }
 
+         $('#studyLanguage').on('change', function () {
+          	  debugger
+              let currLang = $('#studyLanguage').val();
+              $('#currentLanguage').val(currLang);
+             // $('#loader').show();
+              refreshAndFetchLanguageData($('#studyLanguage').val());
+            })
+            
+            function refreshAndFetchLanguageData(language) {
+      		  debugger
+      		    $.ajax({
+      		      url: '/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}',
+      		      type: "GET",
+      		      data: {
+      		        language: language
+      		      },
+      		      success: function (data) {
+      		    	  debugger
+      		        let htmlData = document.createElement('html');
+      		        htmlData.innerHTML = data;
+      		        if (language !== 'en') {
+      		        	debugger
+      		          updateCompletionTicks(htmlData);
+      		          $('.tit_wrapper').text($('#mlName', htmlData).val());
+      		          $('#groupName').attr('disabled', true);
+      		       $('#groupId').attr('disabled', true);
+      		 //   $('#disOperator').attr('disabled', true);
+      		    
+      		 	$('#groupDefaultVisibility').attr('disabled', true);
+      		          //$('.delete,thead').addClass('cursor-none');
+      		          let mark=true;
+      		          $('#groups_list option', htmlData).each(function (index, value) {
+      		            let id = '#row' + value.getAttribute('id');
+      		            $(id).find('td.title').text(value.getAttribute('value'));
+      
+      		          });
+      		         // view_spanish_deactivemode();
+      		         
+      		        } else {
+      		        	debugger
+      		          updateCompletionTicksForEnglish();
+      		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+      		       $('#groupName').attr('disabled', false);
+      		       $('#groupId').attr('disabled', false);
+      		   // $('#disOperator').attr('disabled', false);
+      		    $('#groupDefaultVisibility').attr('disabled', false);
+      		          $('#studyProtocolId').prop('disabled', false);
+      		          let mark=true;
+      		          $('tbody tr', htmlData).each(function (index, value) {
+      		        	  debugger
+      		            let id = '#'+value.getAttribute('id');
+      		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+      		          
+      		          });
+      		          
+      		          <c:if test="${not empty permission}">
+      		          $('.delete').addClass('cursor-none');
+      		          </c:if>
+      		          //view_spanish_activemode();
+      		        }
+      		      }
+      		    });
+      		  }
 
 
 

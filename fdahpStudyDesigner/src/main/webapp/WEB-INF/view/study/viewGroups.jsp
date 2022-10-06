@@ -49,15 +49,37 @@
             </div>
             <div class="black-md-f text-uppercase dis-line pull-left line34">GROUPS</div>
           <div class="dis-line form-group mb-none">
-          <c:choose>
-          <c:when test="${actionType eq 'view'}">
-             <button type="button" class="btn btn-primary blue-btn addOrEditGroups <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" style="margin-top: 12px;">+ Add Group</button>
-				</c:when>
-				<c:otherwise>
-                        <button type="button" class="btn btn-primary blue-btn addOrEditGroups" style="margin-top: 12px;">+ Add Group</button>
-                        </c:otherwise>
-                    </c:choose>
-         
+          
+          <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <select
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            id="studyLanguage" name="studyLanguage" title="Select">
+                        <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+                            English
+                        </option>
+                        <c:forEach items="${languageList}" var="language">
+                            <option value="${language.key}"
+                                ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </c:if>
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                </div>
+            </c:if>
+          
+             <button type="button" class="btn btn-primary blue-btn addOrEditGroups" value="add">+ Add Group</button>
+				
           </div>
         </div>
     </div>
@@ -82,33 +104,21 @@
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
                  <td style="width: 200px !important;">
-                 <c:choose>
-          			<c:when test="${actionType eq 'view'}">
-					<span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${actionType eq 'view'}"> cursor-none </c:if> addOrEditGroups"
-                  id="${groupsList.id}" data-toggle="tooltip"
-                  	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                 
+                 <span class="  <c:if test="${not empty permission}"> cursor-none </c:if> "
+                  id="${groupsList.id}" data-toggle="tooltip" 
+                  	data-placement="top" title=Deassign id="" onclick=deAssignGroups(${groupsList.id});>
+                  	<img src="../images/deassign.png" class="pr-md"/>
                   	</span>
-                  	</c:when>
-				<c:otherwise>
+               
 					<span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> addOrEditGroups"
                   id="${groupsList.id}" data-toggle="tooltip"
                   	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
                   	</span>
-                  	</c:otherwise>
-                    </c:choose>
-                  
                   	
-                  	<c:choose>
-          			<c:when test="${actionType eq 'view'}">
-					<span class="sprites_icon copy delete <c:if test="${actionType eq 'view'}"> cursor-none </c:if>"
-                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
-                  </c:when>
-				<c:otherwise>
 					<span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                   data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
-                    </c:otherwise>
-                    </c:choose>
-                    
+                   
                   </td>
                 
                  </tr>
@@ -125,7 +135,8 @@
 action="/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}"
 name="groupsInfoForm" id="groupsInfoForm" method="post">
 <input type="hidden" name="groupId" id="groupId" value="">
-<input type="hidden" name="actionType" id="actionType">
+ <input type="hidden" name="language" value="${currLanguage}">
+<input type="hidden" name="actionType" id="actionType" value="${actionType}">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
 <input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
@@ -136,11 +147,14 @@ name="groupsInfoForm" id="groupsInfoForm" method="post">
  name="addgroupsInfoForm" id="addgroupsInfoForm" method="post">
  <input type="hidden" name="groupId" id="groupId" value="${groupId}">
  <input type="hidden" name="id" id="id" value="${id}">
- <input type="hidden" name="actionType" id="actionType">
+ <input type="hidden" name="actionOn" id="actionOn" value="">
+ <input type="hidden" name="actionType" id="actionType" value="${actionType}">
+ <input type="hidden" name="language" id="currentLanguage" value="${currLanguage}">
  <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
  <input type="hidden" id="checkRefreshFlag" name="checkRefreshFlag">
  <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
 </form:form>
+
 
 <script>
   $(document).ready(function () {
@@ -173,17 +187,38 @@ name="groupsInfoForm" id="groupsInfoForm" method="post">
     });
 
   });
+ 
+  
+  $('#studyLanguage').on('change', function () {
+	  debugger
+    let currLang = $('#studyLanguage').val();
+    $('#currentLanguage').val(currLang);
+    refreshAndFetchLanguageData($('#studyLanguage').val());
+  })
 
 function goToBackPage(item) {
-          var a = document.createElement('a'); 
-              a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
-              document.body.appendChild(a).click();
+              var a = document.createElement('a');
+              let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                  a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
+                      + lang;;
+                  document.body.appendChild(a).click();
       }
 	$('.addOrEditGroups').on('click',function(){
 			$('#id').val($(this).attr('id'));
 			$('#checkRefreshFlag').val('Y');
 			$('#addgroupsInfoForm').submit();
 	});
+	
+	
+	
+	function deAssignGroups(id){
+    	 var a = document.createElement('a'); 
+         a.href = "/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}&id="
+             + id;;
+         document.body.appendChild(a).click();
+    }
+
+
 
 	function deleteGroup(id) {
           bootbox.confirm("Are you sure you want to delete this group?", function (result) {
@@ -223,6 +258,53 @@ function goToBackPage(item) {
             }
           });
         }
+	
+	  function refreshAndFetchLanguageData(language) {
+		  debugger
+		    $.ajax({
+		      url: '/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}',
+		      type: "GET",
+		      data: {
+		        language: language
+		      },
+		      success: function (data) {
+		    	  debugger
+		        let htmlData = document.createElement('html');
+		        htmlData.innerHTML = data;
+		        if (language !== 'en') {
+		        	debugger
+		          updateCompletionTicks(htmlData);
+		          $('.tit_wrapper').text($('#mlName', htmlData).val());
+		          $('.addOrEditGroups').attr('disabled', true);
+		          $('.delete,thead').addClass('cursor-none');
+		          let mark=true;
+		          $('#groups_list option', htmlData).each(function (index, value) {
+		            let id = '#row' + value.getAttribute('id');
+		            $(id).find('td.title').text(value.getAttribute('value'));
+	
+		          });
+		         
+		        } else {
+		        	debugger
+		          updateCompletionTicksForEnglish();
+		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+		          $('.addOrEditGroups').attr('disabled', false);
+		          $('.delete, thead').removeClass('cursor-none');
+		          $('#studyProtocolId').prop('disabled', false);
+		          let mark=true;
+		          $('tbody tr', htmlData).each(function (index, value) {
+		        	  debugger
+		            let id = '#'+value.getAttribute('id');
+		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+		          });
+		          
+		          <c:if test="${not empty permission}">
+		          $('.delete').addClass('cursor-none');
+		          </c:if>
+		        }
+		      }
+		    });
+		  }
 
 </script>
 

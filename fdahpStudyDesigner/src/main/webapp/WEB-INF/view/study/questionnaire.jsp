@@ -1897,7 +1897,6 @@ width:142px !important;
 <script type="text/javascript">
       //assignGroup code
                 function assign(){
-                   location.reload();
                    var grpId = $("#group :selected").val();
                    var count = 0 ;
                    var steparray = new Array();

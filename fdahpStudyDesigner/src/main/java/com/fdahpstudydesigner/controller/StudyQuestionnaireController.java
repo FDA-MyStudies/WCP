@@ -4097,6 +4097,7 @@ public class StudyQuestionnaireController {
 
           map.addAttribute("groupsBo", groupsBo);
           map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
+          map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           mav = new ModelAndView("addOrEditGroupsPage", map);
         } else {
           mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
@@ -4202,6 +4203,7 @@ public class StudyQuestionnaireController {
         
       }        map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("groupsBo", groupsBo);
+        map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (("save").equalsIgnoreCase(buttonText)) {
           mav = new ModelAndView("addOrEditGroupsPage", map);
         } else {

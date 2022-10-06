@@ -4166,12 +4166,8 @@ public class StudyQuestionnaireController {
         if (!msg.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE) ) {
             if ((groupsBo != null) && (groupsBo.getId() == null)) {
               if (("save").equalsIgnoreCase(buttonText)) {
-                request
-                .getSession()
-                .setAttribute(
-                		sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
-                        propMap.get(FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE));
-                } else {
+                map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft");
+              } else {
             request
                     .getSession()
                     .setAttribute(
@@ -4180,11 +4176,7 @@ public class StudyQuestionnaireController {
             
         } else {
           if (("save").equalsIgnoreCase(buttonText)) {
-            request
-                .getSession()
-                .setAttribute(
-                    sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
-                    propMap.get(FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE));
+            map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft");
           } else {
             request
                 .getSession()

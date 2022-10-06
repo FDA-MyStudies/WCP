@@ -1960,12 +1960,15 @@ width:142px !important;
                 } else {
                   $('#alertMsg').show();
                   $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to assign the group,Please select the group");
+                  $('#content').find('tbody input.step-check').prop('checked', false);
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }
                 else{
                 $('#alertMsg').show();
                 $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two step to form a group.");
+                $('#content').find('tbody input.step-check').prop('checked', false);
+                $('#group').val('').selectpicker('refresh');
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }

@@ -6417,12 +6417,12 @@ public String checkGroupName(String questionnaireId, String groupName, String st
    		                + " :formIdList ) and f.active=1 order by f.form_id";
    		       List<?> result =
    		            session.createSQLQuery(fromQuery).setParameter("formIdList", formBo.getFormId()).list();
-   		   
-   	            Object[] objects = (Object[]) result.get(0);
-   	            
-   	            question = (String) objects[4];
-   			
-   			}
+              for (int j = 0; j < result.size(); j++) {
+                Object[] objects = (Object[]) result.get(j);
+
+                question = (String) objects[4];
+              }
+   	           }
    		
    	 	      
    	 	      groupMappingStepBean1.setStepId(formBo.getFormId());

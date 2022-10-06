@@ -1,7 +1,6 @@
 /** */
 package com.fdahpstudydesigner.dao;
 
-import com.fdahpstudydesigner.bean.GroupMappingBean;
 import com.fdahpstudydesigner.bean.GroupMappingStepBean;
 import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -6368,7 +6367,6 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
    public List<GroupMappingStepBean> getGroupsList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans ) {
-   	List<GroupMappingBean> groupsAssignedList = new ArrayList<>();
    	Session session = null;
    	 Query query = null;
    	 String queryString = "";
@@ -6381,7 +6379,6 @@ public String checkGroupName(String questionnaireId, String groupName, String st
    	for(GroupMappingBo groupsList :groupMappingBo)
    	{
    		String  stepId=groupsList.getStepId();
-   		 GroupMappingBean groupMappingBean = new GroupMappingBean();
    	   	GroupMappingStepBean groupMappingStepBean1= new GroupMappingStepBean();
 
    		 session = hibernateTemplate.getSessionFactory().openSession();
@@ -6407,9 +6404,6 @@ public String checkGroupName(String questionnaireId, String groupName, String st
  	     groupMappingBeanss.add(groupMappingStepBean1);
  	      }
    		      
-   		    
-   			    
-   			      
    			   queryString =
    	 	              "From FormBo FBO WHERE FBO.id="+stepId;
    			query = session.createQuery(queryString);

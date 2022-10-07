@@ -108,7 +108,7 @@
                  <span class="  <c:if test="${not empty permission}"> cursor-none </c:if> "
                   id="${groupsList.id}" data-toggle="tooltip" 
                   	data-placement="top" title=Deassign id="" onclick=deAssignGroups(${groupsList.id});>
-                  	<img src="../images/deassign.png" class="pr-md"/>
+                  	<img src="../images/deassign.png" class="pr-md" style="margin-top: -6px;"/>
                   	</span>
                
 					<span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> addOrEditGroups"

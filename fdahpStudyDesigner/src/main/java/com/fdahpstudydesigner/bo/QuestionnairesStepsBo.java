@@ -152,6 +152,8 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "piping_source_question_key")
   private Integer pipingSourceQuestionKey;
 
+  @Transient private Boolean allowReorder = false;
+
   @Transient private String type;
 
   @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
@@ -446,5 +448,13 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setPipingSurveyId(Integer pipingSurveyId) {
     this.pipingSurveyId = pipingSurveyId;
+  }
+
+  public Boolean getAllowReorder() {
+    return allowReorder;
+  }
+
+  public void setAllowReorder(Boolean allowReorder) {
+    this.allowReorder = allowReorder;
   }
 }

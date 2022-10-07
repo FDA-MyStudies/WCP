@@ -2409,7 +2409,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     logger.exit("getStepId() - Ends");
     return stepId;
   }
-  
+
   @Override
   public GroupMappingBo getStepDetails(String id, String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getStepId() - Starts");
@@ -2451,7 +2451,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   	return getAssignSteps;
   }
 
-  
+
   @Override
   public String deleteGroupMaprecords(String id) {
     logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
@@ -2477,7 +2477,7 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
 	      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
 	    }
 	    logger.exit("groupFlagDisable() - Ends");
-	    return result;  
+	    return result;
 }
 
 @Override
@@ -2494,4 +2494,9 @@ public String deleteStepMaprecords(String id) {
     logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
     return message;
 }
+
+  @Override
+  public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
+    return studyQuestionnaireDAO.isPreloadLogicAndPipingEnabled(queId);
+  }
 }

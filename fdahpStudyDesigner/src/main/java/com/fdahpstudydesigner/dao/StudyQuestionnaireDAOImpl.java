@@ -6392,7 +6392,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
 	      groupMappingBeanss.add(groupMappingStepBean1);
 	      }
-			 
+
    		   queryString =
  	              "From InstructionsBo IBO WHERE IBO.id="+stepId;
    		query = session.createQuery(queryString);
@@ -6403,7 +6403,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
  	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
  	     groupMappingBeanss.add(groupMappingStepBean1);
  	      }
-   		      
+
    			   queryString =
    	 	              "From FormBo FBO WHERE FBO.id="+stepId;
    			query = session.createQuery(queryString);
@@ -6423,16 +6423,16 @@ public String checkGroupName(String questionnaireId, String groupName, String st
                 question = (String) objects[4];
               }
    	           }
-   		
-   	 	      
+
+
    	 	      groupMappingStepBean1.setStepId(formBo.getFormId());
    	 	     groupMappingStepBean1.setDescription(question);
    	 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
    	 	  groupMappingBeanss.add(groupMappingStepBean1);
    	 	      }
-     			 
+
    	}
-   	
+
    	return groupMappingBeanss;
    }
 
@@ -6460,7 +6460,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
    	return groupMappingList;
    }
 
-  
+
   @Override
   public String deleteGroupMaprecords(String id) {
     logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
@@ -6527,7 +6527,7 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
     try{
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-     
+
         String  stepId=groupMappingBo.getStepId();
         query = session
                 .createQuery(
@@ -6536,7 +6536,7 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
         query.setString("stepId",stepId);
         query.setString("questionnaireId",questionnaireId);
         query.executeUpdate();
-      
+
       message = FdahpStudyDesignerConstants.SUCCESS;
       if (transaction.getStatus().equals(TransactionStatus.ACTIVE)) {
         transaction.commit();
@@ -6586,4 +6586,38 @@ public String deleteStepMaprecords(String id) {
 	    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
 	    return message;
 }
+
+  @Override
+  public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
+    Session session = null;
+    boolean allowReorder = true;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+
+      if (queId != null) {
+        BigInteger count = (BigInteger) session
+                .createSQLQuery("select count(*) from questionnaires_steps where questionnaires_id=:queId " +
+                        "and active=:active and ((default_visibility=:dv and destination_true_as_group is not null and is_different_survey_pre_load is not true) " +
+                        "or (is_piping = :isPiping and is_different_survey is not true))")
+                .setParameter("queId", queId)
+                .setParameter("active", true)
+                .setParameter("dv", false)
+                .setParameter("isPiping", true)
+                .uniqueResult();
+        if (count.intValue() > 0) {
+          allowReorder = false;
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
+    return allowReorder;
+  }
 }

@@ -197,7 +197,7 @@ String checkGroupName(String questionnaireId, String groupName, String studyId);
   public List<GroupMappingBo> getStepId(String id, String questionnaireId);
 
   public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
-  
+
   public List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans);
 
 
@@ -211,5 +211,7 @@ GroupMappingBo getStepDetails(String id, String questionnaireId);
 public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId);
 
 public String deleteStepMaprecords(String id);
+
+  Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 
 }

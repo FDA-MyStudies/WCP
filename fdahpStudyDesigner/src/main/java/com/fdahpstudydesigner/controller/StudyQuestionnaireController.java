@@ -1413,6 +1413,7 @@ public class StudyQuestionnaireController {
                     customStudyId);
               }
             }
+            map.addAttribute("allowReorder", studyQuestionnaireService.isPreloadLogicAndPipingEnabled(questionnaireBo.getId()));
           }
           if ("edit".equals(actionType)) {
             map.addAttribute("actionType", "edit");

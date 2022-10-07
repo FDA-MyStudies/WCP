@@ -398,8 +398,8 @@
              <div class="row">
                  <div class="col-md-4"></div>
                  <div class="col-md-5 form-group">
-                     <select name="destinationTrueAsGroup" id="destinationTrueAsGroup" required
-                             data-error="Please select an option" class="selectpicker text-normal" required title="-select destination step-">
+                     <select name="destinationTrueAsGroup" id="destinationTrueAsGroup" 
+                             data-error="Please select an option" class="selectpicker text-normal"  title="-select destination step-">
                          <c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
                              <option value="${destinationStep.stepId}"
                                  ${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
@@ -466,7 +466,7 @@
                                                      <c:forEach items="${operators}" var="operator">
                                                          <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
                                                      </c:forEach>
-                                                 </select
+                                                    </select>
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
 
@@ -500,7 +500,7 @@
                                  <div class="row data-div">
                                      <div class="col-md-1" style="padding-top: 7px">Operator</div>
                                      <div class="col-md-2 form-group">
-                                         <select required class="selectpicker operator text-normal"  data-error="Please select an option"
+                                         <select class="selectpicker operator text-normal"  data-error="Please select an option"
                                                  id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
                                              <c:forEach items="${operators}" var="operator">
                                                  <option value="${operator}">${operator}</option>
@@ -512,7 +512,7 @@
                                      <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
                                      <div class="col-md-3 form-group">
                                          <input type="hidden" id="id${status.index}">
-                                         <input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+                                         <input type="text"  class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
                                          <div class="help-block with-errors red-txt"></div>
                                      </div>
                                  </div>
@@ -1643,7 +1643,7 @@ $('#addFormula').on('click', function () {
         '<div class="row data-div">'+
         '<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
         '<div class="col-md-2 form-group">'+
-        '<select required class="selectpicker operator text-normal" data-error="Please select an option" '+
+        '<select  class="selectpicker operator text-normal" data-error="Please select an option" '+
         'id="operator' + count + '" name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
         '<option> < </option>'+
         '<option> > </option>'+
@@ -1657,7 +1657,7 @@ $('#addFormula').on('click', function () {
         '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
         '<div class="col-md-3 form-group">'+
         '<input type="hidden" class="id"/>'+
-        '<input type="text" required data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter">'+
+        '<input type="text" data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter">'+
         '<div class="help-block with-errors red-txt"></div>'+
         '</div>'+
         '</div>'+
@@ -1697,9 +1697,14 @@ defaultVisibility.on('change', function () {
             $(this).addClass('ml-disabled');
             if ($(this).is("select")) {
                 $(this).val('').selectpicker('refresh');
+                $(this).attr('required', false);
+                $(this).removeClass('has-error has-danger').find(".help-block").empty();
+                $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
             if ($(this).is("input")) {
                 $(this).val('').attr('disabled', true);
+                $(this).attr('required', false);
+                 $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
         });
         $('#defaultVisibility').val('true');
@@ -1712,9 +1717,13 @@ defaultVisibility.on('change', function () {
             $(this).removeClass('ml-disabled');
             if ($(this).is("select")) {
                 $(this).selectpicker('refresh');
+                $(this).attr('required','required');
+                $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
             if ($(this).is("input")) {
                 $(this).attr('disabled', false);
+                $(this).attr('required','required');
+                $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
         });
         toggle.attr('checked', false);

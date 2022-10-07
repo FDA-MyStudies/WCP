@@ -557,6 +557,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
              });
              $('#defaultVisibility').val('true');
              $('#addFormula').attr('disabled', true);
+             $('#value0').attr('disabled', true);
          }
 
          defaultVisibility.on('change', function () {
@@ -576,6 +577,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                  });
                  $('#defaultVisibility').val('true');
                  addForm.attr('disabled', true);
+                 $('#value0').attr('disabled', true);
              } else {
                  logicDiv.find('div.bootstrap-select, input, select').each( function () {
                      $(this).removeClass('ml-disabled');
@@ -588,6 +590,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                  toggle.attr('checked', false);
                  $('#defaultVisibility').val('false');
                  addForm.attr('disabled', false);
+                 $('#value0').attr('disabled', false);
              }
          })
 

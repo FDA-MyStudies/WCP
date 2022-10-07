@@ -811,14 +811,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     try {
       List<PreLoadLogicBean> preLoadLogicBeans = groupsBo.getPreLoadLogicBeans();
       if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
-        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(Integer.valueOf(groupsBo.getGroupId()));
+        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(groupsBo.getId());
         for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
           PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
           if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
             if (preLoadLogicBo == null) {
               preLoadLogicBo = new PreLoadLogicBo();
               preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.GROUP);
-              preLoadLogicBo.setStepGroupId(Integer.valueOf(groupsBo.getGroupId()));
+              preLoadLogicBo.setStepGroupId(groupsBo.getId());
             } else {
               preLoadIds.remove(preLoadLogicBo.getId());
             }
@@ -830,8 +830,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           }
         }
         studyQuestionnaireDAO.deleteFormula(preLoadIds);
-        GroupsBo persistentStepsBo =
-                studyQuestionnaireDAO.getGroupsDetails(Integer.parseInt(groupsBo.getGroupId()));
+        GroupsBo persistentStepsBo = null;
+        if(groupsBo.getId()!=null){
+          persistentStepsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBo.getId());
+        }
         if (persistentStepsBo != null) {
           persistentStepsBo.setDefaultVisibility("true".equals(groupsBo.getDefaultVisibility()));
           persistentStepsBo.setDestinationTrueAsGroup(groupsBo.getDestinationTrueAsGroup());

@@ -2842,5 +2842,15 @@ button:active {
           display:flex !important
           }
     }
+      @media screen
+          and (min-device-width: 1280px)
+          and (max-device-width: 1600px)
+          {
+          .tit_wrapper{
+          width:190px !important;
+          }
+        }
+
+
 
  /* css end here */

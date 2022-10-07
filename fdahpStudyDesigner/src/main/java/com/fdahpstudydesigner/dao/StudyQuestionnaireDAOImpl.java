@@ -6386,6 +6386,18 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 	              "From QuestionsBo QBO WHERE QBO.id="+stepId;
 	      query = session.createQuery(queryString);
 	      questionBo1 = (QuestionsBo) query.uniqueResult();
+	      
+	      queryString =
+ 	              "From InstructionsBo IBO WHERE IBO.id="+stepId;
+   		query = session.createQuery(queryString);
+   		 instructionBo = (InstructionsBo) query.uniqueResult(); 
+   		 
+	      queryString =
+	 	              "From FormBo FBO WHERE FBO.id="+stepId;
+			query = session.createQuery(queryString);
+			formBo = (FormBo) query.uniqueResult();
+			
+			
 	      if(questionBo1 != null) {
 	      groupMappingStepBean1.setStepId(questionBo1.getId());
 	      groupMappingStepBean1.setDescription(questionBo1.getQuestion());
@@ -6393,23 +6405,14 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 	      groupMappingBeanss.add(groupMappingStepBean1);
 	      }
 
-   		   queryString =
- 	              "From InstructionsBo IBO WHERE IBO.id="+stepId;
-   		query = session.createQuery(queryString);
-   		 instructionBo = (InstructionsBo) query.uniqueResult();
- 	      if(instructionBo != null) {
+	      else  if(instructionBo != null) {
  	      groupMappingStepBean1.setStepId(instructionBo.getId());
  	      groupMappingStepBean1.setDescription(instructionBo.getInstructionTitle());
  	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
  	     groupMappingBeanss.add(groupMappingStepBean1);
  	      }
 
-   			   queryString =
-   	 	              "From FormBo FBO WHERE FBO.id="+stepId;
-   			query = session.createQuery(queryString);
-   			formBo = (FormBo) query.uniqueResult();
-
-   			if(formBo != null) {
+	      else {
    			if (formBo.getFormId() !=null) {
    		        String fromQuery =
    		            "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date "
@@ -6417,14 +6420,28 @@ public String checkGroupName(String questionnaireId, String groupName, String st
    		                + " :formIdList ) and f.active=1 order by f.form_id";
    		       List<?> result =
    		            session.createSQLQuery(fromQuery).setParameter("formIdList", formBo.getFormId()).list();
-              for (int j = 0; j < result.size(); j++) {
+   		    for (int j = 0; j < result.size(); j++) {
                 Object[] objects = (Object[]) result.get(j);
+                if(j>0) {
+                Object[] objects1 = (Object[]) result.get(j-1);
 
-                question = (String) objects[4];
+               // question = (String) objects[4];
+                if((objects[0]).equals(objects1[0]))
+         	 	  {
+                	question = question+","+(String) objects[4];
+
+         	 	  }
+         	 	  else
+         	 	  {
+         	 		question = (String) objects[4];
+
+         	 	  }
+                }
+                else {
+                	question = (String) objects[4];
+                }
               }
-   	           }
-
-
+   			}
    	 	      groupMappingStepBean1.setStepId(formBo.getFormId());
    	 	     groupMappingStepBean1.setDescription(question);
    	 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);

@@ -2,6 +2,7 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
+import com.fdahpstudydesigner.bean.GroupMappingStepBean;
 import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;
@@ -197,7 +198,19 @@ String checkGroupName(String questionnaireId, String groupName, String studyId);
 
   public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
 
+  public List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans);
+
+
+  List<GroupMappingBo> getAssignSteps(int grpId);
+
+
   public String deleteGroupMaprecords(String id);
+
+GroupMappingBo getStepDetails(String id, String questionnaireId);
+
+public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId);
+
+public String deleteStepMaprecords(String id);
 
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 

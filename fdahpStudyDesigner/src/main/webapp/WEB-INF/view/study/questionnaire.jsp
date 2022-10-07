@@ -426,8 +426,8 @@ width:142px !important;
                                       onclick="getQuestionnaireStep('Form');">Add Form Step
                               </div>
                               <div
-                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>"
-                                        onclick="getQuestionnaireStep('Groups');">Groups
+                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>" id="groupsBtn"
+                                        onclick="getQuestionnaireStep('Groups');" >Groups
                                </div>
                                 <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
@@ -474,19 +474,23 @@ width:142px !important;
                                           </c:when>
                                            <c:otherwise>
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                          <c:if test="${actionType ne 'view'}">
+                                        <!--  <c:if test="${actionType ne 'view'}"> </c:if>-->
                                           <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
-                                          </c:if>
+                                      
                                           <label for="${entry.value.stepId}"></label></span>
                                            </c:otherwise>
                                            </c:choose>
+                                            <div class="ml-xlg" style="margin-top: -20px;">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
+                                             
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
                                                        title="${fn:escapeXml(subentry.value.title)}">
                                                       <span class="ml-lg"> ${subentry.value.title} </span>
                                                       </div>
                                                   <div class="clearfix"></div>
+                                                  
                                               </c:forEach>
+                                              </div>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
@@ -500,9 +504,9 @@ width:142px !important;
                                                     </c:when>
                                                     <c:otherwise>
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                                   <c:if test="${actionType ne 'view'}">
+                                                  <!-- <c:if test="${actionType ne 'view'}">  </c:if> -->
 													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
-													</c:if>
+													
 													<label for="${entry.value.stepId}"></label>
 													</span>
                                                     </c:otherwise>
@@ -1893,7 +1897,6 @@ width:142px !important;
 <script type="text/javascript">
       //assignGroup code
                 function assign(){
-                   location.reload();
                    var grpId = $("#group :selected").val();
                    var count = 0 ;
                    var steparray = new Array();
@@ -1956,12 +1959,15 @@ width:142px !important;
                 } else {
                   $('#alertMsg').show();
                   $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to assign the group,Please select the group");
+                  $('#content').find('tbody input.step-check').prop('checked', false);
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }
                 else{
                 $('#alertMsg').show();
                 $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two step to form a group.");
+                $('#content').find('tbody input.step-check').prop('checked', false);
+                $('#group').val('').selectpicker('refresh');
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }
@@ -1978,6 +1984,8 @@ width:142px !important;
   $('#monthlyFormId input[type="text"]').prop('disabled', true);
   $('#customFormId input[type="text"]').prop('disabled', true);
   $('select').prop('disabled', true);
+  $('.selectbox_chk input[type="checkbox"]').attr('disabled', true);
+  
   $('#schedule1,#schedule2,#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5,#inlineRadio6').prop(
       'disabled', true);
   $('.addBtnDis, .remBtnDis').addClass('dis-none');
@@ -5116,6 +5124,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor, ' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
               ' .signDropDown').addClass('ml-disabled').attr('disabled', true);
+          $('#groupsBtn').removeClass('ml-disabled').attr('disabled', false);
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());

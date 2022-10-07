@@ -1,6 +1,7 @@
 /** */
 package com.fdahpstudydesigner.dao;
 
+import com.fdahpstudydesigner.bean.GroupMappingStepBean;
 import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;
@@ -19,6 +20,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -6362,6 +6364,103 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     return message;
   }
 
+
+  @Override
+   public List<GroupMappingStepBean> getGroupsList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans ) {
+   	Session session = null;
+   	 Query query = null;
+   	 String queryString = "";
+   	 List<QuestionsBo> questionBo= null;
+   	QuestionsBo questionBo1=null;
+   	 InstructionsBo instructionBo=null;
+     FormBo formBo= null;
+     String question="";
+   	 List<GroupMappingStepBean> groupMappingBeanss =new ArrayList<GroupMappingStepBean>();
+   	for(GroupMappingBo groupsList :groupMappingBo)
+   	{
+   		String  stepId=groupsList.getStepId();
+   	   	GroupMappingStepBean groupMappingStepBean1= new GroupMappingStepBean();
+
+   		 session = hibernateTemplate.getSessionFactory().openSession();
+	      queryString =
+	              "From QuestionsBo QBO WHERE QBO.id="+stepId;
+	      query = session.createQuery(queryString);
+	      questionBo1 = (QuestionsBo) query.uniqueResult();
+	      if(questionBo1 != null) {
+	      groupMappingStepBean1.setStepId(questionBo1.getId());
+	      groupMappingStepBean1.setDescription(questionBo1.getQuestion());
+	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
+	      groupMappingBeanss.add(groupMappingStepBean1);
+	      }
+
+   		   queryString =
+ 	              "From InstructionsBo IBO WHERE IBO.id="+stepId;
+   		query = session.createQuery(queryString);
+   		 instructionBo = (InstructionsBo) query.uniqueResult();
+ 	      if(instructionBo != null) {
+ 	      groupMappingStepBean1.setStepId(instructionBo.getId());
+ 	      groupMappingStepBean1.setDescription(instructionBo.getInstructionTitle());
+ 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
+ 	     groupMappingBeanss.add(groupMappingStepBean1);
+ 	      }
+
+   			   queryString =
+   	 	              "From FormBo FBO WHERE FBO.id="+stepId;
+   			query = session.createQuery(queryString);
+   			formBo = (FormBo) query.uniqueResult();
+
+   			if(formBo != null) {
+   			if (formBo.getFormId() !=null) {
+   		        String fromQuery =
+   		            "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date "
+   		            + "from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("
+   		                + " :formIdList ) and f.active=1 order by f.form_id";
+   		       List<?> result =
+   		            session.createSQLQuery(fromQuery).setParameter("formIdList", formBo.getFormId()).list();
+              for (int j = 0; j < result.size(); j++) {
+                Object[] objects = (Object[]) result.get(j);
+
+                question = (String) objects[4];
+              }
+   	           }
+
+
+   	 	      groupMappingStepBean1.setStepId(formBo.getFormId());
+   	 	     groupMappingStepBean1.setDescription(question);
+   	 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+   	 	  groupMappingBeanss.add(groupMappingStepBean1);
+   	 	      }
+
+   	}
+
+   	return groupMappingBeanss;
+   }
+
+   @Override
+   public List<GroupMappingBo> getAssignSteps(int grpId) {
+       logger.error("StudyQuestionnaireDAOImpl - getAssignSteps() - ERROR ");
+   	List<GroupMappingBo> groupMappingList=null;
+   	Session session = null;
+   	try {
+   	    session = hibernateTemplate.getSessionFactory().openSession();
+   	groupMappingList =
+   	          session
+   	              .createQuery(
+   	                  "From GroupMappingBo GBO WHERE  GBO.grpId= :grpId")
+   	              .setInteger("grpId", grpId)
+   	              .list();
+   	}catch (Exception e) {
+   	    logger.error("StudyQuestionnaireDAOImpl - getAssignSteps() - ERROR ");
+   	  } finally {
+   	    if (session != null) {
+   	      session.close();
+   	    }
+   	  }
+   	  logger.info("StudyQuestionnaireDAOImpl - getAssignSteps() - Ends");
+   	return groupMappingList;
+   }
+
+
   @Override
   public String deleteGroupMaprecords(String id) {
     logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
@@ -6393,6 +6492,100 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
     return message;
   }
+
+@Override
+public GroupMappingBo getStepDetails(String id, String questionnaireId) {
+	logger.info("StudyDAOImpl - getStepId() - Starts");
+    GroupMappingBo stepDetails = null;
+    Session session = null;
+    Query query = null;
+    String queryString = "";
+    try{
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      queryString = "FROM  GroupMappingBo GBO WHERE GBO.stepId = "+id;
+      query = session.createQuery(queryString);
+      stepDetails = (GroupMappingBo) query.uniqueResult();
+    }
+    catch(Exception e){
+      logger.error("StudyDAOImpl - getStepId() - ERROR",e);
+    }finally{
+      if(session != null){
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStepId() - Ends");
+    return stepDetails;
+}
+
+@Override
+public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId) {
+	logger.info("StudyDAOImpl - groupFlagDisable() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
+    Query query = null;
+    try{
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+
+        String  stepId=groupMappingBo.getStepId();
+        query = session
+                .createQuery(
+                        "update QuestionnairesStepsBo Q set Q.groupFlag=0"
+                                + " where Q.instructionFormId=:stepId and Q.questionnairesId=:questionnaireId");
+        query.setString("stepId",stepId);
+        query.setString("questionnaireId",questionnaireId);
+        query.executeUpdate();
+
+      message = FdahpStudyDesignerConstants.SUCCESS;
+      if (transaction.getStatus().equals(TransactionStatus.ACTIVE)) {
+        transaction.commit();
+      }
+      // transaction.commit();
+    }
+    catch(Exception e){
+      transaction.rollback();
+      logger.error("StudyDAOImpl - groupFlagDisable() - ERROR",e);
+    }finally{
+      if(session != null){
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - groupFlagDisable() - Ends");
+    return message;
+}
+
+@Override
+public String deleteStepMaprecords(String id) {
+	 logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
+	    Session session = null;
+	    String message = FdahpStudyDesignerConstants.FAILURE;
+	    int count = 0;
+	    String queryString = "";
+	    try {
+	      session = hibernateTemplate.getSessionFactory().openSession();
+	      transaction = session.beginTransaction();
+
+	      if (StringUtils.isNotEmpty(id)) {
+	        //delete the qroup based on id
+	        queryString  =
+	                "delete GroupMappingBo GBO where GBO.stepId=:id ";
+	        query = session.createQuery(queryString);
+	        count = query.setString("id", id).executeUpdate();
+	        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+	      }
+	      transaction.commit();
+	    } catch (Exception e) {
+	      transaction.rollback();
+	      logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
+	    } finally {
+	      if (null != session && session.isOpen()) {
+	        session.close();
+	      }
+	    }
+	    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
+	    return message;
+}
 
   @Override
   public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {

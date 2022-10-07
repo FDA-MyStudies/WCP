@@ -1,6 +1,7 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
+import com.fdahpstudydesigner.bean.GroupMappingStepBean;
 import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.PreLoadLogicBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -2410,6 +2411,20 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
+  public GroupMappingBo getStepDetails(String id, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - getStepId() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    GroupMappingBo stepId = null;
+    try {
+      stepId = studyQuestionnaireDAO.getStepDetails(id, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getStepId() - ERROR ", e);
+    }
+    logger.exit("getStepId() - Ends");
+    return stepId;
+  }
+
+  @Override
   public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
@@ -2420,6 +2435,22 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     }
     logger.exit("groupFlagDisable() - Ends");
     return result;  }
+
+  @Override
+  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans) {
+  	List<GroupMappingStepBean> groupMappingBeanss = null;
+  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId,groupMappingBo, groupMappingBeans);
+  	return groupMappingBeanss;
+  }
+
+  @Override
+  public List<GroupMappingBo> getAssignSteps(int grpId) {
+      logger.info("StudyQuestionnaireServiceImpl - getAssignSteps - Starts");
+      List<GroupMappingBo> getAssignSteps = studyQuestionnaireDAO.getAssignSteps(grpId);
+
+  	return getAssignSteps;
+  }
+
 
   @Override
   public String deleteGroupMaprecords(String id) {
@@ -2435,6 +2466,34 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
     return message;
   }
+
+@Override
+public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId) {
+	 logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
+	    String result = FdahpStudyDesignerConstants.FAILURE;
+	    try {
+	      result = studyQuestionnaireDAO.stepFlagDisable(groupMappingBo, questionnaireId);
+	    } catch (Exception e) {
+	      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
+	    }
+	    logger.exit("groupFlagDisable() - Ends");
+	    return result;
+}
+
+@Override
+public String deleteStepMaprecords(String id) {
+	logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
+
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message =
+              studyQuestionnaireDAO.deleteStepMaprecords(id);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
+    return message;
+}
 
   @Override
   public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {

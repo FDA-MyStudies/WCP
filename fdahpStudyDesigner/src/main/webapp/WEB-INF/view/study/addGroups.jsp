@@ -53,15 +53,12 @@ display:contents !important;
 <form:form
 action="/fdahpStudyDesigner/adminStudies/addOrUpdateGroupsDetails.do?_S=${param._S}"
 name="addGroupFormId" id="addGroupFormId" method="post">
-
-<input type="hidden" id="actionType" name="actionType"
-                           value="${fn:escapeXml(actionType)}">
-                    <input type="hidden" id="buttonText" name="buttonText"
-                           value="">
-        			<input type="hidden" value="${groupsBean.action}" id="action" name="action"> 
-				<input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
-                           
-                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+<input type="hidden" name="language" value="${currLanguage}">
+<input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
+<input type="hidden" id="buttonText" name="buttonText" value="">
+<input type="hidden" value="${groupsBean.action}" id="action" name="action">
+<input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
+<input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
 
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
@@ -74,13 +71,34 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <img src="../images/icons/back-b.png" class="pr-md"/></span>
                 Group-Level Attributes
             </div>
+                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
-                  <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip" data-placement="bottom" title="Language selection is available in edit screen only">
-                    <select class="selectpicker aq-select aq-select-form studyLanguage langSpecific" title="Select" disabled>
-                      <option selected>English</option>
+                    <select
+                            class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                            id="studyLanguage" name="studyLanguage" title="Select">
+                        <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+                            English
+                        </option>
+                        <c:forEach items="${languageList}" var="language">
+                            <option value="${language.key}"
+                                ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+                        </c:forEach>
                     </select>
-                  </span>
                 </div>
+            </c:if>
+
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                          data-placement="bottom"
+                          title="Language selection is available in edit screen only">
+						<select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                title="Select" disabled>
+                        <option selected>English</option>
+                    </select>
+					</span>
+                </div>
+            </c:if>
                 <div class="dis-line form-group mb-none mr-sm">
                   <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel </button>
                 </div>
@@ -106,7 +124,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
-                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required>
+                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required
+                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
 
                       <div class="help-block with-errors red-txt"></div>
                       <input type="hidden" id="preGroupId"
@@ -121,7 +140,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     </div>
 
                     <div class="form-group">
-                      <input type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required>
+                      <input type="text"  type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required
+                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
                     <div class="help-block with-errors red-txt"></div>
                      <input type="hidden" id="preGroupName"
                            value="${fn:escapeXml(groupsBo.groupName)}"/>
@@ -166,7 +186,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                                               <div class="col-md-4"></div>
                                                                                <div class="col-md-5">
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
-                                         data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
+                                         data-error="Please choose one option" class="selectpicker text-normal"  title="-select-">
                                      <c:forEach items="${destinationStepList}" var="destinationStep">
                                          <option value="${destinationStep.stepId}"
                                              ${groupsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
@@ -227,7 +247,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                      <div class="row data-div">
                                                          <div class="col-md-1" style="padding-top: 7px">Operator</div>
                                                          <div class="col-md-2">
-                                                             <select class="selectpicker operator text-normal" required
+                                                             <select class="selectpicker operator text-normal" 
                                                                      id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
                                                                  <c:forEach items="${operators}" var="operator">
                                                                      <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
@@ -291,48 +311,162 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 
 
         <!-- End right Content here -->
+
+        <div class="modal fade dominate" id="myModal" role="dialog" style="z-index: 1301 !important;">
+                <div class="modal-dialog modal-sm flr_modal">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                          <div id="autoSavedMessage" class="text-right">
+                            <div class="blue_text">Last saved now</div>
+                            <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                       <div class="modal fade" id="timeOutModal" role="dialog">
+                                            <div class="modal-dialog modal-sm flr_modal">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                        <div class="modal-body">
+                                                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    </div>
+
+</form:form>
+
+<form:form action="/fdahpStudyDesigner/sessionOut.do"
+           id="backToLoginPage" name="backToLoginPage"
+           method="post">
 </form:form>
 
 <script>
+ var idleTime = 0;
  $(document).ready(function () {
      $(".menuNav li.active").removeClass('active');
      $(".seventhQuestionnaires").addClass('active');
-  $("#saveId").click(function () {
-  var questnId = $('#questionnaireId').val();
-     var groupId = $('#groupId').val();
-      var groupName = $('#groupName').val();
-      var defaultVisibility = $('#groupDefaultVisibility').val();
-      var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
 
-     var id =  $('#id').val();
-         if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
-                 $("#action").val('false');
-
-                 $('#id').val();
-                 $('#groupId').val();
-                 $("#groupName").val();
-                 $("#groupDefaultVisibility").val();
-                 $("#destinationTrueAsGroup").val();
-                 $("#buttonText").val('save');
-                 $("#isAutoSaved").val('true');
-                 $('#addGroupFormId').submit();
-                 showSucMsg("Content saved as draft.");
-                 }
-                 else
-                 {
-                 $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-                      "Please fill out this all the mandatory fields");
-                  $('#alertMsg').show();
-                 }
-                 setTimeout(hideDisplayMessage, 4000);
-
+       $("#saveId").click(function () {
+        saveAddGroupsPage('manual');
                });
+                    setInterval(function () {
+                           idleTime += 1;
+                           if (idleTime > 3) { // 5 minutes
+                           <c:if test="${actionType ne 'view'}">
+                               saveAddGroupsPage('auto');
+                               </c:if>
+                               <c:if test="${actionType eq 'view'}">
+                               timeOutFunction();
+                               </c:if>
+                           }
+                       }, 226000); // 5 minutes
+
+                       $(this).mousemove(function (e) {
+                           idleTime = 0;
+                       });
+                       $(this).keypress(function (e) {
+                           idleTime = 0;
+                       });
+
+                      function timeOutFunction() {
+                                                      $('#timeOutModal').modal('show');
+                                                       let i = 14;
+                                                       let timeOutInterval = setInterval(function () {
+                                                       if (i === 0) {
+                                                       $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                                                       if ($('#timeOutModal').hasClass('show')) {
+                                                       $('#backToLoginPage').submit();
+                                                         }
+                                                         clearInterval(timeOutInterval);
+                                                          } else {
+                                                          if (i === 1) {
+                                                         $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                                                           } else {
+                                                           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                                                             }
+                                                             idleTime = 0;
+                                                             i-=1;
+                                                              }
+                                                            }, 60000);
+                                                          }
+
+                       // pop message after 15 minutes
+                               if ($('#isAutoSaved').val() === 'true') {
+                                   $('#myModal').modal('show');
+                                   let i = 1;
+                                   let j = 14;
+                                   let lastSavedInterval = setInterval(function () {
+                                       if ((i === 15) || (j === 0)) {
+                                            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
+                                           if ($('#myModal').hasClass('show')) {
+                                               $('#backToLoginPage').submit();
+                                           }
+                                           clearInterval(lastSavedInterval);
+                                       } else {
+                                           if ((i === 1) || (j === 14)) {
+                                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
+                                           }
+                                           else if ((i === 14) || (j === 1)) {
+                                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>');
+                                           }
+                                           else {
+                                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
+                                           }
+                                           idleTime = 0;
+                                           i+=1;
+                                           j-=1;
+                                       }
+                                   }, 60000);
+                               }
+
        });
 
+    function saveAddGroupsPage(mode){
+    debugger
+      var questnId = $('#questionnaireId').val();
+         var groupId = $('#groupId').val();
+          var groupName = $('#groupName').val();
+          var defaultVisibility = $('#groupDefaultVisibility').val();
+          var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+         var id =  $('#id').val();
+             if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
+                     $("#action").val('false');
+                     $('#id').val();
+                     $('#groupId').val();
+                     $("#groupName").val();
+                     $("#groupDefaultVisibility").val();
+                     $("#destinationTrueAsGroup").val();
+                     $("#buttonText").val('save');
+                     if (mode === 'auto') {
+                     $("#isAutoSaved").val('true');
+                     }
+                     else{
+                      $("#isAutoSaved").val('false');
+                      }
+                     $('#addGroupFormId').submit();
+                     }
+                     else
+                     {
+                     $("#alertMsg").removeClass('s-box').addClass('e-box').text(
+                          "Please fill out this all the mandatory fields");
+                      $('#alertMsg').show();
+                     }
+                     setTimeout(hideDisplayMessage, 4000);
+    }
+ let currLang = $('#studyLanguage').val();
+ if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+   $('#currentLanguage').val(currLang);
+   refreshAndFetchLanguageData(currLang);
+ }
          function goToBackPage(item) {
                  var a = document.createElement('a');
-                     a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
-                     document.body.appendChild(a).click();
+                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                 a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
+                     + lang;;
+                 document.body.appendChild(a).click();
              }
 
          $('#preLoadSurveyId').on('change', function () {
@@ -435,6 +569,10 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      if ($(this).is("input.con-radio")) {
                          $(this).attr('disabled', true);
                      }
+                        $(this).attr('required', false);
+                        $(this).removeClass('has-error has-danger').find(".help-block").empty();
+                        $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+                        $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  $('#defaultVisibility').val('true');
                  addForm.attr('disabled', true);
@@ -444,6 +582,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      if ($(this).is("input.con-radio")) {
                          $(this).attr('disabled', false);
                      }
+                     $(this).attr('required','required');
+                     $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  toggle.attr('checked', false);
                  $('#defaultVisibility').val('false');
@@ -617,6 +757,69 @@ name="addGroupFormId" id="addGroupFormId" method="post">
         	    }
         	  }
 
+         $('#studyLanguage').on('change', function () {
+          	  debugger
+              let currLang = $('#studyLanguage').val();
+              $('#currentLanguage').val(currLang);
+             // $('#loader').show();
+              refreshAndFetchLanguageData($('#studyLanguage').val());
+            })
+            
+            function refreshAndFetchLanguageData(language) {
+      		  debugger
+      		    $.ajax({
+      		      url: '/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}',
+      		      type: "GET",
+      		      data: {
+      		        language: language
+      		      },
+      		      success: function (data) {
+      		    	  debugger
+      		        let htmlData = document.createElement('html');
+      		        htmlData.innerHTML = data;
+      		        if (language !== 'en') {
+      		        	debugger
+      		          updateCompletionTicks(htmlData);
+      		          $('.tit_wrapper').text($('#mlName', htmlData).val());
+      		          $('#groupName').attr('disabled', true);
+      		       $('#groupId').attr('disabled', true);
+      		 //   $('#disOperator').attr('disabled', true);
+      		    
+      		 	$('#groupDefaultVisibility').attr('disabled', true);
+      		          //$('.delete,thead').addClass('cursor-none');
+      		          let mark=true;
+      		          $('#groups_list option', htmlData).each(function (index, value) {
+      		            let id = '#row' + value.getAttribute('id');
+      		            $(id).find('td.title').text(value.getAttribute('value'));
+      
+      		          });
+      		         // view_spanish_deactivemode();
+      		         
+      		        } else {
+      		        	debugger
+      		          updateCompletionTicksForEnglish();
+      		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+      		       $('#groupName').attr('disabled', false);
+      		       $('#groupId').attr('disabled', false);
+      		   // $('#disOperator').attr('disabled', false);
+      		    $('#groupDefaultVisibility').attr('disabled', false);
+      		          $('#studyProtocolId').prop('disabled', false);
+      		          let mark=true;
+      		          $('tbody tr', htmlData).each(function (index, value) {
+      		        	  debugger
+      		            let id = '#'+value.getAttribute('id');
+      		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+      		          
+      		          });
+      		          
+      		          <c:if test="${not empty permission}">
+      		          $('.delete').addClass('cursor-none');
+      		          </c:if>
+      		          //view_spanish_activemode();
+      		        }
+      		      }
+      		    });
+      		  }
 
 
 

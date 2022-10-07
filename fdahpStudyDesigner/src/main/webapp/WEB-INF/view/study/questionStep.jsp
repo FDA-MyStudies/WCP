@@ -4487,6 +4487,11 @@ input[type=number] {
 		  $('#questionStepId select').addClass('linkDis');
 		  $('#responseTypeId').addClass('disabled_css');
 		  $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
+		  $('#pipingSnippet').prop('disabled', true);
+		  $('#sourceQuestion').prop('disabled', true);
+		  $('#surveyId').prop('disabled', true);
+		  $('#savePiping').prop('disabled', true);
+		  $('#differentSurvey').prop('disabled', true);
 		  $("#trailId").hide();
 		  $(".removeImageId").css("visibility", "hidden");
 		  $("tbody").removeClass('ui-sortable');

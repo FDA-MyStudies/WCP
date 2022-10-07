@@ -6393,4 +6393,38 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
     return message;
   }
+
+  @Override
+  public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
+    Session session = null;
+    boolean allowReorder = true;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+
+      if (queId != null) {
+        BigInteger count = (BigInteger) session
+                .createSQLQuery("select count(*) from questionnaires_steps where questionnaires_id=:queId " +
+                        "and active=:active and ((default_visibility=:dv and destination_true_as_group is not null and is_different_survey_pre_load is not true) " +
+                        "or (is_piping = :isPiping and is_different_survey is not true))")
+                .setParameter("queId", queId)
+                .setParameter("active", true)
+                .setParameter("dv", false)
+                .setParameter("isPiping", true)
+                .uniqueResult();
+        if (count.intValue() > 0) {
+          allowReorder = false;
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
+    return allowReorder;
+  }
 }

@@ -2435,4 +2435,9 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
     return message;
   }
+
+  @Override
+  public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
+    return studyQuestionnaireDAO.isPreloadLogicAndPipingEnabled(queId);
+  }
 }

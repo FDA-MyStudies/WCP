@@ -196,4 +196,6 @@ public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
   public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
 
   public String deleteGroupMaprecords(String id);
+
+  Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 }

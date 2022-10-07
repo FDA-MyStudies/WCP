@@ -199,4 +199,6 @@ String checkGroupName(String questionnaireId, String groupName, String studyId);
 
   public String deleteGroupMaprecords(String id);
 
+  Boolean isPreloadLogicAndPipingEnabled(Integer queId);
+
 }

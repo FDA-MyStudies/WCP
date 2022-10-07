@@ -3105,6 +3105,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       $(".deleteStepButton").show();
       table1.rowReorder.enable();
     }
+      if ('${allowReorder}' === 'false') {
+          table1.rowReorder.disable();
+      }
     // Branching Logic starts here
 
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');

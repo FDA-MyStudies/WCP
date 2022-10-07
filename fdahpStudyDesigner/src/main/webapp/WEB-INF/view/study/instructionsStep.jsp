@@ -354,6 +354,11 @@
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
     $('#basicInfoFormId input,textarea ').prop('disabled', true);
+    $('#pipingSnippet').prop('disabled', true);
+    		  $('#sourceQuestion').prop('disabled', true);
+    		  $('#surveyId').prop('disabled', true);
+    		  $('#savePiping').prop('disabled', true);
+    		  $('#differentSurvey').prop('disabled', true);
     $('#basicInfoFormId select').addClass('linkDis');
     $('#studyLanguage').removeClass('linkDis');
     $('.selectpicker').selectpicker('refresh');

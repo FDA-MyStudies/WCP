@@ -244,6 +244,12 @@ input[type=number] {
 		<input type="hidden" name="questionId" id="queId">
 	</form:form>
 	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
+
+  <form:form
+  action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
+  name="questionStepId" id="questionStepId" method="post"  data-toggle="validator" autocomplete="off" role="form"
+  enctype="multipart/form-data">
+
 	<div class="right-content-head">
 		<div class="text-right">
 			<div class="black-md-f dis-line pull-left line34">
@@ -309,11 +315,7 @@ input[type=number] {
 	</div>
 	<!--  End  top tab section-->
 	<!--  Start body tab section -->
-	<form:form
-		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
-		name="questionStepId" id="questionStepId" method="post"
-		data-toggle="validator" autocomplete="off" role="form"
-		enctype="multipart/form-data">
+
 		<div class="right-content-body pt-none pl-none pr-none">
 			<ul class="nav nav-tabs  customTabs gray-bg">
 				<li class=" nav-item stepLevel active">
@@ -591,7 +593,7 @@ input[type=number] {
 														<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
 														<div class="col-md-3 form-group">
 															<input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
-															<input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" required placeholder="Enter">
+															<input type="text"  class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue"  placeholder="Enter">
 															<div class="help-block with-errors red-txt"></div>
 														</div>
 													</div>
@@ -618,7 +620,7 @@ input[type=number] {
 											<div class="row data-div">
 												<div class="col-md-1" style="padding-top: 7px">Operator</div>
 												<div class="col-md-2 form-group">
-													<select required class="selectpicker operator text-normal" data-error="Please select an option"
+													<select  class="selectpicker operator text-normal" data-error="Please select an option"
 															id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
 														<c:forEach items="${operators}" var="operator">
 															<option value="${operator}">${operator}</option>
@@ -630,7 +632,7 @@ input[type=number] {
 												<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
 												<div class="col-md-3 form-group">
 													<input type="hidden" id="id${status.index}">
-													<input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" required placeholder="Enter">
+													<input type="text"  class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
 													<div class="help-block with-errors red-txt"></div>
 												</div>
 											</div>
@@ -8773,7 +8775,7 @@ $('.text-choice').each(function(i){
 							'<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
 							'<div class="col-md-2 form-group">'+
 								'<select class="selectpicker operator text-normal" data-error="Please select an option" '+
-										' id="operator' + count + '" required name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
+										' id="operator' + count + '"  name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
 									'<option> < </option>'+
 									'<option> > </option>'+
 				                    '<option> = </option>'+
@@ -8785,7 +8787,7 @@ $('.text-choice').each(function(i){
 							'</div>'+
 							'<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
 							'<div class="col-md-3 form-group">'+
-								'<input type="text" data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" required placeholder="Enter" />'+
+								'<input type="text" data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter" />'+
 				                '<input type="hidden" class="id"/>'+
 				                '<div class="help-block with-errors red-txt"></div>'+
 				            '</div>'+
@@ -8826,9 +8828,14 @@ defaultVisibility.on('change', function () {
 			$(this).addClass('ml-disabled');
 			if ($(this).is("select")) {
 				$(this).val('').selectpicker('refresh');
+        $(this).attr('required', false);
+        $(this).removeClass('has-error has-danger').find(".help-block").empty();
+        $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
 			}
 			if ($(this).is("input")) {
 				$(this).val('').attr('disabled', true);
+        $(this).attr('required', false);
+        $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
 			}
 		});
 		$('#defaultVisibility').val('true');
@@ -8841,9 +8848,15 @@ defaultVisibility.on('change', function () {
 			$(this).removeClass('ml-disabled');
 			if ($(this).is("select")) {
 				$(this).selectpicker('refresh');
+        $(this).attr('required','required');
+        $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+       
 			}
 			if ($(this).is("input")) {
 				$(this).attr('disabled', false);
+        $(this).attr('required','required');
+        $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+       
 			}
 		});
 		$('#defaultVisibility').val('false');

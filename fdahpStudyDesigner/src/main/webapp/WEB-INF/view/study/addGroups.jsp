@@ -186,7 +186,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                                               <div class="col-md-4"></div>
                                                                                <div class="col-md-5">
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
-                                         data-error="Please choose one option" class="selectpicker text-normal" required title="-select-">
+                                         data-error="Please choose one option" class="selectpicker text-normal"  title="-select-">
                                      <c:forEach items="${destinationStepList}" var="destinationStep">
                                          <option value="${destinationStep.stepId}"
                                              ${groupsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
@@ -247,7 +247,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                      <div class="row data-div">
                                                          <div class="col-md-1" style="padding-top: 7px">Operator</div>
                                                          <div class="col-md-2">
-                                                             <select class="selectpicker operator text-normal" required
+                                                             <select class="selectpicker operator text-normal" 
                                                                      id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
                                                                  <c:forEach items="${operators}" var="operator">
                                                                      <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
@@ -569,6 +569,10 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      if ($(this).is("input.con-radio")) {
                          $(this).attr('disabled', true);
                      }
+                        $(this).attr('required', false);
+                        $(this).removeClass('has-error has-danger').find(".help-block").empty();
+                        $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+                        $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  $('#defaultVisibility').val('true');
                  addForm.attr('disabled', true);
@@ -578,6 +582,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      if ($(this).is("input.con-radio")) {
                          $(this).attr('disabled', false);
                      }
+                     $(this).attr('required','required');
+                     $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  toggle.attr('checked', false);
                  $('#defaultVisibility').val('false');

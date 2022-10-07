@@ -1965,7 +1965,7 @@ width:142px !important;
                 }
                 else{
                 $('#alertMsg').show();
-                $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two step to form a group.");
+                $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two steps to form a group.");
                 $('#content').find('tbody input.step-check').prop('checked', false);
                 $('#group').val('').selectpicker('refresh');
                 }

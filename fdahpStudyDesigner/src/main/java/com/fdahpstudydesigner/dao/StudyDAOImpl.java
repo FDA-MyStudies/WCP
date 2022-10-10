@@ -6397,15 +6397,19 @@ public class StudyDAOImpl implements StudyDAO {
                         
 						
 						List<GroupsBo> groupsBoList = session
-								.createQuery("from GroupsBo where  studyId=:id and questionnaireId=:questionnaireId")
+								.createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId and isPublished=:isPublished")
 								.setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
-								.setParameter("id", studyBo.getId()).list();
+								.setParameter("id", studyBo.getId())
+								.setParameter("isPublished", 0).list();
 						for (GroupsBo groupsBo : groupsBoList) {
 							GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
 							newGroupsBo.setId(null);
 							newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
 							newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+							newGroupsBo.setIsPublished(1);
 							session.save(newGroupsBo);
+							groupsBo.setIsPublished(1);
+							session.update(groupsBo);
 						}
 						 
 

@@ -21,6 +21,7 @@ public class GroupsBean {
 	private String buttonText;
     private Boolean defaultVisibility;
     private Integer destinationTrueAsGroup;
+    private Integer isPublished;
 
     @Transient private String groupDefaultVisibility;
 
@@ -178,4 +179,14 @@ public class GroupsBean {
     public Integer getQuestionnaireId() {
         return questionnaireId;
     }
+
+	public Integer getIsPublished() {
+		return isPublished;
+	}
+
+	public void setIsPublished(Integer isPublished) {
+		this.isPublished = isPublished;
+	}
+    
+   
 }

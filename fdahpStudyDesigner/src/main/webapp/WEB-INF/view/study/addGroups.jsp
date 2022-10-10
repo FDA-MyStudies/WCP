@@ -125,7 +125,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     </div>
                     <div class="form-group">
                       <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required
-                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
+                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>
+                      <c:if test="${groupsBo.isPublished eq 1}"><c:out value="disabled='disabled'"/></c:if>>
 
                       <div class="help-block with-errors red-txt"></div>
                       <input type="hidden" id="preGroupId"

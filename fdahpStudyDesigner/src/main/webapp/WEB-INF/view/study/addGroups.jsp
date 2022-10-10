@@ -15,6 +15,14 @@ left: -3px !important;
 .col-rc {
 width:1100px !important;
 }
+
+.ml-disabled {
+        background-color: #eee !important;
+        opacity: 1;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
 #addGroupFormId{
 display:contents !important;
 }
@@ -125,8 +133,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     </div>
                     <div class="form-group">
                       <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required
-                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>
-                      <c:if test="${groupsBo.isPublished eq 1}"><c:out value="disabled='disabled'"/></c:if>>
+                      <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
 
                       <div class="help-block with-errors red-txt"></div>
                       <input type="hidden" id="preGroupId"
@@ -443,6 +450,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
           var ationType=$('#actionType').val('edit');
           var defaultVisibility = $('#groupDefaultVisibility').val();
           var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+          var value0 = $('#value0').val();
+          var operator0 = $('#operator0').val();
          var id =  $('#id').val();
              if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
                      $("#action").val('false');
@@ -451,6 +460,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      $("#groupName").val();
                      $("#groupDefaultVisibility").val();
                      $("#destinationTrueAsGroup").val();
+                     $('#value0').val();
+                     $('#operator0').val();
                      $("#buttonText").val('save');
                      $('#actionType').val('edit');
                      if (mode === 'auto') {
@@ -618,6 +629,8 @@ document.body.appendChild(a).click();
                         $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  $('#defaultVisibility').val('true');
+                 $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+                 $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
                  addForm.attr('disabled', true);
                  $('#value0').attr('disabled', true);
              } else {
@@ -648,6 +661,8 @@ document.body.appendChild(a).click();
         	    var groupName = $('#groupName').val();
         	    var defaultVisibility = $('#groupDefaultVisibility').val();
                 var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+                var value0 = $('#value0').val();
+                var operator0 = $('#operator0').val();
         	    $('input.con-radio').each(function(e) {
                                   $(this).removeAttr('disabled');
                               })
@@ -661,6 +676,8 @@ document.body.appendChild(a).click();
         	               $("#groupName").val();
         	               $("#groupDefaultVisibility").val();
                            $("#destinationTrueAsGroup").val();
+                           $('#value0').val();
+                           $('#operator0').val();
         	               $('#addGroupFormId').submit();
 
         	               }

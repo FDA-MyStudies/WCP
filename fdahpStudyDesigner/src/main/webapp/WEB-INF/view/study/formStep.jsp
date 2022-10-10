@@ -327,7 +327,7 @@
                                                         ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
                                             <c:forEach items="${groupsList}" var="group" varStatus="status">
-                                                <option value="${group.groupId}" id="selectGroup${group.groupId}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                <option value="${group.id}" id="selectGroup${group.id}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                                             </c:forEach>
                                             <option value="0"
                                                 ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
@@ -407,7 +407,7 @@
                              </option>
                          </c:forEach>
                          <c:forEach items="${groupsList}" var="group" varStatus="status">
-                             <option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                             <option value="${group.id}" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                          </c:forEach>
                          <option value="0"
                              ${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
@@ -761,6 +761,11 @@ var idleTime = 0;
       $('#logicDiv').find('div.bootstrap-select').each( function () {
           $(this).addClass('ml-disabled');
       });
+      $('#pipingSnippet').prop('disabled', true);
+      $('#sourceQuestion').prop('disabled', true);
+      $('#surveyId').prop('disabled', true);
+      $('#savePiping').prop('disabled', true);
+      $('#differentSurvey').prop('disabled', true);
       $('#addFormula').attr('disabled', true);
       $('.selectpicker').selectpicker('refresh');
     </c:if>
@@ -1709,6 +1714,9 @@ defaultVisibility.on('change', function () {
         });
 
         $('#defaultVisibility').val('true');
+        if($('#differentSurveyPreLoad').is(':checked')){
+            $('#contents').hide();
+        }
         $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
         $('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
         $('#preLoadSurveyId').prop('required', false);
@@ -1816,7 +1824,7 @@ function refreshSourceKeys(surveyId, type) {
                         });
                         if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
                             <c:forEach items="${groupsList}" var="group" varStatus="status">
-                            id.append('<option value="${group.groupId}" id="selectGroup${group.groupId}">'+
+                            id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
                                 'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
                                 '</option>')
                             </c:forEach>

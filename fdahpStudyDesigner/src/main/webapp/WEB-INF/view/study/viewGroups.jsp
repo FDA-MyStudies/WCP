@@ -243,17 +243,17 @@ var idleTime = 0;
  
   
   $('#studyLanguage').on('change', function () {
-	  debugger
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
 function goToBackPage(item) {
+	  var ationType=$('#actionType').val();
               var a = document.createElement('a');
               let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
                   a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
-                      + lang;;
+                      + lang;
                   document.body.appendChild(a).click();
       }
 	$('.addOrEditGroups').on('click',function(){
@@ -313,7 +313,6 @@ function goToBackPage(item) {
         }
 	
 	  function refreshAndFetchLanguageData(language) {
-		  debugger
 		    $.ajax({
 		      url: '/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}',
 		      type: "GET",
@@ -321,11 +320,9 @@ function goToBackPage(item) {
 		        language: language
 		      },
 		      success: function (data) {
-		    	  debugger
 		        let htmlData = document.createElement('html');
 		        htmlData.innerHTML = data;
 		        if (language !== 'en') {
-		        	debugger
 		          updateCompletionTicks(htmlData);
 		          $('.tit_wrapper').text($('#mlName', htmlData).val());
 		          $('.addOrEditGroups').attr('disabled', true);
@@ -338,7 +335,6 @@ function goToBackPage(item) {
 		          });
 		         
 		        } else {
-		        	debugger
 		          updateCompletionTicksForEnglish();
 		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 		          $('.addOrEditGroups').attr('disabled', false);

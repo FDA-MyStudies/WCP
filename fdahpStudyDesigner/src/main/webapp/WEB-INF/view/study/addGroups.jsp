@@ -249,9 +249,11 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                          <div class="col-md-2">
                                                              <select class="selectpicker operator text-normal" 
                                                                      id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
+                                                                     <c:if test="${currLanguage ne 'es'}">
                                                                  <c:forEach items="${operators}" var="operator">
                                                                      <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
                                                                  </c:forEach>
+                                                                 </c:if>
                                                              </select>
                                                          </div>
 
@@ -342,6 +344,14 @@ name="addGroupFormId" id="addGroupFormId" method="post">
            id="backToLoginPage" name="backToLoginPage"
            method="post">
 </form:form>
+<form:form action="/fdahpStudyDesigner/viewGroups.do"
+           id="viewGroups" name="viewGroups"
+           method="post">
+ <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
+ <input type="hidden" id="buttonText" name="buttonText" value="">
+ 
+           
+</form:form>
 
 <script>
  var idleTime = 0;
@@ -429,6 +439,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
       var questnId = $('#questionnaireId').val();
          var groupId = $('#groupId').val();
           var groupName = $('#groupName').val();
+          var ationType=$('#actionType').val('edit');
           var defaultVisibility = $('#groupDefaultVisibility').val();
           var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
          var id =  $('#id').val();
@@ -440,6 +451,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      $("#groupDefaultVisibility").val();
                      $("#destinationTrueAsGroup").val();
                      $("#buttonText").val('save');
+                     $('#actionType').val('edit');
                      if (mode === 'auto') {
                      $("#isAutoSaved").val('true');
                      }
@@ -786,8 +798,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
       		          $('.tit_wrapper').text($('#mlName', htmlData).val());
       		          $('#groupName').attr('disabled', true);
       		       $('#groupId').attr('disabled', true);
-      		 //   $('#disOperator').attr('disabled', true);
-      		    
       		 	$('#groupDefaultVisibility').attr('disabled', true);
       		          //$('.delete,thead').addClass('cursor-none');
       		          let mark=true;
@@ -796,7 +806,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
       		            $(id).find('td.title').text(value.getAttribute('value'));
       
       		          });
-      		         // view_spanish_deactivemode();
       		         
       		        } else {
       		        	debugger
@@ -804,9 +813,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
       		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
       		       $('#groupName').attr('disabled', false);
       		       $('#groupId').attr('disabled', false);
-      		   // $('#disOperator').attr('disabled', false);
       		    $('#groupDefaultVisibility').attr('disabled', false);
-      		          $('#studyProtocolId').prop('disabled', false);
+      		     $('#studyProtocolId').prop('disabled', false);
       		          let mark=true;
       		          $('tbody tr', htmlData).each(function (index, value) {
       		        	  debugger
@@ -818,7 +826,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
       		          <c:if test="${not empty permission}">
       		          $('.delete').addClass('cursor-none');
       		          </c:if>
-      		          //view_spanish_activemode();
       		        }
       		      }
       		    });

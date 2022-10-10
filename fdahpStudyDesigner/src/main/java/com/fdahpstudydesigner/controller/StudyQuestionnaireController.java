@@ -4089,11 +4089,7 @@ public class StudyQuestionnaireController {
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
         }
-        if (StringUtils.isNotEmpty(studyId)) {
-          request.getSession().removeAttribute(sessionStudyCount + "actionType");
-           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-          map.addAttribute("studyBo", studyBo);
-        }
+   
         map.addAttribute("studyBo", studyBo);
 
           map.addAttribute("groupsBo", groupsBo);
@@ -4160,6 +4156,13 @@ public class StudyQuestionnaireController {
         	   groupsBo.setAction(true);
            }
          }
+         String actionType =
+                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
+                         ? ""
+                         : request.getParameter("actionType");
+         if (StringUtils.isEmpty(actionType)) {
+           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
+         }
          groupsBo.setQuestionnaireId(Integer.parseInt(questionnaireId));
          groupsBo.setStudyId(Integer.parseInt(studyId));
          msg = studyQuestionnaireService.addOrUpdateGroupsDetails(groupsBo, userSession);
@@ -4202,7 +4205,9 @@ public class StudyQuestionnaireController {
                   "Failed to update group.");
         }
         
-      }        map.addAttribute("_S", sessionStudyCount);
+      } 
+        map.addAttribute("actionType", actionType);
+        map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("groupsBo", groupsBo);
         map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (("save").equalsIgnoreCase(buttonText)) {

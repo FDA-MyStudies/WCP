@@ -1676,6 +1676,7 @@ if (defaultVisibility.is(':checked')) {
         if ($(this).is("input.con-radio")) {
             $(this).attr('disabled', true);
         }
+        $(this).attr('required', false);
     });
     $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
     $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
@@ -1697,19 +1698,20 @@ defaultVisibility.on('change', function () {
             $(this).addClass('ml-disabled');
             if ($(this).is("select")) {
                 $(this).val('').selectpicker('refresh');
-                $(this).attr('required', false);
                 $(this).removeClass('has-error has-danger').find(".help-block").empty();
                 $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
             if ($(this).is("input")) {
                 $(this).val('').attr('disabled', true);
-                $(this).attr('required', false);
-                 $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+                $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
+            $(this).attr('required', false);
         });
+
         $('#defaultVisibility').val('true');
         $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
         $('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
+        $('#preLoadSurveyId').prop('required', false);
         addForm.attr('disabled', true);
         $('#skiappableYes').prop('disabled', false);
     } else {
@@ -1717,17 +1719,16 @@ defaultVisibility.on('change', function () {
             $(this).removeClass('ml-disabled');
             if ($(this).is("select")) {
                 $(this).selectpicker('refresh');
-                $(this).attr('required','required');
-                $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
             if ($(this).is("input")) {
                 $(this).attr('disabled', false);
-                $(this).attr('required','required');
-                $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
             }
+            $(this).attr('required',true);
+            $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
         });
-        toggle.attr('checked', false);
         $('#defaultVisibility').val('false');
+        $('#preLoadSurveyId').prop('required', false);
+        toggle.attr('checked', false);
         addForm.attr('disabled', false);
         $('#skiappableYes').prop('checked', false).prop('disabled', true);
         $('#skiappableNo').prop('checked', true);

@@ -473,14 +473,43 @@ name="addGroupFormId" id="addGroupFormId" method="post">
    $('#currentLanguage').val(currLang);
    refreshAndFetchLanguageData(currLang);
  }
-         function goToBackPage(item) {
-                 var a = document.createElement('a');
-                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-                 a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
-                     + lang;;
-                 document.body.appendChild(a).click();
-             }
 
+function goToBackPage(item) {
+debugger
+var actionPage = "${actionType}";
+$(item).prop('disabled', true);
+<c:if test="${actionType ne 'view'}">
+bootbox
+.confirm({
+closeButton: false,
+message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+buttons: {
+'cancel': {
+label: 'Cancel',
+},
+'confirm': {
+label: 'OK',
+},
+},
+callback: function (result) {
+if (result) {
+var a = document.createElement('a');
+let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
++ lang;
+document.body.appendChild(a).click();
+} else {
+$(item).prop('disabled', false);
+}
+}
+});
+</c:if>
+<c:if test="${actionType eq 'view'}">
+var a = document.createElement('a');
+a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
+document.body.appendChild(a).click();
+</c:if>
+}
          $('#preLoadSurveyId').on('change', function () {
          	refreshSourceKeys();
          })

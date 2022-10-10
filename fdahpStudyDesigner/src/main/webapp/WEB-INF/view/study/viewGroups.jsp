@@ -43,11 +43,12 @@
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
-       <div class="black-md-f dis-line pull-left line34">
+       <div class="black-md-f text-uppercase dis-line pull-left line34">
 				<span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
 				<img src="../images/icons/back-b.png" class="pr-md"/></span>
+                  <c:if test="${actionType eq 'edit'}">Groups</c:if>
+                  <c:if test="${actionType eq 'view'}">View Groups</c:if>
             </div>
-            <div class="black-md-f text-uppercase dis-line pull-left line34">GROUPS</div>
           <div class="dis-line form-group mb-none">
           
           <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
@@ -111,11 +112,22 @@
                   	<img src="../images/deassign.png" class="pr-md" style="margin-top: -6px;"/>
                   	</span>
                
-					<span class=" ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> addOrEditGroups"
-                  id="${groupsList.id}" data-toggle="tooltip"
-                  	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
-                  	</span>
-                  	
+
+
+                  	<c:choose>
+                                   <c:when test="${actionType eq 'view'}">
+                    									<span class="editIcon mr-lg addOrEditGroups <c:if test="${actionType eq 'view'}"> cursor-none </c:if> ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'}"
+                                                        id="${groupsList.id}" data-toggle="tooltip"
+                                                      	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                                                      	</span>
+                    				</c:when>
+                    				<c:otherwise>
+                    									<span class="editIcon mr-lg addOrEditGroups ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'}"
+                                                        id="${groupsList.id}" data-toggle="tooltip"
+                                                      	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                                                      	</span>
+                                    </c:otherwise>
+                     </c:choose>
 					<span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                   data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
                    
@@ -248,13 +260,39 @@ var idleTime = 0;
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
-function goToBackPage(item) {
-	  var ationType=$('#actionType').val();
-              var a = document.createElement('a');
-              let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-                  a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
-                      + lang;
-                  document.body.appendChild(a).click();
+      function goToBackPage(item) {
+      $(item).prop('disabled', true);
+      <c:if test="${actionType ne 'view'}">
+      bootbox
+      .confirm({
+      closeButton: false,
+      message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+      buttons: {
+      'cancel': {
+      label: 'Cancel',
+      },
+      'confirm': {
+      label: 'OK',
+      },
+      },
+      callback: function (result) {
+      if (result) {
+      var a = document.createElement('a');
+      let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+      a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}&language="
+      + lang;
+      document.body.appendChild(a).click();
+      } else {
+      $(item).prop('disabled', false);
+      }
+      }
+      });
+      </c:if>
+      <c:if test="${actionType eq 'view'}">
+      var a = document.createElement('a');
+      a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
+      document.body.appendChild(a).click();
+      </c:if>
       }
 	$('.addOrEditGroups').on('click',function(){
 			$('#id').val($(this).attr('id'));
@@ -354,6 +392,9 @@ function goToBackPage(item) {
 		      }
 		    });
 		  }
-
+      <c:if test="${actionType eq 'view'}">
+       $('.addOrEditGroups').attr('disabled', true);
+       $('.delete,thead').addClass('cursor-none');
+      </c:if>
 </script>
 

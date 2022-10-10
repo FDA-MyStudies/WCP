@@ -8844,6 +8844,9 @@ defaultVisibility.on('change', function () {
 			}
 		});
 		$('#defaultVisibility').val('true');
+		if($('#differentSurveyPreLoad').is(':checked')){
+                  $('#content').hide();
+        }
 		$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
 		$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
 		addForm.attr('disabled', true);

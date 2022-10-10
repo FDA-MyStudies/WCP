@@ -761,6 +761,11 @@ var idleTime = 0;
       $('#logicDiv').find('div.bootstrap-select').each( function () {
           $(this).addClass('ml-disabled');
       });
+      $('#pipingSnippet').prop('disabled', true);
+      $('#sourceQuestion').prop('disabled', true);
+      $('#surveyId').prop('disabled', true);
+      $('#savePiping').prop('disabled', true);
+      $('#differentSurvey').prop('disabled', true);
       $('#addFormula').attr('disabled', true);
       $('.selectpicker').selectpicker('refresh');
     </c:if>
@@ -1708,6 +1713,9 @@ defaultVisibility.on('change', function () {
             }
         });
         $('#defaultVisibility').val('true');
+        if($('#differentSurveyPreLoad').is(':checked')){
+            $('#contents').hide();
+        }
         $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
         $('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
         addForm.attr('disabled', true);

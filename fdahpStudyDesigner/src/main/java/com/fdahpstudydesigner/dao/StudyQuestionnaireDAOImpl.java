@@ -6428,7 +6428,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
                // question = (String) objects[4];
                 if((objects[0]).equals(objects1[0]))
          	 	  {
-                	question = question+","+(String) objects[4];
+                	question = question+"<br>"+(String) objects[4];
 
          	 	  }
          	 	  else

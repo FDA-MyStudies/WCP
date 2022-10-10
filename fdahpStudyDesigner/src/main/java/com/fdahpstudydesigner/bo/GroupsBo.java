@@ -42,8 +42,6 @@ public class GroupsBo implements Serializable {
     @Column(name = "modified_on")
     private String modifiedOn;
     
-    @Column(name = "is_published")
-    private Integer isPublished=0;
 
     @Transient
     private String userId;

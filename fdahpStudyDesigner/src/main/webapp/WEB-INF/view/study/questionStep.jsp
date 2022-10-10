@@ -440,7 +440,7 @@ input[type=number] {
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
 										<c:forEach items="${groupsList}" var="group" varStatus="status">
-											<option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+											<option value="${group.id}" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
 										</c:forEach>
 										<option value="0"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
@@ -522,8 +522,8 @@ input[type=number] {
 										</option>
 									</c:forEach>
 									<c:forEach items="${groupsList}" var="group" varStatus="status">
-										<option value="${group.groupId}" id="selectGroup${group.groupId}"
-												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.groupId}">
+										<option value="${group.id}" id="selectGroup${group.id}"
+												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
 													selected
 												</c:if>>
 											Group  ${status.index + 1} :  ${group.groupName}&nbsp;
@@ -8941,7 +8941,7 @@ function refreshSourceKeys(surveyId, type) {
 						});
 						if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
 							<c:forEach items="${groupsList}" var="group" varStatus="status">
-							id.append('<option value="${group.groupId}" id="selectGroup${group.groupId}">'+
+							id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
 							'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
 						    '</option>')
 							</c:forEach>

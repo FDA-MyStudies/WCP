@@ -4115,6 +4115,7 @@ public class StudyQuestionnaireController {
     ModelMap map = new ModelMap();
     String msg = FdahpStudyDesignerConstants.FAILURE;
     boolean addFlag = false;
+    StudyBo studyBo = null;
      //GroupsBean groupsBo = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     try {
@@ -4134,8 +4135,20 @@ public class StudyQuestionnaireController {
                       request
                               .getSession()
                               .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-     String questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount +"questionnaireId");
-     String id =
+        if (StringUtils.isEmpty(studyId)) {
+          studyId =
+                  FdahpStudyDesignerUtil.isEmpty(
+                          request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+                          == true
+                          ? "0"
+                          : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+        }
+        if (StringUtils.isNotEmpty(studyId)) {
+          studyBo = studyService.getStudyById(studyId, userSession.getUserId());
+          map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+        }
+        String questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount +"questionnaireId");
+                  String id =
              FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
                      ? ""
                      : request.getParameter("id");

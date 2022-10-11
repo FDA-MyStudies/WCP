@@ -277,7 +277,7 @@
                     </div>
                     <br>
 
-                    <div id="surveyBlock">
+                    <div id="surveyBlock" style="display:none">
                         <div class="gray-xs-f mb-xs">Survey ID</div>
                         <div class="mb-xs">
                             <select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">

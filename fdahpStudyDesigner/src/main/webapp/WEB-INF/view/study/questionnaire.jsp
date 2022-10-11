@@ -476,19 +476,19 @@ width:142px !important;
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
                                         <!--  <c:if test="${actionType ne 'view'}"> </c:if>-->
                                           <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
-                                      
+
                                           <label for="${entry.value.stepId}"></label></span>
                                            </c:otherwise>
                                            </c:choose>
                                             <div class="ml-xlg" style="margin-top: -20px;">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
-                                             
+
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
                                                        title="${fn:escapeXml(subentry.value.title)}">
                                                       <span class="ml-lg"> ${subentry.value.title} </span>
                                                       </div>
                                                   <div class="clearfix"></div>
-                                                  
+
                                               </c:forEach>
                                               </div>
                                           </c:when>
@@ -506,14 +506,15 @@ width:142px !important;
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
                                                   <!-- <c:if test="${actionType ne 'view'}">  </c:if> -->
 													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
-													
+
 													<label for="${entry.value.stepId}"></label>
 													</span>
                                                     </c:otherwise>
                                                     </c:choose>
                                                    <span class="ml-lg">${entry.value.title}</span></div>
                                           </c:otherwise>
-                                      </c:choose></td>
+                                      </c:choose>
+                                      </td>
                                       <td>
                                           <div class="destinationStep questionnaireStepClass"
                                                style="display: none;">${entry.value.destinationText}</div>
@@ -2347,9 +2348,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           },
           success: function consentInfo(data) {
             var status = data.message;
-
             if (status == "SUCCESS") {
-
               $('#alertMsg').show();
               $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                   "Reorder done successfully");
@@ -4358,12 +4357,28 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           datarow.push(' ');
         } else {
           var title = "";
+            let isChecked = (value.groupFlag) == true ? " checked disabled" : "";
           if (value.stepType == 'Form') {
-            $.each(value.fromMap, function (key, value) {
-              title += '<div class="dis-ellipsis" ><span class="checkbox selectbox_chk checkbox-inline pl-1"><input type="checkbox" id="selectbox" name="" value="" required=""><label for="selectbox"></label></span>' + '<span class="ml-lg">' + DOMPurify.sanitize(value.title) + '</span></div><br/>';
+              title += '<span class="checkbox selectbox_chk checkbox-inline pl-1">' +
+                  '<input type="checkbox" class= "step-check" id="'+value.stepId+'" '+isChecked+'/>' +
+                  '<label for="'+value.stepId+'"></label>' +
+                  '</span>'+
+                  '<div class="ml-xlg" style="margin-top: -20px;margin-left: 23px !important;">';
+            $.each(value.fromMap, function (key2, value2) {
+              title += '<div class="dis-ellipsis" >' +
+                  '<span class="ml-lg">' + DOMPurify.sanitize(value2.title) + '</span>' +
+                  '</div>' +
+                  '<div class="clearfix"></div>';
             });
+            title += '</div>'
           } else {
-            title += '<div class="dis-ellipsis" ><span class="checkbox selectbox_chk checkbox-inline pl-1"><input type="checkbox" id="selectbox" name="" value="" required=""><label for="selectbox"></label></span>' + '<span class="ml-lg">' + DOMPurify.sanitize(value.title) + '</span></div>';
+            title += '<div class="dis-ellipsis" >' +
+                '<span class="checkbox selectbox_chk checkbox-inline pl-1">' +
+                '<input type="checkbox" class="step-check" id="'+value.stepId+'" '+isChecked+' />' +
+                '<label for="'+value.stepId+'"></label>' +
+                '</span>'+
+                '<span class="ml-lg">' + DOMPurify.sanitize(value.title) + '</span>' +
+                '</div>';
           }
           datarow.push(title);
         }

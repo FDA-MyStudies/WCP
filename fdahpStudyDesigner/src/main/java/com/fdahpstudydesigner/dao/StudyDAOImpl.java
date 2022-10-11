@@ -6397,7 +6397,7 @@ public class StudyDAOImpl implements StudyDAO {
                         
 						
 						List<GroupsBo> groupsBoList = session
-								.createQuery("from GroupsBo where  studyId=:id and questionnaireId=:questionnaireId")
+								.createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
 								.setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
 								.setParameter("id", studyBo.getId()).list();
 						for (GroupsBo groupsBo : groupsBoList) {

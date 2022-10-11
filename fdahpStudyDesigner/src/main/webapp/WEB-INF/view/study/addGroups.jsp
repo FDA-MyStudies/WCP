@@ -15,6 +15,14 @@ left: -3px !important;
 .col-rc {
 width:1100px !important;
 }
+
+.ml-disabled {
+        background-color: #eee !important;
+        opacity: 1;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
 #addGroupFormId{
 display:contents !important;
 }
@@ -442,6 +450,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
           var ationType=$('#actionType').val('edit');
           var defaultVisibility = $('#groupDefaultVisibility').val();
           var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+          var value0 = $('#value0').val();
+          var operator0 = $('#operator0').val();
          var id =  $('#id').val();
              if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
                      $("#action").val('false');
@@ -450,6 +460,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      $("#groupName").val();
                      $("#groupDefaultVisibility").val();
                      $("#destinationTrueAsGroup").val();
+                     $('#value0').val();
+                     $('#operator0').val();
                      $("#buttonText").val('save');
                      $('#actionType').val('edit');
                      if (mode === 'auto') {
@@ -473,14 +485,43 @@ name="addGroupFormId" id="addGroupFormId" method="post">
    $('#currentLanguage').val(currLang);
    refreshAndFetchLanguageData(currLang);
  }
-         function goToBackPage(item) {
-                 var a = document.createElement('a');
-                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-                 a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
-                     + lang;;
-                 document.body.appendChild(a).click();
-             }
 
+function goToBackPage(item) {
+debugger
+var actionPage = "${actionType}";
+$(item).prop('disabled', true);
+<c:if test="${actionType ne 'view'}">
+bootbox
+.confirm({
+closeButton: false,
+message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+buttons: {
+'cancel': {
+label: 'Cancel',
+},
+'confirm': {
+label: 'OK',
+},
+},
+callback: function (result) {
+if (result) {
+var a = document.createElement('a');
+let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
++ lang;
+document.body.appendChild(a).click();
+} else {
+$(item).prop('disabled', false);
+}
+}
+});
+</c:if>
+<c:if test="${actionType eq 'view'}">
+var a = document.createElement('a');
+a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
+document.body.appendChild(a).click();
+</c:if>
+}
          $('#preLoadSurveyId').on('change', function () {
          	refreshSourceKeys();
          })
@@ -591,6 +632,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                         $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  $('#defaultVisibility').val('true');
+                 $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+                 $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
                  addForm.attr('disabled', true);
                  $('#value0').attr('disabled', true);
                  $('#operator0').attr('disabled', true);
@@ -628,6 +671,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
         	    var groupName = $('#groupName').val();
         	    var defaultVisibility = $('#groupDefaultVisibility').val();
                 var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+                var value0 = $('#value0').val();
+                var operator0 = $('#operator0').val();
         	    $('input.con-radio').each(function(e) {
                                   $(this).removeAttr('disabled');
                               })
@@ -641,6 +686,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
         	               $("#groupName").val();
         	               $("#groupDefaultVisibility").val();
                            $("#destinationTrueAsGroup").val();
+                           $('#value0').val();
+                           $('#operator0').val();
         	               $('#addGroupFormId').submit();
 
         	               }

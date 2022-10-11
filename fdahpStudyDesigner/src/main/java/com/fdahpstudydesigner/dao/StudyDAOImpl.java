@@ -6405,7 +6405,10 @@ public class StudyDAOImpl implements StudyDAO {
 							newGroupsBo.setId(null);
 							newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
 							newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+							newGroupsBo.setIsPublished(1);
 							session.save(newGroupsBo);
+							groupsBo.setIsPublished(1);
+							session.update(groupsBo);
 						}
 						 
 

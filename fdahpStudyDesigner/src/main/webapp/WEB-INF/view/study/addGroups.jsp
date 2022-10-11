@@ -64,6 +64,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 <input type="hidden" name="language" value="${currLanguage}">
 <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
 <input type="hidden" id="buttonText" name="buttonText" value="">
+<input type="hidden" id="isPublished" name="isPublished" value="${groupsBo.isPublished}">
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
 <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
@@ -132,7 +133,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
-                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required
+                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" 
+                      <c:if test="${groupsBo.isPublished eq 1}"> disabled </c:if> required
                       <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
 
                       <div class="help-block with-errors red-txt"></div>
@@ -444,6 +446,9 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 
     function saveAddGroupsPage(mode){
     debugger
+    let isPublished=${groupsBo.isPublished}
+    $('#groupId').prop('disabled', false)
+    
       var questnId = $('#questionnaireId').val();
          var groupId = $('#groupId').val();
           var groupName = $('#groupName').val();
@@ -464,6 +469,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      $('#operator0').val();
                      $("#buttonText").val('save');
                      $('#actionType').val('edit');
+                     isPublished;
                      if (mode === 'auto') {
                      $("#isAutoSaved").val('true');
                      }
@@ -665,6 +671,9 @@ document.body.appendChild(a).click();
          }
          
          $("#doneGroupId").click(function () {
+        	 let isPublished=${groupsBo.isPublished}
+        	 $('#groupId').prop('disabled', false);
+
         	  var questnId = $('#questionnaireId').val();
         	  var id = $('#id').val();
         	   var groupId = $('#groupId').val();
@@ -686,6 +695,7 @@ document.body.appendChild(a).click();
         	               $("#groupName").val();
         	               $("#groupDefaultVisibility").val();
                            $("#destinationTrueAsGroup").val();
+                           isPublished;
                            $('#value0').val();
                            $('#operator0').val();
         	               $('#addGroupFormId').submit();

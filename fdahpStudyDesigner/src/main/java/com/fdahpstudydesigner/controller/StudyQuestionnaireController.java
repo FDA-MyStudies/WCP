@@ -4176,6 +4176,11 @@ public class StudyQuestionnaireController {
          if (StringUtils.isEmpty(actionType)) {
            actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
          }
+         Integer isPublished =
+        		 StringUtils.isNumeric(request.getParameter("isPublished"))
+                 ? Integer.parseInt(request.getParameter("isPublished"))
+                 : 0;
+         groupsBo.setIsPublished(isPublished);
          groupsBo.setQuestionnaireId(Integer.parseInt(questionnaireId));
          groupsBo.setStudyId(Integer.parseInt(studyId));
          msg = studyQuestionnaireService.addOrUpdateGroupsDetails(groupsBo, userSession);

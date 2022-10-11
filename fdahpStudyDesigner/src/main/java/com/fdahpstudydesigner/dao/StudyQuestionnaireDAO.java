@@ -42,7 +42,8 @@ public interface StudyQuestionnaireDAO {
       Integer questionnaireId,
       String stepType,
       SessionObject sessionObject,
-      String customStudyId);
+      String customStudyId,
+      Integer deletionId);
 
   public String deleteQuestuionnaireInfo(
       Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);

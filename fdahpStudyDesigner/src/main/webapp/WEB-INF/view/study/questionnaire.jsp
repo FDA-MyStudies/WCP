@@ -69,6 +69,10 @@
         width:20% !important;
       }
 
+      .ml-xxl {
+          margin-left: 50px !important;
+      }
+
       /* .delete{
 	background-position: -113px -63px ;
 	width: 17px;
@@ -480,7 +484,7 @@ width:142px !important;
                                           <label for="${entry.value.stepId}"></label></span>
                                            </c:otherwise>
                                            </c:choose>
-                                            <div class="ml-xlg" style="margin-top: -20px;">
+                                            <div class="form-div ml-xlg" style="margin-top: -20px;">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
 
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
@@ -554,7 +558,7 @@ width:142px !important;
                                                               <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
                                                       <span
                                                               class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
-                                                              <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
+                                                              <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}', ${entry.value.deletionId})"</c:if>></span>
                                                   </div>
                                               </div>
                                               <c:if test="${entry.value.stepType eq 'Form'}">
@@ -2303,7 +2307,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
         }
         $('td:eq(0)', nRow).addClass("qs-items static-width");
-        $('td:eq(1)', nRow).addClass("qs-items");
+        $('td:eq(1)', nRow).addClass("title qs-items");
         $('td:eq(2)', nRow).addClass("qs-items");
         $('td:eq(3)', nRow).addClass("qs-items");
       }
@@ -4249,7 +4253,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
   }
 
-  function deletStep(stepId, stepType) {
+  function deletStep(stepId, stepType, deletionId) {
     bootbox.confirm({
       message: "Are you sure you want to delete this step item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
       buttons: {
@@ -4273,6 +4277,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               datatype: "json",
               data: {
                 questionnaireId: questionnaireId,
+                  deletionId : deletionId,
                 stepId: stepId,
                 stepType: stepType,
                 "${_csrf.parameterName}": "${_csrf.token}",
@@ -4418,7 +4423,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         }
         dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('
             + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType)
-            + '&#34;)"></span>' +
+            + '&#34; ' + parseInt(value.deletionId) + ')"></span>' +
             '</div>' +
             '</div>';
 
@@ -5147,11 +5152,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             let type = value.getAttribute('type');
+            let rowId = $('#row_'+id);
             if (type==='Instruction') {
               $('#instructionsLangBOList option', htmlData).each(function (index, langEle) {
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
-                  $('#row_'+id).find('td.title').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.checkbox').hide();
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5178,7 +5185,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               $('#questionLangBOList option', htmlData).each(function (index, langEle) {
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
-                  $('#row_'+id).find('td.title').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.checkbox').hide();
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5224,7 +5232,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                       edit.removeClass('edit-inc');
                     }
                   }
-                  $('#row_'+id).find('td.title div.dis-ellipsis').each(function (index, value){
+                    rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title div.dis-ellipsis').each(function (index, value){
                     let divId = value.getAttribute('id').split('_')[1];
                     $('#questionLangBOList option', htmlData).each(function (index, ele) {
                       let langId = ele.getAttribute('id');
@@ -5233,6 +5242,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                         return false;
                       }
                     })
+                    rowId.find('td.title div.form-div').removeClass('ml-xxl').addClass('marL20');
                   });
                   return false;
                 }
@@ -5316,13 +5326,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             }
 
             let type = value.getAttribute('type');
+              $('#row_'+id).find('td.title span.checkbox').show();
             if (type!=='Form') {
-              $('#row_'+id).find('td.title').text($('#row_'+id, htmlData).find('td.title').text());
+              $('#row_'+id).find('td.title span.ml-lg').text($('#row_'+id, htmlData).find('td.title').text());
             } else {
               $('#row_'+id).find('td.title div.dis-ellipsis').each(function (index, value){
                 let divId = value.getAttribute('id').split('_')[1];
                 $('#row_'+id).find('td.title div#div_'+divId).text($('#row_'+id, htmlData).find('td.title div#div_'+divId).text());
               });
+                $('#row_'+id).find('td.title div.form-div').removeClass('ml-xlg').addClass('ml-xxl');
             }
           });
           if (!mark) {

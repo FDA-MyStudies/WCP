@@ -46,7 +46,8 @@ public interface StudyQuestionnaireService {
       Integer questionnaireId,
       String stepType,
       SessionObject sessionObject,
-      String customStudyId);
+      String customStudyId,
+      Integer deletionId);
 
   public String deletQuestionnaire(
       Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);

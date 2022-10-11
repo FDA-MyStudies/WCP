@@ -220,13 +220,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       Integer questionnaireId,
       String stepType,
       SessionObject sessionObject,
-      String customStudyId) {
+      String customStudyId,
+      Integer deletionId) {
     logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
           studyQuestionnaireDAO.deleteQuestionnaireStep(
-              stepId, questionnaireId, stepType, sessionObject, customStudyId);
+              stepId, questionnaireId, stepType, sessionObject, customStudyId, deletionId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error", e);
     }

@@ -370,6 +370,10 @@ public class StudyQuestionnaireController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("stepId"))
                 ? ""
                 : request.getParameter("stepId");
+        String deletionStepId =
+                FdahpStudyDesignerUtil.isEmpty(request.getParameter("deletionId"))
+                        ? ""
+                        : request.getParameter("deletionId");
         String stepType =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("stepType"))
                 ? ""
@@ -385,7 +389,9 @@ public class StudyQuestionnaireController {
                   Integer.valueOf(questionnaireId),
                   stepType,
                   sesObj,
-                  customStudyId);
+                  customStudyId,
+                  Integer.valueOf(deletionStepId)
+              );
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             questionnaireBo =
                 studyQuestionnaireService.getQuestionnaireById(

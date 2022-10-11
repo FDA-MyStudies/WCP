@@ -62,20 +62,16 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
-            <!-- <div class="right-content-head"><div class="text-right"><div class="black-md-f dis-line pull-left line34"><span class="mr-sm"><a href="#"><img src="images/icons/back-b.png"/></a></span> Group
-                    </div></div></div> -->
             <div class="right-content-head">
               <div class="text-right">
-           <div class="black-md-f dis-line pull-left line34">
+           <div class="black-md-f text-uppercase dis-line pull-left line34">
                 <span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
                 <img src="../images/icons/back-b.png" class="pr-md"/></span>
                 Survey List
             </div>
-
                 <div class="dis-line form-group mb-none mr-sm">
                   <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel </button>
                 </div>
-                
               </div>
             </div>
             <!--  End  top tab section-->
@@ -84,7 +80,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <div class="form-group"></div>
                 <div class="row form-group">
                   <div class="col-md-6 pl-none">
-                  						<div class="study-selected mt-md">
+                  		<div class="study-selected mt-md">
  							<c:forEach items="${groupsAssignedList}" var="groupsAssignedList">
  								<div class="study-selected-item selStd" id="std${groupsAssignedList.stepId}">
 									<input type="hidden" class="stdCls" id="${groupsAssignedList.stepId}" name=""
@@ -100,19 +96,13 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 								</div>
 							</c:forEach>
  						</div>
-                  
                   </div>
-                  
 			</div>
 		</div>
-		
-                         <br>
-
-                     </div>
-            
-         </div>
-	</div>
-
+      <br>
+    </div>
+  </div>
+  </div>
 
         <!-- End right Content here -->
 </form:form>
@@ -121,8 +111,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
  $(document).ready(function () {
      $(".menuNav li.active").removeClass('active');
      $(".seventhQuestionnaires").addClass('active');
-  $("#saveId").click(function () {
-  var questnId = $('#questionnaireId').val();
+     $("#saveId").click(function () {
+     var questnId = $('#questionnaireId').val();
      var groupId = $('#groupId').val();
       var groupName = $('#groupName').val();
       var defaultVisibility = $('#groupDefaultVisibility').val();
@@ -133,11 +123,9 @@ name="addGroupFormId" id="addGroupFormId" method="post">
         $('#currentLanguage').val(currLang);
         refreshAndFetchLanguageData(currLang);
       }
-      
      var id =  $('#id').val();
          if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
                  $("#action").val('false');
-
                  $('#id').val();
                  $('#groupId').val();
                  $("#groupName").val();
@@ -146,7 +134,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                  $("#buttonText").val('save');
                  $("#isAutoSaved").val('true');
                  $('#addGroupFormId').submit();
-                 //showSucMsg("Content saved as draft.");
                  }
                  else
                  {
@@ -155,12 +142,10 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                   $('#alertMsg').show();
                  }
                  setTimeout(hideDisplayMessage, 4000);
-
                });
        });
 
          function goToBackPage(item) {
-         debugger;
                  var actionPage = $('#actionType').val();
                  $(item).prop('disabled', true);
                  <c:if test="${actionType ne 'view'}">
@@ -203,22 +188,14 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                  $('#contents').hide();
              }
          });
-         
-         
 
-
-
-
-                $('#studyLanguage').on('change', function () {
-       	  debugger
+          $('#studyLanguage').on('change', function () {
            let currLang = $('#studyLanguage').val();
            $('#currentLanguage').val(currLang);
-          // $('#loader').show();
            refreshAndFetchLanguageData($('#studyLanguage').val());
          })
          
          function refreshAndFetchLanguageData(language) {
-   		  debugger
    		    $.ajax({
    		      url: '/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}',
    		      type: "GET",
@@ -226,55 +203,41 @@ name="addGroupFormId" id="addGroupFormId" method="post">
    		        language: language
    		      },
    		      success: function (data) {
-   		    	  debugger
    		        let htmlData = document.createElement('html');
    		        htmlData.innerHTML = data;
    		        if (language !== 'en') {
-   		        	debugger
    		          updateCompletionTicks(htmlData);
    		          $('.tit_wrapper').text($('#mlName', htmlData).val());
    		          $('#groupName').attr('disabled', true);
    		       $('#groupId').attr('disabled', true);
    		    
    		 	$('#groupDefaultVisibility').attr('disabled', true);
-   		          //$('.delete,thead').addClass('cursor-none');
    		          let mark=true;
    		          $('#groups_list option', htmlData).each(function (index, value) {
    		            let id = '#row' + value.getAttribute('id');
    		            $(id).find('td.title').text(value.getAttribute('value'));
-   
    		          });
-   		         // view_spanish_deactivemode();
-   		         
    		        } else {
-   		        	debugger
    		          updateCompletionTicksForEnglish();
    		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
    		       $('#groupName').attr('disabled', false);
    		       $('#groupId').attr('disabled', false);
-   		    $('#groupDefaultVisibility').attr('disabled', false);
+   		       $('#groupDefaultVisibility').attr('disabled', false);
    		          $('#studyProtocolId').prop('disabled', false);
    		          let mark=true;
    		          $('tbody tr', htmlData).each(function (index, value) {
-   		        	  debugger
    		            let id = '#'+value.getAttribute('id');
    		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-   		          
    		          });
-   		          
    		          <c:if test="${not empty permission}">
    		          $('.delete').addClass('cursor-none');
    		          </c:if>
-   		          //view_spanish_activemode();
    		        }
    		      }
    		    });
    		  }
 
-          /*  var count=0;
-            var stepIdarray = new Array(); */
             function del(stepId){
-              debugger
                	$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/deassignSteps.do?_S=${param._S}",
                     type: "POST",
@@ -284,18 +247,13 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                       "${_csrf.parameterName}": "${_csrf.token}",
                     },
                     success: function deleteConsentInfo(data) {
-                    	debugger
                         var status = data.message;
                         if (status == "SUCCESS") {
-                        	debugger
                         	 $('#std'+stepId).remove();
-                        	//location.reload();
                         }
                     }
                	 
               })
             }
-            /* var stepList=stepIdarray;
-            console.log("hi",stepList); */
 
     </script>

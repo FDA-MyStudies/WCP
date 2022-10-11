@@ -4457,6 +4457,12 @@ public class StudyQuestionnaireController {
                 Integer.valueOf(FdahpStudyDesignerUtil.isEmpty(request.getParameter("grpId"))
                         ? ""
                         : request.getParameter("grpId"));
+
+        Integer count =
+                Integer.valueOf(FdahpStudyDesignerUtil.isEmpty(request.getParameter("count"))
+                        ? ""
+                        : request.getParameter("count"));
+
         System.out.println(request.getParameter("steparray"));
         String stepArray =FdahpStudyDesignerUtil.isEmpty(request.getParameter("steparray"))
                 ? ""
@@ -4493,10 +4499,22 @@ public class StudyQuestionnaireController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 
         }
-
-        if (StringUtils.isNotEmpty(studyId)) {
-          groupMappingBo =
-                  studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+        if (!String.valueOf(grpId).isEmpty()) {
+          groupMappingBo = studyQuestionnaireService.getStepId(String.valueOf(grpId), questionnaireId);
+        }
+        if(!groupMappingBo.isEmpty()) {
+          if (StringUtils.isNotEmpty(studyId)) {
+            groupMappingBo =
+                    studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+          }
+        }else{
+          if(count>=2){
+            groupMappingBo =
+                    studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+          }else{
+            msg = FdahpStudyDesignerConstants.ASSIGN_GROUP;
+          }
+          jsonobject.put("msg", msg);
         }
 
         if ("edit".equals(actionType)) {
@@ -4506,7 +4524,7 @@ public class StudyQuestionnaireController {
           jsonobject.put("actionType", "view");
           request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
         }
-        if(groupMappingBo != null){
+        if(!groupMappingBo.isEmpty()){
           message = FdahpStudyDesignerConstants.SUCCESS;
         }
       }

@@ -1912,7 +1912,7 @@ width:142px !important;
                        }
                    })
                    var stepList = steparray;
-                   if(count >=2){
+                 //  if(count >=2){
                    if (stepList != null && stepList != '' && grpId != null && grpId != '') {
                     $.ajax({
                       url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
@@ -1920,7 +1920,8 @@ width:142px !important;
                       datatype: "json",
                       data: {
                         steparray:JSON.stringify(stepList),
-                        grpId: grpId
+                        grpId: grpId,
+                        count: count
                       },
                       beforeSend: function (xhr, settings) {
                                       xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
@@ -1928,6 +1929,7 @@ width:142px !important;
                       success: function (data) {
                       window.location.reload();
                         var status = data.message;
+                        var errorMsg = data.msg;
                         var groupArray = new Array();
                         groupArray = data.groupMappingBo;
                         console.log("grpArray : "+groupArray);
@@ -1945,7 +1947,7 @@ width:142px !important;
                                     } else {
                                       $('#alertMsg').show();
                                       $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-                                          "Unable to assign the group");
+                                          "There should be at least two steps to form a group.");
                                     }
                                     setTimeout(hideDisplayMessage, 4000);
                       },
@@ -1963,14 +1965,14 @@ width:142px !important;
                   $('#content').find('tbody input.step-check').prop('checked', false);
                 }
                 setTimeout(hideDisplayMessage, 4000);
-                }
-                else{
+               /* }
+                 else{
                 $('#alertMsg').show();
                 $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two steps to form a group.");
                 $('#content').find('tbody input.step-check').prop('checked', false);
                 $('#group').val('').selectpicker('refresh');
                 }
-                setTimeout(hideDisplayMessage, 4000);
+                setTimeout(hideDisplayMessage, 4000); */
                 }
                 //end
 

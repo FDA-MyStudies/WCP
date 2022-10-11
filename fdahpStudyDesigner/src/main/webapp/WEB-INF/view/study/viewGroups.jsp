@@ -50,7 +50,6 @@
                   <c:if test="${actionType eq 'view'}">View Groups</c:if>
             </div>
           <div class="dis-line form-group mb-none">
-          
           <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
                 <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
@@ -78,9 +77,7 @@
 					</span>
                 </div>
             </c:if>
-          
              <button type="button" class="btn btn-primary blue-btn addOrEditGroups" value="add">+ Add Group</button>
-				
           </div>
         </div>
     </div>
@@ -92,7 +89,6 @@
                    cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                  
                     <th>GROUP ID<span class="sort"></span></th>
                     <th>GROUP NAME<span class="sort"></span></th>
                     <th>ACTION</th>
@@ -101,38 +97,31 @@
                 <tbody>
                  <c:forEach items="${groupsList}" var="groupsList">
                  <tr id="row${groupsList.groupId}">
-                 
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
                  <td style="width: 200px !important;">
-                 
-                 <span class="  <c:if test="${not empty permission}"> cursor-none </c:if> "
+                 <span class="sprites_icon <c:if test="${not empty permission}"> cursor-none </c:if>"
                   id="${groupsList.id}" data-toggle="tooltip" 
-                  	data-placement="top" title=Deassign id="" onclick=deAssignGroups(${groupsList.id});>
+                  	data-placement="top" title="Deassign" id="" onclick=deAssignGroups(${groupsList.id});>
                   	<img src="../images/deassign.png" class="pr-md" style="margin-top: -6px;"/>
                   	</span>
-               
-
-
                   	<c:choose>
-                                   <c:when test="${actionType eq 'view'}">
-                    									<span class="editIcon mr-lg addOrEditGroups <c:if test="${actionType eq 'view'}"> cursor-none </c:if> ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'}"
-                                                        id="${groupsList.id}" data-toggle="tooltip"
-                                                      	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
-                                                      	</span>
-                    				</c:when>
-                    				<c:otherwise>
-                    									<span class="editIcon mr-lg addOrEditGroups ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'}"
-                                                        id="${groupsList.id}" data-toggle="tooltip"
-                                                      	data-placement="top" title="Edit" id="editIcon${groupsList.id}">
-                                                      	</span>
-                                    </c:otherwise>
-                     </c:choose>
+                    <c:when test="${actionType eq 'view'}">
+                    <span class="editIcon mr-lg addOrEditGroups <c:if test="${actionType eq 'view'}"> cursor-none </c:if> ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'}"
+                    id="${groupsList.id}" data-toggle="tooltip"
+                    data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                    </span>
+                    </c:when>
+                    <c:otherwise>
+                    <span class="editIcon mr-lg addOrEditGroups ${groupsList.action?'edit-inc':'edit-inc-draft mr-md'}"
+                    id="${groupsList.id}" data-toggle="tooltip"
+                    data-placement="top" title="Edit" id="editIcon${groupsList.id}">
+                    </span>
+                    </c:otherwise>
+                    </c:choose>
 					<span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-                  data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
-                   
+                    data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
                   </td>
-                
                  </tr>
                  </c:forEach>
                   </tbody>
@@ -140,7 +129,6 @@
         </div>
     </div>
     <!--  End body tab section -->
-
 </div>
 <!-- End right Content here -->
 <form:form
@@ -152,7 +140,6 @@ name="groupsInfoForm" id="groupsInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
 <input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
-
 
 <form:form
  action="/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}"
@@ -300,16 +287,12 @@ var idleTime = 0;
 			$('#addgroupsInfoForm').submit();
 	});
 	
-	
-	
 	function deAssignGroups(id){
-    	 var a = document.createElement('a'); 
+    	 var a = document.createElement('a');
          a.href = "/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}&id="
-             + id;;
+             + id;
          document.body.appendChild(a).click();
     }
-
-
 
 	function deleteGroup(id) {
           bootbox.confirm("Are you sure you want to delete this group?", function (result) {
@@ -380,7 +363,6 @@ var idleTime = 0;
 		          $('#studyProtocolId').prop('disabled', false);
 		          let mark=true;
 		          $('tbody tr', htmlData).each(function (index, value) {
-		        	  debugger
 		            let id = '#'+value.getAttribute('id');
 		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
 		          });

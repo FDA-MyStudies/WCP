@@ -4624,6 +4624,13 @@ public class StudyQuestionnaireController {
         StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
         map.addAttribute("studyBo", studyBo);
       }
+      if ("edit".equals(actionType)) {
+        map.addAttribute("actionType", "edit");
+        request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+      } else {
+        map.addAttribute("actionType", "view");
+        request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+      }
         map.addAttribute("actionPage", actionPage);
         groupMappingBo =
                 studyQuestionnaireService.getAssignSteps( Integer.parseInt(grpId));
@@ -4635,6 +4642,7 @@ public class StudyQuestionnaireController {
         map.addAttribute("groupsAssignedList", groupMappingBeans);
         map.addAttribute("groupMappingBo", groupMappingBo);
         map.addAttribute("groupsBo", groupsBo);
+        map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         mav = new ModelAndView("deAssignGroup", map);
       } 

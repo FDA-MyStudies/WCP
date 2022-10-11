@@ -15,6 +15,8 @@ public class FdahpStudyDesignerConstants {
   public static final String ACTION_ON = "actionOn";
   public static final String ACTION_PAGE = "actionPage";
   public static final String ACTION_PAUSE = "pauseId";
+
+  public static final String ASSIGN_GROUP = "There should be at least two steps to form a group.";
   public static final String ACTION_PAUSE_SUCCESS_MSG =
       "The study has been Paused and is no longer in Active state.";
   // Action buttons

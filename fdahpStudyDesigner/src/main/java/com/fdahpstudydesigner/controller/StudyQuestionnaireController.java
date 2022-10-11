@@ -4463,6 +4463,12 @@ public class StudyQuestionnaireController {
                 Integer.valueOf(FdahpStudyDesignerUtil.isEmpty(request.getParameter("grpId"))
                         ? ""
                         : request.getParameter("grpId"));
+
+        Integer count =
+                Integer.valueOf(FdahpStudyDesignerUtil.isEmpty(request.getParameter("count"))
+                        ? ""
+                        : request.getParameter("count"));
+
         System.out.println(request.getParameter("steparray"));
         String stepArray =FdahpStudyDesignerUtil.isEmpty(request.getParameter("steparray"))
                 ? ""
@@ -4499,10 +4505,22 @@ public class StudyQuestionnaireController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 
         }
-
-        if (StringUtils.isNotEmpty(studyId)) {
-          groupMappingBo =
-                  studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+        if (!String.valueOf(grpId).isEmpty()) {
+          groupMappingBo = studyQuestionnaireService.getStepId(String.valueOf(grpId), questionnaireId);
+        }
+        if(!groupMappingBo.isEmpty()) {
+          if (StringUtils.isNotEmpty(studyId)) {
+            groupMappingBo =
+                    studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+          }
+        }else{
+          if(count>=2){
+            groupMappingBo =
+                    studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+          }else{
+            msg = FdahpStudyDesignerConstants.ASSIGN_GROUP;
+          }
+          jsonobject.put("msg", msg);
         }
 
         if ("edit".equals(actionType)) {
@@ -4512,7 +4530,7 @@ public class StudyQuestionnaireController {
           jsonobject.put("actionType", "view");
           request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
         }
-        if(groupMappingBo != null){
+        if(!groupMappingBo.isEmpty()){
           message = FdahpStudyDesignerConstants.SUCCESS;
         }
       }
@@ -4630,6 +4648,13 @@ public class StudyQuestionnaireController {
         StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
         map.addAttribute("studyBo", studyBo);
       }
+      if ("edit".equals(actionType)) {
+        map.addAttribute("actionType", "edit");
+        request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+      } else {
+        map.addAttribute("actionType", "view");
+        request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+      }
         map.addAttribute("actionPage", actionPage);
         groupMappingBo =
                 studyQuestionnaireService.getAssignSteps( Integer.parseInt(grpId));
@@ -4641,6 +4666,7 @@ public class StudyQuestionnaireController {
         map.addAttribute("groupsAssignedList", groupMappingBeans);
         map.addAttribute("groupMappingBo", groupMappingBo);
         map.addAttribute("groupsBo", groupsBo);
+        map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         mav = new ModelAndView("deAssignGroup", map);
       } 

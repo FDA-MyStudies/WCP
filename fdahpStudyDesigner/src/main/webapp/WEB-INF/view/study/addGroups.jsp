@@ -445,7 +445,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
        });
 
     function saveAddGroupsPage(mode){
-    debugger
     let isPublished=${groupsBo.isPublished}
     $('#groupId').prop('disabled', false)
     
@@ -493,7 +492,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
  }
 
 function goToBackPage(item) {
-debugger
 var actionPage = "${actionType}";
 $(item).prop('disabled', true);
 <c:if test="${actionType ne 'view'}">
@@ -840,15 +838,12 @@ document.body.appendChild(a).click();
         	  }
 
          $('#studyLanguage').on('change', function () {
-          	  debugger
               let currLang = $('#studyLanguage').val();
               $('#currentLanguage').val(currLang);
-             // $('#loader').show();
               refreshAndFetchLanguageData($('#studyLanguage').val());
             })
             
             function refreshAndFetchLanguageData(language) {
-      		  debugger
       		    $.ajax({
       		      url: '/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}',
       		      type: "GET",
@@ -856,38 +851,30 @@ document.body.appendChild(a).click();
       		        language: language
       		      },
       		      success: function (data) {
-      		    	  debugger
       		        let htmlData = document.createElement('html');
       		        htmlData.innerHTML = data;
       		        if (language !== 'en') {
-      		        	debugger
       		          updateCompletionTicks(htmlData);
       		          $('.tit_wrapper').text($('#mlName', htmlData).val());
       		          $('#groupName').attr('disabled', true);
-      		       $('#groupId').attr('disabled', true);
-      		 	$('#groupDefaultVisibility').attr('disabled', true);
-      		          //$('.delete,thead').addClass('cursor-none');
+      		          $('#groupId').attr('disabled', true);
+      		 	      $('#groupDefaultVisibility').attr('disabled', true);
       		          let mark=true;
       		          $('#groups_list option', htmlData).each(function (index, value) {
       		            let id = '#row' + value.getAttribute('id');
       		            $(id).find('td.title').text(value.getAttribute('value'));
-      
       		          });
-      		         
       		        } else {
-      		        	debugger
       		          updateCompletionTicksForEnglish();
       		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-      		       $('#groupName').attr('disabled', false);
-      		       $('#groupId').attr('disabled', false);
-      		    $('#groupDefaultVisibility').attr('disabled', false);
-      		     $('#studyProtocolId').prop('disabled', false);
+      		          $('#groupName').attr('disabled', false);
+      		          $('#groupId').attr('disabled', false);
+      		          $('#groupDefaultVisibility').attr('disabled', false);
+      		          $('#studyProtocolId').prop('disabled', false);
       		          let mark=true;
       		          $('tbody tr', htmlData).each(function (index, value) {
-      		        	  debugger
       		            let id = '#'+value.getAttribute('id');
       		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-      		          
       		          });
       		          
       		          <c:if test="${not empty permission}">
@@ -897,7 +884,5 @@ document.body.appendChild(a).click();
       		      }
       		    });
       		  }
-
-
 
     </script>

@@ -246,7 +246,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                      </div>
                                                      <div class="row data-div">
                                                          <div class="col-md-1" style="padding-top: 7px">Operator</div>
-                                                         <div class="col-md-2">
+                                                         <div class="col-md-2 form-group">
                                                              <select class="selectpicker operator text-normal" 
                                                                      id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
                                                                      <c:if test="${currLanguage ne 'es'}">
@@ -258,7 +258,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                          </div>
 
                                                          <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-                                                         <div class="col-md-3">
+                                                         <div class="col-md-3 form-group">
                                                              <input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
                                                              <input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" placeholder="Enter">
                                                          </div>
@@ -570,6 +570,9 @@ name="addGroupFormId" id="addGroupFormId" method="post">
              $('#defaultVisibility').val('true');
              $('#addFormula').attr('disabled', true);
              $('#value0').attr('disabled', true);
+             $('#operator0').attr('disabled', true);
+            //  $('#operator0').parent().addClass('ml-disabled');
+             
          }
 
          defaultVisibility.on('change', function () {
@@ -590,6 +593,9 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                  $('#defaultVisibility').val('true');
                  addForm.attr('disabled', true);
                  $('#value0').attr('disabled', true);
+                 $('#operator0').attr('disabled', true);
+                 $('#operator0').parent().addClass('disabled');
+                 $('#operator0').siblings().addClass('disabled');
              } else {
                  logicDiv.find('div.bootstrap-select, input, select').each( function () {
                      $(this).removeClass('ml-disabled');
@@ -598,11 +604,15 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      }
                      $(this).attr('required','required');
                      $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+                     
                  });
                  toggle.attr('checked', false);
                  $('#defaultVisibility').val('false');
                  addForm.attr('disabled', false);
                  $('#value0').attr('disabled', false);
+                 $('#operator0').attr('disabled', false);
+                 $('#operator0').parent().removeClass('disabled');
+                 $('#operator0').siblings().removeClass('disabled');
              }
          })
 

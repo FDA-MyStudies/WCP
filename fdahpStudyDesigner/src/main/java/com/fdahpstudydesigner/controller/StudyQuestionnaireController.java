@@ -1,9 +1,6 @@
 package com.fdahpstudydesigner.controller;
 
-import com.fdahpstudydesigner.bean.FormulaInfoBean;
-import com.fdahpstudydesigner.bean.GroupMappingStepBean;
-import com.fdahpstudydesigner.bean.GroupsBean;
-import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bean.*;
 import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
@@ -585,6 +582,11 @@ public class StudyQuestionnaireController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
+        String isLive =
+                (String)
+                        request
+                                .getSession()
+                                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.IS_LIVE);
         if (StringUtils.isEmpty(studyId)) {
           studyId =
               FdahpStudyDesignerUtil.isEmpty(
@@ -660,11 +662,6 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getQuestionnairesId(),
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
-            if (questionnairesStepsBo.getPreLoadSurveyId() != null && questionnairesStepsBo.getDifferentSurveyPreLoad() != null
-                    && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
-              destionationStepList = studyQuestionnaireService.getSameSurveySourceKeys(questionnairesStepsBo.getPreLoadSurveyId(), -1);
-            }
-            map.addAttribute("destinationStepsPreLoad", destionationStepList);
             if (!questionnairesStepsBo.getStatus() && StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
                   Integer.valueOf(studyId),
@@ -674,15 +671,19 @@ public class StudyQuestionnaireController {
                   customStudyId);
             }
           }
-          int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
-          int seqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
-          if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
-                  && questionnairesStepsBo.getDifferentSurvey()) {
-            queId = questionnairesStepsBo.getPipingSurveyId();
-            seqNo = -1;
+          int preloadQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+          int preloadSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+          if (questionnairesStepsBo != null) {
+            if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
+              preloadQueId = questionnairesStepsBo.getPreLoadSurveyId();
+              preloadSeqNo = -1;
+            }
+            map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload"));
           }
-          map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId, seqNo));
-          map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
+          if (FdahpStudyDesignerConstants.YES.equals(isLive)) {
+            studyId = studyBo.getCustomStudyId();
+          }
+          map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId, FdahpStudyDesignerConstants.YES.equals(isLive)));
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
           if (FdahpStudyDesignerUtil.isNotEmpty(language)
@@ -1092,7 +1093,11 @@ public class StudyQuestionnaireController {
         if (StringUtils.isEmpty(actionType)) {
           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
         }
-
+        String isLive =
+                (String)
+                        request
+                                .getSession()
+                                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.IS_LIVE);
         String actionTypeForQuestionPage =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionTypeForQuestionPage"))
                 ? ""
@@ -1217,15 +1222,21 @@ public class StudyQuestionnaireController {
                           studyBo.getCustomStudyId(),
                           questionnaireBo.getId());
         }
-        int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
-        int seqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
-        if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
-                && questionnairesStepsBo.getDifferentSurvey()) {
-          queId = questionnairesStepsBo.getPipingSurveyId();
-          seqNo = -1;
+        int pipingQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+        int pipingSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+        if (questionnairesStepsBo != null) {
+          if (questionnairesStepsBo.getDifferentSurvey() != null && questionnairesStepsBo.getDifferentSurvey()) {
+            pipingQueId = questionnairesStepsBo.getPipingSurveyId();
+            pipingSeqNo = -1;
+          }
+        } else {
+          pipingSeqNo = -1;
         }
-        map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId, seqNo));
-        map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
+        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping"));
+        if (studyBo != null && FdahpStudyDesignerConstants.YES.equals(isLive)) {
+          studyId = studyBo.getCustomStudyId();
+        }
+        map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId, FdahpStudyDesignerConstants.YES.equals(isLive)));
         map.addAttribute("questionnaireId", questionnaireId);
         map.addAttribute("_S", sessionStudyCount);
         mav = new ModelAndView("instructionsStepPage", map);
@@ -1569,7 +1580,11 @@ public class StudyQuestionnaireController {
         if (StringUtils.isEmpty(actionType)) {
           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
         }
-
+        String isLive =
+                (String)
+                        request
+                                .getSession()
+                                .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.IS_LIVE);
         map.addAttribute("nav", request.getParameter("nav"));
         String actionTypeForQuestionPage =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionTypeForQuestionPage"))
@@ -1701,11 +1716,6 @@ public class StudyQuestionnaireController {
                     questionnairesStepsBo.getQuestionnairesId(),
                     questionnairesStepsBo.getSequenceNo());
             map.addAttribute("destinationStepList", destionationStepList);
-            if (questionnairesStepsBo.getPreLoadSurveyId() != null && questionnairesStepsBo.getDifferentSurveyPreLoad() != null
-                    && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
-              destionationStepList = studyQuestionnaireService.getSameSurveySourceKeys(questionnairesStepsBo.getPreLoadSurveyId(), -1);
-            }
-            map.addAttribute("destinationStepsPreLoad", destionationStepList);
           }
 
           QuestionLangBO spanishQuestionBo = studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), "es");
@@ -1739,15 +1749,29 @@ public class StudyQuestionnaireController {
               studyQuestionnaireService.getQuestionLangBO(Integer.parseInt(questionId), language);
           map.addAttribute("questionLangBO", questionLangBO);
         }
-        int queId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
-        int seqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
-        if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurvey() != null
-                && questionnairesStepsBo.getDifferentSurvey()) {
-          queId = questionnairesStepsBo.getPipingSurveyId();
-          seqNo = -1;
+        int pipingQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+        int preloadQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
+        int pipingSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+        int preloadSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+        if (questionnairesStepsBo != null) {
+          if (questionnairesStepsBo.getDifferentSurvey() != null && questionnairesStepsBo.getDifferentSurvey()) {
+            pipingQueId = questionnairesStepsBo.getPipingSurveyId();
+            pipingSeqNo = -1;
+          }
+          if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
+            preloadQueId = questionnairesStepsBo.getPreLoadSurveyId();
+            preloadSeqNo = -1;
+          }
+          map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload"));
+        } else {
+          pipingSeqNo = -1;
         }
-        map.addAttribute("sameSurveySourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(queId, seqNo));
-        map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId));
+        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping"));
+
+        if (studyBo != null && FdahpStudyDesignerConstants.YES.equals(isLive)) {
+          studyId = studyBo.getCustomStudyId();
+        }
+        map.addAttribute("questionnaireIds", studyQuestionnaireService.getQuestionnairesForPiping(questionnaireId, studyId, FdahpStudyDesignerConstants.YES.equals(isLive)));
         map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
         statisticImageList = studyActiveTasksService.getStatisticImages();
         activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
@@ -4741,18 +4765,28 @@ public class StudyQuestionnaireController {
 
 
   @RequestMapping("/adminStudies/refreshSourceKeys.do")
-  public void refreshSourceKeys(HttpServletResponse response, String questionnaireId)
+  public void refreshSourceKeys(HttpServletResponse response, StepDropdownBean bean)
           throws IOException {
     logger.info("StudyQuestionnaireController - refreshSourceKeys() - Starts");
     String msg = FdahpStudyDesignerConstants.FAILURE;
     JSONObject jsonobject = new JSONObject();
     PrintWriter out;
     try {
-      if (StringUtils.isNotBlank(questionnaireId)) {
-        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(Integer.parseInt(questionnaireId), -1);
-        jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
-        msg = FdahpStudyDesignerConstants.SUCCESS;
+      Integer seqNo = bean.getSeqNo();
+      String questionnaireId = bean.getQuestionnaireId();
+      String caller = bean.getCaller();
+      String PRE_LOAD = "preload";
+      if ((PRE_LOAD.equals(bean.getCaller()) && seqNo == null && bean.getIsDifferentSurveyPreload()) ||
+              (!PRE_LOAD.equals(bean.getCaller()) && seqNo == null) ||
+              (PRE_LOAD.equals(caller) && (bean.getIsDifferentSurveyPreload() != null && bean.getIsDifferentSurveyPreload())) ||
+              (!PRE_LOAD.equals(caller) && (bean.getIsDifferentSurveyPiping() != null && bean.getIsDifferentSurveyPiping()))) {
+        seqNo = -1;
       }
+      if (seqNo != null && StringUtils.isNotBlank(questionnaireId)) {
+        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(Integer.parseInt(questionnaireId), seqNo, bean.getCaller());
+        jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
+      }
+      msg = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {
       logger.error("StudyQuestionnaireController - refreshSourceKeys() - ERROR", e);
     }

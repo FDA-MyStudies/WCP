@@ -6198,6 +6198,12 @@ public class StudyDAOImpl implements StudyDAO {
                   .executeUpdate();
               // short title taking updating to archived which
               // have change end
+              Map<Integer, Integer> oldNewQueIdMap = new HashMap<>();
+              Map<Integer, Integer> oldNewStepIdMap = new HashMap<>();
+              Map<String, Integer> pipingSurveyIdMap = new HashMap<>();
+              Map<String, Integer> oldNewSourceMap = new HashMap<>();
+              Map<String, Integer> preloadSurveyMap = new HashMap<>();
+              Map<String, Integer> oldNewDestMap = new HashMap<>();
               for (QuestionnaireBo questionnaireBo : questionnaires) {
                 logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Starts");
                 // creating in study Activity version
@@ -6246,6 +6252,7 @@ public class StudyDAOImpl implements StudyDAO {
                   questionnaireBo.setIsChange(0);
                   questionnaireBo.setLive(0);
                   session.update(questionnaireBo);
+                  oldNewQueIdMap.put(questionnaireBo.getId(), newQuestionnaireBo.getId());
 
                   List<QuestionnaireLangBO> questionnaireLangBOS =
                       session
@@ -6341,15 +6348,10 @@ public class StudyDAOImpl implements StudyDAO {
                           .getNamedQuery("getQuestionnaireStepSequenceNo")
                           .setInteger("questionnairesId", questionnaireBo.getId());
                   existedQuestionnairesStepsBoList = query.list();
-                Map<Integer, Integer> oldNewDestMap = new HashMap<>();
-                List<Integer> preLoadDestList = new ArrayList<>();
                   if (existedQuestionnairesStepsBoList != null
                       && !existedQuestionnairesStepsBoList.isEmpty()) {
                     for (QuestionnairesStepsBo questionnairesStepsBo :
                         existedQuestionnairesStepsBoList) {
-                      if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
-                        preLoadDestList.add(questionnairesStepsBo.getDestinationTrueAsGroup());
-                      }
                       Integer destionStep = questionnairesStepsBo.getDestinationStep();
                       if (destionStep.equals(0)) {
                         destinationList.add(-1);
@@ -6375,13 +6377,25 @@ public class StudyDAOImpl implements StudyDAO {
                         newQuestionnairesStepsBo.setStepId(null);
                         session.save(newQuestionnairesStepsBo);
 
-                        if (!preLoadDestList.isEmpty() && preLoadDestList.contains(questionnairesStepsBo.getStepId())) {
-                          for (Integer oldDestId : preLoadDestList) {
-                            if (oldDestId.equals(questionnairesStepsBo.getStepId())) {
-                              oldNewDestMap.put(oldDestId, newQuestionnairesStepsBo.getStepId());
-                            }
-                          }
+                        int newStepId = newQuestionnairesStepsBo.getStepId();
+                        int oldStepId = questionnairesStepsBo.getStepId();
+                        String US = "_";
+                        if (questionnairesStepsBo.getPipingSurveyId() != null) {
+                          pipingSurveyIdMap.put(questionnairesStepsBo.getPipingSurveyId() + US + oldStepId + US + "piping", newStepId);
                         }
+
+                        if (questionnairesStepsBo.getPipingSourceQuestionKey() != null) {
+                          oldNewSourceMap.put(questionnairesStepsBo.getPipingSourceQuestionKey() + US + oldStepId + US + "piping", newStepId);
+                        }
+
+                        if (questionnairesStepsBo.getPreLoadSurveyId() != null) {
+                          preloadSurveyMap.put(questionnairesStepsBo.getPreLoadSurveyId() + US + oldStepId + US + "preload", newStepId);
+                        }
+
+                        if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
+                          oldNewDestMap.put(questionnairesStepsBo.getDestinationTrueAsGroup() + US + oldStepId + US + "preload", newStepId);
+                        }
+                        oldNewStepIdMap.put(questionnairesStepsBo.getStepId(), newQuestionnairesStepsBo.getStepId());
 
                         List<PreLoadLogicBo> preLoadLogicBoList = session.createQuery("from PreLoadLogicBo where stepGroupId=:stepId and stepOrGroup=:step")
                                 .setParameter("stepId", questionnairesStepsBo.getStepId())
@@ -6722,17 +6736,6 @@ public class StudyDAOImpl implements StudyDAO {
                     }
                   }
 
-                  if (!oldNewDestMap.isEmpty()) {
-                    for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
-                      for (Integer oldDestId : oldNewDestMap.keySet()) {
-                        if (oldDestId.equals(questionnairesStepsBo.getDestinationTrueAsGroup())) {
-                          questionnairesStepsBo.setDestinationTrueAsGroup(oldNewDestMap.get(oldDestId));
-                          break;
-                        }
-                      }
-                    }
-                  }
-
                   if (destinationList != null && !destinationList.isEmpty()) {
                     for (int i = 0; i < destinationList.size(); i++) {
                       int desId = 0;
@@ -6865,6 +6868,50 @@ public class StudyDAOImpl implements StudyDAO {
 //                }
                 session.save(studyActivityVersionBo);
                 logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Ends");
+              }
+
+              if (pipingSurveyIdMap != null) {
+                for (String surveyId : pipingSurveyIdMap.keySet()) {
+                  int oldSurveyId = Integer.parseInt(surveyId.split("_")[0]);
+                  int newSurveyId = oldNewQueIdMap.get(oldSurveyId);
+                  session.createQuery("update QuestionnairesStepsBo set pipingSurveyId=:newId where stepId=:stepId")
+                          .setParameter("newId", newSurveyId)
+                          .setParameter("stepId", pipingSurveyIdMap.get(surveyId))
+                          .executeUpdate();
+                }
+              }
+
+              if (oldNewSourceMap != null) {
+                for (String oldSrc : oldNewSourceMap.keySet()) {
+                  int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
+                  int newStepId = oldNewStepIdMap.get(oldStepId);
+                  session.createQuery("update QuestionnairesStepsBo set pipingSourceQuestionKey=:newId where stepId=:stepId")
+                          .setParameter("newId", newStepId)
+                          .setParameter("stepId", oldNewSourceMap.get(oldSrc))
+                          .executeUpdate();
+                }
+              }
+
+              if (preloadSurveyMap != null) {
+                for (String surveyId : preloadSurveyMap.keySet()) {
+                  int oldSurveyId = Integer.parseInt(surveyId.split("_")[0]);
+                  int newSurvey = oldNewQueIdMap.get(oldSurveyId);
+                  session.createQuery("update QuestionnairesStepsBo set preLoadSurveyId=:newId where stepId=:stepId")
+                          .setParameter("newId", newSurvey)
+                          .setParameter("stepId", preloadSurveyMap.get(surveyId))
+                          .executeUpdate();
+                }
+              }
+
+              if (oldNewDestMap != null) {
+                for (String oldSrc : oldNewDestMap.keySet()) {
+                  int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
+                  int newStepId = oldNewStepIdMap.get(oldStepId);
+                  session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
+                          .setParameter("newId", newStepId)
+                          .setParameter("stepId", oldNewDestMap.get(oldSrc))
+                          .executeUpdate();
+                }
               }
               // Executing draft version to 0
             } // If Questionarries updated flag -1 then update End

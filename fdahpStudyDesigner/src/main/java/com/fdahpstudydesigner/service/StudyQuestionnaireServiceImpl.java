@@ -2385,13 +2385,13 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq) {
-    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq);
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller) {
+    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller);
   }
 
   @Override
-  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId){
-    return studyQuestionnaireDAO.getQuestionnairesForPiping(queId, studyId);
+  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive){
+    return studyQuestionnaireDAO.getQuestionnairesForPiping(queId, studyId, isLive);
   }
 
   @Override

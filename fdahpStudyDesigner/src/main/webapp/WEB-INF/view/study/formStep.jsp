@@ -246,9 +246,10 @@
                              type="hidden" name="instructionFormId" id="instructionFormId"
                              value="${questionnairesStepsBo.instructionFormId}"> <input
                              type="hidden" id="type" name="type" value="complete"/> <input
-                             type="hidden" id="questionId" name="questionId"/> <input
+                             type="hidden" id="questionId" name="questionId"/><input
                              type="hidden" id="actionTypeForFormStep"
                              name="actionTypeForFormStep"/>
+             <input type="hidden" id="seqNo" value="${questionnairesStepsBo.sequenceNo}">
                          <select id="questionLangBOList" style="display: none">
                              <c:forEach items="${questionLangBOList}" var="questionLang">
                                  <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
@@ -399,7 +400,7 @@
                  <div class="col-md-5 form-group">
                      <select name="destinationTrueAsGroup" id="destinationTrueAsGroup" 
                              data-error="Please select an option" class="selectpicker text-normal"  title="-select destination step-">
-                         <c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
+                         <c:forEach items="${sameSurveyPreloadSourceKeys}" var="destinationStep">
                              <option value="${destinationStep.stepId}"
                                  ${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
                                  Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
@@ -408,9 +409,10 @@
                          <c:forEach items="${groupsList}" var="group" varStatus="status">
                              <option value="${group.id}" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                          </c:forEach>
-                         <option value="0"
-                             ${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
-                             Completion Step</option>
+                         <c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&
+									         (groupsList eq null || groupsList.size() eq 0) }">
+                             <option style="text-align: center; color: #000000" disabled>- No items found -</option>
+                         </c:if>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
                  </div>
@@ -563,11 +565,6 @@
                                    <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">required</c:if> />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
-
-                        <br>
-                        <div class="row">
-                            <button type="button" class="btn btn-primary blue-btn" id="piping">Piping</button>
-                        </div>
                     </div>
                     <div class="clearfix"></div>
                     <div class="row mt-lg" id="addQuestionContainer">
@@ -647,81 +644,6 @@
         </div>
     </form:form>
 
-    <div class="modal fade" id="pipingModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="width: 65%; margin-left: 17%;">
-                <div class="pl-xlg cust-hdr pt-xl">
-                    <h5 class="modal-title">
-                        <b>Piping</b>
-                    </h5>
-                </div>
-                <br>
-                <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
-                    <div class="gray-xs-f mb-xs">Target Element</div>
-                    <div class="mb-xs" id="titleText">Have you taken the medication?</div>
-                    <br>
-
-                    <div class="gray-xs-f mb-xs">Snippet</div>
-                    <div class="mb-xs">
-                        <input type="text" class="form-control" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${questionnairesStepsBo.pipingSnippet}"/>
-                    </div>
-                    <br>
-
-                    <div class="mb-xs">
-					<span class="checkbox checkbox-inline">
-						<input type="checkbox" id="differentSurvey" name="differentSurvey"
-                               <c:if test="${not empty questionnairesStepsBo.differentSurvey
-								and questionnairesStepsBo.differentSurvey}">checked</c:if> />
-						<label for="differentSurvey"> Is different survey? </label>
-					</span>
-                    </div>
-                    <br>
-
-                    <div id="surveyBlock" style="display:none">
-                        <div class="gray-xs-f mb-xs">Survey ID</div>
-                        <div class="mb-xs">
-                            <select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">
-                                <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
-                                    <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
-                                            <c:if test="${key.id eq questionnairesStepsBo.pipingSurveyId}"> selected</c:if>>
-                                        Survey ${loop.index+1} : ${key.shortTitle}
-                                    </option>
-                                </c:forEach>
-                                <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
-                                    <option style="text-align: center; color: #000000" disabled>- No items found -</option>
-                                </c:if>
-                            </select>
-                        </div>
-                        <br>
-                    </div>
-
-                    <div class="gray-xs-f mb-xs">Source Question</div>
-                    <div class="mb-xs">
-                        <select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
-                            <c:forEach items="${sameSurveySourceKeys}" var="key" varStatus="loop">
-                                <option data-id="${key.stepId}" value="${key.stepId}"
-                                        <c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
-                                    Step ${loop.index+1} : ${key.stepShortTitle}
-                                </option>
-                            </c:forEach>
-                            <c:if test="${sameSurveySourceKeys eq null || sameSurveySourceKeys.size() eq 0}">
-                                <option style="text-align: center; color: #000000" disabled>- No items found -</option>
-                            </c:if>
-                        </select>
-                    </div>
-                    <br><br>
-
-                    <div class="dis-line form-group mb-none mr-sm">
-                        <button type="button" class="btn btn-default gray-btn" id="cancelPiping">Cancel</button>
-                    </div>
-                    <div class="dis-line form-group mb-none mr-sm">
-                        <button type="button" class="btn btn-primary blue-btn" id="savePiping" onclick="submitPiping();">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
@@ -760,10 +682,7 @@ var idleTime = 0;
       $('#logicDiv').find('div.bootstrap-select').each( function () {
           $(this).addClass('ml-disabled');
       });
-      $('#pipingSnippet').prop('disabled', true);
       $('#sourceQuestion').prop('disabled', true);
-      $('#surveyId').prop('disabled', true);
-      $('#savePiping').prop('disabled', true);
       $('#differentSurvey').prop('disabled', true);
       $('#addFormula').attr('disabled', true);
       $('.selectpicker').selectpicker('refresh');
@@ -904,6 +823,12 @@ var idleTime = 0;
         $("#repeatableText").parent().find(".help-block").empty();
       }
     });
+
+      var dv = $('#groupDefaultVisibility');
+      <c:if test="${questionnaireBo.branching}">
+      dv.prop('checked', true).trigger('change');
+      dv.prop('disabled', true);
+      </c:if>
 
     var actionPage = "${actionTypeForQuestionPage}";
     var reorder = true;
@@ -1527,7 +1452,7 @@ var idleTime = 0;
           if (isBranching) {
             $('[data-id="destinationStepId"]').addClass("ml-disabled");
           }
-          $('.delete, #addFormula, #piping, .switch').addClass('cursor-none');
+          $('.delete, #addFormula, .switch').addClass('cursor-none');
           let mark=true;
           $('#questionLangBOList option', htmlData).each(function (index, value) {
             let id = '#row' + value.getAttribute('id');
@@ -1575,7 +1500,7 @@ var idleTime = 0;
           if (isBranching) {
             $('[data-id="destinationStepId"]').removeClass("ml-disabled");
           }
-          $('.delete, #addFormula, #piping, .switch').removeClass('cursor-none');
+          $('.delete, #addFormula, .switch').removeClass('cursor-none');
           <c:if test="${actionTypeForQuestionPage == 'view'}">
           $('#formStepId input[type="text"]').prop('disabled', true);
           $('#formStepId input[type="radio"]').prop('disabled', true);
@@ -1747,26 +1672,6 @@ function removeFormulaContainer(object) {
     $('#'+id).remove();
 }
 
-$('#piping').on('click', function() {
-    $('#titleText').text($('#questionTextId').val());
-    $('#pipingModal').modal('toggle');
-});
-
-$('#cancelPiping').on('click', function() {
-    $('#pipingModal').modal('hide');
-})
-
-$('#differentSurvey').on('change', function(e) {
-    if($(this).is(':checked')) {
-        $('#surveyBlock').show();
-    } else {
-        $('#surveyBlock').hide();
-        refreshSourceKeys($('#questionnairesId').val(), null);
-        $('#surveyId').val('').selectpicker('refresh');
-        $('#sourceQuestion').val('').selectpicker('refresh');
-    }
-});
-
 $('#differentSurveyPreLoad').on('change', function(e) {
     if($(this).is(':checked')) {
         $('#contents').show();
@@ -1782,11 +1687,6 @@ $('#differentSurveyPreLoad').on('change', function(e) {
 if($('#differentSurveyPreLoad').is(':checked')){
     $('#contents').show();
 }
-
-$('#surveyId').on('change', function () {
-    let surveyId = $('#surveyId option:selected').attr('data-id');
-    refreshSourceKeys(surveyId, null);
-})
 
 $('#preLoadSurveyId').on('change', function () {
     let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
@@ -1805,12 +1705,14 @@ function refreshSourceKeys(surveyId, type) {
             type : "GET",
             datatype : "json",
             data : {
+                caller : type,
+                seqNo : $('#seqNo').val(),
                 questionnaireId : surveyId,
+                isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
                 "${_csrf.parameterName}":"${_csrf.token}"
             },
             success : function(data) {
                 let message = data.message;
-                console.log(data)
                 if(message === 'SUCCESS'){
                     let options = data.sourceKeys;
                     if (options != null && options.length > 0) {
@@ -1818,26 +1720,28 @@ function refreshSourceKeys(surveyId, type) {
                             let $option = $("<option></option>")
                                 .attr("value", option.stepId)
                                 .attr("data-id", option.stepId)
-                                .text("Step " + (index+1) + " : " + option.stepShortTitle);
+                                .text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
                             id.append($option);
                         });
-                        if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
-                            <c:forEach items="${groupsList}" var="group" varStatus="status">
-                            id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
-                                'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
-                                '</option>')
-                            </c:forEach>
-                            id.append('<option value="0"> Completion Step</option>')
-                        }
-                        id.selectpicker('refresh');
-                    } else {
+                    }
+                    if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
+                        <c:forEach items="${groupsList}" var="group" varStatus="status">
+                        id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+                            'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+                            '</option>')
+                        </c:forEach>
+                    }
+                    id.selectpicker('refresh');
+
+                    let groupsList = '${groupsList}';
+                    if ((options == null || options.length === 0) && (groupsList.length === 0)) {
                         let $option = $("<option></option>")
                             .attr("style", "text-align: center; color: #000000")
                             .attr("disabled", true)
                             .text("- No items found -");
                         id.append($option).selectpicker('refresh');
                     }
-                }else {
+                } else {
                     showErrMsg('Server error while fetching data.');
                 }
             },
@@ -1845,50 +1749,6 @@ function refreshSourceKeys(surveyId, type) {
                 console.log(data, status);
             },
         });
-    }
-}
-
-function submitPiping() {
-    if ($('#stepId').val() !== '') {
-        let formData = new FormData();
-        let pipingObject = {};
-        pipingObject.pipingSnippet = $('#pipingSnippet').val();
-        pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
-        if ($('#differentSurvey').is(':checked')) {
-            pipingObject.differentSurvey = true;
-            pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
-        }
-        pipingObject.stepId = $('#stepId').val();
-        let dataObject = JSON.stringify(pipingObject);
-        $.ajax({
-            url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
-            type: "POST",
-            datatype: "json",
-            data: {
-                dataObject : dataObject
-            },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-            },
-            success: function (data) {
-                let message = data.message;
-                let status = data.status
-                $('#pipingModal').modal('hide');
-                if (status === 'SUCCESS') {
-                    showSucMsg(message);
-                } else {
-                    showErrMsg(message);
-                }
-
-            },
-            error: function (xhr, status, error) {
-                $('#pipingModal').modal('hide');
-                showErrMsg("Error while saving piping details");
-            }
-        });
-    } else {
-        $('#pipingModal').modal('hide');
-        showErrMsg("Please save step first!");
     }
 }
 </script>

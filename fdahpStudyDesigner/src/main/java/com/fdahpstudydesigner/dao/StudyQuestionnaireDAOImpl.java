@@ -623,12 +623,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         existedQuestionnairesStepsBoList = query.list();
         // copying the questionnaire steps
         Map<Integer, Integer> oldNewDestMap = new HashMap<>();
+        Map<Integer, Integer> oldNewSourceMap = new HashMap<>();
         List<Integer> preLoadDestList = new ArrayList<>();
+        List<Integer> pipingSrcList = new ArrayList<>();
         if (existedQuestionnairesStepsBoList != null
             && !existedQuestionnairesStepsBoList.isEmpty()) {
           for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
             if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
               preLoadDestList.add(questionnairesStepsBo.getDestinationTrueAsGroup());
+            }
+            if (questionnairesStepsBo.getPipingSourceQuestionKey() != null) {
+              preLoadDestList.add(questionnairesStepsBo.getPipingSourceQuestionKey());
             }
             Integer destionStep = questionnairesStepsBo.getDestinationStep();
             if (destionStep.equals(0)) {
@@ -661,6 +666,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 for (Integer oldDestId : preLoadDestList) {
                   if (oldDestId.equals(questionnairesStepsBo.getStepId())) {
                     oldNewDestMap.put(oldDestId, newQuestionnairesStepsBo.getStepId());
+                  }
+                }
+              }
+
+              if (!pipingSrcList.isEmpty() && pipingSrcList.contains(questionnairesStepsBo.getStepId())) {
+                for (Integer oldSrcId : pipingSrcList) {
+                  if (oldSrcId.equals(questionnairesStepsBo.getStepId())) {
+                    oldNewSourceMap.put(oldSrcId, newQuestionnairesStepsBo.getStepId());
                   }
                 }
               }
@@ -989,6 +1002,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             for (Integer oldDestId : oldNewDestMap.keySet()) {
               if (oldDestId.equals(questionnairesStepsBo.getDestinationTrueAsGroup())) {
                 questionnairesStepsBo.setDestinationTrueAsGroup(oldNewDestMap.get(oldDestId));
+                break;
+              }
+            }
+          }
+        }
+
+        if (!oldNewSourceMap.isEmpty()) {
+          for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
+            for (Integer oldSrcId : oldNewSourceMap.keySet()) {
+              if (oldSrcId.equals(questionnairesStepsBo.getPipingSourceQuestionKey())) {
+                questionnairesStepsBo.setPipingSourceQuestionKey(oldNewSourceMap.get(oldSrcId));
                 break;
               }
             }
@@ -6286,7 +6310,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq) {
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller) {
     logger.info("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - Starts");
     Session session = null;
     List<QuestionnairesStepsBo> list = null;
@@ -6295,9 +6319,15 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       if (queId != 0) {
         org.hibernate.query.Query<QuestionnairesStepsBo> query;
         if (seq != -1) {
-          query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo < :seq")
-                  .setParameter("queId", queId)
-                  .setParameter("seq", seq);
+          if ("preload".equals(caller)) {
+            query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo > :seq")
+                    .setParameter("queId", queId)
+                    .setParameter("seq", seq);
+          } else {
+            query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo < :seq")
+                    .setParameter("queId", queId)
+                    .setParameter("seq", seq);
+          }
         } else {
           query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
                   .setParameter("queId", queId);
@@ -6317,18 +6347,27 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId) {
+  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnairesForPiping() - Starts");
     Session session = null;
     List<QuestionnaireBo> list = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       if (StringUtils.isNoneBlank(queId, studyId)) {
-        list = session.createQuery("from QuestionnaireBo where id <> :id and studyId = :studyId and active = :active")
-                .setParameter("id", Integer.parseInt(queId))
-                .setParameter("studyId", Integer.parseInt(studyId))
-                .setParameter("active", true)
-                .list();
+        if (isLive) {
+          list = session.createQuery("from QuestionnaireBo where id <> :id and customStudyId = :studyId and live=:live and active = :active")
+                  .setParameter("id", Integer.parseInt(queId))
+                  .setParameter("studyId", studyId)
+                  .setParameter("live", 1)
+                  .setParameter("active", true)
+                  .list();
+        } else {
+          list = session.createQuery("from QuestionnaireBo where id <> :id and studyId = :studyId and active = :active")
+                  .setParameter("id", Integer.parseInt(queId))
+                  .setParameter("studyId", Integer.parseInt(studyId))
+                  .setParameter("active", true)
+                  .list();
+        }
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionnairesForPiping() - ERROR ", e);

@@ -436,8 +436,8 @@ width:142px !important;
                                 <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
-      							<span class="checkbox checkbox-inline"> <input
-                                          type="checkbox" id="branchingId" value="true" name="branching"
+      							<span class="checkbox checkbox-inline">
+                                    <input type="checkbox" id="branchingId" value="true" name="branching"
                                       ${questionnaireBo.branching ? 'checked':''}> <label
                                           for="branchingId"> Apply Branching </label>
       							</span>
@@ -3120,6 +3120,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
       if ('${allowReorder}' === 'false') {
           table1.rowReorder.disable();
+          $('#branchingId').prop('disabled', true);
       }
     // Branching Logic starts here
 

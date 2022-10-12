@@ -151,6 +151,7 @@
         <div class="right-content-body">
             <!-- form- input-->
             <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
+            <input type="hidden" id="seqNo" value="${instructionsBo.questionnairesStepsBo.sequenceNo}">
             <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
             <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
             <input type="hidden" name="questionnaireId" id="questionnaireId"
@@ -277,7 +278,8 @@
                     </div>
                     <br>
 
-                    <div id="surveyBlock" style="display:none">
+                    <div id="surveyBlock" <c:if test="${empty instructionsBo.questionnairesStepsBo.differentSurvey
+				or !instructionsBo.questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
                         <div class="gray-xs-f mb-xs">Survey ID</div>
                         <div class="mb-xs">
                             <select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">
@@ -298,13 +300,13 @@
                     <div class="gray-xs-f mb-xs">Source Question</div>
                     <div class="mb-xs">
                         <select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
-                            <c:forEach items="${sameSurveySourceKeys}" var="key" varStatus="loop">
-                                <option data-id="${key.stepId}" value="${key.stepShortTitle}"
-                                        <c:if test="${key.stepId eq instructionsBo.questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
+                            <c:forEach items="${sameSurveyPipingSourceKeys}" var="key" varStatus="loop">
+                                <option data-id="${key.stepId}" value="${key.stepId}"
+                                        <c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
                                     Step ${loop.index+1} : ${key.stepShortTitle}
                                 </option>
                             </c:forEach>
-                            <c:if test="${sameSurveySourceKeys eq null || sameSurveySourceKeys.size() eq 0}">
+                            <c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
                                 <option style="text-align: center; color: #000000" disabled>- No items found -</option>
                             </c:if>
                         </select>
@@ -436,7 +438,7 @@
   });
 
   $('#piping').on('click', function() {
-      $('#titleText').text($('#questionTextId').val());
+      $('#titleText').text($('#instructionTitle').val());
       $('#pipingModal').modal('toggle');
   });
 
@@ -730,46 +732,54 @@
           $('#surveyBlock').show();
       } else {
           $('#surveyBlock').hide();
+          refreshSourceKeys($('#questionnaireId').val(), null);
+          $('#surveyId').val('').selectpicker('refresh');
+          $('#sourceQuestion').val('').selectpicker('refresh');
       }
   });
 
   $('#surveyId').on('change', function () {
-      refreshSourceKeys();
+      let surveyId = $('#surveyId option:selected').attr('data-id');
+      refreshSourceKeys(surveyId, 'piping');
   })
 
-  function refreshSourceKeys() {
-      $('#sourceQuestion').empty().selectpicker('refresh');
-      let surveyId = $('#surveyId option:selected').attr('data-id');
+  function refreshSourceKeys(surveyId, type) {
+      let id = $('#sourceQuestion');
+      id.empty().selectpicker('refresh');
       if (surveyId !== '') {
           $.ajax({
               url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
               type : "GET",
               datatype : "json",
               data : {
+                  caller : "piping",
+                  seqNo : $('#seqNo').val(),
                   questionnaireId : surveyId,
+                  isDifferentSurveyPiping : $('#differentSurvey').is(':checked'),
                   "${_csrf.parameterName}":"${_csrf.token}"
               },
               success : function(data) {
                   let message = data.message;
-                  console.log(data)
                   if(message === 'SUCCESS'){
                       let options = data.sourceKeys;
                       if (options != null && options.length > 0) {
                           $.each(options, function(index, option) {
                               let $option = $("<option></option>")
-                                  .attr("value", option.stepShortTitle)
+                                  .attr("value", option.stepId)
                                   .attr("data-id", option.stepId)
-                                  .text("Step " + (index+1) + " : " + option.stepShortTitle);
-                              $('#sourceQuestion').append($option).selectpicker('refresh');
+                                  .text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
+                              id.append($option);
                           });
-                      } else {
+                      }
+                      id.selectpicker('refresh');
+                      if (options == null || options.length === 0) {
                           let $option = $("<option></option>")
                               .attr("style", "text-align: center; color: #000000")
                               .attr("disabled", true)
                               .text("- No items found -");
-                          $('#sourceQuestion').append($option).selectpicker('refresh');
+                          id.append($option).selectpicker('refresh');
                       }
-                  }else {
+                  } else {
                       showErrMsg('Server error while fetching data.');
                   }
               },

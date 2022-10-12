@@ -380,6 +380,7 @@ input[type=number] {
 					value="${questionLangBO.responseTypeId}"> <input
 					type="hidden" id="mlOtherText" value="${questionLangBO.otherText}">
 				 <input type="hidden" id="mlChartTitle" value="${questionLangBO.chartTitle}">
+				<input type="hidden" id="seqNo" value="${questionnairesStepsBo.sequenceNo}">
 				<input
 					type="hidden" id="mlOtherDescription" value="${questionLangBO.otherDescription}">
 				<input
@@ -512,7 +513,7 @@ input[type=number] {
                               <div class="col-md-5 form-group">
 								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup" required
 										data-error="Please select an option" class="selectpicker text-normal" required title="-select destination step-">
-									<c:forEach items="${destinationStepsPreLoad}" var="destinationStep">
+									<c:forEach items="${sameSurveyPreloadSourceKeys}" var="destinationStep">
 										<option value="${destinationStep.stepId}"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
 													selected
@@ -528,9 +529,10 @@ input[type=number] {
 											Group  ${status.index + 1} :  ${group.groupName}&nbsp;
 										</option>
 									</c:forEach>
-									<option value="0"
-										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
-										Completion Step</option>
+									<c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&
+									         (groupsList eq null || groupsList.size() eq 0) }">
+										<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+									</c:if>
 								</select>
 								  <div class="help-block with-errors red-txt"></div>
 								</div>
@@ -2990,7 +2992,6 @@ input[type=number] {
 
                          <td>
                           <div class="accordion" id="accordionExample">
-                            <input type="hidden" name="">
                             <div class="card">
                               <div class="card-header" id="headingTwo">
 
@@ -4344,7 +4345,8 @@ input[type=number] {
 				</div>
 				<br>
 
-				<div id="surveyBlock" style="display:none">
+				<div id="surveyBlock" <c:if test="${empty questionnairesStepsBo.differentSurvey
+				or !questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
 					<div class="gray-xs-f mb-xs">Survey ID</div>
 					<div class="mb-xs">
 						<select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">
@@ -4365,13 +4367,13 @@ input[type=number] {
 				<div class="gray-xs-f mb-xs">Source Question</div>
 				<div class="mb-xs">
 					<select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
-						<c:forEach items="${sameSurveySourceKeys}" var="key" varStatus="loop">
+						<c:forEach items="${sameSurveyPipingSourceKeys}" var="key" varStatus="loop">
 							<option data-id="${key.stepId}" value="${key.stepId}"
 									<c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
 								Step ${loop.index+1} : ${key.stepShortTitle}
 							</option>
 						</c:forEach>
-						<c:if test="${sameSurveySourceKeys eq null || sameSurveySourceKeys.size() eq 0}">
+						<c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
 							<option style="text-align: center; color: #000000" disabled>- No items found -</option>
 						</c:if>
 					</select>
@@ -6705,6 +6707,17 @@ input[type=number] {
         </c:if>
       }
 
+	var dv = $('#groupDefaultVisibility');
+	<c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle && questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">
+	dv.prop('checked', true).trigger('change');
+	dv.prop('disabled', true);
+	</c:if>
+
+	<c:if test="${questionnaireBo.branching}">
+	dv.prop('checked', true).trigger('change');
+	dv.prop('disabled', true);
+	</c:if>
+
       function getSelectionStyle(item) {
         var value = $(item).val();
         if (value == 'Single') {
@@ -6715,10 +6728,15 @@ input[type=number] {
           $('.destionationYes').attr("disabled", false);
           $('.selectpicker').selectpicker('refresh');
           $(".textChoiceExclusive").validator('validate');
+		  if (dv.prop('disabled') === true) {
+			  dv.prop('disabled', false);
+		  }
         } else {
           $('.textChoiceExclusive').attr("disabled", false);
           $('.textChoiceExclusive').attr("required", true);
           $('.selectpicker').selectpicker('refresh');
+			dv.prop('checked', true).trigger('change');
+			dv.prop('disabled', true);
         }
       }
 
@@ -8823,55 +8841,66 @@ if (defaultVisibility.is(':checked')) {
 	$('#skiappableNo').prop('checked', true);
 }
 
-defaultVisibility.on('change', function () {
-	let toggle = $(this);
-	let logicDiv = $('#logicDiv');
-	let addForm = $('#addFormula');
-	if  (toggle.is(':checked')) {
-		$('.deletable').remove();
-		logicDiv.find('div.bootstrap-select, input, select').each( function () {
-			$(this).addClass('ml-disabled');
-			if ($(this).is("select")) {
-				$(this).val('').selectpicker('refresh');
-				$(this).removeClass('has-error has-danger').find(".help-block").empty();
-				$(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
-			}
-			if ($(this).is("input")) {
-				$(this).val('').attr('disabled', true);
-				$(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
-			}
-			$(this).attr('required', false);
-		});
+$('#mu')
 
-		$('#defaultVisibility').val('true');
-		if($('#differentSurveyPreLoad').is(':checked')){
-                  $('#content').hide();
-        }
-		$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
-		$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
-		$('#preLoadSurveyId').prop('required', false);
-		addForm.attr('disabled', true);
-		$('#skiappableYes').prop('disabled', false);
+defaultVisibility.on('change', function () {
+	if  (defaultVisibility.is(':checked')) {
+		disablePreLoadLogic();
 	} else {
-		logicDiv.find('div.bootstrap-select, input, select').each( function () {
-			$(this).removeClass('ml-disabled');
-			if ($(this).is("select")) {
-				$(this).selectpicker('refresh');
-			}
-			if ($(this).is("input")) {
-				$(this).attr('disabled', false);
-			}
-			$(this).attr('required',true);
-			$(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
-		});
-		$('#defaultVisibility').val('false');
-		$('#preLoadSurveyId').prop('required', false);
-		toggle.attr('checked', false);
-		addForm.attr('disabled', false);
-		$('#skiappableYes').prop('checked', false).prop('disabled', true);
-		$('#skiappableNo').prop('checked', true);
+		enablePreLoadLogic();
 	}
 })
+
+function disablePreLoadLogic() {
+	let logicDiv = $('#logicDiv');
+	let addForm = $('#addFormula');
+	$('.deletable').remove();
+	logicDiv.find('div.bootstrap-select, input, select').each( function () {
+		$(this).addClass('ml-disabled');
+		if ($(this).is("select")) {
+			$(this).val('').selectpicker('refresh');
+			$(this).removeClass('has-error has-danger').find(".help-block").empty();
+			$(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+		}
+		if ($(this).is("input")) {
+			$(this).val('').attr('disabled', true);
+			$(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+		}
+		$(this).attr('required', false);
+	});
+
+	$('#defaultVisibility').val('true');
+	if($('#differentSurveyPreLoad').is(':checked')){
+		$('#content').hide();
+	}
+	$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+	$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
+	$('#preLoadSurveyId').prop('required', false);
+	addForm.attr('disabled', true);
+	$('#skiappableYes').prop('disabled', false);
+}
+
+function enablePreLoadLogic() {
+	let logicDiv = $('#logicDiv');
+	let addForm = $('#addFormula');
+	logicDiv.find('div.bootstrap-select, input, select').each( function () {
+		$(this).removeClass('ml-disabled');
+		if ($(this).is("select")) {
+			$(this).selectpicker('refresh');
+		}
+		if ($(this).is("input")) {
+			$(this).attr('disabled', false);
+		}
+		$(this).attr('required',true);
+		$(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+	});
+	$('#defaultVisibility').val('false');
+	$('#preLoadSurveyId').prop('required', false);
+	defaultVisibility.attr('checked', false);
+	addForm.attr('disabled', false);
+	$('#skiappableYes').prop('checked', false).prop('disabled', true);
+	$('#skiappableNo').prop('checked', true);
+}
 
 $('#cancelPiping').on('click', function() {
 	$('#pipingModal').modal('hide');
@@ -8922,7 +8951,11 @@ function refreshSourceKeys(surveyId, type) {
 			type : "GET",
 			datatype : "json",
 			data : {
+				caller : type,
+				seqNo : $('#seqNo').val(),
 				questionnaireId : surveyId,
+				isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
+				isDifferentSurveyPiping : $('#differentSurvey').is(':checked'),
 				"${_csrf.parameterName}":"${_csrf.token}"
 			},
 			success : function(data) {
@@ -8934,26 +8967,28 @@ function refreshSourceKeys(surveyId, type) {
 							let $option = $("<option></option>")
 									.attr("value", option.stepId)
 									.attr("data-id", option.stepId)
-									.text("Step " + (index+1) + " : " + option.stepShortTitle);
+									.text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
 							id.append($option);
 						});
-						if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
-							<c:forEach items="${groupsList}" var="group" varStatus="status">
-							id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
-							'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
-						    '</option>')
-							</c:forEach>
-							id.append('<option value="0"> Completion Step</option>')
-						}
-						id.selectpicker('refresh');
-					} else {
+					}
+					if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
+						<c:forEach items="${groupsList}" var="group" varStatus="status">
+						id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+								'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+								'</option>')
+						</c:forEach>
+					}
+					id.selectpicker('refresh');
+
+					let groupsList = '${groupsList}';
+					if ((options == null || options.length === 0) && (groupsList.length === 0)) {
 						let $option = $("<option></option>")
 								.attr("style", "text-align: center; color: #000000")
 								.attr("disabled", true)
 								.text("- No items found -");
 						id.append($option).selectpicker('refresh');
 					}
-				}else {
+				} else {
 					showErrMsg('Server error while fetching data.');
 				}
 			},

@@ -509,6 +509,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     QuestionnaireBo newQuestionnaireBo = null;
     Session session = null;
     QuestionReponseTypeBo questionReponseTypeBo = null;
+    Integer count=0;
     try {
       // Questionarries
       session = hibernateTemplate.getSessionFactory().openSession();
@@ -717,19 +718,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     }
                   }
                 }
-				
-				List<GroupsBo> groupsBoList = null;
-				searchQuery = "From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId";
-				query = session.createQuery(searchQuery).setInteger("questionnaireId", questionnaireId);
-				groupsBoList = query.list();
-				for (GroupsBo groupsBo : groupsBoList) {
-					if (groupsBo != null) {
-						GroupsBo newgroupsBo = SerializationUtils.clone(groupsBo);
-						newgroupsBo.setId(null);
-						newgroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
-						session.save(newgroupsBo);
-					}
-				}
 				 
               } else if (questionnairesStepsBo
                   .getStepType()
@@ -978,6 +966,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
                 }
               }
+              if(count!=1) {
+    				List<GroupsBo> groupsBoList = null;
+    				searchQuery = "From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId";
+    				query = session.createQuery(searchQuery).setInteger("questionnaireId", questionnaireId);
+    				groupsBoList = query.getResultList();
+    				if(groupsBoList!=null) {
+    					count = 1;
+    				for (GroupsBo groupsBo : groupsBoList) {
+    					if (groupsBo != null) {
+    						GroupsBo newgroupsBo = SerializationUtils.clone(groupsBo);
+    						newgroupsBo.setId(null);
+    						newgroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+    						session.saveOrUpdate(newgroupsBo);
+    					}
+    				}
+    				}
+                    }
               session.update(newQuestionnairesStepsBo);
               newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
             }

@@ -60,10 +60,11 @@ display:contents !important;
 <!-- Start right Content here -->
 <form:form
 action="/fdahpStudyDesigner/adminStudies/addOrUpdateGroupsDetails.do?_S=${param._S}"
-name="addGroupFormId" id="addGroupFormId" method="post">
+name="addGroupFormId" id="addGroupFormId" method="post" data-toggle="validator" role="form">
 <input type="hidden" name="language" value="${currLanguage}">
 <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
 <input type="hidden" id="buttonText" name="buttonText" value="">
+<input type="hidden" id="isPublished" name="isPublished" value="${groupsBo.isPublished}">
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
 <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
@@ -132,7 +133,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
-                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" required
+                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" 
+                      <c:if test="${groupsBo.isPublished eq 1}"> disabled </c:if> required
                       <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
 
                       <div class="help-block with-errors red-txt"></div>
@@ -263,12 +265,14 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                                                  </c:forEach>
                                                                  </c:if>
                                                              </select>
+                                                             <div class="help-block with-errors red-txt"></div>
                                                          </div>
 
                                                          <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
                                                          <div class="col-md-3 form-group">
                                                              <input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
                                                              <input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" placeholder="Enter">
+                                                             <div class="help-block with-errors red-txt"></div>
                                                          </div>
                                                      </div>
                                                  </div>
@@ -293,19 +297,21 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                                              </div>
                                              <div class="row data-div">
                                                  <div class="col-md-1" style="padding-top: 7px">Operator</div>
-                                                 <div class="col-md-2">
+                                                 <div class="col-md-2 form-group">
                                                      <select required class="selectpicker operator text-normal"
                                                              id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
                                                          <c:forEach items="${operators}" var="operator">
                                                              <option value="${operator}">${operator}</option>
                                                          </c:forEach>
                                                      </select>
+                                                     <div class="help-block with-errors red-txt"></div>
                                                  </div>
 
                                                  <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-                                                 <div class="col-md-3">
+                                                 <div class="col-md-3 form-group">
                                                      <input type="hidden" id="id${status.index}">
                                                      <input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+                                                     <div class="help-block with-errors red-txt"></div>
                                                  </div>
                                              </div>
                                          </div>
@@ -350,11 +356,11 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 
 <form:form action="/fdahpStudyDesigner/sessionOut.do"
            id="backToLoginPage" name="backToLoginPage"
-           method="post">
+           method="post" data-toggle="validator" role="form">
 </form:form>
 <form:form action="/fdahpStudyDesigner/viewGroups.do"
            id="viewGroups" name="viewGroups"
-           method="post">
+           method="post" data-toggle="validator" role="form">
  <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
  <input type="hidden" id="buttonText" name="buttonText" value="">
  
@@ -443,7 +449,9 @@ name="addGroupFormId" id="addGroupFormId" method="post">
        });
 
     function saveAddGroupsPage(mode){
-    debugger
+    let isPublished=${groupsBo.isPublished}
+    $('#groupId').prop('disabled', false)
+    
       var questnId = $('#questionnaireId').val();
          var groupId = $('#groupId').val();
           var groupName = $('#groupName').val();
@@ -464,6 +472,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                      $('#operator0').val();
                      $("#buttonText").val('save');
                      $('#actionType').val('edit');
+                     isPublished;
                      if (mode === 'auto') {
                      $("#isAutoSaved").val('true');
                      }
@@ -487,7 +496,6 @@ name="addGroupFormId" id="addGroupFormId" method="post">
  }
 
 function goToBackPage(item) {
-debugger
 var actionPage = "${actionType}";
 $(item).prop('disabled', true);
 <c:if test="${actionType ne 'view'}">
@@ -576,7 +584,7 @@ document.body.appendChild(a).click();
                  '</div>'+
                  '<div class="row data-div">'+
                  '<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
-                 '<div class="col-md-2">'+
+                 '<div class="col-md-2 form-group">'+
                  '<select required class="selectpicker operator text-normal" '+
                  'id="operator' + count + '" name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
                  '<option> < </option>'+
@@ -585,12 +593,12 @@ document.body.appendChild(a).click();
                  '<option> != </option>'+
                  '<option> >= </option>'+
                  '<option> <= </option>'+
-                 '</select>'+
+                 '</select> <div class="help-block with-errors red-txt"></div>'+
                  '</div>'+
                  '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
-                 '<div class="col-md-3">'+
+                 '<div class="col-md-3 form-group">'+
                  '<input type="hidden" class="id"/>'+
-                 '<input type="text" required class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter">'+
+                 '<input type="text" required class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter"> <div class="help-block with-errors red-txt"></div>'+
                  '</div>'+
                  '</div>'+
                  '</div>'+
@@ -665,6 +673,9 @@ document.body.appendChild(a).click();
          }
          
          $("#doneGroupId").click(function () {
+        	 let isPublished=${groupsBo.isPublished}
+        	 $('#groupId').prop('disabled', false);
+
         	  var questnId = $('#questionnaireId').val();
         	  var id = $('#id').val();
         	   var groupId = $('#groupId').val();
@@ -686,6 +697,7 @@ document.body.appendChild(a).click();
         	               $("#groupName").val();
         	               $("#groupDefaultVisibility").val();
                            $("#destinationTrueAsGroup").val();
+                           isPublished;
                            $('#value0').val();
                            $('#operator0').val();
         	               $('#addGroupFormId').submit();
@@ -830,15 +842,12 @@ document.body.appendChild(a).click();
         	  }
 
          $('#studyLanguage').on('change', function () {
-          	  debugger
               let currLang = $('#studyLanguage').val();
               $('#currentLanguage').val(currLang);
-             // $('#loader').show();
               refreshAndFetchLanguageData($('#studyLanguage').val());
             })
             
             function refreshAndFetchLanguageData(language) {
-      		  debugger
       		    $.ajax({
       		      url: '/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}',
       		      type: "GET",
@@ -846,38 +855,60 @@ document.body.appendChild(a).click();
       		        language: language
       		      },
       		      success: function (data) {
-      		    	  debugger
       		        let htmlData = document.createElement('html');
       		        htmlData.innerHTML = data;
       		        if (language !== 'en') {
-      		        	debugger
       		          updateCompletionTicks(htmlData);
       		          $('.tit_wrapper').text($('#mlName', htmlData).val());
       		          $('#groupName').attr('disabled', true);
-      		       $('#groupId').attr('disabled', true);
-      		 	$('#groupDefaultVisibility').attr('disabled', true);
-      		          //$('.delete,thead').addClass('cursor-none');
+      		          $('#groupId').attr('disabled', true);
+      		 	      $('#groupDefaultVisibility').attr('disabled', true);
+                        //  $('#addFormula').attr('disabled', true);
+                //          $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+				// 	$(this).addClass('ml-disabled');
+				// 	if ($(this).is("input")) {
+				// 		$(this).attr('disabled', true);
+				// 	}
+				// });
+                // $('.data-div').find('div.bootstrap-select, input').each( function () {
+				// 	$(this).addClass('ml-disabled');
+				// 	if ($(this).is("input")) {
+				// 		$(this).attr('disabled', true);
+				// 	}
+				// });
+
       		          let mark=true;
       		          $('#groups_list option', htmlData).each(function (index, value) {
       		            let id = '#row' + value.getAttribute('id');
       		            $(id).find('td.title').text(value.getAttribute('value'));
-      
       		          });
-      		         
       		        } else {
-      		        	debugger
       		          updateCompletionTicksForEnglish();
       		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-      		       $('#groupName').attr('disabled', false);
-      		       $('#groupId').attr('disabled', false);
-      		    $('#groupDefaultVisibility').attr('disabled', false);
-      		     $('#studyProtocolId').prop('disabled', false);
+      		          $('#groupName').attr('disabled', false);
+      		          $('#groupId').attr('disabled', false);
+      		          $('#groupDefaultVisibility').attr('disabled', false);
+      		          $('#studyProtocolId').prop('disabled', false);
+                //         $('#addFormula').attr('disabled', false);
+
+                      
+                //         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+				// 	$(this).removeClass('ml-disabled');
+				// 	if ($(this).is("input")) {
+				// 		$(this).attr('disabled', false);
+				// 	}
+				// });
+                // $('.data-div').find('div.bootstrap-select, input').each( function () {
+				// 	$(this).removeClass('ml-disabled');
+				// 	if ($(this).is("input")) {
+				// 		$(this).attr('disabled', false);
+				// 	}
+				// });
+
       		          let mark=true;
       		          $('tbody tr', htmlData).each(function (index, value) {
-      		        	  debugger
       		            let id = '#'+value.getAttribute('id');
       		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-      		          
       		          });
       		          
       		          <c:if test="${not empty permission}">
@@ -887,7 +918,5 @@ document.body.appendChild(a).click();
       		      }
       		    });
       		  }
-
-
 
     </script>

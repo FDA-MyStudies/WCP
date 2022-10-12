@@ -859,6 +859,20 @@ document.body.appendChild(a).click();
       		          $('#groupName').attr('disabled', true);
       		          $('#groupId').attr('disabled', true);
       		 	      $('#groupDefaultVisibility').attr('disabled', true);
+                         $('#addFormula').attr('disabled', true);
+                         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+					$(this).addClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', true);
+					}
+				});
+                $('.data-div').find('div.bootstrap-select, input').each( function () {
+					$(this).addClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', true);
+					}
+				});
+
       		          let mark=true;
       		          $('#groups_list option', htmlData).each(function (index, value) {
       		            let id = '#row' + value.getAttribute('id');
@@ -871,6 +885,22 @@ document.body.appendChild(a).click();
       		          $('#groupId').attr('disabled', false);
       		          $('#groupDefaultVisibility').attr('disabled', false);
       		          $('#studyProtocolId').prop('disabled', false);
+                        $('#addFormula').attr('disabled', false);
+
+                      
+                        $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+					$(this).removeClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', false);
+					}
+				});
+                $('.data-div').find('div.bootstrap-select, input').each( function () {
+					$(this).removeClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', false);
+					}
+				});
+
       		          let mark=true;
       		          $('tbody tr', htmlData).each(function (index, value) {
       		            let id = '#'+value.getAttribute('id');

@@ -2851,6 +2851,8 @@ button:active {
           }
         }
 
-
+.sprites_icon img, .close_img img {
+	cursor: pointer !important;
+}
 
  /* css end here */

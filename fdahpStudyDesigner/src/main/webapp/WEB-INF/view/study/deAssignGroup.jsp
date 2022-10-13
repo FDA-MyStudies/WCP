@@ -88,7 +88,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 										stdTxt="${groupsAssignedList.description}"
 										<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 									<c:if test="${actionPage ne 'VIEW_PAGE'}">
-										<span class="mr-md"><img
+										<span class="mr-md close_img"><img
 											src="/fdahpStudyDesigner/images/icons/close.png"
 											onclick="del(${groupsAssignedList.stepId});" /></span>
 									</c:if>

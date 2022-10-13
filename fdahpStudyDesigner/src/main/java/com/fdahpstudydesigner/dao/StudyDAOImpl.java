@@ -6253,7 +6253,7 @@ public class StudyDAOImpl implements StudyDAO {
                   questionnaireBo.setLive(0);
                   session.update(questionnaireBo);
                   oldNewQueIdMap.put(questionnaireBo.getId(), newQuestionnaireBo.getId());
-
+                  Integer count=0;
                   List<QuestionnaireLangBO> questionnaireLangBOS =
                       session
                           .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
@@ -6409,23 +6409,6 @@ public class StudyDAOImpl implements StudyDAO {
                           session.save(newPreLoadLogicBo);
                         }
                         
-						
-						List<GroupsBo> groupsBoList = session
-								.createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
-								.setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
-								.setParameter("id", studyBo.getId()).list();
-						for (GroupsBo groupsBo : groupsBoList) {
-							GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
-							newGroupsBo.setId(null);
-							newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
-							newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
-							newGroupsBo.setIsPublished(1);
-							session.save(newGroupsBo);
-							groupsBo.setIsPublished(1);
-							session.update(groupsBo);
-						}
-						 
-
                         if (questionnairesStepsBo
                             .getStepType()
                             .equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)) {
@@ -6730,6 +6713,25 @@ public class StudyDAOImpl implements StudyDAO {
                           logger.info(
                               "StudyDAOImpl - studyDraftCreation() Questionnarie Form step - Ends");
                         }
+                        if(count!=1) {
+    						List<GroupsBo> groupsBoList = session
+    								.createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
+    								.setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
+    								.setParameter("id", studyBo.getId()).list();
+    						if(groupsBoList!=null) {
+    							count = 1;
+    						for (GroupsBo groupsBo : groupsBoList) {
+    							GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
+    							newGroupsBo.setId(null);
+    							newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
+    							newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+    							newGroupsBo.setIsPublished(1);
+    							session.save(newGroupsBo);
+    							groupsBo.setIsPublished(1);
+    							session.update(groupsBo);
+    						}
+    						}
+                            }
                         session.update(newQuestionnairesStepsBo);
                         newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
                       }

@@ -120,7 +120,7 @@
                     </c:otherwise>
                     </c:choose>
 					<span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-                    data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick=deleteGroup(${groupsList.id});></span>
+                    data-toggle="tooltip" data-placement="top" title="Delete" id="${groupsList.id}" onclick="deleteGroup(${groupsList.id}, '${groupsList.groupId}');"></span>
                   </td>
                  </tr>
                  </c:forEach>
@@ -134,7 +134,7 @@
 <form:form
 action="/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}"
 name="groupsInfoForm" id="groupsInfoForm" method="post">
-<input type="hidden" name="groupId" id="groupId" value="">
+<input type="hidden" name="groupId" id="groupId" value="${groupId}">
  <input type="hidden" name="language" value="${currLanguage}">
 <input type="hidden" name="actionType" id="actionType" value="${actionType}">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
@@ -294,7 +294,7 @@ var idleTime = 0;
          document.body.appendChild(a).click();
     }
 
-	function deleteGroup(id) {
+	function deleteGroup(id,groupId) {
           bootbox.confirm("Are you sure you want to delete this group?", function (result) {
             if (result) {
               var studyId = $("#studyId").val();
@@ -310,12 +310,11 @@ var idleTime = 0;
                   },
                   success: function deleteConsentInfo(data) {
                     var status = data.message;
-                    if (status == "SUCCESS") {
-                      $("#alertMsg").removeClass('e-box').addClass('s-box').text(
-                          "Group deleted successfully");
-                      $('#alertMsg').show();
-
-                      location.reload();
+                    if (status == "SUCCESS") {                     
+                    	$('#row'+groupId).remove();
+                    	 $("#alertMsg").removeClass('e-box').addClass('s-box').text(
+                         "Group deleted successfully");
+                     $('#alertMsg').show();
                     } else {
                       $("#alertMsg").removeClass('s-box').addClass('e-box').text(
                           "Unable to delete Group");

@@ -703,8 +703,7 @@
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').addClass('ml-disabled');
-          $('#differentSurvey').attr('checked', false).attr('disabled', true);
-          $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
+          $('#piping').addClass('cursor-none');
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
           $('#instructionText').val($('#mlText', htmlData).val());
         } else {

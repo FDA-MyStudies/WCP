@@ -8392,9 +8392,7 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').addClass('cursor-none');
-              $('#differentSurvey').attr('checked', false).attr('disabled', true);
-              $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, #piping, .switch').addClass('cursor-none');
 
               // setting ml data
               $('#questionTextId').val($('#mlQuestion', htmlData).val());

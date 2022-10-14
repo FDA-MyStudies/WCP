@@ -3829,7 +3829,7 @@ public class StudyQuestionnaireController {
   @RequestMapping(value = "/adminStudies/viewGroups.do")
   public ModelAndView viewGroups(HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyQuestionnaireController - viewGroups - Starts");
-    ModelAndView mav = new ModelAndView("redirect:viewBasicInfo.do");
+    ModelAndView mav = new ModelAndView();
     ModelMap map = new ModelMap();
     StudyBo studyBo = null;
     String sucMsg = "";
@@ -3898,7 +3898,8 @@ public class StudyQuestionnaireController {
                             ? "0"
                             : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
           }
-         
+          String permission =
+                  (String) request.getSession().getAttribute(sessionStudyCount + "permission");
           questionnaireId =
                   FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
                       ? ""
@@ -3931,7 +3932,7 @@ public class StudyQuestionnaireController {
               && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
             this.setStudyLangData(studyId, language, map);
           }
-          
+
           map.addAttribute("currLanguage", language);
           String languages = studyBo.getSelectedLanguages();
           List<String> langList = new ArrayList<>();
@@ -3954,13 +3955,12 @@ public class StudyQuestionnaireController {
 				groupsList =
                       studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId); 
           }
-          }
-          
+          map.addAttribute("permission", permission);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           map.addAttribute("groupsList", groupsList);
           map.addAttribute("_S", sessionStudyCount);
           mav = new ModelAndView("viewGroupsPage", map);
-          
+        }
       } catch (Exception e) {
         logger.error("StudyQuestionnaireController - viewGroups - ERROR", e);
       }
@@ -4042,14 +4042,14 @@ public class StudyQuestionnaireController {
         if (StringUtils.isNotEmpty(studyId)) {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-            
+
           }
         String language = request.getParameter("language");
         if (FdahpStudyDesignerUtil.isNotEmpty(language)
             && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
           this.setStudyLangData(studyId, language, map);
         }
-        
+
         map.addAttribute("currLanguage", language);
         String languages = studyBo.getSelectedLanguages();
         List<String> langList = new ArrayList<>();
@@ -4119,15 +4119,16 @@ public class StudyQuestionnaireController {
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
         }
-   
-        map.addAttribute("studyBo", studyBo);
-
+        map.addAttribute("actionType", actionType);
+          map.addAttribute("actionPage", actionPage);
+          map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);
+          map.addAttribute("_S", sessionStudyCount);
           map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
           map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
           mav = new ModelAndView("addOrEditGroupsPage", map);
         } else {
-          mav = new ModelAndView("redirect:/adminStudies/viewGroups.do");
+          mav = new ModelAndView("redirect:/adminStudies/viewGroups.do", map);
         }
 
       } catch(Exception e){
@@ -4456,13 +4457,13 @@ public class StudyQuestionnaireController {
   @RequestMapping(value = "/adminStudies/assignGroup.do", method = RequestMethod.POST)
   public void assignGroup(HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyQuestionnaireController - assignGroup - Starts");
-    String message = FdahpStudyDesignerConstants.FAILURE;
+    String status = FdahpStudyDesignerConstants.FAILURE;
     List<GroupMappingBo> groupMappingBo =null;
     JSONObject jsonobject = new JSONObject();
     ObjectMapper mapper = new ObjectMapper();
     PrintWriter out = null;
     StudyBo studyBo = null;
-    String msg = "";
+    String message = "";
     String questionnaireId = "";
     try {
       SessionObject sesObj =
@@ -4536,15 +4537,18 @@ public class StudyQuestionnaireController {
           if (StringUtils.isNotEmpty(studyId)) {
             groupMappingBo =
                     studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+            status = FdahpStudyDesignerConstants.SUCCESS;
+            message = "Group assigned successfully.";
           }
         }else{
           if(count>=2){
             groupMappingBo =
                     studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
+            status = FdahpStudyDesignerConstants.SUCCESS;
+            message = "Group assigned successfully.";
           }else{
-            msg = FdahpStudyDesignerConstants.ASSIGN_GROUP;
+            message = "There should be at least two steps to form a group.";
           }
-          jsonobject.put("msg", msg);
         }
 
         if ("edit".equals(actionType)) {
@@ -4554,11 +4558,9 @@ public class StudyQuestionnaireController {
           jsonobject.put("actionType", "view");
           request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
         }
-        if(!groupMappingBo.isEmpty()){
-          message = FdahpStudyDesignerConstants.SUCCESS;
-        }
       }
       jsonobject.put("message", message);
+      jsonobject.put("status", status);
       jsonobject.put("groupMappingBo", new JSONArray(mapper.writeValueAsString(groupMappingBo)));
 
       response.setContentType("application/json");

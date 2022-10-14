@@ -1906,7 +1906,6 @@ width:142px !important;
                    var count = 0 ;
                    var steparray = new Array();
                    $('#content').find('tbody input.step-check').each(function () {
-                   console.log($(this));
                     if ($(this).is(':checked')) {
                     console.log("push id in array")
                     let id = $(this).attr('id');
@@ -1916,7 +1915,6 @@ width:142px !important;
                        }
                    })
                    var stepList = steparray;
-                 //  if(count >=2){
                    if (stepList != null && stepList != '' && grpId != null && grpId != '') {
                     $.ajax({
                       url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
@@ -1932,12 +1930,10 @@ width:142px !important;
                                     },
                       success: function (data) {
                       window.location.reload();
-                        var status = data.message;
-                        var errorMsg = data.msg;
+                        var status = data.status;
+                        var message = data.message;
                         var groupArray = new Array();
                         groupArray = data.groupMappingBo;
-                        console.log("grpArray : "+groupArray);
-                        console.log("status: " +status);
 
                                     if (status == "SUCCESS") {
                                       for(var i=0; groupArray.length>i; i++){
@@ -1945,13 +1941,12 @@ width:142px !important;
                                      $('#'+groupArray[i].stepId).prop('checked', true);
                                       console.log("groupArray : "+groupArray[i].stepId);
                                        }
-                                      $('#alertMsg').show();
-                                      $("#alertMsg").removeClass('e-box').addClass('s-box').text(
-                                          "Group assigned successfully");
+                                        showSucMsg(message);
+                                          $('#group').val('').selectpicker('refresh');
                                     } else {
-                                      $('#alertMsg').show();
-                                      $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-                                          "There should be at least two steps to form a group.");
+                                          showErrMsg(message);
+                                           $('#content').find('tbody input.step-check').prop('checked', false);
+                                           $('#group').val('').selectpicker('refresh');
                                     }
                                     setTimeout(hideDisplayMessage, 4000);
                       },
@@ -1969,17 +1964,8 @@ width:142px !important;
                   $('#content').find('tbody input.step-check').prop('checked', false);
                 }
                 setTimeout(hideDisplayMessage, 4000);
-               /* }
-                 else{
-                $('#alertMsg').show();
-                $("#alertMsg").removeClass('s-box').addClass('e-box').text("There should be at least two steps to form a group.");
-                $('#content').find('tbody input.step-check').prop('checked', false);
-                $('#group').val('').selectpicker('refresh');
-                }
-                setTimeout(hideDisplayMessage, 4000); */
                 }
                 //end
-
 
   <c:if test="${actionType == 'view'}">
   $('#contentFormId input[type="text"]').prop('disabled', true);
@@ -5264,7 +5250,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           // $('#shortTitleId, #branchingId').attr('disabled', false);
-          $('#shortTitleId, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+          $('#shortTitleId, #branchingId, #assigndisable, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor,' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +

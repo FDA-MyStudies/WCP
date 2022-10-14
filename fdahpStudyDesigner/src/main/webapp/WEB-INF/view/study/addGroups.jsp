@@ -16,6 +16,26 @@ left: -3px !important;
 width:1100px !important;
 }
 
+ .langSpecific{
+    	position: relative;
+  	  }
+
+  	  .langSpecific > button::before{
+    	content: '';
+    	display: block;
+    	background-image: url("../images/global_icon.png");
+    	width: 16px;
+    	height: 14px;
+    	position: absolute;
+    	top: 9px;
+    	left: 9px;
+    	background-repeat: no-repeat;
+  	  }
+
+  	  .langSpecific > button{
+        padding-left: 30px;
+  	  }
+
 .ml-disabled {
         background-color: #eee !important;
         opacity: 1;
@@ -71,8 +91,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
-            <!-- <div class="right-content-head"><div class="text-right"><div class="black-md-f dis-line pull-left line34"><span class="mr-sm"><a href="#"><img src="images/icons/back-b.png"/></a></span> Group
-                    </div></div></div> -->
             <div class="right-content-head">
               <div class="text-right">
            <div class="black-md-f dis-line pull-left line34">
@@ -323,7 +341,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                          <button type="button" id="addFormula" style="margin-top:10px" class="btn btn-primary blue-btn">Add Formula</button>
                      </div>
                  </div>
-	</div>
 
 
         <!-- End right Content here -->
@@ -357,14 +374,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 <form:form action="/fdahpStudyDesigner/sessionOut.do"
            id="backToLoginPage" name="backToLoginPage"
            method="post" data-toggle="validator" role="form">
-</form:form>
-<form:form action="/fdahpStudyDesigner/viewGroups.do"
-           id="viewGroups" name="viewGroups"
-           method="post" data-toggle="validator" role="form">
- <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
- <input type="hidden" id="buttonText" name="buttonText" value="">
- 
-           
 </form:form>
 
 <script>
@@ -526,7 +535,9 @@ $(item).prop('disabled', false);
 </c:if>
 <c:if test="${actionType eq 'view'}">
 var a = document.createElement('a');
-a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
+let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
++ lang;
 document.body.appendChild(a).click();
 </c:if>
 }
@@ -857,6 +868,7 @@ document.body.appendChild(a).click();
       		      success: function (data) {
       		        let htmlData = document.createElement('html');
       		        htmlData.innerHTML = data;
+      		        if ($('#actionType').val() === 'edit'){
       		        if (language !== 'en') {
       		          updateCompletionTicks(htmlData);
       		          $('.tit_wrapper').text($('#mlName', htmlData).val());
@@ -914,6 +926,7 @@ document.body.appendChild(a).click();
       		          <c:if test="${not empty permission}">
       		          $('.delete').addClass('cursor-none');
       		          </c:if>
+      		        }
       		        }
       		      }
       		    });

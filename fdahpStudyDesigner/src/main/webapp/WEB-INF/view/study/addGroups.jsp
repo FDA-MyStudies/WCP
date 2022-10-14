@@ -864,6 +864,11 @@ document.body.appendChild(a).click();
       		          $('#groupId').attr('disabled', true);
       		 	      $('#groupDefaultVisibility').attr('disabled', true);
                          $('#addFormula').attr('disabled', true);
+
+                         $('#saveId').attr('disabled', true);
+                         $('#doneGroupId').attr('disabled', true);
+
+
                          $('#logicDiv').find('div.bootstrap-select, input').each( function () {
 					$(this).addClass('ml-disabled');
 					if ($(this).is("input")) {
@@ -891,6 +896,8 @@ document.body.appendChild(a).click();
       		          $('#studyProtocolId').prop('disabled', false);
                         $('#addFormula').attr('disabled', false);
 
+                        $('#saveId').attr('disabled', false);
+                         $('#doneGroupId').attr('disabled', false);
                       
                         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
 					$(this).removeClass('ml-disabled');

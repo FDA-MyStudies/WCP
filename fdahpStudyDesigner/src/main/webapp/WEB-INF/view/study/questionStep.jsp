@@ -4492,6 +4492,7 @@ input[type=number] {
 		  $('#sourceQuestion').prop('disabled', true);
 		  $('#surveyId').prop('disabled', true);
 		  $('#savePiping').prop('disabled', true);
+		  $('#studyLanguage').removeClass('linkDis');
 		  $('#differentSurvey').prop('disabled', true);
 		  $("#trailId").hide();
 		  $(".removeImageId").css("visibility", "hidden");

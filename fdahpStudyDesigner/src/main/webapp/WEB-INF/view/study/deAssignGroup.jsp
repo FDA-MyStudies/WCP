@@ -106,8 +106,24 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 
         <!-- End right Content here -->
 </form:form>
-
+                             <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog modal-sm flr_modal">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                              <div class="modal-body">
+                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
+                                              </div>
+                                        </div>
+                                    </div>
+                            </div>
+<form:form
+             action="/fdahpStudyDesigner/sessionOut.do"
+              id="backToLoginPage"
+              name="backToLoginPage"
+              method="post">
+</form:form>
 <script>
+var idleTime = 0;
  $(document).ready(function () {
      $(".menuNav li.active").removeClass('active');
      $(".seventhQuestionnaires").addClass('active');
@@ -143,43 +159,49 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                  }
                  setTimeout(hideDisplayMessage, 4000);
                });
+
+               setInterval(function () {
+                                   idleTime += 1;
+                                    if (idleTime > 3) { // 5 minutes
+                                    timeOutFunction();
+                                     }
+                                     }, 226000);
+
+                                     $(this).mousemove(function (e) {
+                                       idleTime = 0;
+                                     });
+                                     $(this).keypress(function (e) {
+                                      idleTime = 0;
+                                      });
+
+                                      function timeOutFunction() {
+                                      $('#myModal').modal('show');
+                                       let i = 14;
+                                       let timeOutInterval = setInterval(function () {
+                                       if (i === 0) {
+                                       $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                                       if ($('#myModal').hasClass('show')) {
+                                       $('#backToLoginPage').submit();
+                                         }
+                                         clearInterval(timeOutInterval);
+                                          } else {
+                                          if (i === 1) {
+                                         $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                                           } else {
+                                           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+                                             }
+                                             idleTime = 0;
+                                             i-=1;
+                                              }
+                                            }, 60000);
+                                          }
        });
 
          function goToBackPage(item) {
-                 var actionPage = $('#actionType').val();
-                 $(item).prop('disabled', true);
-                 <c:if test="${actionType ne 'view'}">
-                 bootbox
-                 .confirm({
-                 closeButton: false,
-                 message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
-                 buttons: {
-                 'cancel': {
-                 label: 'Cancel',
-                 },
-                 'confirm': {
-                 label: 'OK',
-                 },
-                 },
-                 callback: function (result) {
-                 if (result) {
-                 var a = document.createElement('a');
-                 let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-                 a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
-                 + lang;
+                var a = document.createElement('a');
+                a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
                  document.body.appendChild(a).click();
-                 } else {
-                 $(item).prop('disabled', false);
-                 }
-                 }
-                 });
-                 </c:if>
-                 <c:if test="${actionType eq 'view'}">
-                 var a = document.createElement('a');
-                 a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
-                 document.body.appendChild(a).click();
-                 </c:if>
-                 }
+         }
 
          $('#chkSelect').on('change', function(e) {
              if($(this).is(':checked')) {

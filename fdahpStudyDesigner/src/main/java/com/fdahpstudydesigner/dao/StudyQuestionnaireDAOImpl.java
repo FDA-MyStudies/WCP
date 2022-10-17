@@ -5417,7 +5417,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       }
 
     } catch (Exception e) {
-
+      logger.error("StudyQuestionnaireDAOImpl - isAnchorDateExistByQuestionnaire - Error");
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistByQuestionnaire - Ends");
     return isExist;
@@ -5658,8 +5662,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public InstructionsLangBO getInstructionLangBo(int instructionId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getInstructionLangBo - Starts");
     InstructionsLangBO instructionsLangBO = null;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       instructionsLangBO =
           (InstructionsLangBO)
               session
@@ -5670,6 +5675,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   .uniqueResult();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getInstructionLangBo - Error : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - getInstructionLangBo - Ends");
     return instructionsLangBO;
@@ -5679,8 +5688,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public FormLangBO getFormLangBo(int formId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getFormLangBo - Starts");
     FormLangBO formLangBO = null;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       formLangBO =
           (FormLangBO)
               session
@@ -5691,6 +5701,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   .uniqueResult();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getFormLangBo - Error : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - getFormLangBo - Ends");
     return formLangBO;
@@ -5700,8 +5714,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public QuestionLangBO getQuestionLangBo(int id, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionLangBo - Starts");
     QuestionLangBO questionLangBO = null;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       questionLangBO =
           (QuestionLangBO)
               session
@@ -5712,6 +5727,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   .uniqueResult();
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionLangBo - Error : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - getQuestionLangBo - Ends");
     return questionLangBO;
@@ -5721,9 +5740,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public QuestionnaireLangBO getQuestionnaireLangById(Integer questionnaireId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangById - Starts");
     QuestionnaireLangBO questionnaireLangBO = null;
+    Session session = null;
     try {
       if (questionnaireId != null) {
-        Session session = hibernateTemplate.getSessionFactory().openSession();
+        session = hibernateTemplate.getSessionFactory().openSession();
         questionnaireLangBO =
             (QuestionnaireLangBO)
                 session
@@ -5735,6 +5755,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       } else return null;
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireLangById - Error : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangById - Ends");
     return questionnaireLangBO;
@@ -5745,9 +5769,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public List<QuestionnaireLangBO> getQuestionnaireLangByStudyId(Integer studyId, String language) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangByStudyId - Starts");
     List<QuestionnaireLangBO> questionnaireLangBOList = null;
+    Session session = null;
     try {
       if (studyId != null) {
-        Session session = hibernateTemplate.getSessionFactory().openSession();
+        session = hibernateTemplate.getSessionFactory().openSession();
         questionnaireLangBOList =
             session
                 .createQuery(
@@ -5758,6 +5783,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       } else return null;
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireLangByStudyId - Error : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangByStudyId - Ends");
     return questionnaireLangBOList;
@@ -5768,9 +5797,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public List<QuestionnaireLangBO> getQuestionnaireLangByQuestionnaireId(int questionnaireId) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangByStudyId - Starts");
     List<QuestionnaireLangBO> questionnaireLangBOList = null;
+    Session session = null;
     try {
       if (questionnaireId != 0) {
-        Session session = hibernateTemplate.getSessionFactory().openSession();
+        session = hibernateTemplate.getSessionFactory().openSession();
         questionnaireLangBOList =
             session
                 .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
@@ -5779,6 +5809,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       } else return null;
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireLangByStudyId - Error : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireLangByStudyId - Ends");
     return questionnaireLangBOList;
@@ -6480,91 +6514,88 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
    public List<GroupMappingStepBean> getGroupsList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans ) {
-   	Session session = null;
-   	 Query query = null;
-   	 String queryString = "";
-   	 List<QuestionsBo> questionBo= null;
-   	QuestionsBo questionBo1=null;
-   	 InstructionsBo instructionBo=null;
-     FormBo formBo= null;
-     String question="";
-   	 List<GroupMappingStepBean> groupMappingBeanss =new ArrayList<GroupMappingStepBean>();
-   	for(GroupMappingBo groupsList :groupMappingBo)
-   	{
-   		String  stepId=groupsList.getStepId();
-   	   	GroupMappingStepBean groupMappingStepBean1= new GroupMappingStepBean();
+    Session session = null;
+    Query query = null;
+    String queryString = "";
+    List<QuestionsBo> questionBo = null;
+    QuestionsBo questionBo1 = null;
+    InstructionsBo instructionBo = null;
+    FormBo formBo = null;
+    String question = "";
+    List<GroupMappingStepBean> groupMappingBeanss = new ArrayList<GroupMappingStepBean>();
+    try {
+      for (GroupMappingBo groupsList : groupMappingBo) {
+        String stepId = groupsList.getStepId();
+        GroupMappingStepBean groupMappingStepBean1 = new GroupMappingStepBean();
 
-   		 session = hibernateTemplate.getSessionFactory().openSession();
-	      queryString =
-	              "From QuestionsBo QBO WHERE QBO.id="+stepId;
-	      query = session.createQuery(queryString);
-	      questionBo1 = (QuestionsBo) query.uniqueResult();
-	      
-	      queryString =
- 	              "From InstructionsBo IBO WHERE IBO.id="+stepId;
-   		query = session.createQuery(queryString);
-   		 instructionBo = (InstructionsBo) query.uniqueResult(); 
-   		 
-	      queryString =
-	 	              "From FormBo FBO WHERE FBO.id="+stepId;
-			query = session.createQuery(queryString);
-			formBo = (FormBo) query.uniqueResult();
-			
-			
-	      if(questionBo1 != null) {
-	      groupMappingStepBean1.setStepId(questionBo1.getId());
-	      groupMappingStepBean1.setDescription(questionBo1.getQuestion());
-	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
-	      groupMappingBeanss.add(groupMappingStepBean1);
-	      }
+        session = hibernateTemplate.getSessionFactory().openSession();
+        queryString =
+                "From QuestionsBo QBO WHERE QBO.id=" + stepId;
+        query = session.createQuery(queryString);
+        questionBo1 = (QuestionsBo) query.uniqueResult();
 
-	      else  if(instructionBo != null) {
- 	      groupMappingStepBean1.setStepId(instructionBo.getId());
- 	      groupMappingStepBean1.setDescription(instructionBo.getInstructionTitle());
- 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
- 	     groupMappingBeanss.add(groupMappingStepBean1);
- 	      }
+        queryString =
+                "From InstructionsBo IBO WHERE IBO.id=" + stepId;
+        query = session.createQuery(queryString);
+        instructionBo = (InstructionsBo) query.uniqueResult();
 
-	      else {
-   			if (formBo.getFormId() !=null) {
-   		        String fromQuery =
-   		            "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date "
-   		            + "from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("
-   		                + " :formIdList ) and f.active=1 order by f.form_id";
-   		       List<?> result =
-   		            session.createSQLQuery(fromQuery).setParameter("formIdList", formBo.getFormId()).list();
-   		    for (int j = 0; j < result.size(); j++) {
-                Object[] objects = (Object[]) result.get(j);
-                if(j>0) {
-                Object[] objects1 = (Object[]) result.get(j-1);
+        queryString =
+                "From FormBo FBO WHERE FBO.id=" + stepId;
+        query = session.createQuery(queryString);
+        formBo = (FormBo) query.uniqueResult();
 
-               // question = (String) objects[4];
-                if((objects[0]).equals(objects1[0]))
-         	 	  {
-                	question = question+"<br>"+(String) objects[4];
 
-         	 	  }
-         	 	  else
-         	 	  {
-         	 		question = (String) objects[4];
+        if (questionBo1 != null) {
+          groupMappingStepBean1.setStepId(questionBo1.getId());
+          groupMappingStepBean1.setDescription(questionBo1.getQuestion());
+          groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
+          groupMappingBeanss.add(groupMappingStepBean1);
+        } else if (instructionBo != null) {
+          groupMappingStepBean1.setStepId(instructionBo.getId());
+          groupMappingStepBean1.setDescription(instructionBo.getInstructionTitle());
+          groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
+          groupMappingBeanss.add(groupMappingStepBean1);
+        } else {
+          if (formBo.getFormId() != null) {
+            String fromQuery =
+                    "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date "
+                            + "from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("
+                            + " :formIdList ) and f.active=1 order by f.form_id";
+            List<?> result =
+                    session.createSQLQuery(fromQuery).setParameter("formIdList", formBo.getFormId()).list();
+            for (int j = 0; j < result.size(); j++) {
+              Object[] objects = (Object[]) result.get(j);
+              if (j > 0) {
+                Object[] objects1 = (Object[]) result.get(j - 1);
 
-         	 	  }
+                // question = (String) objects[4];
+                if ((objects[0]).equals(objects1[0])) {
+                  question = question + "<br>" + (String) objects[4];
+
+                } else {
+                  question = (String) objects[4];
+
                 }
-                else {
-                	question = (String) objects[4];
-                }
+              } else {
+                question = (String) objects[4];
               }
-   			}
-   	 	      groupMappingStepBean1.setStepId(formBo.getFormId());
-   	 	     groupMappingStepBean1.setDescription(question);
-   	 	      groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
-   	 	  groupMappingBeanss.add(groupMappingStepBean1);
-   	 	      }
-
-   	}
-
-   	return groupMappingBeanss;
-   }
+            }
+          }
+          groupMappingStepBean1.setStepId(formBo.getFormId());
+          groupMappingStepBean1.setDescription(question);
+          groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+          groupMappingBeanss.add(groupMappingStepBean1);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getGroupsList() - ERROR ", e);
+    } finally {
+      if (session != null && session.isOpen()) {
+        session.close();
+      }
+    }
+    return groupMappingBeanss;
+  }
 
    @Override
    public List<GroupMappingBo> getAssignSteps(int grpId) {
@@ -6625,7 +6656,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
 @Override
 public GroupMappingBo getStepDetails(String id, String questionnaireId) {
-	logger.info("StudyDAOImpl - getStepId() - Starts");
+	logger.info("StudyQuestionnaireDAOImpl - getStepDetails() - Starts");
     GroupMappingBo stepDetails = null;
     Session session = null;
     Query query = null;
@@ -6638,19 +6669,19 @@ public GroupMappingBo getStepDetails(String id, String questionnaireId) {
       stepDetails = (GroupMappingBo) query.uniqueResult();
     }
     catch(Exception e){
-      logger.error("StudyDAOImpl - getStepId() - ERROR",e);
+      logger.error("StudyQuestionnaireDAOImpl - getStepDetails() - ERROR",e);
     }finally{
       if(session != null){
         session.close();
       }
     }
-    logger.info("StudyDAOImpl - getStepId() - Ends");
+    logger.info("StudyQuestionnaireDAOImpl - getStepDetails() - Ends");
     return stepDetails;
 }
 
 @Override
 public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId) {
-	logger.info("StudyDAOImpl - groupFlagDisable() - Starts");
+	logger.info("StudyQuestionnaireDAOImpl - groupFlagDisable() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
     Query query = null;
@@ -6675,51 +6706,51 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
     }
     catch(Exception e){
       transaction.rollback();
-      logger.error("StudyDAOImpl - groupFlagDisable() - ERROR",e);
-    }finally{
+      logger.error("StudyQuestionnaireDAOImpl - groupFlagDisable() - ERROR",e);
+    } finally{
       if(session != null){
         session.close();
       }
     }
-    logger.info("StudyDAOImpl - groupFlagDisable() - Ends");
+    logger.info("StudyQuestionnaireDAOImpl - groupFlagDisable() - Ends");
     return message;
 }
 
 @Override
 public String deleteStepMaprecords(String id) {
-	 logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
-	    Session session = null;
-	    String message = FdahpStudyDesignerConstants.FAILURE;
-	    int count = 0;
-	    String queryString = "";
-	    try {
-	      session = hibernateTemplate.getSessionFactory().openSession();
-	      transaction = session.beginTransaction();
+  logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
+  Session session = null;
+  String message = FdahpStudyDesignerConstants.FAILURE;
+  int count = 0;
+  String queryString = "";
+  try {
+    session = hibernateTemplate.getSessionFactory().openSession();
+    transaction = session.beginTransaction();
 
-	      if (StringUtils.isNotEmpty(id)) {
-	        //delete the qroup based on id
-	        queryString  =
-	                "delete GroupMappingBo GBO where GBO.stepId=:id ";
-	        query = session.createQuery(queryString);
-	        count = query.setString("id", id).executeUpdate();
-	        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
-	      }
-	      transaction.commit();
-	    } catch (Exception e) {
-	      transaction.rollback();
-	      logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
-	    } finally {
-	      if (null != session && session.isOpen()) {
-	        session.close();
-	      }
-	    }
-	    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
-	    return message;
+    if (StringUtils.isNotEmpty(id)) {
+      //delete the qroup based on id
+      queryString =
+              "delete GroupMappingBo GBO where GBO.stepId=:id ";
+      query = session.createQuery(queryString);
+      count = query.setString("id", id).executeUpdate();
+      if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+    }
+    transaction.commit();
+  } catch (Exception e) {
+    transaction.rollback();
+    logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
+  } finally {
+    if (null != session && session.isOpen()) {
+      session.close();
+    }
+  }
+  logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
+  return message;
 }
 
   @Override
   public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
-    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
+    logger.info("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - Starts");
     Session session = null;
     boolean allowReorder = true;
     try {
@@ -6741,13 +6772,13 @@ public String deleteStepMaprecords(String id) {
         }
       }
     } catch (Exception e) {
-      logger.error("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - ERROR ", e);
+      logger.error("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - ERROR ", e);
     } finally {
       if (null != session && session.isOpen()) {
         session.close();
       }
     }
-    logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Ends");
+    logger.info("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - Ends");
     return allowReorder;
   }
 }

@@ -1206,6 +1206,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - eligibilityTestOrderCount - Error", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - eligibilityTestOrderCount - Ends");
     return count;
@@ -7713,10 +7717,11 @@ public class StudyDAOImpl implements StudyDAO {
   public String switchStudyToLiveMode(String studyId) {
     logger.info("StudyDAOImpl - switchStudyToLiveMode() - Starts");
     Transaction transaction = null;
+    Session session = null;
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       Query query = null;
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       StudyBo studyBo =
           (StudyBo)
@@ -7851,6 +7856,10 @@ public class StudyDAOImpl implements StudyDAO {
         transaction.rollback();
       }
       message = FdahpStudyDesignerConstants.FAILURE;
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - switchStudyToLiveMode() - Ends");
     return message;
@@ -8546,6 +8555,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getStudyVersionInfo() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
     return result;
@@ -8886,6 +8899,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("EXCEPTION : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollment - Ends");
     return isExist;
@@ -8950,6 +8967,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
     return isExist;
@@ -9951,8 +9972,9 @@ public class StudyDAOImpl implements StudyDAO {
   public String updateDraftStatusInStudyBo(int userId, int studyId) {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       message =
           auditLogDAO.updateDraftToEditedStatus(
@@ -9961,6 +9983,10 @@ public class StudyDAOImpl implements StudyDAO {
     } catch (Exception e) {
       transaction.rollback();
       logger.error("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - ERROR ", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
     return message;
@@ -9970,8 +9996,9 @@ public class StudyDAOImpl implements StudyDAO {
   public String forceUpgradeApp(String appId, String androidUpdateType, String iosUpdateType) {
     logger.info("StudyDAOImpl - forceUpgradeApp() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       VersionInfo versionInfo = (VersionInfo) session.createQuery("from VersionInfo where appId=:appId")
               .setParameter("appId", appId)
@@ -10005,6 +10032,10 @@ public class StudyDAOImpl implements StudyDAO {
     } catch (Exception e) {
       logger.error("StudyDAOImpl - forceUpgradeApp() - ERROR ", e);
       transaction.commit();
+    } finally {
+      if (null != session) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - forceUpgradeApp() - Ends");
     return message;

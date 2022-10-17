@@ -5389,8 +5389,9 @@ input[type=number] {
           getResponseType(responseTypeId);
         }
         $("#responseTypeId").on("change", function () {
-          var value = $(this).val();
-          getResponseType(value);
+			var value = $(this).val();
+			getResponseType(value);
+			setOperatorDropDown($(this).val());
         });
         $('.DateStyleRequired').on("change", function () {
           var value = $(this).val();
@@ -5857,6 +5858,34 @@ input[type=number] {
           reader.readAsDataURL(input.files[0]);
         }
       }
+
+	function setOperatorDropDown(responseType) {
+		if (responseType != null) {
+			if (responseType === '1'|| responseType === '2' ||
+					responseType === '8' || responseType === '14' ) {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker('refresh');
+			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["=", "!="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker('refresh');
+			} else {
+				defaultVisibility.prop('checked', true).trigger('change');
+				defaultVisibility.prop('disabled', true);
+			}
+		}
+	}
 
       function toJSDate(dateTime) {
         if (dateTime != null && dateTime != '' && typeof dateTime != 'undefined') {
@@ -6708,15 +6737,14 @@ input[type=number] {
         </c:if>
       }
 
-	var dv = $('#groupDefaultVisibility');
 	<c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle && questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">
-	dv.prop('checked', true).trigger('change');
-	dv.prop('disabled', true);
+	defaultVisibility.prop('checked', true).trigger('change');
+	defaultVisibility.prop('disabled', true);
 	</c:if>
 
 	<c:if test="${questionnaireBo.branching}">
-	dv.prop('checked', true).trigger('change');
-	dv.prop('disabled', true);
+	defaultVisibility.prop('checked', true).trigger('change');
+	defaultVisibility.prop('disabled', true);
 	</c:if>
 
       function getSelectionStyle(item) {
@@ -8703,9 +8731,10 @@ input[type=number] {
 
 <script>
   $(document).ready(function() {
-var maxWidth = 1;
-
-
+	  <c:if test="${(operators eq null || operators.size() eq 0)}">
+	  $('#groupDefaultVisibility').prop('checked', true).trigger('change');
+	  $('#groupDefaultVisibility').prop('disabled', true);
+	  </c:if>
 var fixHelperModified = function(e, tr) {
   var $originals = tr.children();
   var $helper = tr.clone();
@@ -8753,7 +8782,7 @@ $("#diagnosis_list tbody").sortable({
 //       $(this).parents('tr').remove();
 //   delete_reorder();
 //   });
-
+let defaultVisibility = $('#groupDefaultVisibility');
 function delete_reset1()   {
 // alert('working ');
       jQuery(this).closest('.text-choice').remove();
@@ -8819,10 +8848,9 @@ $('.text-choice').each(function(i){
 				'</div>'+
 				'</div>';
 		formContainer.append(formula);
-		$('.selectpicker').selectpicker();
+		setOperatorDropDown($('#responseTypeId').val());
 	});
 
-let defaultVisibility = $('#groupDefaultVisibility');
 if (defaultVisibility.is(':checked')) {
 	$('.deletable').remove();
 	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
@@ -8841,8 +8869,6 @@ if (defaultVisibility.is(':checked')) {
 	$('#skiappableYes').prop('checked', false).prop('disabled', true);
 	$('#skiappableNo').prop('checked', true);
 }
-
-$('#mu')
 
 defaultVisibility.on('change', function () {
 	if  (defaultVisibility.is(':checked')) {

@@ -231,6 +231,7 @@
                          <input type="hidden" name="stepId" id="stepId"
                                 value="${questionnairesStepsBo.stepId}">
                          <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+                         <input type="hidden" id="lastResponseType" value="${lastResponseType}"/>
                          <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                           <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                          <input
@@ -673,6 +674,11 @@
 <script type="text/javascript">
 var idleTime = 0;
   $(document).ready(function () {
+
+      <c:if test="${(operators eq null || operators.size() eq 0)}">
+      $('#groupDefaultVisibility').prop('checked', true).trigger('change');
+      $('#groupDefaultVisibility').prop('disabled', true);
+      </c:if>
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
       $('#formStepId input[type="text"], input[type="checkbox"], input[type="radio"]').prop('disabled', true);
@@ -1198,7 +1204,7 @@ var idleTime = 0;
               },
               success: function deleteConsentInfo(data) {
                 var status = data.message;
-                if (status == "SUCCESS") {
+                if (status === "SUCCESS") {
                   $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                       "Questionnaire step deleted successfully");
                   $('#alertMsg').show();
@@ -1210,6 +1216,10 @@ var idleTime = 0;
                       'sprites-icons-2 tick pull-right mt-xs')) {
                     $('.seventhQuestionnaires').find('span').removeClass(
                         'sprites-icons-2 tick pull-right mt-xs');
+                  }
+                  if (data.lastResponseType != null && data.lastResponseType !== '') {
+                      $('#lastResponseType').val(data.lastResponseType);
+                      setOperatorDropDown(data.lastResponseType);
                   }
                 } else {
                   if (status == 'FAILUREanchorused') {
@@ -1594,7 +1604,7 @@ $('#addFormula').on('click', function () {
         '</div>'+
         '</div>';
     formContainer.append(formula);
-    $('.selectpicker').selectpicker();
+    setOperatorDropDown($('#lastResponseType').val());
 });
 
 let defaultVisibility = $('#groupDefaultVisibility');
@@ -1670,6 +1680,34 @@ defaultVisibility.on('change', function () {
 function removeFormulaContainer(object) {
     let id = object.getAttribute('data-id');
     $('#'+id).remove();
+}
+
+function setOperatorDropDown(responseType) {
+    if (responseType != null) {
+        if (responseType === '1'|| responseType === '2' ||
+            responseType === '8' || responseType === '14' ) {
+            defaultVisibility.prop('disabled', false);
+            let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+            let operator = $('select.operator');
+            operator.empty();
+            $.each(operatorList, function (index, val) {
+                operator.append('<option value="'+val+'">'+val+'</option>');
+            });
+            $('.selectpicker').selectpicker('refresh');
+        } else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+            defaultVisibility.prop('disabled', false);
+            let operatorList = ["=", "!="];
+            let operator = $('select.operator');
+            operator.empty();
+            $.each(operatorList, function (index, val) {
+                operator.append('<option value="'+val+'">'+val+'</option>');
+            });
+            $('.selectpicker').selectpicker('refresh');
+        } else {
+            defaultVisibility.prop('checked', true).trigger('change');
+            defaultVisibility.prop('disabled', true);
+        }
+    }
 }
 
 $('#differentSurveyPreLoad').on('change', function(e) {

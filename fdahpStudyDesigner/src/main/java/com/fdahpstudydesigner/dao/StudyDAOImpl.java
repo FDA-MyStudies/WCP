@@ -6257,7 +6257,7 @@ public class StudyDAOImpl implements StudyDAO {
                   questionnaireBo.setLive(0);
                   session.update(questionnaireBo);
                   oldNewQueIdMap.put(questionnaireBo.getId(), newQuestionnaireBo.getId());
-                  Integer count=0;
+                  int count=0;
                   List<QuestionnaireLangBO> questionnaireLangBOS =
                       session
                           .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
@@ -6911,8 +6911,8 @@ public class StudyDAOImpl implements StudyDAO {
 
               if (oldNewDestMap != null) {
                 for (String oldSrc : oldNewDestMap.keySet()) {
-                  int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
-                  int newStepId = oldNewStepIdMap.get(oldStepId);
+                  Integer oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
+                  Integer newStepId = oldNewStepIdMap.get(oldStepId);
                   session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
                           .setParameter("newId", newStepId)
                           .setParameter("stepId", oldNewDestMap.get(oldSrc))

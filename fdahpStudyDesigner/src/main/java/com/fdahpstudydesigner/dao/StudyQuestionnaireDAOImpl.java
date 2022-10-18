@@ -6357,19 +6357,26 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       session = hibernateTemplate.getSessionFactory().openSession();
       if (queId != 0) {
         org.hibernate.query.Query<QuestionnairesStepsBo> query;
-        if (seq != -1) {
-          if ("preload".equals(caller)) {
+        if ("preload".equals(caller)) {
+          if (seq != -1) {
             query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo > :seq")
                     .setParameter("queId", queId)
                     .setParameter("seq", seq);
           } else {
-            query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo < :seq")
-                    .setParameter("queId", queId)
-                    .setParameter("seq", seq);
+            query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
+                    .setParameter("queId", queId);
           }
         } else {
-          query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
-                  .setParameter("queId", queId);
+          if (seq != -1) {
+            query = session.createQuery("select qs from QuestionnairesStepsBo qs, QuestionsBo qb where qs.active = true and qs.questionnairesId=:queId and qs.sequenceNo < :seq and qb.responseType in (:responseList) and qb.id = qs.instructionFormId")
+                    .setParameter("queId", queId)
+                    .setParameter("seq", seq)
+                    .setParameterList("responseList", Arrays.asList(3, 4, 6, 11));
+          } else {
+            query = session.createQuery("select qs from QuestionnairesStepsBo qs, QuestionsBo qb where qs.active = true and qs.questionnairesId=:queId and qb.responseType in (:responseList) and qb.id = qs.instructionFormId")
+                    .setParameter("queId", queId)
+                    .setParameterList("responseList", Arrays.asList(3, 4, 6, 11));
+          }
         }
         list = query.list();
       }

@@ -438,7 +438,7 @@
   });
 
   $('#piping').on('click', function() {
-      $('#titleText').text($('#instructionTitle').val());
+      $('#titleText').text($('#shortTitleId').val());
       $('#pipingModal').modal('toggle');
   });
 

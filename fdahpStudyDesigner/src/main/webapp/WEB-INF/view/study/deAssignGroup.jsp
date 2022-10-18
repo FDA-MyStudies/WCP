@@ -44,16 +44,35 @@ display:contents !important;
       .dest-row {
           margin-top: 12px;
       }
-      
+    .langSpecific{
+            position: relative;
+            }
+
+            .langSpecific > button::before{
+            content: '';
+            display: block;
+            background-image: url("../images/global_icon.png");
+            width: 16px;
+            height: 14px;
+            position: absolute;
+            top: 9px;
+            left: 9px;
+            background-repeat: no-repeat;
+            }
+
+            .langSpecific > button{
+            padding-left: 30px;
+            }
 </style>
 
 </head>
 
 <!-- Start right Content here -->
 <form:form
-action="/fdahpStudyDesigner/adminStudies/addOrUpdateGroupsDetails.do?_S=${param._S}"
+action="/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}"
 name="addGroupFormId" id="addGroupFormId" method="post">
-<input type="hidden" name="language" value="${currLanguage}">
+<input type="hidden" name="language" id="language" value="${currLanguage}">
+<input type="hidden" name="id" id="id" value="${groupsBo.id}">
 <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
 <input type="hidden" id="buttonText" name="buttonText" value="">
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
@@ -69,6 +88,33 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <img src="../images/icons/back-b.png"/></span>
                 Survey List
             </div>
+            <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
+                            <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                                <select
+                                        class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                        id="studyLanguage" name="studyLanguage" title="Select">
+                                    <option value="en" ${((currLanguage eq null) or (currLanguage eq '') or (currLanguage eq 'undefined') or (currLanguage eq 'en')) ?'selected':''}>
+                                        English
+                                    </option>
+                                    <c:forEach items="${languageList}" var="language">
+                                        <option value="${language.key}"
+                                            ${currLanguage eq language.key ?'selected':''}>${language.value}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </c:if>
+                        <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
+                            <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                                <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
+                                      data-placement="bottom"
+                                      title="Language selection is available in edit screen only">
+                                    <select class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
+                                            title="Select" disabled>
+                                    <option selected>English</option>
+                                </select>
+                                </span>
+                            </div>
+                        </c:if>
                 <div class="dis-line form-group mb-none mr-sm">
                   <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel </button>
                 </div>
@@ -79,20 +125,17 @@ name="addGroupFormId" id="addGroupFormId" method="post">
               <div>
                 <div class="form-group"></div>
                 <div class="row form-group">
-                  <div class="col-md-6 pl-none">
+                  <div class="col-md-6 pl-none" id="deassignId">
                   		<div class="study-selected mt-md">
  							<c:forEach items="${groupsAssignedList}" var="groupsAssignedList">
  								<div class="study-selected-item selStd" id="std${groupsAssignedList.stepId}">
 									<input type="hidden" class="stdCls" id="${groupsAssignedList.stepId}" name=""
 										value="${groupsAssignedList.stepId}"
-										stdTxt="${groupsAssignedList.description}"
-										<c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
-									<c:if test="${actionPage ne 'VIEW_PAGE'}">
+										stdTxt="${groupsAssignedList.description}">
 										<span class="mr-md close_img"><img
 											src="/fdahpStudyDesigner/images/icons/close.png"
 											onclick="del(${groupsAssignedList.stepId});" /></span>
-									</c:if>
-									<span>${groupsAssignedList.description}</span> 
+									<span>${groupsAssignedList.description}</span>
 								</div>
 							</c:forEach>
  						</div>
@@ -198,9 +241,11 @@ var idleTime = 0;
        });
 
          function goToBackPage(item) {
-                var a = document.createElement('a');
-                a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
-                 document.body.appendChild(a).click();
+          var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&actionType=${actionType}&language="
+          +lang;
+          document.body.appendChild(a).click();
          }
 
          $('#chkSelect').on('change', function(e) {
@@ -218,42 +263,24 @@ var idleTime = 0;
          })
          
          function refreshAndFetchLanguageData(language) {
+         let id=${groupsBo.id}
    		    $.ajax({
-   		      url: '/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}',
+   		      url: "/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}&id="
+               + id,
    		      type: "GET",
    		      data: {
-   		        language: language
+   		        language: language,
+   		        id: id
    		      },
    		      success: function (data) {
    		        let htmlData = document.createElement('html');
    		        htmlData.innerHTML = data;
    		        if (language !== 'en') {
    		          updateCompletionTicks(htmlData);
-   		          $('.tit_wrapper').text($('#mlName', htmlData).val());
-   		          $('#groupName').attr('disabled', true);
-   		       $('#groupId').attr('disabled', true);
-   		    
-   		 	$('#groupDefaultVisibility').attr('disabled', true);
-   		          let mark=true;
-   		          $('#groups_list option', htmlData).each(function (index, value) {
-   		            let id = '#row' + value.getAttribute('id');
-   		            $(id).find('td.title').text(value.getAttribute('value'));
-   		          });
+   		          $('#deassignId').addClass('ml-disabled');
    		        } else {
    		          updateCompletionTicksForEnglish();
-   		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-   		       $('#groupName').attr('disabled', false);
-   		       $('#groupId').attr('disabled', false);
-   		       $('#groupDefaultVisibility').attr('disabled', false);
-   		          $('#studyProtocolId').prop('disabled', false);
-   		          let mark=true;
-   		          $('tbody tr', htmlData).each(function (index, value) {
-   		            let id = '#'+value.getAttribute('id');
-   		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-   		          });
-   		          <c:if test="${not empty permission}">
-   		          $('.delete').addClass('cursor-none');
-   		          </c:if>
+   		          $('#deassignId').removeClass('ml-disabled');
    		        }
    		      }
    		    });
@@ -277,5 +304,12 @@ var idleTime = 0;
                	 
               })
             }
+
+<c:if test="${actionType == 'view'}">
+$('#deassignId').addClass('ml-disabled');
+</c:if>
+<c:if test="${currLanguage eq 'es'}">
+$('#deassignId').addClass('ml-disabled');
+</c:if>
 
     </script>

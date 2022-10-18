@@ -245,8 +245,8 @@ width:142px !important;
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img
-                        src="../images/icons/back-b.png" class="pr-md"/></span>
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
+                        src="../images/icons/back-b.png" /></span>
                 <c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
                 <c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
                 <c:if test="${actionType eq 'view'}">View Questionnaire <c:set

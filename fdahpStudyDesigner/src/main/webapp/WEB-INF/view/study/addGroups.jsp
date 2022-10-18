@@ -94,8 +94,8 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             <div class="right-content-head">
               <div class="text-right">
            <div class="black-md-f dis-line pull-left line34">
-                <span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
-                <img src="../images/icons/back-b.png" class="pr-md"/></span>
+                <span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
+                <img src="../images/icons/back-b.png"/></span>
                 Group-Level Attributes
             </div>
                  <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
@@ -899,7 +899,9 @@ document.body.appendChild(a).click();
       		            let id = '#row' + value.getAttribute('id');
       		            $(id).find('td.title').text(value.getAttribute('value'));
       		          });
-      		        } else {
+      		        } else 
+                    
+                    { // for english 
       		          updateCompletionTicksForEnglish();
       		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
       		          $('#groupName').attr('disabled', false);
@@ -933,6 +935,23 @@ document.body.appendChild(a).click();
       		          <c:if test="${not empty permission}">
       		          $('.delete').addClass('cursor-none');
       		          </c:if>
+
+                        let defaultVisibility = $('#groupDefaultVisibility');
+         if (defaultVisibility.is(':checked')) {
+             $('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
+                 $(this).addClass('ml-disabled');
+                 if ($(this).is("input.con-radio")) {
+                     $(this).attr('disabled', true);
+                 }
+             });
+             $('#defaultVisibility').val('true');
+             $('#addFormula').attr('disabled', true);
+             $('#value0').attr('disabled', true);
+             $('#operator0').attr('disabled', true);
+            //  $('#operator0').parent().addClass('ml-disabled');
+             
+         }
+
       		        }
       		        }
       		      }

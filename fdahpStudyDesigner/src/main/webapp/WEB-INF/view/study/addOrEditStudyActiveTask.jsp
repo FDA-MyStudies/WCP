@@ -107,8 +107,8 @@
 
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
-					<img src="../images/icons/back-b.png" class="pr-md"/>
+				<span class="pr-xs cur-pointer" onclick="goToBackPage(this);">
+					<img src="../images/icons/back-b.png"/>
 				</span>
                 <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
                 <c:if test="${actionPage eq 'addEdit'}">Edit Active Task</c:if>

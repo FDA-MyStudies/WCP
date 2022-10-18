@@ -65,8 +65,8 @@ name="addGroupFormId" id="addGroupFormId" method="post">
             <div class="right-content-head">
               <div class="text-right">
            <div class="black-md-f text-uppercase dis-line pull-left line34">
-                <span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
-                <img src="../images/icons/back-b.png" class="pr-md"/></span>
+                <span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
+                <img src="../images/icons/back-b.png"/></span>
                 Survey List
             </div>
                 <div class="dis-line form-group mb-none mr-sm">

@@ -210,7 +210,7 @@ input[type=number] {
 <div class="right-content-head">
     <div class="text-right">
         <div class="black-md-f dis-line pull-left line34">
-				<span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
                         src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question</c:if>
             <c:if test="${actionTypeForFormStep == 'view'}">View Question <c:set

@@ -101,7 +101,7 @@
 		<div class="right-content-head">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">
-					<span class="pr-sm"><a href="javascript:void(0)"
+					<span class="pr-xs"><a href="javascript:void(0)"
 						class="goToResourceListForm" id="goToResourceListForm"><img
 							src="/fdahpStudyDesigner/images/icons/back-b.png" /></a></span>
 					<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">

@@ -1014,7 +1014,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
                 Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
                   public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
-                    return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                    if (StringUtils.isNoneBlank(object1.getSequenceNumber(), object2.getSequenceNumber())) {
+                      return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                    }
+                    return 0;
                   }
                 });
               }

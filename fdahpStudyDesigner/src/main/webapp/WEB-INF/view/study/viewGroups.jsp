@@ -141,18 +141,7 @@ name="groupsInfoForm" id="groupsInfoForm" method="post">
 <input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 
-<form:form
-action="/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}"
-name="deAssignId" id="deAssignId" method="post">
- <input type="hidden" name="groupId" id="groupId" value="${groupId}">
- <input type="hidden" name="id" id="id" value="${id}">
- <input type="hidden" name="actionOn" id="actionOn" value="">
- <input type="hidden" name="actionType" id="actionType" value="${actionType}">
- <input type="hidden" name="language" id="currentLanguage" value="${currLanguage}">
- <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
- <input type="hidden" id="checkRefreshFlag" name="checkRefreshFlag">
- <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
-</form:form>
+
 
 <form:form
  action="/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}"

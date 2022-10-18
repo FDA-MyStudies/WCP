@@ -4619,6 +4619,7 @@ public class StudyQuestionnaireController {
   String sucMsg = "";
   String errMsg = "";
   String actionPage = "";
+  StudyBo studyBo=null;
   List<GroupMappingBo> groupMappingBo =null;
   List<GroupMappingStepBean> groupMappingBeans=new ArrayList<GroupMappingStepBean>();
   try {
@@ -4678,6 +4679,7 @@ public class StudyQuestionnaireController {
                         : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
       }
 
+      
       questionnaireId =
               FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
                       ? ""
@@ -4696,6 +4698,8 @@ public class StudyQuestionnaireController {
                   (String) request.getSession().getAttribute(sessionStudyCount + "id");
           request.getSession().setAttribute(sessionStudyCount + "id", grpId);
         }
+      System.out.println(grpId);
+      groupsBo = studyQuestionnaireService.getGroupsDetails(Integer.parseInt(grpId));
       
       String actionType =
               FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
@@ -4707,9 +4711,27 @@ public class StudyQuestionnaireController {
       
       if (StringUtils.isNotEmpty(studyId)) {
         request.getSession().removeAttribute(sessionStudyCount + "actionType");
-        StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+        studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
         map.addAttribute("studyBo", studyBo);
       }
+      String language = request.getParameter("language");
+      if (FdahpStudyDesignerUtil.isNotEmpty(language)
+          && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+        this.setStudyLangData(studyId, language, map);
+      }
+      
+      map.addAttribute("currLanguage", language);
+      String languages = studyBo.getSelectedLanguages();
+      List<String> langList = new ArrayList<>();
+      Map<String, String> langMap = new HashMap<>();
+      if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+        langList = Arrays.asList(languages.split(","));
+        for (String string : langList) {
+          langMap.put(string, MultiLanguageCodes.getValue(string));
+        }
+      }
+      map.addAttribute("languageList", langMap);
+
       if ("edit".equals(actionType)) {
         map.addAttribute("actionType", "edit");
         request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");

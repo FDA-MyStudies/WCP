@@ -2505,4 +2505,19 @@ public String deleteStepMaprecords(String id) {
   public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
     return studyQuestionnaireDAO.isPreloadLogicAndPipingEnabled(queId);
   }
+
+  @Override
+  public String deleteStepBasedOnStepId(String stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - deleteStepBasedOnStepId - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    List<GroupMappingBo> groupMappingBo = new ArrayList<>();;
+    try {
+      result = studyQuestionnaireDAO.deleteStepBasedOnStepId(stepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteStepBasedOnStepId() - ERROR ", e);
+    }
+    logger.exit("deleteStepBasedOnStepId() - Ends");
+    return result;
+
+  }
 }

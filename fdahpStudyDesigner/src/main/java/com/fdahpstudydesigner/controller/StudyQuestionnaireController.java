@@ -388,6 +388,7 @@ public class StudyQuestionnaireController {
                 ? ""
                 : request.getParameter("questionnaireId");
         if (!stepId.isEmpty() && !questionnaireId.isEmpty() && !stepType.isEmpty()) {
+          String msgg = studyQuestionnaireService.deleteStepBasedOnStepId(stepId);
           message =
               studyQuestionnaireService.deleteQuestionnaireStep(
                   Integer.valueOf(stepId),
@@ -4574,16 +4575,16 @@ public class StudyQuestionnaireController {
             groupMappingBo =
                     studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
             status = FdahpStudyDesignerConstants.SUCCESS;
-            message = "Group assigned successfully.";
+            message = "Group has been assigned successfully";
           }
         }else{
           if(count>=2){
             groupMappingBo =
                     studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);
             status = FdahpStudyDesignerConstants.SUCCESS;
-            message = "Group assigned successfully.";
+            message = "Group has been assigned successfully";
           }else{
-            message = "There should be at least two steps to form a group.";
+            message = "A group should consist of more than one steps. Request you to select multiple steps for assigning to the group.";
           }
         }
 
@@ -4662,13 +4663,19 @@ public class StudyQuestionnaireController {
                 .getSession()
                 .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG);
       }
+      String actionType =
+              FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
+                      ? ""
+                      : request.getParameter("actionType");
+      if (StringUtils.isEmpty(actionType)) {
+        actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
+      }
+
       String studyId =
               (String)
                       request
                               .getSession()
                               .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-
-
 
       if (StringUtils.isEmpty(studyId)) {
         studyId =
@@ -4678,8 +4685,47 @@ public class StudyQuestionnaireController {
                         ? "0"
                         : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
       }
+      if (StringUtils.isNotEmpty(studyId)) {
+        request.getSession().removeAttribute(sessionStudyCount + "actionType");
+        studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+        map.addAttribute("studyBo", studyBo);
+      }
+      if (studyBo == null) {
+        studyBo = new StudyBo();
+        studyBo.setType(FdahpStudyDesignerConstants.STUDY_TYPE_GT);
+        studyBo.setStudyLanguage(FdahpStudyDesignerConstants.STUDY_LANGUAGE_ENGLISH);
+      } else if ((studyBo != null) && StringUtils.isNotEmpty(studyBo.getCustomStudyId())) {
+        request
+                .getSession()
+                .setAttribute(
+                        sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID,
+                        studyBo.getCustomStudyId());
+      }
 
-      
+      String language = request.getParameter("language");
+      if (FdahpStudyDesignerUtil.isNotEmpty(language)
+              && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
+        this.setStudyLangData(studyId, language, map);
+      }
+      map.addAttribute("currLanguage", language);
+      String languages = studyBo.getSelectedLanguages();
+      List<String> langList = new ArrayList<>();
+      Map<String, String> langMap = new HashMap<>();
+      if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
+        langList = Arrays.asList(languages.split(","));
+        for (String string : langList) {
+          langMap.put(string, MultiLanguageCodes.getValue(string));
+        }
+      }
+      map.addAttribute("languageList", langMap);
+      if ("edit".equals(actionType)) {
+        map.addAttribute("actionType", "edit");
+        request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+      } else {
+        map.addAttribute("actionType", "view");
+        request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+      }
+      map.addAttribute("actionPage", actionPage);
       questionnaireId =
               FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))
                       ? ""
@@ -4698,48 +4744,9 @@ public class StudyQuestionnaireController {
                   (String) request.getSession().getAttribute(sessionStudyCount + "id");
           request.getSession().setAttribute(sessionStudyCount + "id", grpId);
         }
-      System.out.println(grpId);
-      groupsBo = studyQuestionnaireService.getGroupsDetails(Integer.parseInt(grpId));
+      //groupsBo = studyQuestionnaireService.getGroupsDetails(Integer.parseInt(grpId));
       
-      String actionType =
-              FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
-                      ? ""
-                      : request.getParameter("actionType");
-      if (StringUtils.isEmpty(actionType)) {
-        actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
-      }
-      
-      if (StringUtils.isNotEmpty(studyId)) {
-        request.getSession().removeAttribute(sessionStudyCount + "actionType");
-        studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-        map.addAttribute("studyBo", studyBo);
-      }
-      String language = request.getParameter("language");
-      if (FdahpStudyDesignerUtil.isNotEmpty(language)
-          && !MultiLanguageCodes.ENGLISH.getKey().equals(language)) {
-        this.setStudyLangData(studyId, language, map);
-      }
-      
-      map.addAttribute("currLanguage", language);
-      String languages = studyBo.getSelectedLanguages();
-      List<String> langList = new ArrayList<>();
-      Map<String, String> langMap = new HashMap<>();
-      if (FdahpStudyDesignerUtil.isNotEmpty(languages)) {
-        langList = Arrays.asList(languages.split(","));
-        for (String string : langList) {
-          langMap.put(string, MultiLanguageCodes.getValue(string));
-        }
-      }
-      map.addAttribute("languageList", langMap);
 
-      if ("edit".equals(actionType)) {
-        map.addAttribute("actionType", "edit");
-        request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
-      } else {
-        map.addAttribute("actionType", "view");
-        request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
-      }
-        map.addAttribute("actionPage", actionPage);
         groupMappingBo =
                 studyQuestionnaireService.getAssignSteps( Integer.parseInt(grpId));
         
@@ -4747,7 +4754,7 @@ public class StudyQuestionnaireController {
                 studyQuestionnaireService.getGroupsAssignedList(
                     Integer.valueOf(grpId),groupMappingBo, groupMappingBeans);
 
-        map.addAttribute("groupsAssignedList", groupMappingBeans);
+      map.addAttribute("groupsAssignedList", groupMappingBeans);
         map.addAttribute("groupMappingBo", groupMappingBo);
         map.addAttribute("groupsBo", groupsBo);
         map.addAttribute("_S", sessionStudyCount);

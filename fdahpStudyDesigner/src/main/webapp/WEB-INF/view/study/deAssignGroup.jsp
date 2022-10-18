@@ -72,7 +72,6 @@ display:contents !important;
 action="/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}"
 name="addGroupFormId" id="addGroupFormId" method="post">
 <input type="hidden" name="language" id="language" value="${currLanguage}">
-<input type="hidden" name="id" id="id" value="${groupsBo.id}">
 <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
 <input type="hidden" id="buttonText" name="buttonText" value="">
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
@@ -263,19 +262,17 @@ var idleTime = 0;
          })
          
          function refreshAndFetchLanguageData(language) {
-         let id=${groupsBo.id}
+         let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
    		    $.ajax({
-   		      url: "/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}&id="
-               + id,
+   		      url: '/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}',
    		      type: "GET",
    		      data: {
-   		        language: language,
-   		        id: id
+   		        language: language
    		      },
    		      success: function (data) {
    		        let htmlData = document.createElement('html');
    		        htmlData.innerHTML = data;
-   		        if (language !== 'en') {
+   		        if (currLanguage !== 'en') {
    		          updateCompletionTicks(htmlData);
    		          $('#deassignId').addClass('ml-disabled');
    		        } else {

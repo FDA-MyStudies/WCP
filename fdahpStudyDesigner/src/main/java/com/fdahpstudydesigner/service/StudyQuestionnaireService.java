@@ -215,4 +215,5 @@ public String deleteStepMaprecords(String id);
 
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 
+  String deleteStepBasedOnStepId(String stepId);
 }

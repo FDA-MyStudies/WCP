@@ -6788,4 +6788,37 @@ public String deleteStepMaprecords(String id) {
     logger.info("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - Ends");
     return allowReorder;
   }
+
+  @Override
+  public String deleteStepBasedOnStepId(String stepId) {
+    logger.info("StudyQuestionnaireDAOImpl - deleteStepBasedOnStepId() - Starts");
+    Session session = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    int count = 0;
+    String queryString = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+
+      if (StringUtils.isNotEmpty(stepId)) {
+        //delete the qroup based on stepId
+        queryString =
+                "delete GroupMappingBo GBO where GBO.stepId=:stepId ";
+        query = session.createQuery(queryString);
+        count = query.setString("stepId", stepId).executeUpdate();
+        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyQuestionnaireDAOImpl - deleteStepBasedOnStepId() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - deleteStepBasedOnStepId() - Ends");
+    return message;
+
+  }
 }

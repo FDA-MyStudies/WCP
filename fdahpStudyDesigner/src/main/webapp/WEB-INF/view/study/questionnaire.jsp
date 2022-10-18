@@ -218,7 +218,13 @@ width:142px !important;
     max-width: 10% !important;
     width: 100% !important;
 }
-    </style>
+.display_none{
+   display: none;
+}
+.display_show{
+  display: block;
+  }
+ </style>
 </head>
 
 
@@ -1915,7 +1921,8 @@ width:142px !important;
                        }
                    })
                    var stepList = steparray;
-                   if (stepList != null && stepList != '' && grpId != null && grpId != '') {
+                   if(grpId != null && grpId != ''){
+                   if (stepList != null && stepList != '') {
                     $.ajax({
                       url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
                       type: "POST",
@@ -1929,20 +1936,20 @@ width:142px !important;
                                       xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
                                     },
                       success: function (data) {
-                      window.location.reload();
+
                         var status = data.status;
                         var message = data.message;
                         var groupArray = new Array();
                         groupArray = data.groupMappingBo;
 
                                     if (status == "SUCCESS") {
+                                    window.location.reload();
                                       for(var i=0; groupArray.length>i; i++){
                                      $('#'+groupArray[i].stepId).prop('disabled', true);
                                      $('#'+groupArray[i].stepId).prop('checked', true);
                                       console.log("groupArray : "+groupArray[i].stepId);
                                        }
                                         showSucMsg(message);
-                                          $('#group').val('').selectpicker('refresh');
                                     } else {
                                           showErrMsg(message);
                                            $('#content').find('tbody input.step-check').prop('checked', false);
@@ -1960,8 +1967,15 @@ width:142px !important;
                     });
                 } else {
                   $('#alertMsg').show();
-                  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Unable to assign the group,Please select the group");
+                  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Kindly select the step(s)");
                   $('#content').find('tbody input.step-check').prop('checked', false);
+                   $('#group').val('').selectpicker('refresh');
+                }
+                setTimeout(hideDisplayMessage, 4000);
+                }else{
+                 $('#alertMsg').show();
+                 $("#alertMsg").removeClass('s-box').addClass('e-box').text("Kindly select the group");
+                 $('#content').find('tbody input.step-check').prop('checked', false);
                 }
                 setTimeout(hideDisplayMessage, 4000);
                 }

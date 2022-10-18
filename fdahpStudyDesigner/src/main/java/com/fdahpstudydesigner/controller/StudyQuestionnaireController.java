@@ -4744,8 +4744,6 @@ public class StudyQuestionnaireController {
                   (String) request.getSession().getAttribute(sessionStudyCount + "id");
           request.getSession().setAttribute(sessionStudyCount + "id", grpId);
         }
-      //groupsBo = studyQuestionnaireService.getGroupsDetails(Integer.parseInt(grpId));
-      
 
         groupMappingBo =
                 studyQuestionnaireService.getAssignSteps( Integer.parseInt(grpId));
@@ -4756,7 +4754,7 @@ public class StudyQuestionnaireController {
 
       map.addAttribute("groupsAssignedList", groupMappingBeans);
         map.addAttribute("groupMappingBo", groupMappingBo);
-        map.addAttribute("groupsBo", groupsBo);
+        map.addAttribute("grpId", grpId);
         map.addAttribute("_S", sessionStudyCount);
         mav = new ModelAndView("deAssignGroup", map);
       } 

@@ -262,17 +262,18 @@ var idleTime = 0;
          })
          
          function refreshAndFetchLanguageData(language) {
-         let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+        	let id=${grpId};
    		    $.ajax({
    		      url: '/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}',
    		      type: "GET",
    		      data: {
-   		        language: language
+   		        language: language,
+   		        id: id
    		      },
    		      success: function (data) {
    		        let htmlData = document.createElement('html');
    		        htmlData.innerHTML = data;
-   		        if (currLanguage !== 'en') {
+   		        if (language !== 'en') {
    		          updateCompletionTicks(htmlData);
    		          $('#deassignId').addClass('ml-disabled');
    		        } else {

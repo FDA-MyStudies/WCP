@@ -1943,19 +1943,20 @@ width:142px !important;
                         groupArray = data.groupMappingBo;
 
                                     if (status == "SUCCESS") {
-                                    window.location.reload();
+                                   
                                       for(var i=0; groupArray.length>i; i++){
                                      $('#'+groupArray[i].stepId).prop('disabled', true);
                                      $('#'+groupArray[i].stepId).prop('checked', true);
                                       console.log("groupArray : "+groupArray[i].stepId);
                                        }
                                         showSucMsg(message);
+                                        setTimeout(function() { window.location=window.location;},2000);
                                     } else {
                                           showErrMsg(message);
                                            $('#content').find('tbody input.step-check').prop('checked', false);
                                            $('#group').val('').selectpicker('refresh');
                                     }
-                                    setTimeout(hideDisplayMessage, 4000);
+                                    setTimeout(hideDisplayMessage, 2000);
                       },
                       error: function (xhr, status, error) {
                                       console.log("error : "+ error);

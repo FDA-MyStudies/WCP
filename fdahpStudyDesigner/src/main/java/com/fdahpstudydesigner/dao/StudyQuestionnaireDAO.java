@@ -159,7 +159,9 @@ public interface StudyQuestionnaireDAO {
 
   void deleteQuestionStep(int id, String language);
   
-public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
+  List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
+
+  List<GroupsBo> getGroupsByStudyIdAndStepId(String studyId,String questionnaireId, int stepId);
 
   public GroupsBo getGroupsDetails(int id);
 
@@ -212,4 +214,6 @@ public String deleteStepMaprecords(String id);
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 
   String deleteStepBasedOnStepId(String stepId);
+
+  boolean isQuestionMultiSelect(int queId);
 }

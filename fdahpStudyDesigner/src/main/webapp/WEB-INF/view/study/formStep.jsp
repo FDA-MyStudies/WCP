@@ -672,12 +672,13 @@
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+    var defaultVisibility = $('#groupDefaultVisibility');
 var idleTime = 0;
   $(document).ready(function () {
 
       <c:if test="${(operators eq null || operators.size() eq 0)}">
-      $('#groupDefaultVisibility').prop('checked', true).trigger('change');
-      $('#groupDefaultVisibility').prop('disabled', true);
+      defaultVisibility.prop('checked', true).trigger('change');
+      defaultVisibility.prop('disabled', true);
       </c:if>
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
@@ -830,10 +831,9 @@ var idleTime = 0;
       }
     });
 
-      var dv = $('#groupDefaultVisibility');
       <c:if test="${questionnaireBo.branching}">
-      dv.prop('checked', true).trigger('change');
-      dv.prop('disabled', true);
+      defaultVisibility.prop('checked', true).trigger('change');
+      defaultVisibility.prop('disabled', true);
       </c:if>
 
     var actionPage = "${actionTypeForQuestionPage}";
@@ -1607,7 +1607,6 @@ $('#addFormula').on('click', function () {
     setOperatorDropDown($('#lastResponseType').val());
 });
 
-let defaultVisibility = $('#groupDefaultVisibility');
 if (defaultVisibility.is(':checked')) {
     $('.deletable').remove();
     $('#logicDiv').find('div.bootstrap-select, input, select').each( function () {

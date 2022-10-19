@@ -4331,7 +4331,8 @@ input[type=number] {
 
 				<div class="gray-xs-f mb-xs">Snippet</div>
 				<div class="mb-xs">
-					<input type="text" class="form-control" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${questionnairesStepsBo.pipingSnippet}"/>
+					<input type="text" class="form-control req" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${questionnairesStepsBo.pipingSnippet}"/>
+					<div class="help-block with-errors red-txt"></div>
 				</div>
 				<br>
 
@@ -4349,7 +4350,7 @@ input[type=number] {
 				or !questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
 					<div class="gray-xs-f mb-xs">Survey ID</div>
 					<div class="mb-xs">
-						<select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">
+						<select class="selectpicker text-normal req" name="pipingSurveyId" id="surveyId" title="-select-">
 							<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
 								<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
 								<c:if test="${key.id eq questionnairesStepsBo.pipingSurveyId}"> selected</c:if>>
@@ -4360,23 +4361,25 @@ input[type=number] {
 								<option style="text-align: center; color: #000000" disabled>- No items found -</option>
 							</c:if>
 						</select>
+						<div class="help-block with-errors red-txt"></div>
 					</div>
 					<br>
 				</div>
 
 				<div class="gray-xs-f mb-xs">Source Question</div>
 				<div class="mb-xs">
-					<select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
+					<select class="selectpicker text-normal req" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
 						<c:forEach items="${sameSurveyPipingSourceKeys}" var="key" varStatus="loop">
 							<option data-id="${key.stepId}" value="${key.stepId}"
 									<c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
-								Step ${loop.index+1} : ${key.stepShortTitle}
+								Step ${key.sequenceNo} : ${key.stepShortTitle}
 							</option>
 						</c:forEach>
 						<c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
 							<option style="text-align: center; color: #000000" disabled>- No items found -</option>
 						</c:if>
 					</select>
+					<div class="help-block with-errors red-txt"></div>
 				</div>
 				<br><br>
 
@@ -4395,6 +4398,7 @@ input[type=number] {
 
 
 <script type="text/javascript">
+	var defaultVisibility = $('#groupDefaultVisibility');
     var idleTime = 0;
       $(document).ready(function () {
 
@@ -6757,15 +6761,15 @@ input[type=number] {
           $('.destionationYes').attr("disabled", false);
           $('.selectpicker').selectpicker('refresh');
           $(".textChoiceExclusive").validator('validate');
-		  if (dv.prop('disabled') === true) {
-			  dv.prop('disabled', false);
+		  if (defaultVisibility.prop('disabled') === true) {
+			  defaultVisibility.prop('disabled', false);
 		  }
         } else {
           $('.textChoiceExclusive').attr("disabled", false);
           $('.textChoiceExclusive').attr("required", true);
           $('.selectpicker').selectpicker('refresh');
-			dv.prop('checked', true).trigger('change');
-			dv.prop('disabled', true);
+			defaultVisibility.prop('checked', true).trigger('change');
+			defaultVisibility.prop('disabled', true);
         }
       }
 
@@ -8782,7 +8786,7 @@ $("#diagnosis_list tbody").sortable({
 //       $(this).parents('tr').remove();
 //   delete_reorder();
 //   });
-let defaultVisibility = $('#groupDefaultVisibility');
+let dv = $('#groupDefaultVisibility');
 function delete_reset1()   {
 // alert('working ');
       jQuery(this).closest('.text-choice').remove();
@@ -8851,7 +8855,7 @@ $('.text-choice').each(function(i){
 		setOperatorDropDown($('#responseTypeId').val());
 	});
 
-if (defaultVisibility.is(':checked')) {
+if (dv.is(':checked')) {
 	$('.deletable').remove();
 	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
 		$(this).addClass('ml-disabled');
@@ -8870,8 +8874,8 @@ if (defaultVisibility.is(':checked')) {
 	$('#skiappableNo').prop('checked', true);
 }
 
-defaultVisibility.on('change', function () {
-	if  (defaultVisibility.is(':checked')) {
+dv.on('change', function () {
+	if  (dv.is(':checked')) {
 		disablePreLoadLogic();
 	} else {
 		enablePreLoadLogic();
@@ -8923,7 +8927,7 @@ function enablePreLoadLogic() {
 	});
 	$('#defaultVisibility').val('false');
 	$('#preLoadSurveyId').prop('required', false);
-	defaultVisibility.attr('checked', false);
+	dv.attr('checked', false);
 	addForm.attr('disabled', false);
 	$('#skiappableYes').prop('checked', false).prop('disabled', true);
 	$('#skiappableNo').prop('checked', true);
@@ -8934,6 +8938,9 @@ $('#cancelPiping').on('click', function() {
 })
 
 $('#differentSurvey').on('change', function(e) {
+	if ($('#surveyId').closest('div.mb-xs').hasClass('has-error has-danger')) {
+		$('#surveyId').closest('div.mb-xs').removeClass('has-error has-danger').find(".help-block").empty();
+	}
 	if($(this).is(':checked')) {
 		$('#surveyBlock').show();
 	} else {
@@ -9008,7 +9015,8 @@ function refreshSourceKeys(surveyId, type) {
 					id.selectpicker('refresh');
 
 					let groupsList = '${groupsList}';
-					if ((options == null || options.length === 0) && (groupsList.length === 0)) {
+					if ((type === 'preload' && (options == null || options.length === 0) && (groupsList.length === 0))
+							||  (type !== 'preload' && (options == null || options.length === 0))) {
 						let $option = $("<option></option>")
 								.attr("style", "text-align: center; color: #000000")
 								.attr("disabled", true)
@@ -9067,9 +9075,59 @@ function removeFormulaContainer(object) {
 	$('#'+id).remove()
 }
 
+$('select.req, input.req').on('change', function () {
+	let parent = $(this).parent();
+	if ($(this).is('select')) {
+		parent = $(this).closest('div.mb-xs');
+	}
+	if ($(this).val() === '') {
+		if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+			parent.addClass('has-error has-danger').find(".help-block")
+					.empty()
+					.append($("<ul><li> </li></ul>")
+							.attr("class","list-unstyled")
+							.text("Please fill out this field."));
+			if (valid) {
+				valid = false;
+			}
+		}
+	} else {
+		if (parent.hasClass('has-error has-danger')) {
+			parent.removeClass('has-error has-danger').find(".help-block").empty();
+		}
+	}
+});
+
 function submitPiping() {
+	let valid = true;
+	$('select.req, input.req').each(function () {
+		let parent = $(this).parent();
+		let id = $(this).attr('id');
+		console.log(id);
+		if ($(this).is('select')) {
+			parent = $(this).closest('div.mb-xs');
+		}
+		if ($(this).val() === '') {
+			if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+				parent.addClass('has-error has-danger').find(".help-block")
+						.empty()
+						.append($("<ul><li> </li></ul>")
+								.attr("class","list-unstyled")
+								.text("Please fill out this field."));
+				if (valid) {
+					valid = false;
+				}
+			}
+		} else {
+			if (parent.hasClass('has-error has-danger')) {
+				parent.removeClass('has-error has-danger').find(".help-block").empty();
+			}
+		}
+	});
+	if (!valid) {
+		return false;
+	}
 	if ($('#stepId').val() !== '') {
-		let formData = new FormData();
 		let pipingObject = {};
 		pipingObject.pipingSnippet = $('#pipingSnippet').val();
 		pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');

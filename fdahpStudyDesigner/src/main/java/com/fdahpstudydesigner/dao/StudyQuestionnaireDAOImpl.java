@@ -651,6 +651,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             destionationMapList.put(
                 questionnairesStepsBo.getSequenceNo(), questionnairesStepsBo.getStepId());
           }
+          Map<Integer,Integer> groupIdMap = new HashMap<>();
+			Map<String,Integer> stepIdMap = new HashMap<>();
           for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
             if (StringUtils.isNotEmpty(questionnairesStepsBo.getStepType())) {
               QuestionnairesStepsBo newQuestionnairesStepsBo =
@@ -979,6 +981,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
                 }
               }
+              //copy groups
               if(count!=1) {
     				List<GroupsBo> groupsBoList = null;
     				searchQuery = "From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId";
@@ -992,10 +995,33 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     						newgroupsBo.setId(null);
     						newgroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
     						session.saveOrUpdate(newgroupsBo);
+    						groupIdMap.put(groupsBo.getId(), newgroupsBo.getId());
+
     					}
     				}
     				}
                     }
+              for(Integer val : groupIdMap.keySet())
+              {
+              List<GroupMappingBo>  groupMappingList =
+			   	          session
+			   	              .createQuery(
+			   	                  "From GroupMappingBo GBO WHERE  GBO.grpId= :grpId")
+			   	              .setInteger("grpId", val)
+			   	              .list();
+				
+				for(GroupMappingBo groupMapping :groupMappingList)
+					{
+					if(questionnairesStepsBo.getInstructionFormId()== Integer.parseInt(groupMapping.getStepId())) {
+						stepIdMap.put(groupMapping.getStepId(), newQuestionnairesStepsBo.getInstructionFormId());
+						GroupMappingBo newGroupMappingBo = SerializationUtils.clone(groupMapping);
+						newGroupMappingBo.setId(null);
+						newGroupMappingBo.setGrpId(groupIdMap.get(groupMapping.getGrpId()));
+						newGroupMappingBo.setStepId(stepIdMap.get(groupMapping.getStepId()).toString());
+						session.saveOrUpdate(newGroupMappingBo);
+					}
+					}
+              }
               session.update(newQuestionnairesStepsBo);
               newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
             }
@@ -6536,19 +6562,25 @@ public String checkGroupName(String questionnaireId, String groupName, String st
         GroupMappingStepBean groupMappingStepBean1 = new GroupMappingStepBean();
 
         session = hibernateTemplate.getSessionFactory().openSession();
-        queryString =
-                "From QuestionsBo QBO WHERE QBO.id=" + stepId;
-        query = session.createQuery(queryString);
+        
+        query =
+                session
+                    .createQuery("From QuestionsBo QBO WHERE QBO.id=: stepId");
+        query.setString("stepId",stepId);   
         questionBo1 = (QuestionsBo) query.uniqueResult();
 
-        queryString =
-                "From InstructionsBo IBO WHERE IBO.id=" + stepId;
-        query = session.createQuery(queryString);
+		
+        query =
+                session
+                    .createQuery("From InstructionsBo IBO WHERE IBO.id=: stepId");
+        query.setString("stepId",stepId);   
         instructionBo = (InstructionsBo) query.uniqueResult();
 
-        queryString =
-                "From FormBo FBO WHERE FBO.id=" + stepId;
-        query = session.createQuery(queryString);
+        query =
+                session
+                    .createQuery("From FormBo FBO WHERE FBO.id=: stepId");
+        query.setString("stepId",stepId);   
+            
         formBo = (FormBo) query.uniqueResult();
 
 

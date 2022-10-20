@@ -148,7 +148,7 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 										<br></c:forEach>
 										</c:if>
 											<c:if test="${groupsAssignedList.description.size() > 1}">
-											<div style="margin-left: 20px;">
+											<div style="margin-left: 30px;margin-top: -20px;">
 											<c:forEach items="${groupsAssignedList.description}" var="descriptions">
 											<span>
 									${descriptions}</span>

@@ -1,11 +1,9 @@
 package com.fdahpstudydesigner.bo;
 
 import lombok.Data;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Entity

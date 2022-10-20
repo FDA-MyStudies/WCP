@@ -729,6 +729,7 @@ document.body.appendChild(a).click();
 
 
          function validateGroupId(item, callback) {
+         debugger
         	    var groupId = $("#groupId").val();
         	    var thisAttr = $("#groupId");
         	    var existedKey = $("#preGroupId").val();
@@ -737,7 +738,7 @@ document.body.appendChild(a).click();
         	      $(thisAttr).parent().removeClass("has-danger").removeClass(
         	          "has-error");
         	      $(thisAttr).parent().find(".help-block").empty();
-        	      if (existedKey != preGroupId) {
+        	      if (existedKey != groupId) {
         	        $
         	        .ajax({
         	          url: "/fdahpStudyDesigner/adminStudies/validateGroupIdKey.do?_S=${param._S}",
@@ -799,7 +800,7 @@ document.body.appendChild(a).click();
         	      $(thisAttr).parent().removeClass("has-danger").removeClass(
         	          "has-error");
         	      $(thisAttr).parent().find(".help-block").empty();
-        	      if (existedKey != preGroupName) {
+        	      if (existedKey != groupName) {
         	        $
         	        .ajax({
         	          url: "/fdahpStudyDesigner/adminStudies/validateGroupName.do?_S=${param._S}",

@@ -3109,8 +3109,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         table1.rowReorder.enable();
       }
     });
-    var branching = "${questionnaireBo.branching}";
-    if (branching == "true") {
+    let branching = "${questionnaireBo.branching}";
+    if (branching === "true") {
       $(".destinationStep").show();
       $(".deleteStepButton").hide();
       table1.rowReorder.disable();
@@ -4427,7 +4427,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         }
         dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('
             + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType)
-            + '&#34; ' + parseInt(value.deletionId) + ')"></span>' +
+            + '&#34;,' + parseInt(value.deletionId) + ')"></span>' +
             '</div>' +
             '</div>';
 
@@ -5347,6 +5347,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           } else {
             $('#doneId').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');
+          }
+          if ('${allowReorder}' === 'false') {
+            table1.rowReorder.disable();
+            $('#branchingId').prop('disabled', true);
           }
         }
       }

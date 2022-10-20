@@ -174,7 +174,7 @@ public interface StudyQuestionnaireService {
   List<InstructionsLangBO> getInstructionLangByQuestionnaireId(
       int questionnaireId, String language);
   
-  public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
+  List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId, boolean isStep, Integer stepId);
 
   public GroupsBo getGroupsDetails(Integer id);
 
@@ -216,4 +216,6 @@ public String deleteStepMaprecords(String id);
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 
   String deleteStepBasedOnStepId(String stepId);
+
+  boolean isQuestionMultiSelect(int queId);
 }

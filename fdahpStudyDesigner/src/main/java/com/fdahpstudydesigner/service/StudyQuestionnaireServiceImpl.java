@@ -2236,16 +2236,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
  
 @Override
-public List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId) {
+public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
 	logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
 	List<GroupsBo> groups = null;
-    
     try {
-      groups = studyQuestionnaireDAO.getGroupsByStudyId(studyId,questionnaireId);
+
+      if (isStep && stepId != null) {
+        groups = studyQuestionnaireDAO.getGroupsByStudyIdAndStepId(studyId,questionnaireId, stepId);
+      } else {
+        groups = studyQuestionnaireDAO.getGroupsByStudyId(studyId,questionnaireId);
+      }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getGroupsByStudyId() - ERROR ", e);
     }
-    logger.exit("getGroupsByStudyId() - Ends");
+    logger.info("getGroupsByStudyId() - Ends");
     return groups;
 	
 }
@@ -2519,5 +2523,10 @@ public String deleteStepMaprecords(String id) {
     logger.exit("deleteStepBasedOnStepId() - Ends");
     return result;
 
+  }
+
+  @Override
+  public boolean isQuestionMultiSelect(int queId) {
+    return studyQuestionnaireDAO.isQuestionMultiSelect(queId);
   }
 }

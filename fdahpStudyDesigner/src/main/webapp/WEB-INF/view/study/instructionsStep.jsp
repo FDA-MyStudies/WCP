@@ -264,7 +264,8 @@
 
                     <div class="gray-xs-f mb-xs">Snippet</div>
                     <div class="mb-xs">
-                        <input type="text" class="form-control" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${instructionsBo.questionnairesStepsBo.pipingSnippet}"/>
+                        <input type="text" class="form-control req" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${instructionsBo.questionnairesStepsBo.pipingSnippet}"/>
+                        <div class="help-block with-errors red-txt"></div>
                     </div>
                     <br>
 
@@ -282,7 +283,7 @@
 				or !instructionsBo.questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
                         <div class="gray-xs-f mb-xs">Survey ID</div>
                         <div class="mb-xs">
-                            <select class="selectpicker text-normal" name="pipingSurveyId" id="surveyId" title="-select-">
+                            <select class="selectpicker text-normal req" name="pipingSurveyId" id="surveyId" title="-select-">
                                 <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
                                     <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
                                             <c:if test="${key.id eq instructionsBo.questionnairesStepsBo.pipingSurveyId}"> selected</c:if>>
@@ -293,23 +294,25 @@
                                     <option style="text-align: center; color: #000000" disabled>- No items found -</option>
                                 </c:if>
                             </select>
+                            <div class="help-block with-errors red-txt"></div>
                         </div>
                         <br>
                     </div>
 
                     <div class="gray-xs-f mb-xs">Source Question</div>
                     <div class="mb-xs">
-                        <select class="selectpicker text-normal" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
+                        <select class="selectpicker text-normal req" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
                             <c:forEach items="${sameSurveyPipingSourceKeys}" var="key" varStatus="loop">
                                 <option data-id="${key.stepId}" value="${key.stepId}"
-                                        <c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
-                                    Step ${loop.index+1} : ${key.stepShortTitle}
+                                        <c:if test="${key.stepId eq instructionsBo.questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
+                                    Step ${key.sequenceNo} : ${key.stepShortTitle}
                                 </option>
                             </c:forEach>
                             <c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
                                 <option style="text-align: center; color: #000000" disabled>- No items found -</option>
                             </c:if>
                         </select>
+                        <div class="help-block with-errors red-txt"></div>
                     </div>
                     <br><br>
 
@@ -728,6 +731,9 @@
   })
 
   $('#differentSurvey').on('change', function(e) {
+      if ($('#surveyId').closest('div.mb-xs').hasClass('has-error has-danger')) {
+          $('#surveyId').closest('div.mb-xs').removeClass('has-error has-danger').find(".help-block").empty();
+      }
       if($(this).is(':checked')) {
           $('#surveyBlock').show();
       } else {
@@ -790,9 +796,59 @@
       }
   }
 
+  $('select.req, input.req').on('change', function () {
+      let parent = $(this).parent();
+      if ($(this).is('select')) {
+          parent = $(this).closest('div.mb-xs');
+      }
+      if ($(this).val() === '') {
+          if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+              parent.addClass('has-error has-danger').find(".help-block")
+                  .empty()
+                  .append($("<ul><li> </li></ul>")
+                      .attr("class","list-unstyled")
+                      .text("Please fill out this field."));
+              if (valid) {
+                  valid = false;
+              }
+          }
+      } else {
+          if (parent.hasClass('has-error has-danger')) {
+              parent.removeClass('has-error has-danger').find(".help-block").empty();
+          }
+      }
+  });
+
   function submitPiping() {
+      let valid = true;
+      $('select.req, input.req').each(function () {
+          let parent = $(this).parent();
+          let id = $(this).attr('id');
+          console.log(id);
+          if ($(this).is('select')) {
+              parent = $(this).closest('div.mb-xs');
+          }
+          if ($(this).val() === '') {
+              if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+                  parent.addClass('has-error has-danger').find(".help-block")
+                      .empty()
+                      .append($("<ul><li> </li></ul>")
+                          .attr("class","list-unstyled")
+                          .text("Please fill out this field."));
+                  if (valid) {
+                      valid = false;
+                  }
+              }
+          } else {
+              if (parent.hasClass('has-error has-danger')) {
+                  parent.removeClass('has-error has-danger').find(".help-block").empty();
+              }
+          }
+      });
+      if (!valid) {
+          return false;
+      }
       if ($('#stepId').val() !== '') {
-          let formData = new FormData();
           let pipingObject = {};
           pipingObject.pipingSnippet = $('#pipingSnippet').val();
           pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');

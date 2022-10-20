@@ -722,7 +722,7 @@ input[type=number] {
 						</div>
 					</div>
 					<div class="row">
-						<button type="button" class="btn btn-primary blue-btn" id="piping">Piping</button>
+						<button type="button" class="btn btn-primary blue-btn" id="pbutton">Piping</button>
 					</div><br>
 					<div class="clearfix"></div>
 					<div class="row">
@@ -5767,7 +5767,7 @@ input[type=number] {
                         }
       });
 
-	$('#piping').on('click', function() {
+	$('#pbutton').on('click', function() {
 		$('#titleText').text($('#questionTextId').val());
 		$('#pipingModal').modal('toggle');
 	});

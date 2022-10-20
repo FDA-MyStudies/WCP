@@ -729,7 +729,6 @@ document.body.appendChild(a).click();
 
 
          function validateGroupId(item, callback) {
-         debugger
         	    var groupId = $("#groupId").val();
         	    var thisAttr = $("#groupId");
         	    var existedKey = $("#preGroupId").val();

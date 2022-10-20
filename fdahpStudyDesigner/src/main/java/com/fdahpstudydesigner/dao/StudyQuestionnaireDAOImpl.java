@@ -6411,10 +6411,13 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       transaction = session.beginTransaction();
       for(String s : arr) {
         String stepId = s.replaceAll("^\"|\"$", "");
+         //get stepId by sending stepId[instruction_formId] from questionnaire_step table
+        Integer questionnaireStepId =  getquestionnaireStepId(stepId, questionnaireId);
         GroupMappingBo groupMappingBo = new GroupMappingBo();
         groupMappingBo.setGrpId(grpId);
         groupMappingBo.setStepId(s.replaceAll("^\"|\"$", ""));
         groupMappingBo.setStatus(true);
+        groupMappingBo.setQuestionnaireStepId(questionnaireStepId);
         session.saveOrUpdate(groupMappingBo);
         query =
                 session
@@ -6439,6 +6442,32 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     }
     logger.info("StudyDAOImpl - assignQuestionSteps() - Ends");
     return listGroupMappingBo;
+  }
+
+  private Integer getquestionnaireStepId(String stepId, String questionnaireId) {
+    logger.info("begin getquestionnaireStepId()");
+    Session session = null;
+    Integer questionnairesStepsBo = null;
+    String searchQuery = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      searchQuery =
+              "select stepId from QuestionnairesStepsBo WHERE questionnairesId =:questionnaireId and instructionFormId=:stepId";
+      query = session.createQuery(searchQuery)
+              .setString("stepId", String.valueOf(stepId))
+              .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
+      questionnairesStepsBo = (Integer) query.uniqueResult();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getquestionnaireStepId() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    logger.info("getGroupsByStudyId() - Ends");
+    return questionnairesStepsBo;
+
   }
 
   @Override

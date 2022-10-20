@@ -243,7 +243,7 @@
             </c:if>
 
             <div class="row">
-                <button type="button" class="btn btn-primary blue-btn" id="piping">Piping</button>
+                <button type="button" class="btn btn-primary blue-btn" id="pbutton">Piping</button>
             </div><br>
         </div>
     </form:form>
@@ -440,8 +440,8 @@
                   }
   });
 
-  $('#piping').on('click', function() {
-      $('#titleText').text($('#shortTitleId').val());
+  $('#pbutton').on('click', function() {
+      $('#titleText').text($('#instructionTitle').val());
       $('#pipingModal').modal('toggle');
   });
 

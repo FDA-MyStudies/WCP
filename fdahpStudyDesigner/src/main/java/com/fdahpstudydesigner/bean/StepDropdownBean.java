@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StepDropdownBean {
     String questionnaireId;
+    String studyId;
     Integer seqNo;
     String caller;
     Boolean isDifferentSurveyPreload;

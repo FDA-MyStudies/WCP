@@ -395,6 +395,8 @@ input[type=number] {
 					type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
 					value="${questionnairesStepsBo.isShorTitleDuplicate}" />
 					<input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+					<input type="hidden" id="stepOrGroupPostLoad" value="${questionnairesStepsBo.stepOrGroupPostLoad}" name="stepOrGroupPostLoad"/>
+					<input type="hidden" id="stepOrGroup" value="${questionnairesStepsBo.stepOrGroup}" name="stepOrGroup"/>
 				<div id="sla" class="tab-pane fade in show active mt-xlg">
 					<div class="row">
 						<div class="col-md-6 pl-none">
@@ -435,15 +437,15 @@ input[type=number] {
 										required>
 										<c:forEach items="${destinationStepList}"
 											var="destinationStep">
-											<option value="${destinationStep.stepId}"
+											<option value="${destinationStep.stepId}" data-type="step"
 												${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
 												Step ${destinationStep.sequenceNo} :
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
-										<c:forEach items="${groupsList}" var="group" varStatus="status">
-											<option value="${group.id}" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+											<option value="${group.id}" data-type="group" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
 										</c:forEach>
-										<option value="0"
+										<option value="0" data-type="step"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
 											Completion Step</option>
 									</select>
@@ -514,28 +516,28 @@ input[type=number] {
 								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup" required
 										data-error="Please select an option" class="selectpicker text-normal" required title="-select destination step-">
 									<c:forEach items="${sameSurveyPreloadSourceKeys}" var="destinationStep">
-										<option value="${destinationStep.stepId}"
+										<option value="${destinationStep.stepId}" data-type="step"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
 													selected
 												</c:if>>
 											Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}
 										</option>
 									</c:forEach>
-									<option value="0"
+									<option value="0" data-type="step"
 										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
 										Completion Step</option>
-									<c:forEach items="${groupsList}" var="group" varStatus="status">
-										<option value="${group.id}" id="selectGroup${group.id}"
+									<c:forEach items="${groupsListPreLoad}" var="group" varStatus="status">
+										<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
 													selected
 												</c:if>>
 											Group  ${status.index + 1} :  ${group.groupName}&nbsp;
 										</option>
 									</c:forEach>
-									<c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&
-									         (groupsList eq null || groupsList.size() eq 0) }">
-										<option style="text-align: center; color: #000000" disabled>- No items found -</option>
-									</c:if>
+<%--									<c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&--%>
+<%--									         (groupsList eq null || groupsList.size() eq 0) }">--%>
+<%--										<option style="text-align: center; color: #000000" disabled>- No items found -</option>--%>
+<%--									</c:if>--%>
 								</select>
 								  <div class="help-block with-errors red-txt"></div>
 								</div>
@@ -4606,6 +4608,12 @@ input[type=number] {
 				}
 			}
           if (isFromValid("#questionStepId")) {
+			  if (!$('#groupDefaultVisibility').is(':checked')) {
+				  $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+			  }
+			  if ('${questionnaireBo.branching}' === 'true') {
+				  $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
+			  }
             $("body").addClass("loading");
             var placeholderText = '';
             var stepText = "";
@@ -6567,6 +6575,13 @@ input[type=number] {
         questionnaireStep.questionReponseTypeBo = questionReponseTypeBo;
 		  questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
 		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+		  if (!$('#groupDefaultVisibility').is(':checked')) {
+			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
+			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
+		  }
+		  if ('${questionnaireBo.branching}' === 'true') {
+			  questionnaireStep.stepOrGroupPostLoad = $('#destinationStepId option:selected').attr('data-type');
+		  }
 		  questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
 		  questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
 		  let beanArray = [];
@@ -9011,16 +9026,27 @@ function refreshSourceKeys(surveyId, type) {
 					if (type === 'preload') {
 						id.append('<option value="0">Completion Step</option>');
 						if (!$('#differentSurveyPreLoad').is(':checked')) {
-							<c:forEach items="${groupsList}" var="group" varStatus="status">
+							<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
 							id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
 									'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
 									'</option>');
 							</c:forEach>
+						} else {
+							let groups = data.groupList;
+							if (groups != null && groups.length > 0) {
+								$.each(groups, function(index, option) {
+									let $option = $("<option></option>")
+											.attr("value", option.id)
+											.attr("data-id", option.id)
+											.text("Group " + (index+1) + " : " + option.groupName);
+									id.append($option);
+								});
+							}
 						}
 					}
 					id.selectpicker('refresh');
 
-					let groupsList = '${groupsList}';
+					<%--let groupsList = '${groupsListPreLoad}';--%>
 					// if ((type === 'preload' && (options == null || options.length === 0) && (groupsList.length === 0))
 					// 		||  (type !== 'preload' && (options == null || options.length === 0))) {
 					if (type !== 'preload' && (options == null || options.length === 0)) {

@@ -128,6 +128,12 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "destination_true_as_group")
   private Integer destinationTrueAsGroup;
 
+  @Column(name = "stepOrGroup")
+  private String stepOrGroup;
+
+  @Column(name = "stepOrGroupPostLoad")
+  private String stepOrGroupPostLoad;
+
   @Column(name = "is_piping")
   private Boolean isPiping;
 
@@ -456,5 +462,21 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setAllowReorder(Boolean allowReorder) {
     this.allowReorder = allowReorder;
+  }
+
+  public String getStepOrGroup() {
+    return stepOrGroup;
+  }
+
+  public void setStepOrGroup(String stepOrGroup) {
+    this.stepOrGroup = stepOrGroup;
+  }
+
+  public String getStepOrGroupPostLoad() {
+    return stepOrGroupPostLoad;
+  }
+
+  public void setStepOrGroupPostLoad(String stepOrGroupPostLoad) {
+    this.stepOrGroupPostLoad = stepOrGroupPostLoad;
   }
 }

@@ -231,7 +231,9 @@
                          <input type="hidden" name="stepId" id="stepId"
                                 value="${questionnairesStepsBo.stepId}">
                          <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
-                         <input type="hidden" id="lastResponseType" value="${lastResponseType}"/>
+             <input type="hidden" id="stepOrGroupPostLoad" value="${questionnairesStepsBo.stepOrGroupPostLoad}" name="stepOrGroupPostLoad"/>
+             <input type="hidden" id="stepOrGroup" value="${questionnairesStepsBo.stepOrGroup}" name="stepOrGroup"/>
+             <input type="hidden" id="lastResponseType" value="${lastResponseType}"/>
                          <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                           <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                          <input
@@ -322,16 +324,16 @@
                                                 required>
                                             <c:forEach items="${destinationStepList}"
                                                        var="destinationStep">
-                                                <option value="${destinationStep.stepId}"
+                                                <option value="${destinationStep.stepId}" data-type="step"
                                                     ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
                                                     Step
                                                         ${destinationStep.sequenceNo} :
                                                         ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
-                                            <c:forEach items="${groupsList}" var="group" varStatus="status">
-                                                <option value="${group.id}" id="selectGroup${group.id}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                <option value="${group.id}" data-type="group" id="selectGroup${group.id}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                                             </c:forEach>
-                                            <option value="0"
+                                            <option value="0" data-type="step"
                                                 ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
                                                 Completion
                                                 Step
@@ -402,16 +404,20 @@
                      <select name="destinationTrueAsGroup" id="destinationTrueAsGroup" 
                              data-error="Please select an option" class="selectpicker text-normal"  title="-select destination step-">
                          <c:forEach items="${sameSurveyPreloadSourceKeys}" var="destinationStep">
-                             <option value="${destinationStep.stepId}"
+                             <option value="${destinationStep.stepId}" data-type="step"
                                  ${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
                                  Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
                              </option>
                          </c:forEach>
-                         <option value="0"
+                         <option value="0" data-type="step"
                              ${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
                              Completion Step</option>
-                         <c:forEach items="${groupsList}" var="group" varStatus="status">
-                             <option value="${group.id}" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                         <c:forEach items="${groupsListPreLoad}" var="group" varStatus="status">
+                             <option value="${group.id}" data-type="group"
+                                     <c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
+                                         selected
+                                     </c:if>
+                                     id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                          </c:forEach>
 <%--                         <c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&--%>
 <%--									         (groupsList eq null || groupsList.size() eq 0) }">--%>
@@ -726,6 +732,12 @@ var idleTime = 0;
       validateShortTitle('', function (val) {
         if (val) {
           if (isFromValid("#formStepId")) {
+              if (!$('#groupDefaultVisibility').is(':checked')) {
+                  $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+              }
+              if ('${questionnaireBo.branching}' === 'true') {
+                  $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
+              }
               $('input.con-radio').each(function(e) {
                   $(this).removeAttr('disabled');
               })
@@ -1061,6 +1073,12 @@ var idleTime = 0;
     questionnaireStep.stepType = step_type;
       questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
       questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+      if (!$('#groupDefaultVisibility').is(':checked')) {
+          questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
+      }
+      if ('${questionnaireBo.branching}' === 'true') {
+          questionnaireStep.stepOrGroupPostLoad = $('#destinationStepId option:selected').attr('data-type');
+      }
       questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
       questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
       let beanArray = [];
@@ -1778,16 +1796,27 @@ function refreshSourceKeys(surveyId, type) {
                     if (type === 'preload') {
                         id.append('<option value="0">Completion Step</option>');
                         if (!$('#differentSurveyPreLoad').is(':checked')) {
-                            <c:forEach items="${groupsList}" var="group" varStatus="status">
+                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
                             id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
                                 'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
                                 '</option>');
                             </c:forEach>
+                        } else {
+                            let groups = data.groupList;
+                            if (groups != null && groups.length > 0) {
+                                $.each(groups, function (index, option) {
+                                    let $option = $("<option></option>")
+                                        .attr("value", option.id)
+                                        .attr("data-id", option.id)
+                                        .text("Group " + (index + 1) + " : " + option.groupName);
+                                    id.append($option);
+                                });
+                            }
                         }
                     }
                     id.selectpicker('refresh');
 
-                    <%--let groupsList = '${groupsList}';--%>
+                    <%--let groupsList = '${groupsListPreLoad}';--%>
                     <%--if ((options == null || options.length === 0) && (groupsList.length === 0)) {--%>
                     <%--    let $option = $("<option></option>")--%>
                     <%--        .attr("style", "text-align: center; color: #000000")--%>

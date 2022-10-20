@@ -6204,6 +6204,7 @@ public class StudyDAOImpl implements StudyDAO {
               // have change end
               Map<Integer, Integer> oldNewQueIdMap = new HashMap<>();
               Map<Integer, Integer> oldNewStepIdMap = new HashMap<>();
+              Map<Integer, Integer> oldNewGroupIdMap = new HashMap<>();
               Map<String, Integer> pipingSurveyIdMap = new HashMap<>();
               Map<String, Integer> oldNewSourceMap = new HashMap<>();
               Map<String, Integer> preloadSurveyMap = new HashMap<>();
@@ -6397,7 +6398,8 @@ public class StudyDAOImpl implements StudyDAO {
                         }
 
                         if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
-                          oldNewDestMap.put(questionnairesStepsBo.getDestinationTrueAsGroup() + US + oldStepId + US + "preload", newStepId);
+                          oldNewDestMap.put(questionnairesStepsBo.getDestinationTrueAsGroup() + US + questionnairesStepsBo.getStepOrGroup() +
+                                  US + oldStepId + US + "preload", newStepId);
                         }
                         oldNewStepIdMap.put(oldStepId, newStepId);
 
@@ -6717,25 +6719,26 @@ public class StudyDAOImpl implements StudyDAO {
                           logger.info(
                               "StudyDAOImpl - studyDraftCreation() Questionnarie Form step - Ends");
                         }
-                        if(count!=1) {
-    						List<GroupsBo> groupsBoList = session
-    								.createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
-    								.setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
-    								.setParameter("id", studyBo.getId()).list();
-    						if(groupsBoList!=null) {
-    							count = 1;
-    						for (GroupsBo groupsBo : groupsBoList) {
-    							GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
-    							newGroupsBo.setId(null);
-    							newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
-    							newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
-    							newGroupsBo.setIsPublished(1);
-    							session.save(newGroupsBo);
-    							groupsBo.setIsPublished(1);
-    							session.update(groupsBo);
-    						}
-    						}
+                        if (count != 1) {
+                          List<GroupsBo> groupsBoList = session
+                                  .createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
+                                  .setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
+                                  .setParameter("id", studyBo.getId()).list();
+                          if (groupsBoList != null) {
+                            count = 1;
+                            for (GroupsBo groupsBo : groupsBoList) {
+                              GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
+                              newGroupsBo.setId(null);
+                              newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
+                              newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
+                              newGroupsBo.setIsPublished(1);
+                              session.save(newGroupsBo);
+                              groupsBo.setIsPublished(1);
+                              session.update(groupsBo);
+                              oldNewGroupIdMap.put(groupsBo.getId(), newGroupsBo.getId());
                             }
+                          }
+                        }
                         session.update(newQuestionnairesStepsBo);
                         newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
                       }
@@ -6915,7 +6918,17 @@ public class StudyDAOImpl implements StudyDAO {
                 for (String oldSrc : oldNewDestMap.keySet()) {
                   int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
                   // 0 refers to completion step
-                  Integer newStepId = oldStepId != 0 ? oldNewStepIdMap.get(oldStepId) : 0;
+                  String type = oldSrc.split("_")[1];
+                  Integer newStepId = null;
+                  if (oldStepId != 0) {
+                    if (FdahpStudyDesignerConstants.STEP.equals(type)) {
+                      newStepId = oldNewStepIdMap.get(oldStepId);
+                    } else if (FdahpStudyDesignerConstants.GROUP.equals(type)){
+                      newStepId = oldNewGroupIdMap.get(oldStepId);
+                    }
+                  } else {
+                    newStepId = 0;
+                  }
                   session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
                           .setParameter("newId", newStepId)
                           .setParameter("stepId", oldNewDestMap.get(oldSrc))

@@ -521,6 +521,9 @@ input[type=number] {
 											Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}
 										</option>
 									</c:forEach>
+									<option value="0"
+										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
+										Completion Step</option>
 									<c:forEach items="${groupsList}" var="group" varStatus="status">
 										<option value="${group.id}" id="selectGroup${group.id}"
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
@@ -9005,18 +9008,22 @@ function refreshSourceKeys(surveyId, type) {
 							id.append($option);
 						});
 					}
-					if (type === 'preload' && !$('#differentSurveyPreLoad').is(':checked')) {
-						<c:forEach items="${groupsList}" var="group" varStatus="status">
-						id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
-								'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
-								'</option>')
-						</c:forEach>
+					if (type === 'preload') {
+						id.append('<option value="0">Completion Step</option>');
+						if (!$('#differentSurveyPreLoad').is(':checked')) {
+							<c:forEach items="${groupsList}" var="group" varStatus="status">
+							id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+									'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+									'</option>');
+							</c:forEach>
+						}
 					}
 					id.selectpicker('refresh');
 
 					let groupsList = '${groupsList}';
-					if ((type === 'preload' && (options == null || options.length === 0) && (groupsList.length === 0))
-							||  (type !== 'preload' && (options == null || options.length === 0))) {
+					// if ((type === 'preload' && (options == null || options.length === 0) && (groupsList.length === 0))
+					// 		||  (type !== 'preload' && (options == null || options.length === 0))) {
+					if (type !== 'preload' && (options == null || options.length === 0)) {
 						let $option = $("<option></option>")
 								.attr("style", "text-align: center; color: #000000")
 								.attr("disabled", true)

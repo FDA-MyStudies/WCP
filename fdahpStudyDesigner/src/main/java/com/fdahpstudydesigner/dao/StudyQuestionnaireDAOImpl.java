@@ -6495,14 +6495,14 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       session = hibernateTemplate.getSessionFactory().openSession();
       if (StringUtils.isNoneBlank(queId, studyId)) {
         if (isLive) {
-          list = session.createQuery("from QuestionnaireBo where id <> :id and customStudyId = :studyId and live=:live and active = :active")
+          list = session.createQuery("from QuestionnaireBo where id <> :id and customStudyId = :studyId and live=:live and active = :active order by createdDate")
                   .setParameter("id", Integer.parseInt(queId))
                   .setParameter("studyId", studyId)
                   .setParameter("live", 1)
                   .setParameter("active", true)
                   .list();
         } else {
-          list = session.createQuery("from QuestionnaireBo where id <> :id and studyId = :studyId and active = :active")
+          list = session.createQuery("from QuestionnaireBo where id <> :id and studyId = :studyId and active = :active order by createdDate")
                   .setParameter("id", Integer.parseInt(queId))
                   .setParameter("studyId", Integer.parseInt(studyId))
                   .setParameter("active", true)

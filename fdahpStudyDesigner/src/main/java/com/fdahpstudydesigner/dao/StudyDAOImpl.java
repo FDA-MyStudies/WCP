@@ -6399,7 +6399,7 @@ public class StudyDAOImpl implements StudyDAO {
                         if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
                           oldNewDestMap.put(questionnairesStepsBo.getDestinationTrueAsGroup() + US + oldStepId + US + "preload", newStepId);
                         }
-                        oldNewStepIdMap.put(questionnairesStepsBo.getStepId(), newQuestionnairesStepsBo.getStepId());
+                        oldNewStepIdMap.put(oldStepId, newStepId);
 
                         List<PreLoadLogicBo> preLoadLogicBoList = session.createQuery("from PreLoadLogicBo where stepGroupId=:stepId and stepOrGroup=:step")
                                 .setParameter("stepId", questionnairesStepsBo.getStepId())
@@ -6890,11 +6890,13 @@ public class StudyDAOImpl implements StudyDAO {
               if (oldNewSourceMap != null) {
                 for (String oldSrc : oldNewSourceMap.keySet()) {
                   int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
-                  int newStepId = oldNewStepIdMap.get(oldStepId);
-                  session.createQuery("update QuestionnairesStepsBo set pipingSourceQuestionKey=:newId where stepId=:stepId")
-                          .setParameter("newId", newStepId)
-                          .setParameter("stepId", oldNewSourceMap.get(oldSrc))
-                          .executeUpdate();
+                  Integer newStepId = oldNewStepIdMap.get(oldStepId);
+                  if (newStepId != null) {
+                    session.createQuery("update QuestionnairesStepsBo set pipingSourceQuestionKey=:newId where stepId=:stepId")
+                            .setParameter("newId", newStepId)
+                            .setParameter("stepId", oldNewSourceMap.get(oldSrc))
+                            .executeUpdate();
+                  }
                 }
               }
 
@@ -6911,8 +6913,9 @@ public class StudyDAOImpl implements StudyDAO {
 
               if (oldNewDestMap != null) {
                 for (String oldSrc : oldNewDestMap.keySet()) {
-                  Integer oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
-                  Integer newStepId = oldNewStepIdMap.get(oldStepId);
+                  int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
+                  // 0 refers to completion step
+                  Integer newStepId = oldStepId != 0 ? oldNewStepIdMap.get(oldStepId) : 0;
                   session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
                           .setParameter("newId", newStepId)
                           .setParameter("stepId", oldNewDestMap.get(oldSrc))

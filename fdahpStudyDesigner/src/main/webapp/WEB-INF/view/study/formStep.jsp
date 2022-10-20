@@ -379,7 +379,7 @@
              <div class="row">
                  <div class="col-md-4"></div>
                  <div class="col-md-5 form-group" id="contents" style="display:none">
-                     <select class="selectpicker text-normal" required name="preLoadSurveyId"
+                     <select class="selectpicker text-normal" name="preLoadSurveyId"
                              <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> required </c:if>
                              id="preLoadSurveyId" title="-select survey id-">
                          <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
@@ -806,6 +806,17 @@ var idleTime = 0;
           }
         }
       });
+
+   
+    // if($('#differentSurveyPreLoad').is(':checked')) {
+    //     $('#preLoadSurveyId').prop('required', true);
+    // } else {
+    //     $('#preLoadSurveyId').val('').prop('required', false).selectpicker('refresh');
+    //     $("#preLoadSurveyId").parent().removeClass("has-danger").removeClass("has-error");
+    //     $("#preLoadSurveyId").parent().find(".help-block").empty();
+    // };
+
+
     });
     $("#stepShortTitle").blur(function () {
       validateShortTitle('', function (val) {

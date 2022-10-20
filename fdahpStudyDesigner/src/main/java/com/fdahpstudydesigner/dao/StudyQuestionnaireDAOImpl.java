@@ -1018,6 +1018,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 						newGroupMappingBo.setId(null);
 						newGroupMappingBo.setGrpId(groupIdMap.get(groupMapping.getGrpId()));
 						newGroupMappingBo.setStepId(stepIdMap.get(groupMapping.getStepId()).toString());
+						newGroupMappingBo.setQuestionnaireStepId(groupMapping.getQuestionnaireStepId());
 						session.saveOrUpdate(newGroupMappingBo);
 					}
 					}
@@ -6648,37 +6649,54 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     Query query = null;
     String queryString = "";
     List<QuestionsBo> questionBo = null;
-    QuestionsBo questionBo1 = null;
-    InstructionsBo instructionBo = null;
-    FormBo formBo = null;
+   // QuestionsBo questionBo1 = null;
+    //InstructionsBo instructionBo = null;
+    //FormBo formBo = null;
     List<GroupMappingStepBean> groupMappingBeanss = new ArrayList<GroupMappingStepBean>();
     try {
+    	QuestionnairesStepsBo  questionnairesStepsBo= new QuestionnairesStepsBo();
       for (GroupMappingBo groupsList : groupMappingBo) {
         String stepId = groupsList.getStepId();
-        List<String> question = new ArrayList<>();
-        GroupMappingStepBean groupMappingStepBean1 = new GroupMappingStepBean();
-
+        Integer  questionnaireStepId = groupsList.getQuestionnaireStepId();
+        
         session = hibernateTemplate.getSessionFactory().openSession();
         
         query =
                 session
+                    .createQuery("From QuestionnairesStepsBo QBO WHERE QBO.stepId=: questionnaireStepId");
+        query.setInteger("questionnaireStepId",questionnaireStepId);   
+          questionnairesStepsBo= (QuestionnairesStepsBo) query.uniqueResult();
+        
+        String stepType=questionnairesStepsBo.getStepType();
+        List<String> question = new ArrayList<>();
+        GroupMappingStepBean groupMappingStepBean1 = new GroupMappingStepBean();
+        
+        QuestionsBo questionBo1=null;
+        InstructionsBo instructionBo=null;
+        FormBo  formBo =null;
+        //session = hibernateTemplate.getSessionFactory().openSession();
+        if(stepType.equalsIgnoreCase("Question")) {
+        query =
+                session
                     .createQuery("From QuestionsBo QBO WHERE QBO.id=: stepId");
         query.setString("stepId",stepId);   
-        questionBo1 = (QuestionsBo) query.uniqueResult();
+         questionBo1 = (QuestionsBo) query.uniqueResult();
 
-		
+        }else if(stepType.equalsIgnoreCase("Instruction")) {
         query =
                 session
                     .createQuery("From InstructionsBo IBO WHERE IBO.id=: stepId");
         query.setString("stepId",stepId);   
-        instructionBo = (InstructionsBo) query.uniqueResult();
-
+         instructionBo = (InstructionsBo) query.uniqueResult();
+        }
+        else{
         query =
                 session
                     .createQuery("From FormBo FBO WHERE FBO.id=: stepId");
         query.setString("stepId",stepId);   
             
-        formBo = (FormBo) query.uniqueResult();
+          formBo = (FormBo) query.uniqueResult();
+        }
 
 
         if (questionBo1 != null) {

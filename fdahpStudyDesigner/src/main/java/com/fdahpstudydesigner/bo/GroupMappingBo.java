@@ -25,4 +25,8 @@ public class GroupMappingBo implements Serializable {
 
     @Column(name = "status")
     private Boolean status = false;
+
+    @Column(name = "quetstionnaire_stepId")
+    private Integer questionnaireStepId;
+
 }

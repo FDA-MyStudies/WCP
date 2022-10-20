@@ -134,7 +134,28 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 										<span class="mr-md close_img"><img
 											src="/fdahpStudyDesigner/images/icons/close.png"
 											onclick="del(${groupsAssignedList.stepId});" /></span>
-									<span>${groupsAssignedList.description}</span>
+											<c:if test="${groupsAssignedList.stepType ne 'Form'}">
+											<c:forEach items="${groupsAssignedList.description}" var="descriptions">
+											<span>
+									${descriptions}</span>
+										<br></c:forEach>
+											</c:if>
+											<c:if test="${groupsAssignedList.stepType eq 'Form'}">
+											<c:if test="${groupsAssignedList.description.size() == 1}">
+											<c:forEach items="${groupsAssignedList.description}" var="descriptions">
+											<span>
+									${descriptions}</span>
+										<br></c:forEach>
+										</c:if>
+											<c:if test="${groupsAssignedList.description.size() > 1}">
+											<div style="margin-left: 20px;">
+											<c:forEach items="${groupsAssignedList.description}" var="descriptions">
+											<span>
+									${descriptions}</span>
+										<br></c:forEach>
+									</div>
+									</c:if>
+									</c:if>
 								</div>
 							</c:forEach>
  						</div>

@@ -1,13 +1,16 @@
 package com.fdahpstudydesigner.bean;
 
+import java.util.List;
+
 public class GroupMappingStepBean {
 	
 	  private Integer stepId = null;
 	  
 	  private String stepType = "";
 	  
-	  private String description = "";
-
+	  private List<String> description;
+	  
+	
 	public Integer getStepId() {
 		return stepId;
 	}
@@ -24,11 +27,11 @@ public class GroupMappingStepBean {
 		this.stepType = stepType;
 	}
 
-	public String getDescription() {
+	public List<String> getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(List<String> description) {
 		this.description = description;
 	}
 

@@ -6622,11 +6622,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     QuestionsBo questionBo1 = null;
     InstructionsBo instructionBo = null;
     FormBo formBo = null;
-    String question = "";
     List<GroupMappingStepBean> groupMappingBeanss = new ArrayList<GroupMappingStepBean>();
     try {
       for (GroupMappingBo groupsList : groupMappingBo) {
         String stepId = groupsList.getStepId();
+        List<String> question = new ArrayList<>();
         GroupMappingStepBean groupMappingStepBean1 = new GroupMappingStepBean();
 
         session = hibernateTemplate.getSessionFactory().openSession();
@@ -6654,12 +6654,14 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
         if (questionBo1 != null) {
           groupMappingStepBean1.setStepId(questionBo1.getId());
-          groupMappingStepBean1.setDescription(questionBo1.getQuestion());
+          question.add(questionBo1.getQuestion());
+          groupMappingStepBean1.setDescription(question);
           groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
           groupMappingBeanss.add(groupMappingStepBean1);
         } else if (instructionBo != null) {
           groupMappingStepBean1.setStepId(instructionBo.getId());
-          groupMappingStepBean1.setDescription(instructionBo.getInstructionTitle());
+          question.add(instructionBo.getInstructionTitle());
+          groupMappingStepBean1.setDescription(question);
           groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
           groupMappingBeanss.add(groupMappingStepBean1);
         } else {
@@ -6672,20 +6674,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
                     session.createSQLQuery(fromQuery).setParameter("formIdList", formBo.getFormId()).list();
             for (int j = 0; j < result.size(); j++) {
               Object[] objects = (Object[]) result.get(j);
-              if (j > 0) {
-                Object[] objects1 = (Object[]) result.get(j - 1);
-
-                // question = (String) objects[4];
-                if ((objects[0]).equals(objects1[0])) {
-                  question = question + "<br>" + (String) objects[4];
-
-                } else {
-                  question = (String) objects[4];
-
-                }
-              } else {
-                question = (String) objects[4];
-              }
+              question.add((String) objects[4]);
             }
           }
           groupMappingStepBean1.setStepId(formBo.getFormId());

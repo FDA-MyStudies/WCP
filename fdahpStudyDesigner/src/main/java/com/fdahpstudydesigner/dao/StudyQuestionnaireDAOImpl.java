@@ -1015,7 +1015,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     newGroupMappingBo.setId(null);
                     newGroupMappingBo.setGrpId(groupIdMap.get(groupMapping.getGrpId()));
                     newGroupMappingBo.setStepId(stepIdMap.get(groupMapping.getStepId()).toString());
-                    newGroupMappingBo.setQuestionnaireStepId(groupMapping.getQuestionnaireStepId());
+                    newGroupMappingBo.setQuestionnaireStepId(newQuestionnairesStepsBo.getStepId());
                     session.saveOrUpdate(newGroupMappingBo);
                   }
                 }

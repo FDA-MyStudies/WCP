@@ -102,7 +102,7 @@ public class StudyQuestionnaireController {
               .getSession()
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG,
-                  "Questionnaire copyied successfully.");
+                  "Questionnaire copied successfully.");
           request
               .getSession()
               .setAttribute(

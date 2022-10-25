@@ -216,4 +216,6 @@ public String deleteStepMaprecords(String id);
   String deleteStepBasedOnStepId(String stepId);
 
   boolean isQuestionMultiSelect(int queId);
+
+  List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id);
 }

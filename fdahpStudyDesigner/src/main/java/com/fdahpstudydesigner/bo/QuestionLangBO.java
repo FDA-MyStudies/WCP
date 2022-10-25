@@ -87,6 +87,17 @@ public class QuestionLangBO implements Serializable {
   @Column(name = "other_description")
   private String otherDescription;
 
+  @Column(name = "piping_snippet", length = 2500)
+  private String pipingSnippet;
+
+  public String getPipingSnippet() {
+    return pipingSnippet;
+  }
+
+  public void setPipingSnippet(String pipingSnippet) {
+    this.pipingSnippet = pipingSnippet;
+  }
+
   public String getOtherText() {
     return otherText;
   }

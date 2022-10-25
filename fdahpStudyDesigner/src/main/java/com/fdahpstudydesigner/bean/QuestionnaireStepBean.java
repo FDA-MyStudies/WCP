@@ -33,4 +33,5 @@ public class QuestionnaireStepBean {
   private Integer pipingSourceQuestionKey;
   private Boolean differentSurvey;
   private Integer pipingSurveyId;
+  private String language;
 }

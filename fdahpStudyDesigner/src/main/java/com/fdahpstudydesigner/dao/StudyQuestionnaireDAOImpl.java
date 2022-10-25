@@ -6576,17 +6576,37 @@ public String checkGroupName(String questionnaireId, String groupName, String st
         session = hibernateTemplate.getSessionFactory().openSession();
         transaction = session.beginTransaction();
         QuestionnairesStepsBo questionnairesStepsBo = session.get(QuestionnairesStepsBo.class, bean.getStepId());
-        if (questionnairesStepsBo != null) {
-          questionnairesStepsBo.setIsPiping(true);
-          questionnairesStepsBo.setPipingSnippet(bean.getPipingSnippet());
-          questionnairesStepsBo.setDifferentSurvey(bean.getDifferentSurvey());
-          questionnairesStepsBo.setPipingSurveyId(bean.getPipingSurveyId());
-          questionnairesStepsBo.setPipingSourceQuestionKey(bean.getPipingSourceQuestionKey());
-          session.saveOrUpdate(questionnairesStepsBo);
-          transaction.commit();
-        } else {
-          throw new Exception("Step does not exist");
+        String stepType = questionnairesStepsBo.getStepType();
+        String language = bean.getLanguage();
+        if(StringUtils.isNotBlank(language) && !"en".equals(language)){
+          if ("Question".equals(stepType)) {
+            QuestionLangBO questionLangBO = session.get(QuestionLangBO.class, new QuestionLangPK(questionnairesStepsBo.getInstructionFormId(), language));
+            if (questionLangBO != null) {
+              questionLangBO.setPipingSnippet(bean.getPipingSnippet());
+              session.saveOrUpdate(questionLangBO);
+            }
+          } else if ("Instruction".equals(stepType)) {
+            InstructionsLangBO instructionsLangBO = session.get(InstructionsLangBO.class, new InstructionLangPK(questionnairesStepsBo.getInstructionFormId(), language));
+            if (instructionsLangBO != null){
+              instructionsLangBO.setPipingSnippet(bean.getPipingSnippet());
+              session.saveOrUpdate(instructionsLangBO);
+            }
+
+          }
         }
+        else{
+          if (questionnairesStepsBo != null) {
+            questionnairesStepsBo.setIsPiping(true);
+            questionnairesStepsBo.setPipingSnippet(bean.getPipingSnippet());
+            questionnairesStepsBo.setDifferentSurvey(bean.getDifferentSurvey());
+            questionnairesStepsBo.setPipingSurveyId(bean.getPipingSurveyId());
+            questionnairesStepsBo.setPipingSourceQuestionKey(bean.getPipingSourceQuestionKey());
+            session.saveOrUpdate(questionnairesStepsBo);
+          } else {
+            throw new Exception("Step does not exist");
+          }
+        }
+        transaction.commit();
       } catch (Exception e) {
         transaction.rollback();
         logger.error("StudyDAOImpl - saveOrUpdatePipingData() - ERROR ", e);
@@ -6999,5 +7019,22 @@ public String deleteStepMaprecords(String id) {
     }
     logger.info("StudyQuestionnaireDAOImpl - isQuestionMultiSelect() - Ends");
     return isMultiSelect;
+  }
+
+  @Override
+  public List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id) {
+    logger.info("StudyDAOImpl - getPreLoadLogicDetails() - Starts");
+    List<PreLoadLogicBo> preLoadLogicBo = null;
+    Query query = null;
+    String queryString = "";
+    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+      queryString = " FROM PreLoadLogicBo PBO WHERE PBO.stepGroupId = :id";
+      query = session.createQuery(queryString).setParameter("id", id);
+      preLoadLogicBo = (List<PreLoadLogicBo>) query.getResultList();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getPreLoadLogicDetails() - ERROR", e);
+    }
+    logger.info("StudyDAOImpl - getPreLoadLogicDetails() - Ends");
+    return preLoadLogicBo;
   }
 }

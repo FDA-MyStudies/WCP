@@ -181,11 +181,12 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 		<div>
                          <div class="gray-xs-f mb-xs">Group Default Visibility</div>
                          <div>
-                             <input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${groupsBo.groupDefaultVisibility}"/>
+                             <input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${groupsBo.defaultVisibility}"/>
                              <label class="switch bg-transparent mt-xs">
                                  <input type="checkbox" class="switch-input"
                                         id="groupDefaultVisibility"
-                                 <c:if test="${empty groupsBo.groupDefaultVisibility || groupsBo.groupDefaultVisibility eq 'true'}"> checked</c:if>>
+                                 <c:if test="${empty groupsBo.id}"><c:out value="disabled='disabled'"/></c:if>
+                                 <c:if test="${empty groupsBo.defaultVisibility || groupsBo.defaultVisibility eq 'true'}"> checked</c:if>>
                                  <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                                  <span class="switch-handle"></span>
                              </label>
@@ -222,7 +223,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                          </option>
                                      </c:forEach>
                                      <c:forEach items="${groupsList}" var="group" varStatus="status">
-                                           <option value="${group.groupId}" id="selectGroup${group.groupId}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                           <option value="${group.id}" id="selectGroup${group.id}"
+                                           ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
+                                           Group ${status.index + 1} :  ${group.groupName}&nbsp;
+                                           </option>
                                      </c:forEach>
                                      <option value="0"
                                          ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
@@ -236,8 +240,8 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
                          <div id="formulaContainer${status.index}">
                              <c:choose>
-                                 <c:when test="${groupsBo.preLoadLogicBeans.size() gt 0}">
-                                     <c:forEach items="${groupsBo.preLoadLogicBeans}" var="preLoadLogicBean" varStatus="status">
+                                 <c:when test="${preLoadLogicBoList.size() gt 0}">
+                                     <c:forEach items="${preLoadLogicBoList}" var="preLoadLogicBean" varStatus="status">
                                          <div id="form-div${status.index}"
                                               <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
                                               <c:if test="${status.index eq 0}">style="height: 150px;"</c:if> class="form-div">

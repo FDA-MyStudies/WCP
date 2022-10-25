@@ -2530,4 +2530,17 @@ public String deleteStepMaprecords(String id) {
   public boolean isQuestionMultiSelect(int queId) {
     return studyQuestionnaireDAO.isQuestionMultiSelect(queId);
   }
+
+  @Override
+  public List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Starts");
+    List<PreLoadLogicBo> preLoadLogicBo = null;
+    try {
+      preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicDetails(id);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsDetails() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Ends");
+    return preLoadLogicBo;
+  }
 }

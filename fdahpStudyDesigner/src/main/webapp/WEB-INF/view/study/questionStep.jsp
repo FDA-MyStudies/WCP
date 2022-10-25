@@ -379,6 +379,7 @@ input[type=number] {
 					type="hidden" id="mlResponseTypeId"
 					value="${questionLangBO.responseTypeId}"> <input
 					type="hidden" id="mlOtherText" value="${questionLangBO.otherText}">
+					<input type="hidden" id="mlSnippet" value="${questionLangBO.pipingSnippet}">
 				 <input type="hidden" id="mlChartTitle" value="${questionLangBO.chartTitle}">
 				<input type="hidden" id="seqNo" value="${questionnairesStepsBo.sequenceNo}">
 				<input
@@ -8395,6 +8396,7 @@ input[type=number] {
           success: function (data) {
             let htmlData = document.createElement('html');
             htmlData.innerHTML = data;
+            validatePipingData();
             let responseTypeId = $('[data-id="responseTypeId"]');
             if (language !== 'en') {
               updateCompletionTicks(htmlData);
@@ -8442,12 +8444,16 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, #piping, .switch').addClass('cursor-none');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').addClass('cursor-none');
+              $('#differentSurvey').attr('checked', false).attr('disabled', true);
+              $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
+              $('#surveyId, [data-id="surveyId"]').addClass('ml-disabled');
 
               // setting ml data
               $('#questionTextId').val($('#mlQuestion', htmlData).val());
               $('#descriptionId').val($('#mlDescription', htmlData).val());
               $('#chartTitleId').val($('#mlChartTitle', htmlData).val());
+              $('#pipingSnippet').val($('#mlSnippet', htmlData).val());
               let previousResponseType = $('#mlResponseTypeId', htmlData).val();
               // if response type mismatches
               if (previousResponseType!=='' && (previousResponseType !== $('#responseTypeId').val())) {
@@ -8657,11 +8663,15 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, #piping, .switch').removeClass('cursor-none');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').removeClass('cursor-none');
+              $('#differentSurvey').attr('checked', false).attr('disabled', false);
+              $('#surveyId, [data-id="surveyId"]').removeClass('ml-disabled');
+              $('#sourceQuestion, [data-id="sourceQuestion"]').removeClass('ml-disabled');
 
               // setting english data
               $('#questionTextId').val($('#questionTextId', htmlData).val());
               $('#descriptionId').val($('#descriptionId', htmlData).val());
+              $('#pipingSnippet').val($('#pipingSnippet', htmlData).val());
               $('#statDisplayNameId').val($('#statDisplayNameId', htmlData).val());
               $('#statDisplayUnitsId').val($('#statDisplayUnitsId', htmlData).val());
               $('#chartTitleId').val($('#chartTitleId', htmlData).val());
@@ -9133,30 +9143,51 @@ $('select.req, input.req').on('change', function () {
 
 function submitPiping() {
 	let valid = true;
-	$('select.req, input.req').each(function () {
-		let parent = $(this).parent();
-		let id = $(this).attr('id');
-		console.log(id);
-		if ($(this).is('select')) {
-			parent = $(this).closest('div.mb-xs');
-		}
-		if ($(this).val() === '') {
-			if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
-				parent.addClass('has-error has-danger').find(".help-block")
-						.empty()
-						.append($("<ul><li> </li></ul>")
-								.attr("class","list-unstyled")
-								.text("Please fill out this field."));
-				if (valid) {
-					valid = false;
-				}
-			}
-		} else {
-			if (parent.hasClass('has-error has-danger')) {
-				parent.removeClass('has-error has-danger').find(".help-block").empty();
-			}
-		}
-	});
+	let language = $('#studyLanguage').val();
+	if (language != null && language != undefined && language !== 'en') {
+	let parent = $('#pipingSnippet').parent();
+	if ($('#pipingSnippet').val() === '') {
+                                              parent.addClass('has-error has-danger').find(".help-block")
+                                                  .empty()
+                                                  .append($("<ul><li> </li></ul>")
+                                                  .attr("class","list-unstyled")
+                                                  .text("Please fill out this field."));
+                                              if (valid) {
+                                                  valid = false;
+                                              }
+                                      } else {
+                                          if (parent.hasClass('has-error has-danger')) {
+                                              parent.removeClass('has-error has-danger').find(".help-block").empty();
+                                          }
+                                      }
+	}
+	else {
+	    $('select.req, input.req').each(function () {
+        		let parent = $(this).parent();
+        		let id = $(this).attr('id');
+        		console.log(id);
+        		if ($(this).is('select')) {
+        			parent = $(this).closest('div.mb-xs');
+        		}
+        		if ($(this).val() === '') {
+        			if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+        				parent.addClass('has-error has-danger').find(".help-block")
+        						.empty()
+        						.append($("<ul><li> </li></ul>")
+        								.attr("class","list-unstyled")
+        								.text("Please fill out this field."));
+        				if (valid) {
+        					valid = false;
+        				}
+        			}
+        		} else {
+        			if (parent.hasClass('has-error has-danger')) {
+        				parent.removeClass('has-error has-danger').find(".help-block").empty();
+        			}
+        		}
+        	});
+	}
+
 	if (!valid) {
 		return false;
 	}
@@ -9168,6 +9199,7 @@ function submitPiping() {
 			pipingObject.differentSurvey = true;
 			pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
 		}
+		pipingObject.language = $('#studyLanguage').val();
 		pipingObject.stepId = $('#stepId').val();
 		let dataObject = JSON.stringify(pipingObject);
 		$.ajax({
@@ -9200,5 +9232,19 @@ function submitPiping() {
 		showErrMsg("Please save step first!");
 	}
 }
+
+function validatePipingData() {
+        $('select.req, input.req').each(function () {
+                              let parent = $(this).parent();
+                              let id = $(this).attr('id');
+                              console.log(id);
+                              if ($(this).is('select')) {
+                                  parent = $(this).closest('div.mb-xs');
+                              }
+                              if (parent.hasClass('has-error has-danger')) {
+                                  parent.removeClass('has-error has-danger').find(".help-block").empty();
+                              }
+                          });
+  }
   </script>
 

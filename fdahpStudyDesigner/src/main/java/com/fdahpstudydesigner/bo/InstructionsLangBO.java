@@ -18,6 +18,9 @@ public class InstructionsLangBO implements Serializable {
   @Column(name = "instruction_text", length = 2500)
   private String instructionText;
 
+  @Column(name = "piping_snippet", length = 2500)
+  private String pipingSnippet;
+
   @Column(name = "questionnaire_id")
   private Integer questionnaireId;
 
@@ -109,6 +112,14 @@ public class InstructionsLangBO implements Serializable {
 
   public void setInstructionText(String instructionText) {
     this.instructionText = instructionText;
+  }
+
+  public String getPipingSnippet() {
+    return pipingSnippet;
+  }
+
+  public void setPipingSnippet(String pipingSnippet) {
+    this.pipingSnippet = pipingSnippet;
   }
 
   public Boolean getStatus() {

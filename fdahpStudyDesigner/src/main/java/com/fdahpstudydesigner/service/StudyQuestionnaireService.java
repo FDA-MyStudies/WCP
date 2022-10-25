@@ -213,6 +213,8 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
 
 public String deleteStepMaprecords(String id);
 
+  List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id);
+
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 
   String deleteStepBasedOnStepId(String stepId);

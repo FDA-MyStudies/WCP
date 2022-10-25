@@ -162,6 +162,7 @@
                 type="hidden" name="questionnairesStepsBo.stepId" id="stepId"
                 value="${instructionsBo.questionnairesStepsBo.stepId}">
             <input type="hidden" id="mlTitle" value="${instructionsLangBO.instructionTitle}">
+            <input type="hidden" id="mlSnippet" value="${instructionsLangBO.pipingSnippet}">
             <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
              <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
@@ -702,12 +703,16 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
+        validatePipingData();
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').addClass('ml-disabled');
-          $('#piping').addClass('cursor-none');
+          $('#differentSurvey').attr('checked', false).attr('disabled', true);
+          $('#surveyId, [data-id="surveyId"]').addClass('ml-disabled');
+          $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
+          $('#pipingSnippet').val($('#mlSnippet', htmlData).val());
           $('#instructionText').val($('#mlText', htmlData).val());
         } else {
           updateCompletionTicksForEnglish();
@@ -715,7 +720,11 @@
           $('#shortTitleId, [data-id="destinationStepId"]').removeClass('ml-disabled');
           $('#piping').removeClass('cursor-none');
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
+          $('#pipingSnippet').val($('#pipingSnippet', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
+          $('#differentSurvey').attr('checked', false).attr('disabled', false);
+          $('#sourceQuestion, [data-id="sourceQuestion"]').removeClass('ml-disabled');
+          $('#surveyId, [data-id="surveyId"]').removeClass('ml-disabled');
 
           <c:if test="${actionTypeForQuestionPage == 'view'}">
           $('#basicInfoFormId input,textarea ').prop('disabled', true);
@@ -821,30 +830,50 @@
 
   function submitPiping() {
       let valid = true;
-      $('select.req, input.req').each(function () {
-          let parent = $(this).parent();
-          let id = $(this).attr('id');
-          console.log(id);
-          if ($(this).is('select')) {
-              parent = $(this).closest('div.mb-xs');
-          }
-          if ($(this).val() === '') {
-              if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
-                  parent.addClass('has-error has-danger').find(".help-block")
-                      .empty()
-                      .append($("<ul><li> </li></ul>")
-                          .attr("class","list-unstyled")
-                          .text("Please fill out this field."));
-                  if (valid) {
-                      valid = false;
-                  }
-              }
-          } else {
-              if (parent.hasClass('has-error has-danger')) {
-                  parent.removeClass('has-error has-danger').find(".help-block").empty();
-              }
-          }
-      });
+      let language = $('#studyLanguage').val();
+      if (language != null && language != undefined && language !== 'en') {
+      let parent = $('#pipingSnippet').parent();
+            if ($('#pipingSnippet').val() === '') {
+                                          parent.addClass('has-error has-danger').find(".help-block")
+                                              .empty()
+                                              .append($("<ul><li> </li></ul>")
+                                              .attr("class","list-unstyled")
+                                              .text("Please fill out this field."));
+                                          if (valid) {
+                                              valid = false;
+                                          }
+                                  } else {
+                                      if (parent.hasClass('has-error has-danger')) {
+                                          parent.removeClass('has-error has-danger').find(".help-block").empty();
+                                      }
+                                  }
+      }
+      else {
+            $('select.req, input.req').each(function () {
+                      let parent = $(this).parent();
+                      let id = $(this).attr('id');
+                      console.log(id);
+                      if ($(this).is('select')) {
+                          parent = $(this).closest('div.mb-xs');
+                      }
+                      if ($(this).val() === '') {
+                          if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+                              parent.addClass('has-error has-danger').find(".help-block")
+                                  .empty()
+                                  .append($("<ul><li> </li></ul>")
+                                      .attr("class","list-unstyled")
+                                      .text("Please fill out this field."));
+                              if (valid) {
+                                  valid = false;
+                              }
+                          }
+                      } else {
+                          if (parent.hasClass('has-error has-danger')) {
+                              parent.removeClass('has-error has-danger').find(".help-block").empty();
+                          }
+                      }
+                  });
+      }
       if (!valid) {
           return false;
       }
@@ -856,6 +885,7 @@
               pipingObject.differentSurvey = true;
               pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
           }
+          pipingObject.language = $('#studyLanguage').val();
           pipingObject.stepId = $('#stepId').val();
           let dataObject = JSON.stringify(pipingObject);
           $.ajax({
@@ -888,5 +918,19 @@
           $('#pipingModal').modal('hide');
           showErrMsg("Please save step first!");
       }
+  }
+
+  function validatePipingData() {
+        $('select.req, input.req').each(function () {
+                              let parent = $(this).parent();
+                              let id = $(this).attr('id');
+                              console.log(id);
+                              if ($(this).is('select')) {
+                                  parent = $(this).closest('div.mb-xs');
+                              }
+                              if (parent.hasClass('has-error has-danger')) {
+                                  parent.removeClass('has-error has-danger').find(".help-block").empty();
+                              }
+                          });
   }
 </script>

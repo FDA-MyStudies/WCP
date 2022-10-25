@@ -4054,6 +4054,7 @@ public class StudyQuestionnaireController {
     String sucMsg = "";
     StudyBo studyBo = null;
     List<GroupsBo> groupsList = null;
+    List<PreLoadLogicBo> preLoadLogicBoList = null;
     String errMsg = "";
     String actionPage = "";
     int grpId = 0;
@@ -4180,7 +4181,7 @@ public class StudyQuestionnaireController {
             actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
-
+            preLoadLogicBoList = studyQuestionnaireService.getPreLoadLogicDetails(StringUtils.isNotEmpty(id) ? Integer.parseInt(id) : null);
           } else {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
@@ -4197,6 +4198,7 @@ public class StudyQuestionnaireController {
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);
+          map.addAttribute("preLoadLogicBoList", preLoadLogicBoList);
           map.addAttribute("_S", sessionStudyCount);
           map.addAttribute("operators", Arrays.asList("<", ">", "=", "!=", "<=", ">="));
           map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));

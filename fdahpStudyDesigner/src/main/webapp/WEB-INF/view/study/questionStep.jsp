@@ -5903,6 +5903,34 @@ input[type=number] {
 		}
 	}
 
+	function setOperatorDropDownOnAdd(responseType) {
+		if (responseType != null) {
+			if (responseType === '1'|| responseType === '2' ||
+					responseType === '8' || responseType === '14' ) {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker();
+			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["=", "!="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker();
+			} else {
+				defaultVisibility.prop('checked', true).trigger('change');
+				defaultVisibility.prop('disabled', true);
+			}
+		}
+	}
+
       function toJSDate(dateTime) {
         if (dateTime != null && dateTime != '' && typeof dateTime != 'undefined') {
           var date = dateTime.split("/");
@@ -7585,37 +7613,37 @@ input[type=number] {
           });
           callback(isValid);
         } else if (responsetype == "Text Choice") {
-			let id = $("#" + selected_id);
-			let valField = $(id).val();
-			if (valField !== '' && valField !== undefined) {
-				id.parent().removeClass("has-danger").removeClass("has-error");
-				id.parent().find(".help-block").empty();
-				if (valueArrayTxtChoice.includes(valField.toLowerCase())) {
-					id.val('');
-					id.parent().addClass("has-danger").addClass("has-error");
-					id.parent().find(".help-block")
+        	valueArrayTxtChoice = new Array();
+        	 $('.text-choice').each(function () {
+        	let id = $(this).attr("id");
+			let valField =  $("#displayTextChoiceValue" + id).val();
+			if (valField != '' && valField !== undefined) {
+				$("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass("has-error");
+				$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+				if (valueArrayTxtChoice.indexOf(valField.toLowerCase()) !=-1) {
+		        	$("#displayTextChoiceValue" + id).val('');
+		        	$("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
+		        	$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+		        	$("#displayTextChoiceValue" + id).parent().find(".help-block")
 							.append($("<ul><li> </li></ul>")
 									.attr("class", "list-unstyled")
 									.text("The value should be unique "));
 					return false;
-				} else {
-					valueArrayTxtChoice = new Array();
-					$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
-						let val = $(ele).val();
+				}
+				else {
+						let val = valField.toLowerCase();
 						if (val !== '' && val !== undefined) {
 							valueArrayTxtChoice.push(val);
 						}
-					});
 				}
-			} else {
-				valueArrayTxtChoice = new Array();
-				$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
-					let val = $(ele).val();
+        	}
+        	else {
+					let val =  valField.toLowerCase();
 					if (val !== '' && val !== undefined) {
 						valueArrayTxtChoice.push(val);
 					}
-				});
 			}
+        });
           callback(isValid);
         }
       }
@@ -8880,7 +8908,7 @@ $('.text-choice').each(function(i){
 				'</div>'+
 				'</div>';
 		formContainer.append(formula);
-		setOperatorDropDown($('#responseTypeId').val());
+		setOperatorDropDownOnAdd($('#responseTypeId').val());
 	});
 
 if (dv.is(':checked')) {

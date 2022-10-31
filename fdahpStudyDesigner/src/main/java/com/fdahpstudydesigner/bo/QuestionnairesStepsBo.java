@@ -112,7 +112,7 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "group_flag")
   private  Boolean groupFlag;
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "step_id")
   private Integer stepId;
 

@@ -6882,18 +6882,20 @@ public class StudyDAOImpl implements StudyDAO {
               if (pipingSurveyIdMap != null) {
                 for (String surveyId : pipingSurveyIdMap.keySet()) {
                   int oldSurveyId = Integer.parseInt(surveyId.split("_")[0]);
-                  int newSurveyId = oldNewQueIdMap.get(oldSurveyId);
-                  session.createQuery("update QuestionnairesStepsBo set pipingSurveyId=:newId where stepId=:stepId")
-                          .setParameter("newId", newSurveyId)
-                          .setParameter("stepId", pipingSurveyIdMap.get(surveyId))
-                          .executeUpdate();
+                  Integer newSurveyId = oldNewQueIdMap.containsKey(oldSurveyId) ? oldNewQueIdMap.get(oldSurveyId) : null;
+                  if (newSurveyId != null) {
+                    session.createQuery("update QuestionnairesStepsBo set pipingSurveyId=:newId where stepId=:stepId")
+                            .setParameter("newId", newSurveyId)
+                            .setParameter("stepId", pipingSurveyIdMap.get(surveyId))
+                            .executeUpdate();
+                  }
                 }
               }
 
               if (oldNewSourceMap != null) {
                 for (String oldSrc : oldNewSourceMap.keySet()) {
                   int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
-                  Integer newStepId = oldNewStepIdMap.get(oldStepId);
+                  Integer newStepId = oldNewStepIdMap.containsKey(oldStepId) ? oldNewStepIdMap.get(oldStepId) : null;
                   if (newStepId != null) {
                     session.createQuery("update QuestionnairesStepsBo set pipingSourceQuestionKey=:newId where stepId=:stepId")
                             .setParameter("newId", newStepId)
@@ -6906,11 +6908,13 @@ public class StudyDAOImpl implements StudyDAO {
               if (preloadSurveyMap != null) {
                 for (String surveyId : preloadSurveyMap.keySet()) {
                   int oldSurveyId = Integer.parseInt(surveyId.split("_")[0]);
-                  int newSurvey = oldNewQueIdMap.get(oldSurveyId);
-                  session.createQuery("update QuestionnairesStepsBo set preLoadSurveyId=:newId where stepId=:stepId")
-                          .setParameter("newId", newSurvey)
-                          .setParameter("stepId", preloadSurveyMap.get(surveyId))
-                          .executeUpdate();
+                  Integer newSurvey = oldNewQueIdMap.containsKey(oldSurveyId) ? oldNewQueIdMap.get(oldSurveyId) : null;
+                  if (newSurvey != null) {
+                    session.createQuery("update QuestionnairesStepsBo set preLoadSurveyId=:newId where stepId=:stepId")
+                            .setParameter("newId", newSurvey)
+                            .setParameter("stepId", preloadSurveyMap.get(surveyId))
+                            .executeUpdate();
+                  }
                 }
               }
 
@@ -6922,17 +6926,20 @@ public class StudyDAOImpl implements StudyDAO {
                   Integer newStepId = null;
                   if (oldStepId != 0) {
                     if (FdahpStudyDesignerConstants.STEP.equals(type)) {
-                      newStepId = oldNewStepIdMap.get(oldStepId);
+                      newStepId = oldNewStepIdMap.containsKey(oldStepId) ? oldNewStepIdMap.get(oldStepId) : null;
                     } else if (FdahpStudyDesignerConstants.GROUP.equals(type)){
-                      newStepId = oldNewGroupIdMap.get(oldStepId);
+                      newStepId = oldNewGroupIdMap.containsKey(oldStepId) ? oldNewGroupIdMap.get(oldStepId) : null;
                     }
                   } else {
                     newStepId = 0;
                   }
-                  session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
-                          .setParameter("newId", newStepId)
-                          .setParameter("stepId", oldNewDestMap.get(oldSrc))
-                          .executeUpdate();
+                  Integer newSrc = oldNewDestMap.get(oldSrc);
+                  if (newStepId != null && newSrc != null) {
+                    session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
+                            .setParameter("newId", newStepId)
+                            .setParameter("stepId", newSrc)
+                            .executeUpdate();
+                  }
                 }
               }
               // Executing draft version to 0

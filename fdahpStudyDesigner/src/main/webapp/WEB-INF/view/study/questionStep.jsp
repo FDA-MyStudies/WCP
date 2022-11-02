@@ -2890,7 +2890,7 @@ input[type=number] {
                                     name="questionResponseSubTypeList[0].text"
                                     id="displayTextChoiceText0"
                                     value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}"
-                                    maxlength="100">
+                                    maxlength="100"><div class="help-block with-errors red-txt"></div>
 
 
                                 </div>
@@ -3055,10 +3055,6 @@ input[type=number] {
                                           id="displayTextChoiceText1"
                                           value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}"
                                           maxlength="100">
-
-
-
-
                                         <div class="help-block with-errors red-txt"></div>
                                       </div>
                                     </div>

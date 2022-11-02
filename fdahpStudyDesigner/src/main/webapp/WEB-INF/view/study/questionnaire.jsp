@@ -4288,7 +4288,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               },
               success: function deleteConsentInfo(data) {
                 var status = data.message;
-                if (status == "SUCCESS") {
+                if (status === "SUCCESS") {
                   $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                       "Questionnaire step deleted successfully");
                   $('#alertMsg').show();
@@ -4312,6 +4312,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     $('#anchorspanId').attr('disabled', false);
                     $('#schedule2').attr('disabled', false);
                     $('.schedule').attr('disabled', false);
+                  }
+                  if (data.allowReorder === false) {
+                      table1.rowReorder.disable();
+                      $('#branchingId').prop('disabled', true);
+                  } else {
+                      table1.rowReorder.enable();
+                      $('#branchingId').prop('disabled', false);
                   }
                 } else {
                   if (status == 'FAILUREanchorused') {

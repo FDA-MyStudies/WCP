@@ -455,6 +455,7 @@ public class StudyQuestionnaireController {
                   sesObj,
                   customStudyId);
             }
+            jsonobject.put("allowReorder", studyQuestionnaireService.isPreloadLogicAndPipingEnabled(questionnaireBo.getId()));
           }
         }
       }

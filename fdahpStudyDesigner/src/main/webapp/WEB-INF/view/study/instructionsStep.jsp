@@ -403,6 +403,10 @@
             idleTime += 1;
             if (idleTime > 3) {
                     <c:if test="${actionTypeForQuestionPage ne 'view'}">
+                    let pageType = '${actionTypeForQuestionPage}';
+                    if ($('#pipingModal').hasClass('show')) {
+                        submitPiping();
+                    }
                     autoSaveInstructionStepPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">
@@ -425,20 +429,20 @@
            if (i === 0) {
             $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
              if ($('#timeOutModal').hasClass('show')) {
-               $('#backToLoginPage').submit();
-            }
+                 $('#backToLoginPage').submit();
+             }
              clearInterval(timeOutInterval);
+           } else {
+               if (i === 1) {
+                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
                } else {
-                 if (i === 1) {
-               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                 } else {
-                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                }
-                 idleTime = 0;
-                 i-=1;
-                  }
-                  }, 60000);
-                  }
+                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+               }
+               idleTime = 0;
+               i-=1;
+           }
+          }, 60000);
+        }
   });
 
   $('#pbutton').on('click', function() {
@@ -529,7 +533,7 @@
     }
   }
 
-  function saveInstruction(item) {
+  function saveInstruction() {
     var instruction_id = $("#id").val();
     var questionnaire_id = $("#questionnaireId").val();
     var instruction_title = $("#instructionTitle").val();
@@ -574,24 +578,15 @@
           var message = data.message;
           if (message === "SUCCESS") {
             $("#preShortTitleId").val(shortTitle);
-            var instructionId = data.instructionId;
-            var stepId = data.stepId;
+            let instructionId = data.instructionId;
+            let stepId = data.stepId;
             $("#id").val(instructionId);
             $("#stepId").val(stepId);
-            $("#alertMsg").removeClass('e-box').addClass(
-                's-box')
-            .text("Content saved as draft.");
-            $(item).prop('disabled', false);
+            $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
             $("#saveId").attr("disabled", false);
             $('#alertMsg').show();
-            if ($('.seventhQuestionnaires')
-            .find('span')
-            .hasClass(
-                'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.seventhQuestionnaires')
-              .find('span')
-              .removeClass(
-                  'sprites-icons-2 tick pull-right mt-xs');
+            if ($('.seventhQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+              $('.seventhQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
             }
             $("body").removeClass("loading");
             // pop message after 15 minutes
@@ -631,7 +626,6 @@
           setTimeout(hideDisplayMessage, 4000);
         },
         error: function (xhr, status, error) {
-          $(item).prop('disabled', false);
           $('#alertMsg').show();
           $("#alertMsg").removeClass('s-box').addClass(
               'e-box').text("Something went Wrong");

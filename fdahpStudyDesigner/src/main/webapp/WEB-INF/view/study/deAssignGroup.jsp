@@ -305,7 +305,11 @@ var idleTime = 0;
    		    });
    		  }
 
+          let size=${fn:length(groupsAssignedList)}
+          let count=size;
             function del(stepId){
+            	if(count>2){
+                    if(size>2){
                	$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/deassignSteps.do?_S=${param._S}",
                     type: "POST",
@@ -318,11 +322,21 @@ var idleTime = 0;
                         var status = data.message;
                         if (status == "SUCCESS") {
                         	 $('#std'+stepId).remove();
+                        	 count--;
                         }
                     }
                	 
-              })
+              	})
+            	}
+        	}
+        	else
+            {
+            $("#alertMsg").removeClass('e-box').addClass('s-box').text(
+            "Group should atleast contain 2 steps");
+            $('#alertMsg').show();
             }
+        	setTimeout(hideDisplayMessage, 4000);
+    	}
 
 <c:if test="${actionType == 'view'}">
 $('#deassignId').addClass('ml-disabled');

@@ -221,5 +221,7 @@ public String deleteStepMaprecords(String id);
 
   boolean isQuestionMultiSelect(int queId);
 
+  Integer getGroupId(String stepId);
+
   boolean isLastFormQuestion(String formId, String questionId);
 }

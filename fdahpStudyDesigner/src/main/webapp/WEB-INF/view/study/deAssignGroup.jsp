@@ -331,7 +331,7 @@ var idleTime = 0;
         	}
         	else
             {
-            $("#alertMsg").removeClass('e-box').addClass('s-box').text(
+            $("#alertMsg").removeClass('s-box').addClass('e-box').text(
             "Group should atleast contain 2 steps");
             $('#alertMsg').show();
             }

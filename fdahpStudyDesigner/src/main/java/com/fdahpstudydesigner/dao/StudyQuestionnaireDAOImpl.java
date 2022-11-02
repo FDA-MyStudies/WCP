@@ -7102,4 +7102,30 @@ public String deleteStepMaprecords(String id) {
     logger.info("StudyQuestionnaireDAOImpl - isQuestionMultiSelect() - Ends");
     return isLastFormQuestion;
   }
+
+  @Override
+  public Integer getGroupId(String stepId) {
+    logger.info("StudyDAOImpl - getGroupId() - Starts");
+ Session session = null;
+    Integer groupId = 0;
+    Query query = null;
+ String queryString = "";
+ try{
+ session = hibernateTemplate.getSessionFactory().openSession();
+
+ queryString = "select grpId FROM GroupMappingBo GBO WHERE GBO.stepId = "+stepId;
+ query = session.createQuery(queryString);
+   groupId = (Integer) query.uniqueResult();
+ }
+catch(Exception e){
+ logger.error("StudyDAOImpl - getGroupId() - ERROR",e);
+ }finally{
+ if(session != null){
+ session.close();
+ }
+ }
+logger.info("StudyDAOImpl - getGroupId() - Ends");
+ return groupId;
+
+  }
 }

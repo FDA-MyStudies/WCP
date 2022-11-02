@@ -219,5 +219,7 @@ public String deleteStepMaprecords(String id);
 
   List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id);
 
+    Integer getGroupId(String stepId);
+
   boolean isLastFormQuestion(String formId, String questionId);
 }

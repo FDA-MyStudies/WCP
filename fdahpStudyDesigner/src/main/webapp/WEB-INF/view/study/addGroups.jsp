@@ -88,7 +88,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
 <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-
+<input type="hidden" id="defaultVisibility" value="${groupsBo.defaultVisibility}" name="defaultVisibility"/>
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
             <div class="right-content-head">
@@ -690,7 +690,6 @@ document.body.appendChild(a).click();
          $("#doneGroupId").click(function () {
         	 let isPublished=${groupsBo.isPublished}
         	 $('#groupId').prop('disabled', false);
-
         	  var questnId = $('#questionnaireId').val();
         	  var id = $('#id').val();
         	   var groupId = $('#groupId').val();
@@ -716,19 +715,15 @@ document.body.appendChild(a).click();
                            $('#value0').val();
                            $('#operator0').val();
         	               $('#addGroupFormId').submit();
-
-        	               }
-        	               else
-        	               {
+        	               }else{
         	               $("#alertMsg").removeClass('s-box').addClass('e-box').text(
         	                    "Please fill out this all the mandatory fields");
         	                $('#alertMsg').show();
         	               }
         	               setTimeout(hideDisplayMessage, 4000);
-        		}
-        			else{
-        	            		$('#doneStudyId').prop('disabled',false);
-        	              }
+        		}else{
+        	          $('#doneStudyId').prop('disabled',false);
+        	          }
         	  });
 
 

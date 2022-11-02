@@ -1636,7 +1636,7 @@ $('#addFormula').on('click', function () {
         '</div>'+
         '</div>';
     formContainer.append(formula);
-    setOperatorDropDown($('#lastResponseType').val());
+    setOperatorDropDownOnAdd($('#lastResponseType').val());
 });
 
 if (defaultVisibility.is(':checked')) {
@@ -1740,6 +1740,36 @@ function setOperatorDropDown(responseType) {
         }
     }
 }
+
+
+function setOperatorDropDownOnAdd(responseType) {
+	if (responseType != null) {
+		if (responseType === '1'|| responseType === '2' ||
+				responseType === '8' || responseType === '14' ) {
+			defaultVisibility.prop('disabled', false);
+			let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+			let operator = $('select.operator');
+			operator.empty();
+			$.each(operatorList, function (index, val) {
+				operator.append('<option value="'+val+'">'+val+'</option>');
+			});
+			$('.selectpicker').selectpicker();
+		} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+			defaultVisibility.prop('disabled', false);
+			let operatorList = ["=", "!="];
+			let operator = $('select.operator');
+			operator.empty();
+			$.each(operatorList, function (index, val) {
+				operator.append('<option value="'+val+'">'+val+'</option>');
+			});
+			$('.selectpicker').selectpicker();
+		} else {
+			defaultVisibility.prop('checked', true).trigger('change');
+			defaultVisibility.prop('disabled', true);
+		}
+	}
+}
+
 
 $('#differentSurveyPreLoad').on('change', function(e) {
     if($(this).is(':checked')) {

@@ -2532,6 +2532,11 @@ public String deleteStepMaprecords(String id) {
   }
 
   @Override
+  public boolean isLastFormQuestion(String formId, String questionId) {
+    return studyQuestionnaireDAO.isLastFormQuestion(formId, questionId);
+  }
+
+  @Override
   public List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Starts");
     List<PreLoadLogicBo> preLoadLogicBo = null;

@@ -1056,6 +1056,19 @@ public class StudyQuestionnaireController {
             map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
           }
         }
+        boolean isLastQuestion = false;
+        if (questionnairesStepsBo != null &&
+                questionnairesStepsBo.getDefaultVisibility() != null &&
+                !questionnairesStepsBo.getDefaultVisibility()) {
+          if (StringUtils.isNotBlank(questionId)) {
+            if (Arrays.asList(1, 2, 3, 7, 8, 11, 14).contains(questionsBo.getResponseType())) {
+              isLastQuestion = studyQuestionnaireService.isLastFormQuestion(formId, questionId);
+            }
+          } else {
+            isLastQuestion = true;
+          }
+        }
+        map.addAttribute("isLastFormQuestion", isLastQuestion);
         map.addAttribute("timeRangeList", timeRangeList);
         map.addAttribute("statisticImageList", statisticImageList);
         map.addAttribute("activetaskFormulaList", activetaskFormulaList);

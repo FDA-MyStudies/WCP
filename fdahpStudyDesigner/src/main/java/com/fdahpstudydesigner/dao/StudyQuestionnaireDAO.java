@@ -218,4 +218,6 @@ public String deleteStepMaprecords(String id);
   boolean isQuestionMultiSelect(int queId);
 
   List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id);
+
+  boolean isLastFormQuestion(String formId, String questionId);
 }

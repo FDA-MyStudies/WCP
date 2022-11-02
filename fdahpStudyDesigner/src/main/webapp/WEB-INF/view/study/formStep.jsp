@@ -681,7 +681,7 @@
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
-    var table1;
+    var table1 = null;
     var defaultVisibility = $('#groupDefaultVisibility');
 var idleTime = 0;
   $(document).ready(function () {
@@ -945,6 +945,11 @@ var idleTime = 0;
         });
       }
     });
+      if (table1 != null && $('#groupDefaultVisibility').is(':checked')) {
+          table1.rowReorder.enable();
+      } else {
+          table1.rowReorder.disable();
+      }
     if (document.getElementById("doneId") != null && document.getElementById("doneId").disabled) {
       $('[data-toggle="tooltip"]').tooltip();
     }
@@ -989,12 +994,6 @@ var idleTime = 0;
                }
                }, 60000);
                }
-
-      if ($('#groupDefaultVisibility').is(':checked')) {
-          table1.rowReorder.enable();
-      } else {
-          table1.rowReorder.disable();
-      }
   });
 
   function saveFormStep() {
@@ -1671,7 +1670,9 @@ defaultVisibility.on('change', function () {
     let logicDiv = $('#logicDiv');
     let addForm = $('#addFormula');
     if  (toggle.is(':checked')) {
-        table1.rowReorder.enable();
+        if (table1 != null) {
+            table1.rowReorder.enable();
+        }
         $('.deletable').remove();
         logicDiv.find('div.bootstrap-select, input, select').each( function () {
             $(this).addClass('ml-disabled');
@@ -1697,7 +1698,9 @@ defaultVisibility.on('change', function () {
         addForm.attr('disabled', true);
         $('#skiappableYes').prop('disabled', false);
     } else {
-        table1.rowReorder.disable();
+        if (table1 != null) {
+            table1.rowReorder.disable();
+        }
         logicDiv.find('div.bootstrap-select, input, select').each( function () {
             $(this).removeClass('ml-disabled');
             if ($(this).is("select")) {

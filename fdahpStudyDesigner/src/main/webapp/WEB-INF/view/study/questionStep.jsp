@@ -8445,7 +8445,7 @@ input[type=number] {
                 });
               }
               $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').addClass('cursor-none');
-              $('#differentSurvey').attr('checked', false).attr('disabled', true);
+              $('#differentSurvey').attr('disabled', true);
               $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
               $('#surveyId, [data-id="surveyId"]').addClass('ml-disabled');
 
@@ -8664,7 +8664,7 @@ input[type=number] {
                 });
               }
               $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').removeClass('cursor-none');
-              $('#differentSurvey').attr('checked', false).attr('disabled', false);
+              $('#differentSurvey').attr('disabled', false);
               $('#surveyId, [data-id="surveyId"]').removeClass('ml-disabled');
               $('#sourceQuestion, [data-id="sourceQuestion"]').removeClass('ml-disabled');
 
@@ -9016,6 +9016,7 @@ function refreshSourceKeys(surveyId, type) {
 				caller : type,
 				seqNo : $('#seqNo').val(),
 				questionnaireId : surveyId,
+				stepId : $('#stepId').val(),
 				isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
 				isDifferentSurveyPiping : $('#differentSurvey').is(':checked'),
 				"${_csrf.parameterName}":"${_csrf.token}"

@@ -189,7 +189,7 @@ public interface StudyQuestionnaireDAO {
 
   List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 
-  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller);
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId);
 
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive);
 

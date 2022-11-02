@@ -694,12 +694,14 @@ public class StudyQuestionnaireController {
           map.addAttribute("operators", isMultiSelect ? null : this.getOperatorsListByResponseType(responseType));
           int preloadQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
           int preloadSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+          Integer currStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
           if (questionnairesStepsBo != null) {
             if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
               preloadQueId = questionnairesStepsBo.getPreLoadSurveyId();
               preloadSeqNo = -1;
             }
-            map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload"));
+            map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService
+                    .getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload", currStepId));
           }
 
           String queIdForGroups = questionnaireId;
@@ -1278,6 +1280,7 @@ public class StudyQuestionnaireController {
         }
         int pipingQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
         int pipingSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+        Integer currStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
         if (questionnairesStepsBo != null) {
           if (questionnairesStepsBo.getDifferentSurvey() != null && questionnairesStepsBo.getDifferentSurvey()) {
             pipingQueId = questionnairesStepsBo.getPipingSurveyId();
@@ -1286,7 +1289,7 @@ public class StudyQuestionnaireController {
         } else {
           pipingSeqNo = -1;
         }
-        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping"));
+        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping", currStepId));
         if (studyBo != null && FdahpStudyDesignerConstants.YES.equals(isLive)) {
           studyId = studyBo.getCustomStudyId();
         }
@@ -1803,6 +1806,7 @@ public class StudyQuestionnaireController {
         int preloadQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
         int pipingSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
         int preloadSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
+        Integer currStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
         if (questionnairesStepsBo != null) {
           if (questionnairesStepsBo.getDifferentSurvey() != null
                   && questionnairesStepsBo.getDifferentSurvey()
@@ -1816,11 +1820,13 @@ public class StudyQuestionnaireController {
             preloadQueId = questionnairesStepsBo.getPreLoadSurveyId();
             preloadSeqNo = -1;
           }
-          map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload"));
+          map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService
+                  .getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload", currStepId));
         } else {
           pipingSeqNo = -1;
         }
-        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping"));
+        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService
+                .getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping", currStepId));
 
         String queIdForGroups = questionnaireId;
         boolean isStep = true;
@@ -4885,7 +4891,8 @@ public class StudyQuestionnaireController {
         seqNo = -1;
       }
       if (seqNo != null && StringUtils.isNotBlank(questionnaireId)) {
-        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(Integer.parseInt(questionnaireId), seqNo, bean.getCaller());
+        List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(
+                Integer.parseInt(questionnaireId), seqNo, bean.getCaller(), bean.getStepId());
         List<GroupsBo> groupsList = studyQuestionnaireService.getGroupsByStudyId(null, questionnaireId, false, null);
         jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
         jsonobject.put("groupList", new JSONArray(new Gson().toJson(groupsList)));

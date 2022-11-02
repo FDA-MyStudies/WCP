@@ -708,7 +708,7 @@
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').addClass('ml-disabled');
-          $('#differentSurvey').attr('checked', false).attr('disabled', true);
+          $('#differentSurvey').attr('disabled', true).addClass('ml-disabled');
           $('#surveyId, [data-id="surveyId"]').addClass('ml-disabled');
           $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
@@ -722,7 +722,7 @@
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
           $('#pipingSnippet').val($('#pipingSnippet', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
-          $('#differentSurvey').attr('checked', false).attr('disabled', false);
+          $('#differentSurvey').attr('disabled', false).removeClass('ml-disabled');
           $('#sourceQuestion, [data-id="sourceQuestion"]').removeClass('ml-disabled');
           $('#surveyId, [data-id="surveyId"]').removeClass('ml-disabled');
 
@@ -922,15 +922,14 @@
 
   function validatePipingData() {
         $('select.req, input.req').each(function () {
-                              let parent = $(this).parent();
-                              let id = $(this).attr('id');
-                              console.log(id);
-                              if ($(this).is('select')) {
-                                  parent = $(this).closest('div.mb-xs');
-                              }
-                              if (parent.hasClass('has-error has-danger')) {
-                                  parent.removeClass('has-error has-danger').find(".help-block").empty();
-                              }
-                          });
+            let parent = $(this).parent();
+            let id = $(this).attr('id');
+            if ($(this).is('select')) {
+                parent = $(this).closest('div.mb-xs');
+            }
+            if (parent.hasClass('has-error has-danger')) {
+                parent.removeClass('has-error has-danger').find(".help-block").empty();
+            }
+        });
   }
 </script>

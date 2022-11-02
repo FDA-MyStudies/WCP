@@ -189,7 +189,7 @@ String checkGroupName(String questionnaireId, String groupName, String studyId);
 
   public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 
-  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller);
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId);
 
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive);
 

@@ -1776,6 +1776,7 @@ function refreshSourceKeys(surveyId, type) {
             data : {
                 caller : type,
                 seqNo : $('#seqNo').val(),
+                stepId : $('#stepId').val(),
                 questionnaireId : surveyId,
                 isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
                 "${_csrf.parameterName}":"${_csrf.token}"

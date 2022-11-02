@@ -6491,7 +6491,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller) {
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId) {
     logger.info("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - Starts");
     Session session = null;
     List<QuestionnairesStepsBo> list = null;
@@ -6500,27 +6500,63 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       if (queId != 0) {
         org.hibernate.query.Query<QuestionnairesStepsBo> query;
         if ("preload".equals(caller)) {
-          if (seq != -1) {
-            query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo > :seq")
+          List<Integer> destList;
+          if (currStepId != null) {
+            destList = session.createQuery("select destinationTrueAsGroup from QuestionnairesStepsBo where active = true and questionnairesId=:queId and stepId <> :stepId")
                     .setParameter("queId", queId)
-                    .setParameter("seq", seq);
+                    .setParameter("stepId", currStepId)
+                    .list();
           } else {
-            query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
-                    .setParameter("queId", queId);
+            destList = session.createQuery("select destinationTrueAsGroup from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
+                    .setParameter("queId", queId)
+                    .list();
           }
+          destList.removeAll(Collections.singleton(null));
+          if (seq != -1) {
+            if (!destList.isEmpty()) {
+              query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo > :seq and stepId not in (:destList)")
+                      .setParameter("queId", queId)
+                      .setParameter("destList", destList)
+                      .setParameter("seq", seq);
+            } else {
+              query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and sequenceNo > :seq")
+                      .setParameter("queId", queId)
+                      .setParameter("seq", seq);
+            }
+          } else {
+            if (!destList.isEmpty()) {
+              query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId and stepId not in (:destList)")
+                      .setParameter("destList", destList)
+                      .setParameter("queId", queId);
+            } else {
+              query = session.createQuery("from QuestionnairesStepsBo where active = true and questionnairesId=:queId")
+                      .setParameter("queId", queId);
+            }
+          }
+          list = query.list();
         } else {
           if (seq != -1) {
-            query = session.createQuery("select qs from QuestionnairesStepsBo qs, QuestionsBo qb where qs.active = true and qs.questionnairesId=:queId and qs.sequenceNo < :seq and qb.responseType in (:responseList) and qb.id = qs.instructionFormId")
+            query = session.createQuery("select qs from QuestionnairesStepsBo qs, QuestionsBo qb where qs.active = true " +
+                            "and qs.questionnairesId=:queId and qs.sequenceNo < :seq and qb.responseType in (:responseList) " +
+                            "and qb.id = qs.instructionFormId")
                     .setParameter("queId", queId)
                     .setParameter("seq", seq)
                     .setParameterList("responseList", Arrays.asList(3, 4, 6, 11));
           } else {
-            query = session.createQuery("select qs from QuestionnairesStepsBo qs, QuestionsBo qb where qs.active = true and qs.questionnairesId=:queId and qb.responseType in (:responseList) and qb.id = qs.instructionFormId")
+            query = session.createQuery("select qs from QuestionnairesStepsBo qs, QuestionsBo qb where qs.active = true " +
+                            "and qs.questionnairesId=:queId and qb.responseType in (:responseList) " +
+                            "and qb.id = qs.instructionFormId")
                     .setParameter("queId", queId)
                     .setParameterList("responseList", Arrays.asList(3, 4, 6, 11));
           }
+          List<QuestionnairesStepsBo> rawList = query.list();
+          list = new ArrayList<>();
+          for (QuestionnairesStepsBo stepsBo : rawList) {
+            if (!isQuestionMultiSelect(stepsBo.getInstructionFormId())) {
+              list.add(stepsBo);
+            }
+          }
         }
-        list = query.list();
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getSameSurveySourceKeys() - ERROR ", e);

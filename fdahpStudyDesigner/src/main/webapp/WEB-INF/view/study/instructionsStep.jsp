@@ -403,7 +403,6 @@
             idleTime += 1;
             if (idleTime > 3) {
                     <c:if test="${actionTypeForQuestionPage ne 'view'}">
-                    let pageType = '${actionTypeForQuestionPage}';
                     if ($('#pipingModal').hasClass('show')) {
                         submitPiping();
                     }

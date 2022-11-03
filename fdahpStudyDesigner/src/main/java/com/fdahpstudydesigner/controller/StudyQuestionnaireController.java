@@ -4204,13 +4204,20 @@ public class StudyQuestionnaireController {
           groupsList =
                   studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId, false, null);
         }
-        map.addAttribute("groupsList", groupsList);
+       // map.addAttribute("groupsList", groupsList);
         if (!"".equalsIgnoreCase(checkRefreshFlag)) {
           if (!"".equals(id)) {
             grpId = Integer.valueOf(id);
             actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
+            for(GroupsBo grps:groupsList) {
+              if(grps.getId() == groupsBo.getId()) {
+                groupsList.remove(grps);
+                map.addAttribute("groupsList", groupsList);
+                break;
+              }
+            }
             preLoadLogicBoList = studyQuestionnaireService.getPreLoadLogicDetails(StringUtils.isNotEmpty(id) ? Integer.parseInt(id) : null);
           } else {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
@@ -4294,7 +4301,14 @@ public class StudyQuestionnaireController {
           groupsList =
                   studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId, false, null);
         }
-        map.addAttribute("groupsList", groupsList);
+        for(GroupsBo grps:groupsList) {
+          if(grps.getId() == groupsBo.getId()) {
+            groupsList.remove(grps);
+
+            map.addAttribute("groupsList", groupsList);
+            break;
+          }
+        }
      if (StringUtils.isEmpty(id)) {
     	 id =
              (String) request.getSession().getAttribute(sessionStudyCount + "id");

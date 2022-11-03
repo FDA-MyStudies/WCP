@@ -151,6 +151,8 @@ public class FdahpStudyDesignerConstants {
   public static final String ENCRYPT_SALT = "StudieGatewayApp";
   public static final String ERR_MSG = "errMsg";
   public static final String FAILURE = "FAILURE";
+
+  public static final String DELETE_ASSIGNSTEP_FAILURE = "DeleteAssignstepFailure";
   public static final String FAILURE_UPDATE_STUDY_MESSAGE =
       "Sorry, a technical error occurred and the update(s) could not be published.";
   public static final String FDA_ENV_LOCAL = "local";

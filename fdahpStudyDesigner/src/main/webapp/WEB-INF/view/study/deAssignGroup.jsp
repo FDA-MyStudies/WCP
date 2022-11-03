@@ -331,8 +331,8 @@ var idleTime = 0;
         	}
         	else
             {
-            $("#alertMsg").removeClass('e-box').addClass('s-box').text(
-            "Group should atleast contain 2 steps");
+            $("#alertMsg").removeClass('s-box').addClass('e-box').text(
+            "Group should at least contain 2 steps");
             $('#alertMsg').show();
             }
         	setTimeout(hideDisplayMessage, 4000);

@@ -2532,6 +2532,26 @@ public String deleteStepMaprecords(String id) {
   }
 
   @Override
+  public boolean isLastFormQuestion(String formId, String questionId) {
+    return studyQuestionnaireDAO.isLastFormQuestion(formId, questionId);
+  }
+
+  @Override
+  public Integer getGroupId(String stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupId() - Starts");
+ String result = FdahpStudyDesignerConstants.FAILURE;
+ Integer groupId = 0;
+ try {
+   groupId = studyQuestionnaireDAO.getGroupId(stepId);
+ } catch (Exception e) {
+ logger.error("StudyQuestionnaireServiceImpl - getGroupId() - ERROR ", e);
+ }
+logger.exit("getStepId() - Ends");
+ return groupId;
+
+  }
+
+  @Override
   public List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Starts");
     List<PreLoadLogicBo> preLoadLogicBo = null;

@@ -3072,6 +3072,11 @@ input[type=number] {
       }
     });
 
+      if ($('#questionId').val() !== '' && ${isLastFormQuestion}) {
+          $('#skiappableYes').attr('disabled', true);
+          $('#skiappableNo').attr('checked', true);
+      }
+
     $("#anchorTextId").blur(function () {
       validateAnchorDateText('', function (val) {
       });
@@ -3904,8 +3909,16 @@ input[type=number] {
     }
     $("#responseTypeId").on("change", function () {
       var value = $(this).val();
-
       getResponseType(value);
+      if (${isLastFormQuestion} ) {
+          let vals = ["1", "2", "3", "7", "8", "11", "14"]
+          if (vals.includes(value)) {
+              $('#skiappableYes').attr('disabled', true);
+              $('#skiappableNo').attr('checked', true);
+          } else {
+              $('#skiappableYes').attr('disabled', false);
+          }
+      }
     });
     $('.DateStyleRequired').on("change", function () {
       var value = $(this).val();

@@ -7073,4 +7073,59 @@ public String deleteStepMaprecords(String id) {
     logger.info("StudyDAOImpl - getPreLoadLogicDetails() - Ends");
     return preLoadLogicBo;
   }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public boolean isLastFormQuestion(String formId, String questionId) {
+    logger.info("StudyQuestionnaireDAOImpl - isQuestionMultiSelect() - Starts");
+    boolean isLastFormQuestion = false;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (StringUtils.isNotBlank(formId)) {
+        List<Integer> questionsIds = session.createQuery("select id from QuestionsBo where active=true and " +
+                "id in (select questionId from FormMappingBo where formId=:formId and active=true) order by id desc")
+                .setParameter("formId", Integer.parseInt(formId))
+                .list();
+        if (questionsIds != null && !questionsIds.isEmpty() &&
+                (Integer.parseInt(questionId) == questionsIds.get(0))) {
+          isLastFormQuestion = true;
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - isQuestionMultiSelect() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - isQuestionMultiSelect() - Ends");
+    return isLastFormQuestion;
+  }
+
+  @Override
+  public Integer getGroupId(String stepId) {
+    logger.info("StudyDAOImpl - getGroupId() - Starts");
+ Session session = null;
+    Integer groupId = 0;
+    Query query = null;
+ String queryString = "";
+ try{
+ session = hibernateTemplate.getSessionFactory().openSession();
+
+ queryString = "select grpId FROM GroupMappingBo GBO WHERE GBO.stepId = "+stepId;
+ query = session.createQuery(queryString);
+   groupId = (Integer) query.uniqueResult();
+ }
+catch(Exception e){
+ logger.error("StudyDAOImpl - getGroupId() - ERROR",e);
+ }finally{
+ if(session != null){
+ session.close();
+ }
+ }
+logger.info("StudyDAOImpl - getGroupId() - Ends");
+ return groupId;
+
+  }
 }

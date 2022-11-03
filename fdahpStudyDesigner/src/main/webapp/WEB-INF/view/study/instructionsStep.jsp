@@ -811,9 +811,6 @@
                   .append($("<ul><li> </li></ul>")
                       .attr("class","list-unstyled")
                       .text("Please fill out this field."));
-              if (valid) {
-                  valid = false;
-              }
           }
       } else {
           if (parent.hasClass('has-error has-danger')) {
@@ -846,7 +843,6 @@
             $('select.req, input.req').each(function () {
                       let parent = $(this).parent();
                       let id = $(this).attr('id');
-                      console.log(id);
                       if ($(this).is('select')) {
                           parent = $(this).closest('div.mb-xs');
                       }

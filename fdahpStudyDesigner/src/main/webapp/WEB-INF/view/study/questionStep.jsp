@@ -5734,9 +5734,12 @@ input[type=number] {
                   idleTime += 1;
                   if (idleTime > 3) { // 5 minutes
                           <c:if test="${actionTypeForQuestionPage ne 'view'}">
+					      console.log('starting auto save');
 					      if ($('#pipingModal').hasClass('show')) {
-							  submitPiping();
+						      console.log('auto saving piping');
+						      submitPiping();
 					      }
+					      console.log('auto saving step data');
                           autoSaveQuestionStep('auto');
                            </c:if>
                           <c:if test="${actionTypeForQuestionPage eq 'view'}">

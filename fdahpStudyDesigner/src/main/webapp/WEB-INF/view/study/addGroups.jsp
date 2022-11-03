@@ -216,11 +216,23 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                                                                <div class="col-md-5">
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                                          data-error="Please choose one option" class="selectpicker text-normal"  title="-select-">
-                                     <c:forEach items="${destinationStepList}" var="destinationStep">
-                                         <option value="${destinationStep.stepId}"
-                                             ${groupsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
-                                             Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
+                                     <c:forEach items="${qTreeMap}" var="destinationStep">
+                                     <c:if test="${destinationStep.value.stepType eq 'Instruction' || destinationStep.value.stepType eq 'Question'}">
+                                         <option value="${destinationStep.key}"
+                                             ${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
+                                             Step ${destinationStep.key} : ${destinationStep.value.title}
                                          </option>
+                                         </c:if>
+                                         <c:if test="${destinationStep.value.stepType eq 'Form'}">
+                                          <c:forEach items="${destinationStep.value.fromMap}" var="subentry">
+                                         <option value="${destinationStep.key}"
+                                             ${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
+                                             Step ${destinationStep.key} : ${subentry.value.title}
+                                         </option>
+                                         </c:forEach>
+                                          
+                                         </c:if>
+                                           
                                      </c:forEach>
                                      <c:forEach items="${groupsList}" var="group" varStatus="status">
                                            <option value="${group.id}" id="selectGroup${group.id}"

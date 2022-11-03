@@ -4085,6 +4085,7 @@ public class StudyQuestionnaireController {
     StudyBo studyBo = null;
     List<GroupsBo> groupsList = null;
     List<PreLoadLogicBo> preLoadLogicBoList = null;
+    Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>(); 
     String errMsg = "";
     String actionPage = "";
     int grpId = 0;
@@ -4231,7 +4232,20 @@ public class StudyQuestionnaireController {
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
         }
-        map.addAttribute("actionType", actionType);
+        
+        qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
+        List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
+        for(GroupMappingBo groupMappingBos :groupMappingBo) {
+        for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
+        		 if(Integer.parseInt(groupMappingBos.getStepId())==entry.getValue().getStepId()) {
+        			 qTreeMap.remove(entry.getKey());
+        			 break;
+        			 
+        		 }
+        	 }
+			 map.addAttribute("qTreeMap", qTreeMap);
+        }
+     
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);

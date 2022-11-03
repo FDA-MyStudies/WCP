@@ -197,22 +197,22 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                          <div class="row">
                              <div class="gray-xs-f mb-xs">Pre-Load Logic</div>
                          </div>
-                         <div class="row">
+                         <!-- <div class="row">
                              <div class="col-md-3 dest-label">
                                  If True, Destination step =
                              </div>
                              <div class="col-md-1"></div>
 
                                               <div class="col-md-5"></div>
-                                          </div>
-                                                 <div class="row">
-                                                         <div class="col-md-4"></div>
+                                          </div> -->
+                                                 <!-- <div class="row">
+                                                         <div class="col-md-4"> If True, Destination step =</div>
 
                                                          <div class="col-md-3"></div>
-                                                         </div>
-                                                                             <br>
+                                                         </div> -->
+                                                                             <!-- <br> -->
                                                                              <div class="row">
-                                                                              <div class="col-md-4"></div>
+                                                                              <div class="col-md-4 pt-2 pl-none">If True, Destination step =</div>
                                                                                <div class="col-md-5">
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                                          data-error="Please choose one option" class="selectpicker text-normal"  title="-select-">

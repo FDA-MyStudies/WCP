@@ -1545,7 +1545,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @SuppressWarnings("unchecked")
   private void validatePreLoadLogicForOtherSteps(Session session, int deletionId) {
-    List<QuestionnairesStepsBo> stepsBos = session.createQuery("from QuestionnairesStepsBo where active=true and destinationTrueAsGroup=:stepId")
+    List<QuestionnairesStepsBo> stepsBos = session.createQuery("from QuestionnairesStepsBo where active=true and destinationTrueAsGroup=:stepId and stepOrGroup='step'")
             .setParameter("stepId", deletionId)
             .list();
     for (QuestionnairesStepsBo stepsBo : stepsBos) {

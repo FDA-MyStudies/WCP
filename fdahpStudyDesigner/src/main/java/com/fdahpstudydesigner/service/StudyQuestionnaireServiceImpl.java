@@ -2306,6 +2306,9 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
       } else {
           groupsBo.setModifiedBy(userSession.getUserId());
           groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
+        groupsBo.setGroupDefaultVisibility(Boolean.valueOf(groupsBean.getGroupDefaultVisibility()));
+        groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       }
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
@@ -2534,6 +2537,32 @@ public String deleteStepMaprecords(String id) {
   @Override
   public boolean isLastFormQuestion(String formId, String questionId) {
     return studyQuestionnaireDAO.isLastFormQuestion(formId, questionId);
+  }
+
+  @Override
+ /* public boolean isGroupDefaultVisibilityEnabled(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
+    boolean isGroupDvEnabled = false;
+    try {
+      isGroupDvEnabled = studyQuestionnaireDAO.isGroupDefaultVisibilityEnabled(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
+    }
+    logger.info("getGroupIdBySendingquestionstepId() - Ends");
+    return isGroupDvEnabled;
+  } */
+
+
+  public Integer getGroupIdBySendingQuestionStepId(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
+    Integer groupId = null;
+    try {
+      groupId = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
+    }
+    logger.info("getGroupIdBySendingquestionstepId() - Ends");
+    return groupId;
   }
 
   @Override

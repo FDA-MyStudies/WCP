@@ -222,4 +222,10 @@ public String deleteStepMaprecords(String id);
     Integer getGroupId(String stepId);
 
   boolean isLastFormQuestion(String formId, String questionId);
+
+ Integer getGroupIdBySendingQuestionStepId(Integer questionStepId);
+
+ // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
+
+
 }

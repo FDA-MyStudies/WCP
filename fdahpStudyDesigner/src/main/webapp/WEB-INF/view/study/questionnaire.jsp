@@ -4326,7 +4326,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                         "Questionnaire step already live anchorbased.unable to delete");
                   }else if(status == 'DeleteAssignstepFailure') {
                    $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-                   "Group should atleast contain 2 steps.unable to delete");
+                   "Group should at least contain 2 steps");
                    }
                    else {
                     $("#alertMsg").removeClass('s-box').addClass('e-box').text(

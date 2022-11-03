@@ -4235,16 +4235,20 @@ public class StudyQuestionnaireController {
         
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
-        for(GroupMappingBo groupMappingBos :groupMappingBo) {
-        for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
-        		 if(Integer.parseInt(groupMappingBos.getStepId())==entry.getValue().getStepId()) {
-        			 qTreeMap.remove(entry.getKey());
-        			 break;
-        			 
-        		 }
-        	 }
-			 map.addAttribute("qTreeMap", qTreeMap);
-        }
+		if (!groupMappingBo.isEmpty()) {
+			for (GroupMappingBo groupMappingBos : groupMappingBo) {
+				for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
+					if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
+						qTreeMap.remove(entry.getKey());
+						break;
+
+					}
+				}
+				map.addAttribute("qTreeMap", qTreeMap);
+			}
+		} else {
+			map.addAttribute("qTreeMap", qTreeMap);
+		}
      
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);

@@ -6662,11 +6662,12 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     Query query = null;
     String queryString = "";
     try{
-      session = hibernateTemplate.getSessionFactory().openSession();
-
-      queryString = "FROM  GroupMappingBo GBO WHERE GBO.grpId = "+id;
-      query = session.createQuery(queryString);
-      stepId = (List<GroupMappingBo>) query.getResultList();
+    	if (StringUtils.isNotBlank(id)) {
+    	      session = hibernateTemplate.getSessionFactory().openSession();
+    	      queryString = "FROM  GroupMappingBo GBO WHERE GBO.grpId =:id";
+    	      query = session.createQuery(queryString).setParameter("id", Integer.parseInt(id));  
+    	      stepId = query.list();
+    	}
     }
     catch(Exception e){
       logger.error("StudyDAOImpl - getStepId() - ERROR",e);

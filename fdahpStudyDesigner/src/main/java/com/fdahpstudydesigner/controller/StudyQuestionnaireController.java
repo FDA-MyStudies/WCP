@@ -8,7 +8,6 @@ import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -16,7 +15,6 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
@@ -4258,21 +4256,28 @@ public class StudyQuestionnaireController {
         
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
-		if (!groupMappingBo.isEmpty()) {
+        Integer index=0;
 			for (GroupMappingBo groupMappingBos : groupMappingBo) {
 				for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
 					if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
+						index=entry.getKey();
 						qTreeMap.remove(entry.getKey());
 						break;
-
 					}
 				}
-				map.addAttribute("qTreeMap", qTreeMap);
 			}
-		} else {
-			map.addAttribute("qTreeMap", qTreeMap);
-		}
-     
+			Integer val=index-groupMappingBo.size();
+			Iterator<Entry<Integer, QuestionnaireStepBean>> iter = qTreeMap.entrySet().iterator();
+			Integer count=0;
+			while (iter.hasNext()) {
+			    Entry<Integer, QuestionnaireStepBean> entry = iter.next();
+			    if (count <val) {
+			        iter.remove();
+			        count++;
+			    }
+	         map.addAttribute("qTreeMap", qTreeMap);
+			}
+			
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);
@@ -4301,6 +4306,7 @@ public class StudyQuestionnaireController {
     String msg = FdahpStudyDesignerConstants.FAILURE;
     boolean addFlag = false;
     StudyBo studyBo = null;
+    List<GroupMappingBo> groupStepLists = null;
     List<GroupsBo> groupsList = null;
     List<PreLoadLogicBo> preLoadLogicBoList = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
@@ -4423,6 +4429,11 @@ public class StudyQuestionnaireController {
         }
         
       }
+        //getting the List<step id's> based on the id from group_mapping table
+        if (!"".equals(id)) {
+          groupStepLists = studyQuestionnaireService.getStepId(id, questionnaireId);
+        }
+        map.addAttribute("groupStepLists", groupStepLists);
         Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);

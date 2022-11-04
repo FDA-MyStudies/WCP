@@ -2827,7 +2827,7 @@ background:#f3f6f8 !important;
 
 button:active {
     outline: none;
-    border: none;
+/*     border: none; */
 }
 .bootstrap-select>.dropdown-toggle {
 

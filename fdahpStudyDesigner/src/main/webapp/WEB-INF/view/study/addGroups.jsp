@@ -883,6 +883,8 @@ document.body.appendChild(a).click();
 
                          $('#saveId').attr('disabled', true);
                          $('#doneGroupId').attr('disabled', true);
+                         $('.radio').addClass('disabled');
+                         $('.remBtnDis').addClass('disabled');
 
 
                          $('#logicDiv').find('div.bootstrap-select, input').each( function () {
@@ -916,7 +918,9 @@ document.body.appendChild(a).click();
 
                         $('#saveId').attr('disabled', false);
                          $('#doneGroupId').attr('disabled', false);
-                      
+                         $('.radio').removeClass('disabled');
+                         $('.remBtnDis').removeClass('disabled');
+
                         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
 					$(this).removeClass('ml-disabled');
 					if ($(this).is("input")) {

@@ -837,7 +837,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           persistentStepsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBo.getId());
         }
         if (persistentStepsBo != null) {
-          persistentStepsBo.setDefaultVisibility("true".equals(groupsBo.getDefaultVisibility()));
+          persistentStepsBo.setDefaultVisibility(Boolean.TRUE.equals(groupsBo.getDefaultVisibility()));
           persistentStepsBo.setDestinationTrueAsGroup(groupsBo.getDestinationTrueAsGroup());
           studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
         }
@@ -2301,13 +2301,11 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
         groupsBo.setQuestionnaireId(groupsBean.getQuestionnaireId());
         groupsBo.setStudyId(groupsBean.getStudyId());
         groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
-        groupsBo.setGroupDefaultVisibility(Boolean.valueOf(groupsBean.getGroupDefaultVisibility()));
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       } else {
           groupsBo.setModifiedBy(userSession.getUserId());
           groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
-        groupsBo.setGroupDefaultVisibility(Boolean.valueOf(groupsBean.getGroupDefaultVisibility()));
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       }
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");

@@ -180,9 +180,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                          <div class="gray-xs-f mb-xs">Group Default Visibility</div>
                          <div>
                              <label class="switch bg-transparent mt-xs">
+                                 <input type="hidden" id="defaultVisibility" name="defaultVisibility" value="${groupsBo.defaultVisibility}"/>
                                  <input type="checkbox" class="switch-input"
                                         id="groupDefaultVisibility"
-                                 <c:if test="${empty groupsBo.id || groupStepLists.size()<2}"><c:out value="disabled='disabled'"/></c:if>
+                                 <c:if test="${empty groupsBo.id || groupStepLists.size() < 2}"><c:out value="disabled='disabled'"/></c:if>
                                  <c:if test="${empty groupsBo.defaultVisibility || groupsBo.defaultVisibility eq 'true'}"> checked</c:if>>
                                  <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                                  <span class="switch-handle"></span>
@@ -651,6 +652,7 @@ document.body.appendChild(a).click();
              let toggle = $(this);
              let logicDiv = $('#logicDiv');
              let addForm = $('#addFormula');
+             $('#defaultVisibility').val(toggle.is(':checked'));
              if  (toggle.is(':checked')) {
                  $('.deletable').remove();
                  logicDiv.find('div.bootstrap-select, input, select').each( function () {
@@ -663,7 +665,6 @@ document.body.appendChild(a).click();
                         $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
                         $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
-                 $('#defaultVisibility').val('true');
                  $('#destinationTrueAsGroup, #preLoadSurveyId, #value0, #operator0').val('').selectpicker('refresh');
                  $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
                  addForm.attr('disabled', true);
@@ -682,7 +683,6 @@ document.body.appendChild(a).click();
 
                  });
                  toggle.attr('checked', false);
-                 $('#defaultVisibility').val('false');
                  addForm.attr('disabled', false);
                  $('#value0').attr('disabled', false);
                  $('#operator0').attr('disabled', false);

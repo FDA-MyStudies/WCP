@@ -4415,7 +4415,23 @@ public class StudyQuestionnaireController {
                   "Failed to update group.");
         }
         
-      } 
+      }
+        Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
+        qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
+        List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
+        if (!groupMappingBo.isEmpty()) {
+          for (GroupMappingBo groupMappingBos : groupMappingBo) {
+            for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
+              if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
+                qTreeMap.remove(entry.getKey());
+                break;
+              }
+            }
+            map.addAttribute("qTreeMap", qTreeMap);
+          }
+        } else {
+          map.addAttribute("qTreeMap", qTreeMap);
+        }
         map.addAttribute("actionType", actionType);
         map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("preLoadLogicBoList", preLoadLogicBoList);

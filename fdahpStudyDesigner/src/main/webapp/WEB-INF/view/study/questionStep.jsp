@@ -193,6 +193,10 @@ input[type=number] {
 .dest-row {
 	margin-top: 12px;
 }
+
+.accordion>.card {
+    overflow: inherit !important;
+}
     </style>
 </head>
 <script type="text/javascript">
@@ -8780,10 +8784,11 @@ input[type=number] {
 				<c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}">
 				$('#stepShortTitle').attr('disabled', true);
 				</c:if>
-              <c:if test="${actionTypeForQuestionPage == 'view'}">
+              <c:if test="${actionTypeForQuestionPage == 'view'}"> 
               $('#questionStepId input,textarea ').prop('disabled', true);
+              $('#logicDiv').find('div.bootstrap-select, input').addClass('disabled');
+              $('#differentSurvey').prop('disabled', true);
               </c:if>
-              
               view_spanish_activemode();
             }
           }

@@ -8787,8 +8787,8 @@ input[type=number] {
               <c:if test="${actionTypeForQuestionPage == 'view'}"> 
               $('#questionStepId input,textarea ').prop('disabled', true);
               $('#logicDiv').find('div.bootstrap-select, input').addClass('disabled');
+              $('#differentSurvey').prop('disabled', true);
               </c:if>
-              
               view_spanish_activemode();
             }
           }

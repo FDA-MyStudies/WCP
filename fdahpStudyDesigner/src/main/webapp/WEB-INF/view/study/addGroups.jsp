@@ -88,7 +88,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
 <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
             <div class="right-content-head">
@@ -516,43 +515,43 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
    refreshAndFetchLanguageData(currLang);
  }
 
-function goToBackPage(item) {
-var actionPage = "${actionType}";
-$(item).prop('disabled', true);
-<c:if test="${actionType ne 'view'}">
-bootbox
-.confirm({
-closeButton: false,
-message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
-buttons: {
-'cancel': {
-label: 'Cancel',
-},
-'confirm': {
-label: 'OK',
-},
-},
-callback: function (result) {
-if (result) {
-var a = document.createElement('a');
-let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&actionType=${actionType}&language="
-+ lang;
-document.body.appendChild(a).click();
-} else {
-$(item).prop('disabled', false);
-}
-}
-});
-</c:if>
-<c:if test="${actionType eq 'view'}">
-var a = document.createElement('a');
-let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
-a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
-+ lang;
-document.body.appendChild(a).click();
-</c:if>
-}
+ function goToBackPage(item) {
+     var actionPage = "${actionType}";
+      $(item).prop('disabled', true);
+      <c:if test="${actionType ne 'view'}">
+      bootbox
+      .confirm({
+        closeButton: false,
+        message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+           buttons: {
+              'cancel': {
+                  label: 'Cancel',
+                        },
+              'confirm': {
+                  label: 'OK',
+                        },
+                    },
+            callback: function (result) {
+              if (result) {
+                   var a = document.createElement('a');
+                   let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+                    a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&actionType=${actionType}&language="
+                    + lang;
+                    document.body.appendChild(a).click();
+                    } else {
+                       $(item).prop('disabled', false);
+                    }
+                 }
+             });
+        </c:if>
+         <c:if test="${actionType eq 'view'}">
+          var a = document.createElement('a');
+          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&language="
+          + lang;
+          document.body.appendChild(a).click();
+          </c:if>
+      }
          $('#preLoadSurveyId').on('change', function () {
          	refreshSourceKeys();
          })

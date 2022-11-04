@@ -665,6 +665,18 @@ document.body.appendChild(a).click();
                         $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
                         $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
+
+                 $('.data-div').find('div.bootstrap-select, input, select').each( function () {
+                     $(this).addClass('ml-disabled');
+                     if ($(this).is("input.con-radio")) {
+                         $(this).attr('disabled', true);
+                     }
+                        $(this).attr('required', false);
+                        $(this).removeClass('has-error has-danger').find(".help-block").empty();
+                        $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+                        $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+                 });
+
                  $('#destinationTrueAsGroup, #preLoadSurveyId, #value0, #operator0').val('').selectpicker('refresh');
                  $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
                  addForm.attr('disabled', true);
@@ -672,8 +684,18 @@ document.body.appendChild(a).click();
                  $('#operator0').attr('disabled', true);
                  $('#operator0').parent().addClass('disabled');
                  $('#operator0').siblings().addClass('disabled');
+                
              } else {
                  logicDiv.find('div.bootstrap-select, input, select').each( function () {
+                     $(this).removeClass('ml-disabled');
+                     if ($(this).is("input.con-radio")) {
+                         $(this).attr('disabled', false);
+                     }
+                     $(this).attr('required','required');
+                     $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+
+                 });
+                 $('.data-div').find('div.bootstrap-select, input, select').each( function () {
                      $(this).removeClass('ml-disabled');
                      if ($(this).is("input.con-radio")) {
                          $(this).attr('disabled', false);
@@ -688,6 +710,7 @@ document.body.appendChild(a).click();
                  $('#operator0').attr('disabled', false);
                  $('#operator0').parent().removeClass('disabled');
                  $('#operator0').siblings().removeClass('disabled');
+                 
              }
          })
 

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.Map.Entry;
+
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -4258,21 +4260,28 @@ public class StudyQuestionnaireController {
         
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
-		if (!groupMappingBo.isEmpty()) {
+        Integer index=0;
 			for (GroupMappingBo groupMappingBos : groupMappingBo) {
 				for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
 					if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
+						index=entry.getKey();
 						qTreeMap.remove(entry.getKey());
 						break;
-
 					}
 				}
-				map.addAttribute("qTreeMap", qTreeMap);
 			}
-		} else {
-			map.addAttribute("qTreeMap", qTreeMap);
-		}
-     
+			Integer val=index-groupMappingBo.size();
+			Iterator<Entry<Integer, QuestionnaireStepBean>> iter = qTreeMap.entrySet().iterator();
+			Integer count=0;
+			while (iter.hasNext()) {
+			    Entry<Integer, QuestionnaireStepBean> entry = iter.next();
+			    if (count <val) {
+			        iter.remove();
+			        count++;
+			    }
+			    map.addAttribute("qTreeMap", qTreeMap);
+			}
+			
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);

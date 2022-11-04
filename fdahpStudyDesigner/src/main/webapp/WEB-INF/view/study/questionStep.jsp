@@ -8788,7 +8788,31 @@ input[type=number] {
               $('#questionStepId input,textarea ').prop('disabled', true);
               $('#logicDiv').find('div.bootstrap-select, input').addClass('disabled');
               $('#differentSurvey').prop('disabled', true);
-              </c:if>
+            </c:if>
+
+
+            /* code start here  for checking pre load logic when user clicks on spanis and coming back again to english lang then check preload logic condition here */
+            if (dv.is(':checked')) {
+	$('.deletable').remove();
+	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
+		$(this).addClass('ml-disabled');
+		if ($(this).is("input.con-radio")) {
+			$(this).attr('disabled', true);
+		}
+		$(this).attr('required', false);
+	});
+	$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
+	$('#defaultVisibility').val('true');
+	$('#addFormula').attr('disabled', true);
+	$('#skiappableYes').prop('disabled', false);
+} else {
+	$('#skiappableYes').prop('checked', false).prop('disabled', true);
+	$('#skiappableNo').prop('checked', true);
+}
+
+/* end here */
+
               view_spanish_activemode();
             }
           }

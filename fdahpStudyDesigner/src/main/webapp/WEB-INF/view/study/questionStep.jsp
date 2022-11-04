@@ -463,6 +463,9 @@ input[type=number] {
 							<label class="switch bg-transparent mt-xs">
 								<input type="checkbox" class="switch-input"
 									   id="groupDefaultVisibility"
+									    <c:if test="${groupsBo.defaultVisibility eq 'false'}">
+                                             <c:out value="disabled='disabled'"/>
+                                        </c:if>
 									   <c:if test="${empty questionnairesStepsBo.defaultVisibility || questionnairesStepsBo.defaultVisibility eq 'true'}"> checked</c:if>>
 								<span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
 								<span class="switch-handle"></span>
@@ -5734,9 +5737,12 @@ input[type=number] {
                   idleTime += 1;
                   if (idleTime > 3) { // 5 minutes
                           <c:if test="${actionTypeForQuestionPage ne 'view'}">
+					      console.log('starting auto save');
 					      if ($('#pipingModal').hasClass('show')) {
-							  submitPiping();
+						      console.log('auto saving piping');
+						      submitPiping();
 					      }
+					      console.log('auto saving step data');
                           autoSaveQuestionStep('auto');
                            </c:if>
                           <c:if test="${actionTypeForQuestionPage eq 'view'}">

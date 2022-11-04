@@ -72,7 +72,7 @@ display:contents !important;
       .dest-row {
           margin-top: 12px;
       }
-      
+
 </style>
 
 </head>
@@ -151,7 +151,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                     <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="form-group">
-                      <input  type="text" custAttType="cust" type="text" class="form-control" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}" 
+                      <input  type="text" type="text" class="form-control req" placeholder="Enter group ID"  name ="groupId" id="groupId" value="${fn:escapeXml(groupsBo.groupId)}"
                       <c:if test="${groupsBo.isPublished eq 1}"> disabled </c:if> required
                       <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
 
@@ -162,13 +162,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                   </div>
                   <div class="col-md-6 pl-none">
                     <div class="gray-xs-f mb-xs">Group Name <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="" data-original-title="The name of the group can be mentioned in this text box."></span>
-                    <div class="help-block with-errors red-txt"></div>
-
-
+                        <div class="help-block with-errors red-txt"></div>
                     </div>
 
                     <div class="form-group">
-                      <input type="text"  type="text" class="form-control" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required
+                      <input type="text"  type="text" class="form-control req" placeholder="Enter group name" name ="groupName" id="groupName" value="${fn:escapeXml(groupsBo.groupName)}" required
                       <c:if test="${currLanguage eq 'es'}"><c:out value="disabled='disabled'"/></c:if>>
                     <div class="help-block with-errors red-txt"></div>
                      <input type="hidden" id="preGroupName"
@@ -181,11 +179,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 		<div>
                          <div class="gray-xs-f mb-xs">Group Default Visibility</div>
                          <div>
-                             <input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${groupsBo.defaultVisibility}"/>
                              <label class="switch bg-transparent mt-xs">
                                  <input type="checkbox" class="switch-input"
                                         id="groupDefaultVisibility"
-                                 <c:if test="${empty groupsBo.id}"><c:out value="disabled='disabled'"/></c:if>
+                                 <c:if test="${empty groupsBo.id || groupStepLists.size()<2}"><c:out value="disabled='disabled'"/></c:if>
                                  <c:if test="${empty groupsBo.defaultVisibility || groupsBo.defaultVisibility eq 'true'}"> checked</c:if>>
                                  <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                                  <span class="switch-handle"></span>
@@ -197,46 +194,49 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                          <div class="row">
                              <div class="gray-xs-f mb-xs">Pre-Load Logic</div>
                          </div>
-                         <!-- <div class="row">
+                         <div class="row">
                              <div class="col-md-3 dest-label">
                                  If True, Destination step =
                              </div>
                              <div class="col-md-1"></div>
-
-                                              <div class="col-md-5"></div>
-                                          </div> -->
-                                                 <!-- <div class="row">
-                                                         <div class="col-md-4"> If True, Destination step =</div>
-
-                                                         <div class="col-md-3"></div>
-                                                         </div> -->
-                                                                             <!-- <br> -->
-                                                                             <div class="row">
-                                                                              <div class="col-md-4 pt-2 pl-none">If True, Destination step =</div>
-                                                                               <div class="col-md-5">
+                             <div class="col-md-5 parent-pll">
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
-                                         data-error="Please choose one option" class="selectpicker text-normal"  title="-select-">
-                                     <c:forEach items="${destinationStepList}" var="destinationStep">
-                                         <option value="${destinationStep.stepId}"
-                                             ${groupsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
-                                             Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
-                                         </option>
-                                     </c:forEach>
-                                     <c:forEach items="${groupsList}" var="group" varStatus="status">
-                                           <option value="${group.id}" id="selectGroup${group.id}"
-                                           ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
-                                           Group ${status.index + 1} :  ${group.groupName}&nbsp;
-                                           </option>
-                                     </c:forEach>
-                                     <option value="0"
-                                         ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
-                                         Completion Step</option>
-                                 </select>
-                             </div>
-                             <div class="col-md-3"></div>
-                         </div>
-                         </div>
-                         <br>
+                                         data-error="Please choose one option" class="selectpicker text-normal req-pll"
+                                         title="-select-">
+                             <c:forEach items="${qTreeMap}"
+								var="destinationStep">
+								<c:if
+									test="${destinationStep.value.stepType eq 'Instruction' || destinationStep.value.stepType eq 'Question'}">
+									<option value="${destinationStep.key}"
+										${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
+										Step ${destinationStep.key} : ${destinationStep.value.title}</option>
+								</c:if>
+								<c:if test="${destinationStep.value.stepType eq 'Form'}">
+									<c:forEach items="${destinationStep.value.fromMap}"
+										var="subentry">
+										<option value="${destinationStep.key}"
+											${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
+											Step ${destinationStep.key} : ${subentry.value.title}</option>
+									</c:forEach>
+								</c:if>
+							</c:forEach>
+							<c:forEach items="${groupsList}" var="group" varStatus="status">
+                                <option value="${group.id}" id="selectGroup${group.id}"
+                                    ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
+                                    Group ${status.index + 1} : ${group.groupName}&nbsp;
+                                </option>
+                            </c:forEach>
+                            <option value="0"
+                                ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
+                                Completion Step
+                            </option>
+                        </select>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <br>
 
                          <div id="formulaContainer${status.index}">
                              <c:choose>
@@ -244,7 +244,8 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                      <c:forEach items="${preLoadLogicBoList}" var="preLoadLogicBean" varStatus="status">
                                          <div id="form-div${status.index}"
                                               <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
-                                              <c:if test="${status.index eq 0}">style="height: 150px;"</c:if> class="form-div">
+                                              <c:if test="${status.index eq 0}">style="height: 150px;"</c:if>
+                                              class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
                                              <c:if test="${status.index gt 0}">
                                                  <div class="form-group">
             												<span class="radio radio-info radio-inline p-45 pl-2">
@@ -252,99 +253,117 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                                                        <c:if test="${preLoadLogicBean.conditionOperator eq '&&'}">checked </c:if> />
             													<label for="andRadio${status.index}">AND</label>
             												</span>
-                                                     <span class="radio radio-inline">
-            													<input type="radio" id="orRadio${status.index}" value="||" class="con-radio con-op-or" name="preLoadLogicBeans[${status.index}].conditionOperator"
-                                                                       <c:if test="${preLoadLogicBean.conditionOperator eq '||'}">checked </c:if> />
-            													<label for="orRadio${status.index}">OR</label>
-            												</span>
-                                                 </div>
-                                             </c:if>
-                                             <div>
-                                                 <div class="row formula-box">
-                                                     <div class="col-md-2">
-                                                         <strong class="font-family: arial;">Formula</strong>
-                                                     </div>
-                                                     <div class="col-md-10 text-right">
-                                                         <c:if test="${status.index gt 0}">
-                                                             <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div${status.index}" onclick="removeFormulaContainer(this)"></span>
-                                                         </c:if>
-                                                     </div>
-                                                 </div>
-                                                 <div style="height: 100px; border:1px solid #bfdceb;">
-                                                     <div class="row">
-                                                         <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-                                                         <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
-                                                         <div class="col-md-6"></div>
-                                                     </div>
-                                                     <div class="row data-div">
-                                                         <div class="col-md-1" style="padding-top: 7px">Operator</div>
-                                                         <div class="col-md-2 form-group">
-                                                             <select class="selectpicker operator text-normal" 
-                                                                     id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
-                                                                     <c:if test="${currLanguage ne 'es'}">
-                                                                 <c:forEach items="${operators}" var="operator">
-                                                                     <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
-                                                                 </c:forEach>
-                                                                 </c:if>
-                                                             </select>
-                                                             <div class="help-block with-errors red-txt"></div>
-                                                         </div>
+                                        <span class="radio radio-inline">
+                                            <input type="radio" id="orRadio${status.index}"
+                                                   value="||" class="con-radio con-op-or"
+                                                   name="preLoadLogicBeans[${status.index}].conditionOperator"
+                                                   <c:if test="${preLoadLogicBean.conditionOperator eq '||'}">checked </c:if> />
+                                            <label for="orRadio${status.index}">OR</label>
+                                        </span>
+                                    </div>
+                                </c:if>
+                                <div>
+                                    <div class="row formula-box">
+                                        <div class="col-md-2">
+                                            <strong class="font-family: arial;">Formula</strong>
+                                        </div>
+                                        <div class="col-md-10 text-right">
+                                            <c:if test="${status.index gt 0}">
+                                                <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                                      data-id="form-div${status.index}"
+                                                      onclick="removeFormulaContainer(this)"></span>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div style="height: 100px; border:1px solid #bfdceb;">
+                                        <div class="row">
+                                            <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define
+                                                Functions
+                                            </div>
+                                            <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define
+                                                Inputs
+                                            </div>
+                                            <div class="col-md-6"></div>
+                                        </div>
+                                        <div class="row data-div">
+                                            <div class="col-md-1" style="padding-top: 7px">Operator</div>
+                                            <div class="col-md-2 parent-pll form-group">
+                                                <select class="selectpicker operator text-normal req-pll"
+                                                        id="operator${status.index}"
+                                                        name="preLoadLogicBeans[${status.index}].operator"
+                                                        title="-select-">
+                                                   <%--  <c:if test="${currLanguage ne 'es'}"> --%>
+                                                        <c:forEach items="${operators}" var="operator">
+                                                            <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
+                                                        </c:forEach>
+                                                    <%-- </c:if> --%>
+                                                </select>
+                                                <div class="help-block with-errors red-txt"></div>
+                                            </div>
 
-                                                         <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-                                                         <div class="col-md-3 form-group">
-                                                             <input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
-                                                             <input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" placeholder="Enter">
-                                                             <div class="help-block with-errors red-txt"></div>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                             <br>
-                                         </div>
-                                     </c:forEach>
-                                 </c:when>
+                                            <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;=
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="hidden" value="${preLoadLogicBean.id}" class="id"
+                                                       name="preLoadLogicBeans[${status.index}].id">
+                                                <input type="text" required class="form-control value req-pll"
+                                                       value="${preLoadLogicBean.inputValue}" id="value${status.index}"
+                                                       name="preLoadLogicBeans[${status.index}].inputValue"
+                                                       placeholder="Enter">
+                                                <div class="help-block with-errors red-txt"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </c:forEach>
+                    </c:when>
 
-                                 <c:otherwise>
-                                     <div style="height: 136px" class="form-div">
-                                         <div class="row formula-box">
-                                             <div class="col-md-2">
-                                                 <strong class="font-family: arial;">Formula</strong>
-                                             </div>
-                                         </div>
-                                         <div style="height: 100px; border:1px solid #bfdceb;">
-                                             <div class="row">
-                                                 <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-                                                 <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
-                                                 <div class="col-md-6"></div>
-                                             </div>
-                                             <div class="row data-div">
-                                                 <div class="col-md-1" style="padding-top: 7px">Operator</div>
-                                                 <div class="col-md-2 form-group">
-                                                     <select required class="selectpicker operator text-normal"
-                                                             id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
-                                                         <c:forEach items="${operators}" var="operator">
-                                                             <option value="${operator}">${operator}</option>
-                                                         </c:forEach>
-                                                     </select>
-                                                     <div class="help-block with-errors red-txt"></div>
-                                                 </div>
+                    <c:otherwise>
+                        <div style="height: 136px" class="form-div">
+                            <div class="row formula-box">
+                                <div class="col-md-2">
+                                    <strong class="font-family: arial;">Formula</strong>
+                                </div>
+                            </div>
+                            <div style="height: 100px; border:1px solid #bfdceb;">
+                                <div class="row">
+                                    <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions
+                                    </div>
+                                    <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                                <div class="row data-div">
+                                    <div class="col-md-1" style="padding-top: 7px">Operator</div>
+                                    <div class="col-md-2 parent-pll form-group">
+                                        <select required class="selectpicker operator text-normal req-pll"
+                                                id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+                                            <c:forEach items="${operators}" var="operator">
+                                                <option value="${operator}">${operator}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <div class="help-block with-errors red-txt"></div>
+                                    </div>
 
-                                                 <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
-                                                 <div class="col-md-3 form-group">
-                                                     <input type="hidden" id="id${status.index}">
-                                                     <input type="text" required class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
-                                                     <div class="help-block with-errors red-txt"></div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <br>
-                                 </c:otherwise>
-                             </c:choose>
-                         </div>
-                         <button type="button" id="addFormula" style="margin-top:10px" class="btn btn-primary blue-btn">Add Formula</button>
-                     </div>
-                 </div>
+                                    <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;=</div>
+                                    <div class="col-md-3 form-group">
+                                        <input type="hidden" id="id${status.index}">
+                                        <input type="text" required class="form-control value req-pll" id="value0"
+                                               name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+                                        <div class="help-block with-errors red-txt"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <button type="button" id="addFormula" style="margin-top:10px" class="btn btn-primary blue-btn">Add Formula
+            </button>
+        </div>
+    </div>
 
 
         <!-- End right Content here -->
@@ -461,47 +480,35 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
        });
 
-    function saveAddGroupsPage(mode){
-    let isPublished=${groupsBo.isPublished}
-    $('#groupId').prop('disabled', false)
-    
-      var questnId = $('#questionnaireId').val();
-         var groupId = $('#groupId').val();
-          var groupName = $('#groupName').val();
-          var ationType=$('#actionType').val('edit');
-          var defaultVisibility = $('#groupDefaultVisibility').val();
-          var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
-          var value0 = $('#value0').val();
-          var operator0 = $('#operator0').val();
-         var id =  $('#id').val();
-             if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
-                     $("#action").val('false');
-                     $('#id').val();
-                     $('#groupId').val();
-                     $("#groupName").val();
-                     $("#groupDefaultVisibility").val();
-                     $("#destinationTrueAsGroup").val();
-                     $('#value0').val();
-                     $('#operator0').val();
-                     $("#buttonText").val('save');
-                     $('#actionType').val('edit');
-                     isPublished;
-                     if (mode === 'auto') {
-                     $("#isAutoSaved").val('true');
-                     }
-                     else{
-                      $("#isAutoSaved").val('false');
-                      }
-                     $('#addGroupFormId').submit();
-                     }
-                     else
-                     {
-                     $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-                          "Please fill out this all the mandatory fields");
-                      $('#alertMsg').show();
-                     }
-                     setTimeout(hideDisplayMessage, 4000);
+
+    function saveAddGroupsPage(mode) {
+        let isValid = true;
+        $('.req').each(function () {
+            let parent = $(this).parent();
+            if ($(this).val() === '') {
+                isValid = false;
+                parent.addClass('has-error has-danger').find(".help-block")
+                    .empty()
+                    .append($("<ul><li> </li></ul>")
+                        .attr("class","list-unstyled")
+                        .text("Please fill out this field.")).ScrollTo();
+            } else {
+                if (parent.hasClass('has-error has-danger')) {
+                    parent.removeClass('has-error has-danger').find(".help-block").empty();
+                }
+            }
+        });
+        $("#action").val('false');
+        $("#buttonText").val('save');
+        $('#actionType').val('edit');
+        if (mode === 'auto') {
+            $("#isAutoSaved").val('true');
+        } else {
+            $("#isAutoSaved").val('false');
+        }
+        $('#addGroupFormId').submit();
     }
+
  let currLang = $('#studyLanguage').val();
  if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
    $('#currentLanguage').val(currLang);
@@ -556,75 +563,76 @@ document.body.appendChild(a).click();
                  $('#contents').hide();
              }
          });
-         
-         
-        
+
+
+
          $("#groupId").blur(function () {
         	    validateGroupId('', function (val) {
         	    });
         	  });
-         
+
          $("#groupName").blur(function () {
         	 validateGroupName('', function (val) {
         	    });
         	  });
 
-         $('#addFormula').on('click', function () {
-             let formContainer = $('#formulaContainer');
-             let count = formContainer.find('div.formula-box').length;
-             let formula =
-                 '<div id="form-div' + count + '" class="form-div" style="height: 200px; margin-top:20px">'+
-                 '<div class="form-group">'+
-                 '<span class="radio radio-info radio-inline p-45 pl-2">'+
-                 '<input type="radio" id="andRadio' + count + '" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
-                 '<label for="andRadio' + count + '">AND</label>'+
-                 '</span>'+
-                 '<span class="radio radio-inline">'+
-                 '<input type="radio" id="orRadio' + count + '" value="||" class="con-radio con-op-or" name="preLoadLogicBeans['+count+'].conditionOperator" />'+
-                 '<label for="orRadio' + count + '">OR</label>'+
-                 '</span>'+
-                 '</div>'+
-                 '<div style="height: 150px">'+
-                 '<div class="row formula-box">'+
-                 '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>'+
-                 '<div class="col-md-10 text-right">'+
-                 '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div' + count + '" onclick="removeFormulaContainer(this)"></span>'+
-                 '</div>'+
-                 '</div>'+
-                 '<div style="height: 100px; border:1px solid #bfdceb;">'+
-                 '<div class="row">'+
-                 '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>'+
-                 '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
-                 '<div class="col-md-6"></div>'+
-                 '</div>'+
-                 '<div class="row data-div">'+
-                 '<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
-                 '<div class="col-md-2 form-group">'+
-                 '<select required class="selectpicker operator text-normal" '+
-                 'id="operator' + count + '" name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
-                 '<option> < </option>'+
-                 '<option> > </option>'+
-                 '<option> = </option>'+
-                 '<option> != </option>'+
-                 '<option> >= </option>'+
-                 '<option> <= </option>'+
-                 '</select> <div class="help-block with-errors red-txt"></div>'+
-                 '</div>'+
-                 '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
-                 '<div class="col-md-3 form-group">'+
-                 '<input type="hidden" class="id"/>'+
-                 '<input type="text" required class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter"> <div class="help-block with-errors red-txt"></div>'+
-                 '</div>'+
-                 '</div>'+
-                 '</div>'+
-                 '</div>'+
-                 '</div>';
-             formContainer.append(formula);
-             $('.selectpicker').selectpicker();
-         });
+    $('#addFormula').on('click', function () {
+        let formContainer = $('#formulaContainer');
+        let count = formContainer.find('div.formula-box').length;
+        let formula =
+            '<div id="form-div' + count + '" class="form-div deletable" style="height: 200px; margin-top:20px">' +
+            '<div class="form-group">' +
+            '<span class="radio radio-info radio-inline p-45 pl-2">' +
+            '<input type="radio" id="andRadio' + count + '" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans[' + count + '].conditionOperator" checked/>' +
+            '<label for="andRadio' + count + '">AND</label>' +
+            '</span>' +
+            '<span class="radio radio-inline">' +
+            '<input type="radio" id="orRadio' + count + '" value="||" class="con-radio con-op-or" name="preLoadLogicBeans[' + count + '].conditionOperator" />' +
+            '<label for="orRadio' + count + '">OR</label>' +
+            '</span>' +
+            '</div>' +
+            '<div style="height: 150px">' +
+            '<div class="row formula-box">' +
+            '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>' +
+            '<div class="col-md-10 text-right">' +
+            '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div' + count + '" onclick="removeFormulaContainer(this)"></span>' +
+            '</div>' +
+            '</div>' +
+            '<div style="height: 100px; border:1px solid #bfdceb;">' +
+            '<div class="row">' +
+            '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>' +
+            '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>' +
+            '<div class="col-md-6"></div>' +
+            '</div>' +
+            '<div class="row data-div">' +
+            '<div class="col-md-1" style="padding-top: 7px">Operator</div>' +
+            '<div class="col-md-2 parent-pll form-group">' +
+            '<select required class="selectpicker operator text-normal req-pll" ' +
+            'id="operator' + count + '" name="preLoadLogicBeans[' + count + '].operator" title="-select-">' +
+            '<option> < </option>' +
+            '<option> > </option>' +
+            '<option> = </option>' +
+            '<option> != </option>' +
+            '<option> >= </option>' +
+            '<option> <= </option>' +
+            '</select> <div class="help-block with-errors red-txt"></div>' +
+            '</div>' +
+            '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>' +
+            '<div class="col-md-3 form-group">' +
+            '<input type="hidden" class="id"/>' +
+            '<input type="text" required class="form-control value req-pll" id="value' + count + '" name="preLoadLogicBeans[' + count + '].inputValue" placeholder="Enter"> <div class="help-block with-errors red-txt"></div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        formContainer.append(formula);
+        $('.selectpicker').selectpicker();
+    });
 
          let defaultVisibility = $('#groupDefaultVisibility');
          if (defaultVisibility.is(':checked')) {
+             $('.deletable').remove();
              $('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
                  $(this).addClass('ml-disabled');
                  if ($(this).is("input.con-radio")) {
@@ -636,7 +644,7 @@ document.body.appendChild(a).click();
              $('#value0').attr('disabled', true);
              $('#operator0').attr('disabled', true);
             //  $('#operator0').parent().addClass('ml-disabled');
-             
+
          }
 
          defaultVisibility.on('change', function () {
@@ -644,6 +652,7 @@ document.body.appendChild(a).click();
              let logicDiv = $('#logicDiv');
              let addForm = $('#addFormula');
              if  (toggle.is(':checked')) {
+                 $('.deletable').remove();
                  logicDiv.find('div.bootstrap-select, input, select').each( function () {
                      $(this).addClass('ml-disabled');
                      if ($(this).is("input.con-radio")) {
@@ -655,7 +664,7 @@ document.body.appendChild(a).click();
                         $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
                  });
                  $('#defaultVisibility').val('true');
-                 $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+                 $('#destinationTrueAsGroup, #preLoadSurveyId, #value0, #operator0').val('').selectpicker('refresh');
                  $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
                  addForm.attr('disabled', true);
                  $('#value0').attr('disabled', true);
@@ -670,7 +679,7 @@ document.body.appendChild(a).click();
                      }
                      $(this).attr('required','required');
                      $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
-                     
+
                  });
                  toggle.attr('checked', false);
                  $('#defaultVisibility').val('false');
@@ -682,54 +691,19 @@ document.body.appendChild(a).click();
              }
          })
 
-         function removeFormulaContainer(object) {
-             let id = object.getAttribute('data-id');
-             $('#'+id).remove();
-         }
-         
-         $("#doneGroupId").click(function () {
-        	 let isPublished=${groupsBo.isPublished}
-        	 $('#groupId').prop('disabled', false);
+    function removeFormulaContainer(object) {
+        let id = object.getAttribute('data-id');
+        $('#' + id).remove();
+    }
 
-        	  var questnId = $('#questionnaireId').val();
-        	  var id = $('#id').val();
-        	   var groupId = $('#groupId').val();
-        	    var groupName = $('#groupName').val();
-        	    var defaultVisibility = $('#groupDefaultVisibility').val();
-                var destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
-                var value0 = $('#value0').val();
-                var operator0 = $('#operator0').val();
-        	    $('input.con-radio').each(function(e) {
-                                  $(this).removeAttr('disabled');
-                              })
-        		if(isFromValid('#id')){
-        	       if(groupId != '' && groupId != null && typeof groupId != 'undefined' && groupName != '' && groupName != null && typeof groupName != 'undefined'){
-        	    	   $('#buttonText').val('done');
-                       $("#action").val('true');
-        			$('#doneGroupId').prop('disabled',true);
-        	               $('#id').val();
-        	               $('#groupId').val();
-        	               $("#groupName").val();
-        	               $("#groupDefaultVisibility").val();
-                           $("#destinationTrueAsGroup").val();
-                           isPublished;
-                           $('#value0').val();
-                           $('#operator0').val();
-        	               $('#addGroupFormId').submit();
-
-        	               }
-        	               else
-        	               {
-        	               $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-        	                    "Please fill out this all the mandatory fields");
-        	                $('#alertMsg').show();
-        	               }
-        	               setTimeout(hideDisplayMessage, 4000);
-        		}
-        			else{
-        	            		$('#doneStudyId').prop('disabled',false);
-        	              }
-        	  });
+    $("#doneGroupId").click(function () {
+        if (isFormValid()) {
+            $('#buttonText').val('done');
+            $("#action").val('true');
+            $('#doneGroupId').prop('disabled', true);
+            $('#addGroupFormId').submit();
+        }
+    });
 
 
          function validateGroupId(item, callback) {
@@ -793,7 +767,7 @@ document.body.appendChild(a).click();
         	      callback(false);
         	    }
         	  }
-         
+
          function validateGroupName(item, callback) {
         	    var groupName = $("#groupName").val();
         	    var thisAttr = $("#groupName");
@@ -861,7 +835,7 @@ document.body.appendChild(a).click();
               $('#currentLanguage').val(currLang);
               refreshAndFetchLanguageData($('#studyLanguage').val());
             })
-            
+
             function refreshAndFetchLanguageData(language) {
       		    $.ajax({
       		      url: '/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}',
@@ -905,9 +879,9 @@ document.body.appendChild(a).click();
       		            let id = '#row' + value.getAttribute('id');
       		            $(id).find('td.title').text(value.getAttribute('value'));
       		          });
-      		        } else 
-                    
-                    { // for english 
+      		        } else
+
+                    { // for english
       		          updateCompletionTicksForEnglish();
       		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
       		          $('#groupName').attr('disabled', false);
@@ -918,6 +892,7 @@ document.body.appendChild(a).click();
 
                         $('#saveId').attr('disabled', false);
                          $('#doneGroupId').attr('disabled', false);
+
                          $('.radio').removeClass('disabled');
                          $('.remBtnDis').removeClass('disabled');
 
@@ -939,7 +914,7 @@ document.body.appendChild(a).click();
       		            let id = '#'+value.getAttribute('id');
       		            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
       		          });
-      		          
+
       		          <c:if test="${not empty permission}">
       		          $('.delete').addClass('cursor-none');
       		          </c:if>
@@ -957,7 +932,7 @@ document.body.appendChild(a).click();
              $('#value0').attr('disabled', true);
              $('#operator0').attr('disabled', true);
             //  $('#operator0').parent().addClass('ml-disabled');
-             
+
          }
 
       		        }
@@ -966,4 +941,74 @@ document.body.appendChild(a).click();
       		    });
       		  }
 
-    </script>
+    let formContainer = $('#formulaContainer');
+    formContainer.on('change', function (e) {
+        let element = e.target;
+        let parent = $(element).parent();
+        if ($(element).is('select')) {
+            parent = $(element).closest('div.parent-pll');
+        }
+        if ($(element).val() === '') {
+            parent.addClass('has-error has-danger').find(".help-block")
+                .empty()
+                .append($("<ul><li> </li></ul>")
+                    .attr("class","list-unstyled")
+                    .text("Please fill out this field."));
+        } else {
+            if (parent.hasClass('has-error has-danger')) {
+                parent.removeClass('has-error has-danger').find(".help-block").empty();
+            }
+        }
+    });
+
+    formContainer.on('keypress', function (e) {
+        let element = e.target;
+        if ($(element).is('input')) {
+            let parent = $(element).parent();
+            if (parent.hasClass('has-error has-danger')) {
+                parent.removeClass('has-error has-danger').find(".help-block").empty();
+            }
+        }
+    });
+
+ $('.req').on('keypress', function (e) {
+     let element = e.target;
+     if ($(element).is('input')) {
+         let parent = $(element).parent();
+         if (parent.hasClass('has-error has-danger')) {
+             parent.removeClass('has-error has-danger').find(".help-block").empty();
+         }
+     }
+ });
+
+    function isFormValid() {
+        let classnames;
+        let valid = true;
+        if ($('#groupDefaultVisibility').is(':checked')) {
+            classnames = 'select.req, input.req';
+
+        } else {
+            classnames = 'select.req, input.req, select.req-pll, input.req-pll';
+        }
+        $(classnames).each(function () {
+            let parent = $(this).parent();
+            if ($(this).is('select')) {
+                parent = $(this).closest('div.parent-pll');
+            }
+            if ($(this).val() === '') {
+                valid = false;
+                parent.addClass('has-error has-danger').find(".help-block")
+                    .empty()
+                    .append($("<ul><li> </li></ul>")
+                        .attr("class","list-unstyled")
+                        .text("Please fill out this field.")).ScrollTo();
+            } else {
+                if (parent.hasClass('has-error has-danger')) {
+                    parent.removeClass('has-error has-danger').find(".help-block").empty();
+                }
+            }
+        });
+        return valid;
+    }
+
+</script>

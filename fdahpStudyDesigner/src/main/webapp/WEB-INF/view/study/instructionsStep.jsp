@@ -403,10 +403,12 @@
             idleTime += 1;
             if (idleTime > 3) {
                     <c:if test="${actionTypeForQuestionPage ne 'view'}">
-                    let pageType = '${actionTypeForQuestionPage}';
+                    console.log('starting auto save');
                     if ($('#pipingModal').hasClass('show')) {
+                        console.log('auto saving piping');
                         submitPiping();
                     }
+                    console.log('auto saving step data');
                     autoSaveInstructionStepPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">

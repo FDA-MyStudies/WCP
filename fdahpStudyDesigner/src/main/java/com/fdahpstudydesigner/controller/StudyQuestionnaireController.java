@@ -1596,6 +1596,7 @@ public class StudyQuestionnaireController {
     List<String> timeRangeList = new ArrayList<>();
     List<GroupsBo> groupsListPreLoad = null;
     List<GroupsBo> groupsListPostLoad = null;
+    GroupsBo groupsBo = null;
     List<StatisticImageListBo> statisticImageList = new ArrayList<>();
     List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
     List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = new ArrayList<>();
@@ -1886,6 +1887,15 @@ public class StudyQuestionnaireController {
             map.addAttribute("healthKitKeysInfo", healthKitKeysInfo);
           }
         }
+        Integer questionStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
+        //getting groupId by sending stepId
+        Integer grpId = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
+        //getting groupdetails by sending groupId
+        if(grpId != null){
+          groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
+        }
+
+        map.addAttribute("groupsBo", groupsBo);
         map.addAttribute("permission", permission);
         map.addAttribute("timeRangeList", timeRangeList);
         map.addAttribute("statisticImageList", statisticImageList);
@@ -4083,8 +4093,10 @@ public class StudyQuestionnaireController {
     String questionnaireId = "";
     String sucMsg = "";
     StudyBo studyBo = null;
+    List<GroupMappingBo> groupStepLists = null;
     List<GroupsBo> groupsList = null;
     List<PreLoadLogicBo> preLoadLogicBoList = null;
+    Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>(); 
     String errMsg = "";
     String actionPage = "";
     int grpId = 0;
@@ -4200,6 +4212,11 @@ public class StudyQuestionnaireController {
         }
         map.addAttribute("actionOn", actionOn);
 
+        //getting the List<step id's> based on the id from group_mapping table
+        if (!"".equals(id)) {
+          groupStepLists = studyQuestionnaireService.getStepId(id, questionnaireId);
+        }
+        map.addAttribute("groupStepLists", groupStepLists);
         if (StringUtils.isNotEmpty(questionnaireId)) {
           groupsList =
                   studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId, false, null);
@@ -4231,7 +4248,24 @@ public class StudyQuestionnaireController {
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
         }
-        map.addAttribute("actionType", actionType);
+        
+        qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
+        List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
+		if (!groupMappingBo.isEmpty()) {
+			for (GroupMappingBo groupMappingBos : groupMappingBo) {
+				for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
+					if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
+						qTreeMap.remove(entry.getKey());
+						break;
+
+					}
+				}
+				map.addAttribute("qTreeMap", qTreeMap);
+			}
+		} else {
+			map.addAttribute("qTreeMap", qTreeMap);
+		}
+     
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);
@@ -4440,7 +4474,6 @@ public class StudyQuestionnaireController {
               studyQuestionnaireService.deleteGroup(
                   id,sesObj);
         }
-        
       }
       jsonobject.put("message", message);
       response.setContentType("application/json");

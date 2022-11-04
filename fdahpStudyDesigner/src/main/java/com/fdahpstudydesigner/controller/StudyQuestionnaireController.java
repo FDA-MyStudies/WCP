@@ -8,17 +8,13 @@ import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.Map.Entry;
-
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
@@ -4279,7 +4275,7 @@ public class StudyQuestionnaireController {
 			        iter.remove();
 			        count++;
 			    }
-			    map.addAttribute("qTreeMap", qTreeMap);
+	         map.addAttribute("qTreeMap", qTreeMap);
 			}
 			
           map.addAttribute("actionPage", actionPage);

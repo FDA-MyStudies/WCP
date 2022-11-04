@@ -4306,6 +4306,7 @@ public class StudyQuestionnaireController {
     String msg = FdahpStudyDesignerConstants.FAILURE;
     boolean addFlag = false;
     StudyBo studyBo = null;
+    List<GroupMappingBo> groupStepLists = null;
     List<GroupsBo> groupsList = null;
     List<PreLoadLogicBo> preLoadLogicBoList = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
@@ -4428,6 +4429,11 @@ public class StudyQuestionnaireController {
         }
         
       }
+        //getting the List<step id's> based on the id from group_mapping table
+        if (!"".equals(id)) {
+          groupStepLists = studyQuestionnaireService.getStepId(id, questionnaireId);
+        }
+        map.addAttribute("groupStepLists", groupStepLists);
         Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);

@@ -182,7 +182,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                  <input type="hidden" id="defaultVisibility" name="defaultVisibility" value="${groupsBo.defaultVisibility}"/>
                                  <input type="checkbox" class="switch-input"
                                         id="groupDefaultVisibility"
-                                 <c:if test="${empty groupsBo.id || groupStepLists.size() < 2}"><c:out value="disabled='disabled'"/></c:if>
+                                 <c:if test="${empty groupsBo.id || groupStepLists.size() < 2}"><c:out value="disabled='disabled'"/> checked</c:if>
                                  <c:if test="${empty groupsBo.defaultVisibility || groupsBo.defaultVisibility eq 'true'}"> checked</c:if>>
                                  <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                                  <span class="switch-handle"></span>

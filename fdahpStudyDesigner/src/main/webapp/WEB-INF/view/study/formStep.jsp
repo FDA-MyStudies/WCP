@@ -352,6 +352,9 @@
                  <label class="switch bg-transparent mt-xs">
                      <input type="checkbox" class="switch-input"
                             id="groupDefaultVisibility"
+                            <c:if test="${groupsBo.defaultVisibility eq 'false'}">
+                              <c:out value="disabled='disabled'"/>
+                            </c:if>
                      <c:if test="${empty questionnairesStepsBo.defaultVisibility || questionnairesStepsBo.defaultVisibility eq 'true'}"> checked</c:if>>
                      <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                      <span class="switch-handle"></span>

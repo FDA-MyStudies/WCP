@@ -82,9 +82,6 @@ public class GroupsBo implements Serializable {
     @Column(name = "default_visibility")
     private Boolean defaultVisibility;
 
-    @Column(name = "group_default_visibility")
-    private Boolean groupdefaultVisibility;
-
     public Integer getDestinationTrueAsGroup() {
         return destinationTrueAsGroup;
     }
@@ -99,14 +96,6 @@ public class GroupsBo implements Serializable {
 
     public void setDefaultVisibility(Boolean defaultVisibility) {
         this.defaultVisibility = defaultVisibility;
-    }
-
-    public Boolean getGroupDefaultVisibility() {
-        return groupdefaultVisibility;
-    }
-
-    public void setGroupDefaultVisibility(Boolean groupdefaultVisibility) {
-        this.groupdefaultVisibility = groupdefaultVisibility;
     }
 
 }

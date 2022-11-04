@@ -6579,15 +6579,29 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
   @Override
   public void saveOrUpdatePipingData(QuestionnaireStepBean bean) {
-      logger.info("StudyDAOImpl - saveOrUpdatePipingData() - Starts");
-      Session session = null;
-      try {
-        session = hibernateTemplate.getSessionFactory().openSession();
-        transaction = session.beginTransaction();
-        QuestionnairesStepsBo questionnairesStepsBo = session.get(QuestionnairesStepsBo.class, bean.getStepId());
+    logger.info("StudyDAOImpl - saveOrUpdatePipingData() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      QuestionnairesStepsBo questionnairesStepsBo = session.get(QuestionnairesStepsBo.class, bean.getStepId());
+      boolean isMlStudy = false;
+      List<String> languages = null;
+      if (questionnairesStepsBo != null) {
+        QuestionnaireBo questionnaireBo = session.get(QuestionnaireBo.class, questionnairesStepsBo.getQuestionnairesId());
+        if (questionnaireBo != null) {
+          StudyBo studyBo = session.get(StudyBo.class, questionnaireBo.getStudyId());
+          if (studyBo != null && Boolean.TRUE.equals(studyBo.getMultiLanguageFlag())) {
+            isMlStudy = true;
+            if (StringUtils.isNotBlank(studyBo.getSelectedLanguages())) {
+              languages = Arrays.asList(studyBo.getSelectedLanguages().split(","));
+            }
+          }
+        }
+
         String stepType = questionnairesStepsBo.getStepType();
         String language = bean.getLanguage();
-        if(StringUtils.isNotBlank(language) && !"en".equals(language)){
+        if (StringUtils.isNotBlank(language) && !"en".equals(language)) {
           if ("Question".equals(stepType)) {
             QuestionLangBO questionLangBO = session.get(QuestionLangBO.class, new QuestionLangPK(questionnairesStepsBo.getInstructionFormId(), language));
             if (questionLangBO != null) {
@@ -6596,26 +6610,43 @@ public String checkGroupName(String questionnaireId, String groupName, String st
             }
           } else if ("Instruction".equals(stepType)) {
             InstructionsLangBO instructionsLangBO = session.get(InstructionsLangBO.class, new InstructionLangPK(questionnairesStepsBo.getInstructionFormId(), language));
-            if (instructionsLangBO != null){
+            if (instructionsLangBO != null) {
               instructionsLangBO.setPipingSnippet(bean.getPipingSnippet());
               session.saveOrUpdate(instructionsLangBO);
             }
+          }
+        } else {
+          questionnairesStepsBo.setIsPiping(true);
+          questionnairesStepsBo.setPipingSnippet(bean.getPipingSnippet());
+          questionnairesStepsBo.setDifferentSurvey(bean.getDifferentSurvey());
+          questionnairesStepsBo.setPipingSurveyId(bean.getPipingSurveyId());
+          questionnairesStepsBo.setPipingSourceQuestionKey(bean.getPipingSourceQuestionKey());
+          session.saveOrUpdate(questionnairesStepsBo);
 
+          if (isMlStudy && languages != null) {
+            for (String lang : languages) {
+              QuestionnaireLangBO questionnaireLangBO = session.get(QuestionnaireLangBO.class, new QuestionnaireLangPK(questionnairesStepsBo.getQuestionnairesId(), lang));
+              if (questionnaireLangBO != null) {
+                questionnaireLangBO.setStatus(false);
+              }
+              if ("Question".equals(stepType)) {
+                QuestionLangBO questionLangBO = session.get(QuestionLangBO.class, new QuestionLangPK(questionnairesStepsBo.getInstructionFormId(), lang));
+                if (questionLangBO != null) {
+                  questionLangBO.setStatus(false);
+                  session.saveOrUpdate(questionLangBO);
+                }
+              } else if ("Instruction".equals(stepType)) {
+                InstructionsLangBO instructionsLangBO = session.get(InstructionsLangBO.class, new InstructionLangPK(questionnairesStepsBo.getInstructionFormId(), lang));
+                if (instructionsLangBO != null) {
+                  instructionsLangBO.setStatus(false);
+                  session.saveOrUpdate(instructionsLangBO);
+                }
+              }
+            }
           }
         }
-        else{
-          if (questionnairesStepsBo != null) {
-            questionnairesStepsBo.setIsPiping(true);
-            questionnairesStepsBo.setPipingSnippet(bean.getPipingSnippet());
-            questionnairesStepsBo.setDifferentSurvey(bean.getDifferentSurvey());
-            questionnairesStepsBo.setPipingSurveyId(bean.getPipingSurveyId());
-            questionnairesStepsBo.setPipingSourceQuestionKey(bean.getPipingSourceQuestionKey());
-            session.saveOrUpdate(questionnairesStepsBo);
-          } else {
-            throw new Exception("Step does not exist");
-          }
-        }
-        transaction.commit();
+      }
+      transaction.commit();
       } catch (Exception e) {
         transaction.rollback();
         logger.error("StudyDAOImpl - saveOrUpdatePipingData() - ERROR ", e);

@@ -182,7 +182,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                  <input type="hidden" id="defaultVisibility" name="defaultVisibility" value="${groupsBo.defaultVisibility}"/>
                                  <input type="checkbox" class="switch-input"
                                         id="groupDefaultVisibility"
-                                 <c:if test="${empty groupsBo.id || groupStepLists.size() < 2}"><c:out value="disabled='disabled'"/></c:if>
+                                 <c:if test="${empty groupsBo.id || groupStepLists.size() < 2}"><c:out value="disabled='disabled'"/> checked</c:if>
                                  <c:if test="${empty groupsBo.defaultVisibility || groupsBo.defaultVisibility eq 'true'}"> checked</c:if>>
                                  <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                                  <span class="switch-handle"></span>
@@ -642,7 +642,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
              $('#defaultVisibility').val('true');
              $('#addFormula').attr('disabled', true);
              $('#value0').attr('disabled', true);
-             $('#operator0').attr('disabled', true);
+             $('#operator0').addClass('ml-disabled');
             //  $('#operator0').parent().addClass('ml-disabled');
 
          }
@@ -679,11 +679,17 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                  $('#destinationTrueAsGroup, #preLoadSurveyId, #value0, #operator0').val('').selectpicker('refresh');
                  $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
                  addForm.attr('disabled', true);
-                 $('#value0').attr('disabled', true);
-                 $('#operator0').attr('disabled', true);
-                 $('#operator0').parent().addClass('disabled');
-                 $('#operator0').siblings().addClass('disabled');
-                
+                 let value = $('#value0');
+                 value.attr('disabled', true);
+                 if (value.parent().hasClass('has-error has-danger')) {
+                     value.parent().removeClass('has-error has-danger').find(".help-block").empty();
+                 }
+                 let op = $('#operator0');
+                 op.addClass('ml-disabled');
+                 op.parent().addClass('ml-disabled');
+                 if (op.parent().parent().hasClass('has-error has-danger')) {
+                     op.parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+                 }
              } else {
                  logicDiv.find('div.bootstrap-select, input, select').each( function () {
                      $(this).removeClass('ml-disabled');
@@ -706,10 +712,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                  toggle.attr('checked', false);
                  addForm.attr('disabled', false);
                  $('#value0').attr('disabled', false);
-                 $('#operator0').attr('disabled', false);
-                 $('#operator0').parent().removeClass('disabled');
-                 $('#operator0').siblings().removeClass('disabled');
-                 
+                 let op = $('#operator0');
+                 op.removeClass('ml-disabled');
+                 op.parent().removeClass('ml-disabled');
              }
          })
 
@@ -963,7 +968,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
       		    });
       		  }
 
-    let formContainer = $('#formulaContainer');
+    let formContainer = $('#formulaContainer, #destinationTrueAsGroup');
     formContainer.on('change', function (e) {
         let element = e.target;
         let parent = $(element).parent();

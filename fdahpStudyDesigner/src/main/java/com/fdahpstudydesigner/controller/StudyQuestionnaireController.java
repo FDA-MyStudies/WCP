@@ -497,6 +497,7 @@ public class StudyQuestionnaireController {
     ModelMap map = new ModelMap();
     List<GroupsBo> groupsListPreLoad = null;
     List<GroupsBo> groupsListPostLoad = null;
+    GroupsBo groupsBo = null;
     QuestionnaireBo questionnaireBo = null;
     QuestionnairesStepsBo questionnairesStepsBo = null;
     StudyBo studyBo = null;
@@ -706,6 +707,12 @@ public class StudyQuestionnaireController {
           int preloadQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
           int preloadSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
           Integer currStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
+          Integer questionStepId = currStepId;
+          Integer grpId = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
+          if(grpId != null){
+            groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
+          }
+          map.addAttribute("groupsBo", groupsBo);
           if (questionnairesStepsBo != null) {
             if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
               preloadQueId = questionnairesStepsBo.getPreLoadSurveyId();

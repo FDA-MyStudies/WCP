@@ -3316,7 +3316,7 @@ input[type=number] {
 												Display Text (1 to 100 characters)<span class="requiredStar">*</span>
 											</div>
 											<div class="form-group mb-none">
-												<input type="text"
+												<input type="text" id="textChoiceOtherText"
 													class="form-control lang-specific TextChoiceRequired"
 													name="questionReponseTypeBo.otherText"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherText}"
@@ -3329,10 +3329,11 @@ input[type=number] {
 												Value (1 to 100 characters)<span class="requiredStar">*</span>
 											</div>
 											<div class="form-group mb-none">
-												<input type="text" class="form-control TextChoiceRequired"
+												<input type="text" class="form-control TextChoiceRequired text-choice textChoiceVal"
+													   id="textchoiceOtherValue"
 													name="questionReponseTypeBo.otherValue"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}"
-													maxlength="100">
+													maxlength="100" />
 												<div class="help-block with-errors red-txt"></div>
 											</div>
 										</div>
@@ -3386,7 +3387,7 @@ input[type=number] {
 												<div class="gray-xs-f mb-xs">Description(1 to 150
 													characters)</div>
 												<div class="form-group">
-													<textarea class="form-control lang-specific"
+													<textarea class="form-control lang-specific" id="textchoiceOtherDescription"
 														name="questionReponseTypeBo.otherDescription"
 														maxlength="150">${questionnairesStepsBo.questionReponseTypeBo.otherDescription}</textarea>
 												</div>
@@ -4482,6 +4483,10 @@ input[type=number] {
 
             $('.textchoiceOtherCls').hide();
             $('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
+			  $('#textChoiceOtherText').val('');
+			  $('#textchoiceOtherValue').val('');
+			  $('#textchoiceOtherDescription').val('');
+			  $('#otherExclusive').val('');
           }
         });
 
@@ -7621,41 +7626,57 @@ input[type=number] {
 
           });
           callback(isValid);
-        } else if (responsetype == "Text Choice") {
-        	valueArrayTxtChoice = new Array();
-        	 $('.text-choice').each(function () {
-        	let id = $(this).attr("id");
-			let valField =  $("#displayTextChoiceValue" + id).val();
-			if (valField != '' && valField !== undefined) {
-				$("#displayTextChoiceValue" + id).parent().removeClass("has-danger").removeClass("has-error");
-				$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-				if (valueArrayTxtChoice.indexOf(valField.toLowerCase()) !=-1) {
-		        	$("#displayTextChoiceValue" + id).val('');
-		        	$("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
-		        	$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
-		        	$("#displayTextChoiceValue" + id).parent().find(".help-block")
-							.append($("<ul><li> </li></ul>")
-									.attr("class", "list-unstyled")
-									.text("The value should be unique "));
-					return false;
-				}
-				else {
-						let val = valField.toLowerCase();
-						if (val !== '' && val !== undefined) {
-							valueArrayTxtChoice.push(val);
+        } else if (responsetype === "Text Choice") {
+			valueArrayTxtChoice = [];
+			$('.text-choice').each(function () {
+				let id = $(this).attr("id");
+				if (id === 'textchoiceOtherValue') {
+					if ($('#textchoiceOtherId').is(':checked')) {
+						let txtChoiceOther = $('#textchoiceOtherValue');
+						let otherValue = txtChoiceOther.val();
+						if (otherValue !== '' && valueArrayTxtChoice.indexOf(otherValue.toLowerCase()) !== -1) {
+							txtChoiceOther.val('').parent()
+									.addClass("has-danger has-error")
+									.find(".help-block")
+									.empty();
+							txtChoiceOther.parent().find(".help-block")
+									.append($("<ul><li> </li></ul>")
+											.attr("class", "list-unstyled")
+											.text("The value should be unique "));
+							return false;
+						} else {
+							let val = otherValue.toLowerCase();
+							if (val !== '' && val !== undefined) {
+								valueArrayTxtChoice.push(val);
+							}
 						}
-				}
-        	}
-        	else {
-					let val =  valField.toLowerCase();
-					if (val !== '' && val !== undefined) {
-						valueArrayTxtChoice.push(val);
 					}
-			}
-        });
-          callback(isValid);
-        }
-      }
+				} else {
+					let valField =  $("#displayTextChoiceValue" + id).val();
+					if (valField !== '' && valField !== undefined) {
+						$("#displayTextChoiceValue" + id).parent().removeClass("has-danger has-error");
+						$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+						if (valueArrayTxtChoice.indexOf(valField.toLowerCase()) !== -1) {
+							$("#displayTextChoiceValue" + id).val('');
+							$("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
+							$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+							$("#displayTextChoiceValue" + id).parent().find(".help-block")
+									.append($("<ul><li> </li></ul>")
+											.attr("class", "list-unstyled")
+											.text("The value should be unique "));
+							return false;
+						} else {
+							let val = valField.toLowerCase();
+							if (val !== '' && val !== undefined) {
+								valueArrayTxtChoice.push(val);
+							}
+						}
+					}
+				}
+			});
+			callback(isValid);
+		}
+	  }
 
       function addFunctions(item) {
         var index = $(item).attr('index');

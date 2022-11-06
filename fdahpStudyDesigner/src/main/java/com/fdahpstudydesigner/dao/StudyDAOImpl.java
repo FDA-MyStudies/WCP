@@ -6204,6 +6204,7 @@ public class StudyDAOImpl implements StudyDAO {
               // have change end
               Map<Integer, Integer> oldNewQueIdMap = new HashMap<>();
               Map<Integer, Integer> oldNewStepIdMap = new HashMap<>();
+              Map<Integer, Integer> oldNewInstructionFormIdMap = new HashMap<>();
               Map<Integer, Integer> oldNewGroupIdMap = new HashMap<>();
               Map<String, Integer> pipingSurveyIdMap = new HashMap<>();
               Map<String, Integer> oldNewSourceMap = new HashMap<>();
@@ -6432,6 +6433,7 @@ public class StudyDAOImpl implements StudyDAO {
                                 SerializationUtils.clone(instructionsBo);
                             newInstructionsBo.setId(null);
                             session.save(newInstructionsBo);
+                            oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newInstructionsBo.getId());
 
                             List<InstructionsLangBO> instructionsLangBOS =
                                 session
@@ -6500,6 +6502,7 @@ public class StudyDAOImpl implements StudyDAO {
                             // newQuestionsBo.setAnchorDateId(anchordateoldnewMapList.get(questionsBo.getAnchorDateId()));
                             // update source anchor date id end
                             session.save(newQuestionsBo);
+                            oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newQuestionsBo.getId());
 
                             if (mlFlag) {
                               List<QuestionLangBO> questionLangBOS =
@@ -6593,6 +6596,7 @@ public class StudyDAOImpl implements StudyDAO {
                             FormBo newFormBo = SerializationUtils.clone(formBo);
                             newFormBo.setFormId(null);
                             session.save(newFormBo);
+                            oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newFormBo.getFormId());
 
                             if (mlFlag) {
                               List<FormLangBO> formLangBOS =
@@ -6719,33 +6723,50 @@ public class StudyDAOImpl implements StudyDAO {
                           logger.info(
                               "StudyDAOImpl - studyDraftCreation() Questionnarie Form step - Ends");
                         }
-                        if (count != 1) {
-                          List<GroupsBo> groupsBoList = session
-                                  .createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
-                                  .setParameter("questionnaireId", questionnairesStepsBo.getQuestionnairesId())
-                                  .setParameter("id", studyBo.getId()).list();
-                          if (groupsBoList != null) {
-                            count = 1;
-                            for (GroupsBo groupsBo : groupsBoList) {
-                              GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
-                              newGroupsBo.setId(null);
-                              newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
-                              newGroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
-                              newGroupsBo.setIsPublished(1);
-                              session.save(newGroupsBo);
-                              groupsBo.setIsPublished(1);
-                              session.update(groupsBo);
-                              oldNewGroupIdMap.put(groupsBo.getId(), newGroupsBo.getId());
-                            }
-                          }
-                        }
                         session.update(newQuestionnairesStepsBo);
                         newQuestionnairesStepsBoList.add(newQuestionnairesStepsBo);
                       }
                     }
                   }
 
-                  if (destinationList != null && !destinationList.isEmpty()) {
+                List<GroupsBo> groupsBoList = session
+                        .createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
+                        .setParameter("questionnaireId", questionnaireBo.getId())
+                        .setParameter("id", studyBo.getId()).list();
+                if (groupsBoList != null) {
+                  for (GroupsBo groupsBo : groupsBoList) {
+                    GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
+                    newGroupsBo.setId(null);
+                    newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
+                    newGroupsBo.setQuestionnaireId(newQuestionnaireBo.getId());
+                    newGroupsBo.setIsPublished(1);
+                    session.save(newGroupsBo);
+                    groupsBo.setIsPublished(1);
+                    session.update(groupsBo);
+                    oldNewGroupIdMap.put(groupsBo.getId(), newGroupsBo.getId());
+
+                    List<GroupMappingBo> mappingBos = session
+                            .createQuery("from GroupMappingBo where status=true and grpId=:groupId")
+                            .setParameter("groupId", groupsBo.getId())
+                            .list();
+                    if (mappingBos != null && !mappingBos.isEmpty()) {
+                      for (GroupMappingBo mappingBo : mappingBos) {
+                        GroupMappingBo newMappingBo = SerializationUtils.clone(mappingBo);
+                        newMappingBo.setId(null);
+                        newMappingBo.setGrpId(newGroupsBo.getId());
+                        newMappingBo.setStepId(oldNewInstructionFormIdMap.containsKey(Integer.parseInt(mappingBo.getStepId()))
+                                ? String.valueOf(oldNewInstructionFormIdMap.get(Integer.parseInt(mappingBo.getStepId())))
+                                : mappingBo.getStepId());
+                        newMappingBo.setQuestionnaireStepId(oldNewInstructionFormIdMap.containsKey(mappingBo.getQuestionnaireStepId())
+                                ? oldNewStepIdMap.get(mappingBo.getQuestionnaireStepId())
+                                : mappingBo.getQuestionnaireStepId());
+                        session.save(newMappingBo);
+                      }
+                    }
+                  }
+                }
+
+                if (destinationList != null && !destinationList.isEmpty()) {
                     for (int i = 0; i < destinationList.size(); i++) {
                       int desId = 0;
                       if (destinationList.get(i) != -1) {

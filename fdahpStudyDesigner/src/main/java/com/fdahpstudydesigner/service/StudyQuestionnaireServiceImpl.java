@@ -9,7 +9,6 @@ import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
-import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -23,8 +22,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
 
 /** @author BTC */
 @Service
@@ -2561,6 +2558,59 @@ public String deleteStepMaprecords(String id) {
     }
     logger.info("getGroupIdBySendingquestionstepId() - Ends");
     return groupId;
+  }
+
+  @Override
+  public String getStepType(Integer questionStepId, Integer stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getStepType() - Starts");
+    String stepType = null;
+    try {
+      stepType = studyQuestionnaireDAO.getStepType(questionStepId, stepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getStepType() - ERROR ", e);
+    }
+    logger.info("getStepType() - Ends");
+    return stepType;
+
+  }
+
+  @Override
+  public Integer getResponseType(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getResponseType() - Starts");
+    Integer responseType = null;
+    try {
+      responseType = studyQuestionnaireDAO.getResponseType(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getResponseType() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return responseType;
+  }
+
+  @Override
+  public List<Integer> getQuestionIdList(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getQuestionIdList() - Starts");
+    List<Integer> questionIdList = new ArrayList<>();
+    try {
+      questionIdList = studyQuestionnaireDAO.getQuestionIdList(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getQuestionIdList() - ERROR ", e);
+    }
+    logger.info("questionIdList() - Ends");
+    return questionIdList;
+  }
+
+  @Override
+  public Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue) {
+    logger.info("StudyQuestionnaireServiceImpl - getResponseTypeForFormStep() - Starts");
+    Integer responseType = null;
+    try {
+      responseType = studyQuestionnaireDAO.getResponseTypeForFormStep(lastQuestinObjectValue);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getResponseType() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return responseType;
   }
 
   @Override

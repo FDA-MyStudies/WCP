@@ -69,6 +69,10 @@
         width:20% !important;
       }
 
+      .ml-xxl {
+          margin-left: 50px !important;
+      }
+
       /* .delete{
 	background-position: -113px -63px ;
 	width: 17px;
@@ -180,7 +184,47 @@ margin-bottom:5px !important;
 .form-control {
     height: 33px;
 }
-    </style>
+.assignGroup{
+position:relative;
+top:30%;
+}
+
+.darkblue-bg{
+background:#007cba;
+
+}
+@media only screen and  (max-width:1366px)and  (min-width:1300px) {
+.custoWidth{
+width:142px !important;
+}
+}
+.dis-ellipsis { display: contents; }
+
+.selectbox_chk label::before {
+    margin-left: 0px;
+    }
+
+.selectbox_chk label::before {
+    margin-left: 0px;
+    margin-top: -5px;
+}
+
+.selectbox_chk label::after {
+     position: absolute;
+   margin: -5px 0px 0px 0px !important;
+    }
+    
+#content tbody tr td:first-child {
+    max-width: 10% !important;
+    width: 100% !important;
+}
+.display_none{
+   display: none;
+}
+.display_show{
+  display: block;
+  }
+ </style>
 </head>
 
 
@@ -207,8 +251,8 @@ margin-bottom:5px !important;
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img
-                        src="../images/icons/back-b.png" class="pr-md"/></span>
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
+                        src="../images/icons/back-b.png" /></span>
                 <c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
                 <c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
                 <c:if test="${actionType eq 'view'}">View Questionnaire <c:set
@@ -312,6 +356,7 @@ margin-bottom:5px !important;
                           <input type="hidden" name="status" id="status" value="true">
                           <input type="hidden" name="questionnaireId" id="questionnaireId"
                                  value="${questionnaireBo.id}">
+                                  <input type="hidden" id="groupId" value="${groupBean.groupId}">
                           <input type="hidden" name="studyId" id="studyId"
                                  value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
                           <input type="hidden" id="customStudyId"
@@ -377,23 +422,28 @@ margin-bottom:5px !important;
                           </div>
                           <div class="mt-lg" id="stepContainer">
                               <div
-                                      class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                      class="add-steps-btn blue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Instruction');">Add
                                   Instruction Step
                               </div>
                               <div
-                                      class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                      class="add-steps-btn green-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Question');">Add Question
                                   Step
                               </div>
                               <div
-                                      class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
+                                      class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                                       onclick="getQuestionnaireStep('Form');">Add Form Step
                               </div>
+                              <div
+                                       class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>" id="groupsBtn"
+                                        onclick="getQuestionnaireStep('Groups');" >Groups
+                               </div>
+                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
-      							<span class="checkbox checkbox-inline"> <input
-                                          type="checkbox" id="branchingId" value="true" name="branching"
+      							<span class="checkbox checkbox-inline">
+                                    <input type="checkbox" id="branchingId" value="true" name="branching"
                                       ${questionnaireBo.branching ? 'checked':''}> <label
                                           for="branchingId"> Apply Branching </label>
       							</span>
@@ -405,7 +455,7 @@ margin-bottom:5px !important;
                                  style="border-color: #ffffff;">
                               <thead style="display: none;"></thead>
                               <tbody>
-                              <c:forEach items="${qTreeMap}" var="entry">
+                              <c:forEach items="${qTreeMap}" var="entry" varStatus="loop">
                                   <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}" status="${entry.value.status}">
                                       <c:choose>
                                           <c:when test="${entry.value.stepType eq 'Instruction'}">
@@ -426,17 +476,55 @@ margin-bottom:5px !important;
                                       </c:choose>
                                       <td class="title"><c:choose>
                                           <c:when test="${entry.value.stepType eq 'Form'}">
+                                          <c:choose>
+                                          <c:when test="${entry.value.groupFlag eq true}">
+                                          <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                          <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
+                                          <label for="${entry.value.stepId}"></label></span>
+                                          </c:when>
+                                           <c:otherwise>
+                                          <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                        <!--  <c:if test="${actionType ne 'view'}"> </c:if>-->
+                                          <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
+
+                                          <label for="${entry.value.stepId}"></label></span>
+                                           </c:otherwise>
+                                           </c:choose>
+                                            <div class="form-div ml-xlg" style="margin-top: -20px;">
                                               <c:forEach items="${entry.value.fromMap}" var="subentry">
+
                                                   <div class="dis-ellipsis" id="div_${fn:escapeXml(subentry.value.questionInstructionId)}"
-                                                       title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+                                                       title="${fn:escapeXml(subentry.value.title)}">
+                                                      <span class="ml-lg"> ${subentry.value.title} </span>
+                                                      </div>
                                                   <div class="clearfix"></div>
+
                                               </c:forEach>
+                                              </div>
                                           </c:when>
                                           <c:otherwise>
                                               <div class="dis-ellipsis"
-                                                   title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
+                                                   title="${fn:escapeXml(entry.value.title)}">
+                                                   <c:choose>
+													<c:when test="${entry.value.groupFlag eq true}">
+                                                   <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                                    <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
+                                                    <label for="${entry.value.stepId}"></label>
+                                                    </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                   <span class="checkbox selectbox_chk checkbox-inline pl-1">
+                                                  <!-- <c:if test="${actionType ne 'view'}">  </c:if> -->
+													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
+
+													<label for="${entry.value.stepId}"></label>
+													</span>
+                                                    </c:otherwise>
+                                                    </c:choose>
+                                                   <span class="ml-lg">${entry.value.title}</span></div>
                                           </c:otherwise>
-                                      </c:choose></td>
+                                      </c:choose>
+                                      </td>
                                       <td>
                                           <div class="destinationStep questionnaireStepClass"
                                                style="display: none;">${entry.value.destinationText}</div>
@@ -476,7 +564,7 @@ margin-bottom:5px !important;
                                                               <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
                                                       <span
                                                               class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
-                                                              <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
+                                                              <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}', ${entry.value.deletionId})"</c:if>></span>
                                                   </div>
                                               </div>
                                               <c:if test="${entry.value.stepType eq 'Form'}">
@@ -1790,7 +1878,109 @@ margin-bottom:5px !important;
         </div>
     </div>
 </div>
+
+<!-- assignGroup -->
+<div id ="assignGroup"class="modal" tabindex="-1" role="dialog">
+   <div class="modal-dialog assignGroup" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:40px;">
+          <div class="form-group">
+            <c:if test="${actionPage ne 'VIEW_PAGE'}">
+              <select id="group" class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}"></c:if> data-error="Please choose one option" required"
+                   title="- select group -">
+                  <c:forEach items="${groupsList}" var="group">
+                     <option value="${group.id}" id="selectGroup${group.id}">${group.groupName}&nbsp;</option>
+                  </c:forEach>
+                  <c:if test="${groupsList eq null || groupsList.size() eq 0}">
+                     <option style="text-align: center; color: #000000" disabled>- No data available -</option>
+                  </c:if>
+              </select>
+            </c:if>
+          </div>
+          <div class="text-right mt-xlg">
+             <button type="button" class="btn btn-default gray-btn" data-dismiss="modal">Cancel</button>
+             <button type="button" class="btn btn-primary blue-btn" data-dismiss="modal" onclick="assign();">OK</button>
+          </div>
+        </div>
+      </div>
+   </div>
+</div>
 <script type="text/javascript">
+      //assignGroup code
+                function assign(){
+                   var grpId = $("#group :selected").val();
+                   var count = 0 ;
+                   var steparray = new Array();
+                   $('#content').find('tbody input.step-check').each(function () {
+                    if ($(this).is(':checked')) {
+                    console.log("push id in array")
+                    let id = $(this).attr('id');
+                    console.log("id :"+id);
+                    steparray.push(id);
+                      count++;
+                       }
+                   })
+                   var stepList = steparray;
+                   if(grpId != null && grpId != ''){
+                   if (stepList != null && stepList != '') {
+                    $.ajax({
+                      url: "/fdahpStudyDesigner/adminStudies/assignGroup.do?_S=${param._S}",
+                      type: "POST",
+                      datatype: "json",
+                      data: {
+                        steparray:JSON.stringify(stepList),
+                        grpId: grpId,
+                        count: count
+                      },
+                      beforeSend: function (xhr, settings) {
+                                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                                    },
+                      success: function (data) {
+
+                        var status = data.status;
+                        var message = data.message;
+                        var groupArray = new Array();
+                        groupArray = data.groupMappingBo;
+
+                                    if (status == "SUCCESS") {
+                                   
+                                      for(var i=0; groupArray.length>i; i++){
+                                     $('#'+groupArray[i].stepId).prop('disabled', true);
+                                     $('#'+groupArray[i].stepId).prop('checked', true);
+                                      console.log("groupArray : "+groupArray[i].stepId);
+                                       }
+                                        showSucMsg(message);
+                                        setTimeout(function() { window.location=window.location;},2000);
+                                    } else {
+                                          showErrMsg(message);
+                                           $('#content').find('tbody input.step-check').prop('checked', false);
+                                           $('#group').val('').selectpicker('refresh');
+                                    }
+                                    setTimeout(hideDisplayMessage, 2000);
+                      },
+                      error: function (xhr, status, error) {
+                                      console.log("error : "+ error);
+                                        $("body").removeClass("loading");
+                                        if (callback)
+                                          callback(false);
+                                      },
+                      global: false
+                    });
+                } else {
+                  $('#alertMsg').show();
+                  $("#alertMsg").removeClass('s-box').addClass('e-box').text("Kindly select the step(s)");
+                  $('#content').find('tbody input.step-check').prop('checked', false);
+                   $('#group').val('').selectpicker('refresh');
+                }
+                setTimeout(hideDisplayMessage, 4000);
+                }else{
+                 $('#alertMsg').show();
+                 $("#alertMsg").removeClass('s-box').addClass('e-box').text("Kindly select the group");
+                 $('#content').find('tbody input.step-check').prop('checked', false);
+                }
+                setTimeout(hideDisplayMessage, 4000);
+                }
+                //end
 
   <c:if test="${actionType == 'view'}">
   $('#contentFormId input[type="text"]').prop('disabled', true);
@@ -1802,6 +1992,8 @@ margin-bottom:5px !important;
   $('#monthlyFormId input[type="text"]').prop('disabled', true);
   $('#customFormId input[type="text"]').prop('disabled', true);
   $('select').prop('disabled', true);
+  $('.selectbox_chk input[type="checkbox"]').attr('disabled', true);
+  
   $('#schedule1,#schedule2,#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5,#inlineRadio6').prop(
       'disabled', true);
   $('.addBtnDis, .remBtnDis').addClass('dis-none');
@@ -2118,7 +2310,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
         }
         $('td:eq(0)', nRow).addClass("qs-items static-width");
-        $('td:eq(1)', nRow).addClass("qs-items");
+        $('td:eq(1)', nRow).addClass("title qs-items");
         $('td:eq(2)', nRow).addClass("qs-items");
         $('td:eq(3)', nRow).addClass("qs-items");
       }
@@ -2163,9 +2355,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           },
           success: function consentInfo(data) {
             var status = data.message;
-
             if (status == "SUCCESS") {
-
               $('#alertMsg').show();
               $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                   "Reorder done successfully");
@@ -2919,8 +3109,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         table1.rowReorder.enable();
       }
     });
-    var branching = "${questionnaireBo.branching}";
-    if (branching == "true") {
+    let branching = "${questionnaireBo.branching}";
+    if (branching === "true") {
       $(".destinationStep").show();
       $(".deleteStepButton").hide();
       table1.rowReorder.disable();
@@ -2929,6 +3119,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       $(".deleteStepButton").show();
       table1.rowReorder.enable();
     }
+      if ('${allowReorder}' === 'false') {
+          table1.rowReorder.disable();
+          $('#branchingId').prop('disabled', true);
+      }
     // Branching Logic starts here
 
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
@@ -4063,7 +4257,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
   }
 
-  function deletStep(stepId, stepType) {
+  function deletStep(stepId, stepType, deletionId) {
     bootbox.confirm({
       message: "Are you sure you want to delete this step item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
       buttons: {
@@ -4087,13 +4281,14 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               datatype: "json",
               data: {
                 questionnaireId: questionnaireId,
+                  deletionId : deletionId,
                 stepId: stepId,
                 stepType: stepType,
                 "${_csrf.parameterName}": "${_csrf.token}",
               },
               success: function deleteConsentInfo(data) {
                 var status = data.message;
-                if (status == "SUCCESS") {
+                if (status === "SUCCESS") {
                   $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                       "Questionnaire step deleted successfully");
                   $('#alertMsg').show();
@@ -4118,11 +4313,22 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     $('#schedule2').attr('disabled', false);
                     $('.schedule').attr('disabled', false);
                   }
+                  if (data.allowReorder === false) {
+                      table1.rowReorder.disable();
+                      $('#branchingId').prop('disabled', true);
+                  } else {
+                      table1.rowReorder.enable();
+                      $('#branchingId').prop('disabled', false);
+                  }
                 } else {
                   if (status == 'FAILUREanchorused') {
                     $("#alertMsg").removeClass('s-box').addClass('e-box').text(
                         "Questionnaire step already live anchorbased.unable to delete");
-                  } else {
+                  }else if(status == 'DeleteAssignstepFailure') {
+                   $("#alertMsg").removeClass('s-box').addClass('e-box').text(
+                   "Group should at least contain 2 steps");
+                   }
+                   else {
                     $("#alertMsg").removeClass('s-box').addClass('e-box').text(
                         "Unable to delete questionnaire step");
                   }
@@ -4171,13 +4377,28 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           datarow.push(' ');
         } else {
           var title = "";
+            let isChecked = (value.groupFlag) == true ? " checked disabled" : "";
           if (value.stepType == 'Form') {
-            $.each(value.fromMap, function (key, value) {
-              title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title)
-                  + '</div><br/>';
+              title += '<span class="checkbox selectbox_chk checkbox-inline pl-1">' +
+                  '<input type="checkbox" class= "step-check" id="'+value.stepId+'" '+isChecked+'/>' +
+                  '<label for="'+value.stepId+'"></label>' +
+                  '</span>'+
+                  '<div class="ml-xlg" style="margin-top: -20px;margin-left: 23px !important;">';
+            $.each(value.fromMap, function (key2, value2) {
+              title += '<div class="dis-ellipsis" >' +
+                  '<span class="ml-lg">' + DOMPurify.sanitize(value2.title) + '</span>' +
+                  '</div>' +
+                  '<div class="clearfix"></div>';
             });
+            title += '</div>'
           } else {
-            title += '<div class="dis-ellipsis" >' + DOMPurify.sanitize(value.title) + '</div>';
+            title += '<div class="dis-ellipsis" >' +
+                '<span class="checkbox selectbox_chk checkbox-inline pl-1">' +
+                '<input type="checkbox" class="step-check" id="'+value.stepId+'" '+isChecked+' />' +
+                '<label for="'+value.stepId+'"></label>' +
+                '</span>'+
+                '<span class="ml-lg">' + DOMPurify.sanitize(value.title) + '</span>' +
+                '</div>';
           }
           datarow.push(title);
         }
@@ -4217,7 +4438,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         }
         dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('
             + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType)
-            + '&#34;)"></span>' +
+            + '&#34;,' + parseInt(value.deletionId) + ')"></span>' +
             '</div>' +
             '</div>';
 
@@ -4271,7 +4492,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     } else if (stepType == 'Question') {
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}";
       document.contentFormId.submit();
-    }
+    }else if (stepType == 'Groups') {
+       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
+       document.contentFormId.submit();
+           }
   }
 
   function editStep(stepId, stepType) {
@@ -4930,11 +5154,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           // $('#shortTitleId, #branchingId').attr('disabled', true);
-          $('#shortTitleId, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+          $('#shortTitleId, #assigndisable, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor, ' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
               ' .signDropDown').addClass('ml-disabled').attr('disabled', true);
+          $('#groupsBtn').removeClass('ml-disabled').attr('disabled', false);
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').addClass('cursor-none');
           $('#titleId').val($('#mlTitle', htmlData).val());
@@ -4942,11 +5167,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('tbody tr', htmlData).each(function (index, value) {
             let id = value.getAttribute('id').split('_')[1];
             let type = value.getAttribute('type');
+            let rowId = $('#row_'+id);
             if (type==='Instruction') {
               $('#instructionsLangBOList option', htmlData).each(function (index, langEle) {
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
-                  $('#row_'+id).find('td.title').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.checkbox').hide();
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -4973,7 +5200,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               $('#questionLangBOList option', htmlData).each(function (index, langEle) {
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
-                  $('#row_'+id).find('td.title').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
+                    rowId.find('td.title span.checkbox').hide();
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5019,7 +5247,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                       edit.removeClass('edit-inc');
                     }
                   }
-                  $('#row_'+id).find('td.title div.dis-ellipsis').each(function (index, value){
+                    rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title div.dis-ellipsis').each(function (index, value){
                     let divId = value.getAttribute('id').split('_')[1];
                     $('#questionLangBOList option', htmlData).each(function (index, ele) {
                       let langId = ele.getAttribute('id');
@@ -5028,6 +5257,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                         return false;
                       }
                     })
+                    rowId.find('td.title div.form-div').removeClass('ml-xxl').addClass('marL20');
                   });
                   return false;
                 }
@@ -5046,7 +5276,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           // $('#shortTitleId, #branchingId').attr('disabled', false);
-          $('#shortTitleId, #branchingId, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
+          $('#shortTitleId, #branchingId, #assigndisable, #schedule1, #schedule2, #inlineRadio1, #inlineRadio2, #inlineRadio3, #inlineRadio4, #inlineRadio5, ' +
               '#inlineRadio6, #isLaunchStudy, #isStudyLifeTime, .xdays, .ydays, .clock, #monthsAnchor, #monthlyxdaysId, ' +
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor,' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
@@ -5111,13 +5341,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             }
 
             let type = value.getAttribute('type');
+              $('#row_'+id).find('td.title span.checkbox').show();
             if (type!=='Form') {
-              $('#row_'+id).find('td.title').text($('#row_'+id, htmlData).find('td.title').text());
+              $('#row_'+id).find('td.title span.ml-lg').text($('#row_'+id, htmlData).find('td.title').text());
             } else {
               $('#row_'+id).find('td.title div.dis-ellipsis').each(function (index, value){
                 let divId = value.getAttribute('id').split('_')[1];
                 $('#row_'+id).find('td.title div#div_'+divId).text($('#row_'+id, htmlData).find('td.title div#div_'+divId).text());
               });
+                $('#row_'+id).find('td.title div.form-div').removeClass('ml-xlg').addClass('ml-xxl');
             }
           });
           if (!mark) {
@@ -5127,8 +5359,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             $('#doneId').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');
           }
+          if ('${allowReorder}' === 'false') {
+            table1.rowReorder.disable();
+            $('#branchingId').prop('disabled', true);
+          }
         }
       }
     });
   }
+
 </script>

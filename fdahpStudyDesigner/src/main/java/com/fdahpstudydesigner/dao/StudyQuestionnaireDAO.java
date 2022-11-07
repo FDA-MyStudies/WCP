@@ -1,19 +1,8 @@
 package com.fdahpstudydesigner.dao;
 
+import com.fdahpstudydesigner.bean.GroupMappingStepBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.StudyVersionBo;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.List;
 import java.util.SortedMap;
@@ -52,7 +41,8 @@ public interface StudyQuestionnaireDAO {
       Integer questionnaireId,
       String stepType,
       SessionObject sessionObject,
-      String customStudyId);
+      String customStudyId,
+      Integer deletionId);
 
   public String deleteQuestuionnaireInfo(
       Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);
@@ -167,4 +157,82 @@ public interface StudyQuestionnaireDAO {
       Integer questionnaireId, String language);
 
   void deleteQuestionStep(int id, String language);
+  
+  List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId);
+
+  List<GroupsBo> getGroupsByStudyIdAndStepId(String studyId,String questionnaireId, int stepId);
+
+  public GroupsBo getGroupsDetails(int id);
+
+  public String addOrUpdateGroupsDetails(
+          GroupsBo groupsBo);
+
+  public GroupsBo getGroupById(int id);
+  
+  public String deleteGroup(String id,SessionObject sessionObject);
+
+  List<PreLoadLogicBo> getPreLoadLogicByStep(Integer stepId);
+
+  List<Integer> getPreLoadIds(Integer stepId);
+  
+  public String checkGroupId(String questionnaireId, String groupId, String studyId);
+
+
+  PreLoadLogicBo getPreLoadLogicById(Integer id);
+
+  void deleteFormula(List<Integer> ids);
+  
+  public String checkGroupName(String questionnaireId, String groupName, String studyId);
+
+  String saveOrUpdateGroup(GroupsBo groupsBO);
+
+  List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
+
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId);
+
+  List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive);
+
+  void saveOrUpdatePipingData(QuestionnaireStepBean questionnaireStepBean);
+
+  public List<GroupMappingBo> getStepId(String id, String questionnaireId);
+
+  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
+
+  public List<GroupMappingStepBean> getGroupsList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans);
+
+  public List<GroupMappingBo> getAssignSteps(int grpId);
+
+  public String deleteGroupMaprecords(String id);
+
+public GroupMappingBo getStepDetails(String id, String questionnaireId);
+
+public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId);
+
+public String deleteStepMaprecords(String id);
+
+  Boolean isPreloadLogicAndPipingEnabled(Integer queId);
+
+  String deleteStepBasedOnStepId(String stepId);
+
+  boolean isQuestionMultiSelect(int queId);
+
+  List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id);
+
+    Integer getGroupId(String stepId);
+
+  boolean isLastFormQuestion(String formId, String questionId);
+
+ Integer getGroupIdBySendingQuestionStepId(Integer questionStepId);
+
+  String getStepType(Integer questionStepId, Integer stepId);
+
+  Integer getResponseType(Integer questionStepId);
+
+  List<Integer> getQuestionIdList(Integer questionStepId);
+
+  Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue);
+
+  // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
+
+
 }

@@ -545,6 +545,10 @@ public class UsersDAOImpl implements UsersDAO {
       userId = (Integer) query.uniqueResult();
     } catch (Exception e) {
       logger.error("UsersDAOImpl - getUserPermissionByUserId() - ERROR", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
     }
     logger.info("UsersDAOImpl - getUserPermissionByUserId() - Ends");
     return userId;

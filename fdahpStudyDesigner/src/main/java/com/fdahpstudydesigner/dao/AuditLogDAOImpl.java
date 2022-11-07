@@ -202,4 +202,47 @@ public class AuditLogDAOImpl implements AuditLogDAO {
     logger.info("AuditLogDAOImpl - updateDraftToEditedStatus - Ends");
     return message;
   }
+
+/*  public String saveToAuditLogs(
+          Session session,
+          Transaction transaction,
+          SessionObject sessionObject,
+          String activity,
+          String activitydetails
+          ) {
+    logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    AuditLogBO auditLog = null;
+    Session newSession = null;
+    try {
+      if (session == null) {
+        newSession = hibernateTemplate.getSessionFactory().openSession();
+        transaction = newSession.beginTransaction();
+      }
+        if (FdahpStudyDesignerUtil.isNotEmpty(activity)) {
+          auditLog = new AuditLogBO();
+        auditLog.setActivity(activity);
+        auditLog.setActivityDetails(activitydetails);
+        if (newSession != null) {
+          newSession.save(auditLog);
+        } else {
+          session.save(auditLog);
+        }
+        message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+      if (session == null) transaction.commit();
+
+    } catch (Exception e) {
+      if (session == null && null != transaction) {
+        transaction.rollback();
+      }
+      logger.error("AuditLogDAOImpl - saveToAuditLog - ERROR", e);
+    } finally {
+      if (null != newSession) {
+        newSession.close();
+      }
+    }
+    logger.info("AuditLogDAOImpl - saveToAuditLog - Ends");
+    return message;
+  } */
 }

@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.bo;
 
+import com.fdahpstudydesigner.bean.PreLoadLogicBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import java.io.Serializable;
 import java.util.List;
@@ -31,6 +32,10 @@ import javax.persistence.Transient;
       name = "getQuestionnaireStep",
       query =
           "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
+ @NamedQuery(
+       name = "getQuestionnaireGroupStep",
+       query =
+          "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.questionnairesId=:questionnairesId"),
   @NamedQuery(
       name = "getQuestionnaireStepList",
       query =
@@ -88,6 +93,7 @@ public class QuestionnairesStepsBo implements Serializable {
 
   @Transient private QuestionsBo questionsBo;
 
+   @Transient private GroupsBo groupBo;
   @Column(name = "repeatable")
   private String repeatable = "No";
 
@@ -103,8 +109,10 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "status")
   private Boolean status;
 
+  @Column(name = "group_flag")
+  private  Boolean groupFlag;
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "step_id")
   private Integer stepId;
 
@@ -114,7 +122,49 @@ public class QuestionnairesStepsBo implements Serializable {
   @Column(name = "step_type")
   private String stepType;
 
+  @Column(name = "default_visibility")
+  private Boolean defaultVisibility;
+
+  @Column(name = "destination_true_as_group")
+  private Integer destinationTrueAsGroup;
+
+  @Column(name = "stepOrGroup")
+  private String stepOrGroup;
+
+  @Column(name = "stepOrGroupPostLoad")
+  private String stepOrGroupPostLoad;
+
+  @Column(name = "is_piping")
+  private Boolean isPiping;
+
+  @Column(name = "piping_snippet")
+  private String pipingSnippet;
+
+  // for piping
+  @Column(name = "is_different_survey")
+  private Boolean differentSurvey;
+
+  // for preload
+  @Column(name = "is_different_survey_pre_load")
+  private Boolean differentSurveyPreLoad;
+
+  //pre-load survey id
+  @Column(name = "pre_load_survey_Id")
+  private Integer preLoadSurveyId;
+
+  @Column(name = "piping_survey_Id")
+  private Integer pipingSurveyId;
+
+  @Column(name = "piping_source_question_key")
+  private Integer pipingSourceQuestionKey;
+
+  @Transient private Boolean allowReorder = false;
+
   @Transient private String type;
+
+  @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
+
+  @Transient private String groupDefaultVisibility;
 
   public Boolean getActive() {
     return active;
@@ -300,5 +350,133 @@ public class QuestionnairesStepsBo implements Serializable {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public GroupsBo getGroupBo() {
+    return groupBo;
+  }
+
+  public void setGroupBo(GroupsBo groupBo) {
+    this.groupBo = groupBo;
+  }
+
+  public Boolean getDefaultVisibility() {
+    return defaultVisibility;
+  }
+
+  public void setDefaultVisibility(Boolean defaultVisibility) {
+    this.defaultVisibility = defaultVisibility;
+  }
+
+  public Integer getDestinationTrueAsGroup() {
+    return destinationTrueAsGroup;
+  }
+
+  public void setDestinationTrueAsGroup(Integer destinationTrueAsGroup) {
+    this.destinationTrueAsGroup = destinationTrueAsGroup;
+  }
+
+  public Boolean getIsPiping() {
+    return isPiping;
+  }
+
+  public void setIsPiping(Boolean isPiping) {
+    this.isPiping = isPiping;
+  }
+
+  public String getPipingSnippet() {
+    return pipingSnippet;
+  }
+
+  public void setPipingSnippet(String pipingSnippet) {
+    this.pipingSnippet = pipingSnippet;
+  }
+
+  public Integer getPipingSourceQuestionKey() {
+    return pipingSourceQuestionKey;
+  }
+
+  public void setPipingSourceQuestionKey(Integer pipingSourceQuestionKey) {
+    this.pipingSourceQuestionKey = pipingSourceQuestionKey;
+  }
+
+  public List<PreLoadLogicBean> getPreLoadLogicBeans() {
+    return preLoadLogicBeans;
+  }
+
+  public void setPreLoadLogicBeans(List<PreLoadLogicBean> preLoadLogicBeans) {
+    this.preLoadLogicBeans = preLoadLogicBeans;
+  }
+
+  public String getGroupDefaultVisibility() {
+    return groupDefaultVisibility;
+  }
+
+  public void setGroupDefaultVisibility(String groupDefaultVisibility) {
+    this.groupDefaultVisibility = groupDefaultVisibility;
+  }
+
+  public Boolean getGroupFlag() {
+    return groupFlag;
+  }
+
+  public void setGroupFlag(Boolean groupFlag) {
+    this.groupFlag = groupFlag;
+  }
+
+  public Boolean getDifferentSurvey() {
+    return differentSurvey;
+  }
+
+  public void setDifferentSurvey(Boolean differentSurvey) {
+    this.differentSurvey = differentSurvey;
+  }
+
+  public Boolean getDifferentSurveyPreLoad() {
+    return differentSurveyPreLoad;
+  }
+
+  public void setDifferentSurveyPreLoad(Boolean differentSurveyPreLoad) {
+    this.differentSurveyPreLoad = differentSurveyPreLoad;
+  }
+
+  public Integer getPreLoadSurveyId() {
+    return preLoadSurveyId;
+  }
+
+  public void setPreLoadSurveyId(Integer preLoadSurveyId) {
+    this.preLoadSurveyId = preLoadSurveyId;
+  }
+
+  public Integer getPipingSurveyId() {
+    return pipingSurveyId;
+  }
+
+  public void setPipingSurveyId(Integer pipingSurveyId) {
+    this.pipingSurveyId = pipingSurveyId;
+  }
+
+  public Boolean getAllowReorder() {
+    return allowReorder;
+  }
+
+  public void setAllowReorder(Boolean allowReorder) {
+    this.allowReorder = allowReorder;
+  }
+
+  public String getStepOrGroup() {
+    return stepOrGroup;
+  }
+
+  public void setStepOrGroup(String stepOrGroup) {
+    this.stepOrGroup = stepOrGroup;
+  }
+
+  public String getStepOrGroupPostLoad() {
+    return stepOrGroupPostLoad;
+  }
+
+  public void setStepOrGroupPostLoad(String stepOrGroupPostLoad) {
+    this.stepOrGroupPostLoad = stepOrGroupPostLoad;
   }
 }

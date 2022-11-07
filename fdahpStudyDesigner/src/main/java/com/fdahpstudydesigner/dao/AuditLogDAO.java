@@ -20,4 +20,12 @@ public interface AuditLogDAO {
 
   public String updateDraftToEditedStatus(
       Session session, Transaction transaction, Integer userId, String actionType, Integer studyId);
+
+/*  public String saveToAuditLogs(
+          Session session,
+          Transaction transaction,
+          SessionObject sessionObject,
+          String activity,
+          String activityDetails,
+          String classsMethodName); */
 }

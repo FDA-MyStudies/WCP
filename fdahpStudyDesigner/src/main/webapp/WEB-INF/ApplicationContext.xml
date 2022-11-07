@@ -47,6 +47,8 @@
 				<prop key="hibernate.c3p0.max_size">20</prop>
 				<prop key="hibernate.c3p0.min_size">5</prop>
 				<prop key="hibernate.c3p0.timeout">300</prop>
+				<prop key="hibernate.c3p0.unreturnedConnectionTimeout">120</prop>
+				<prop key="hibernate.c3p0.debugUnreturnedConnectionStackTraces">true</prop>
 				<prop key="hibernate.c3p0.max_statements">100</prop>
 				<prop key="hibernate.c3p0.idle_test_period">60</prop>
 				<prop key="hibernate.c3p0.acquire_increment">2</prop>

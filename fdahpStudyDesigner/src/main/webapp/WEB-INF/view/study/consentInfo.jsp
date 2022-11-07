@@ -99,7 +99,7 @@
         <div class="right-content-head" style="z-index: 999;">
             <div class="text-right">
                 <div class="black-md-f dis-line pull-left line34">
-					<span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
+					<span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
 						<img src="../images/icons/back-b.png"/>
 					</span>
                     <c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>

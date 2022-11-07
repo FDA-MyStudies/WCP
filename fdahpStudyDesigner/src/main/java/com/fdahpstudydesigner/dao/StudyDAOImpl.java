@@ -1206,6 +1206,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - eligibilityTestOrderCount - Error", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - eligibilityTestOrderCount - Ends");
     return count;
@@ -6198,6 +6202,14 @@ public class StudyDAOImpl implements StudyDAO {
                   .executeUpdate();
               // short title taking updating to archived which
               // have change end
+              Map<Integer, Integer> oldNewQueIdMap = new HashMap<>();
+              Map<Integer, Integer> oldNewStepIdMap = new HashMap<>();
+              Map<Integer, Integer> oldNewInstructionFormIdMap = new HashMap<>();
+              Map<Integer, Integer> oldNewGroupIdMap = new HashMap<>();
+              Map<String, Integer> pipingSurveyIdMap = new HashMap<>();
+              Map<String, Integer> oldNewSourceMap = new HashMap<>();
+              Map<String, Integer> preloadSurveyMap = new HashMap<>();
+              Map<String, Integer> oldNewDestMap = new HashMap<>();
               for (QuestionnaireBo questionnaireBo : questionnaires) {
                 logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Starts");
                 // creating in study Activity version
@@ -6246,7 +6258,8 @@ public class StudyDAOImpl implements StudyDAO {
                   questionnaireBo.setIsChange(0);
                   questionnaireBo.setLive(0);
                   session.update(questionnaireBo);
-
+                  oldNewQueIdMap.put(questionnaireBo.getId(), newQuestionnaireBo.getId());
+                  int count=0;
                   List<QuestionnaireLangBO> questionnaireLangBOS =
                       session
                           .createQuery("from QuestionnaireLangBO where questionnaireLangPK.id=:id")
@@ -6369,6 +6382,40 @@ public class StudyDAOImpl implements StudyDAO {
                         newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
                         newQuestionnairesStepsBo.setStepId(null);
                         session.save(newQuestionnairesStepsBo);
+
+                        int newStepId = newQuestionnairesStepsBo.getStepId();
+                        int oldStepId = questionnairesStepsBo.getStepId();
+                        String US = "_";
+                        if (questionnairesStepsBo.getPipingSurveyId() != null) {
+                          pipingSurveyIdMap.put(questionnairesStepsBo.getPipingSurveyId() + US + oldStepId + US + "piping", newStepId);
+                        }
+
+                        if (questionnairesStepsBo.getPipingSourceQuestionKey() != null) {
+                          oldNewSourceMap.put(questionnairesStepsBo.getPipingSourceQuestionKey() + US + oldStepId + US + "piping", newStepId);
+                        }
+
+                        if (questionnairesStepsBo.getPreLoadSurveyId() != null) {
+                          preloadSurveyMap.put(questionnairesStepsBo.getPreLoadSurveyId() + US + oldStepId + US + "preload", newStepId);
+                        }
+
+                        if (questionnairesStepsBo.getDestinationTrueAsGroup() != null) {
+                          oldNewDestMap.put(questionnairesStepsBo.getDestinationTrueAsGroup() + US + questionnairesStepsBo.getStepOrGroup() +
+                                  US + oldStepId + US + "preload", newStepId);
+                        }
+                        oldNewStepIdMap.put(oldStepId, newStepId);
+
+                        List<PreLoadLogicBo> preLoadLogicBoList = session.createQuery("from PreLoadLogicBo where stepGroupId=:stepId and stepOrGroup=:step")
+                                .setParameter("stepId", questionnairesStepsBo.getStepId())
+                                .setParameter(FdahpStudyDesignerConstants.STEP, FdahpStudyDesignerConstants.STEP)
+                                .list();
+
+                        for (PreLoadLogicBo preLoadLogicBo : preLoadLogicBoList) {
+                          PreLoadLogicBo newPreLoadLogicBo = SerializationUtils.clone(preLoadLogicBo);
+                          newPreLoadLogicBo.setId(null);
+                          newPreLoadLogicBo.setStepGroupId(newQuestionnairesStepsBo.getStepId());
+                          session.save(newPreLoadLogicBo);
+                        }
+                        
                         if (questionnairesStepsBo
                             .getStepType()
                             .equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)) {
@@ -6386,6 +6433,7 @@ public class StudyDAOImpl implements StudyDAO {
                                 SerializationUtils.clone(instructionsBo);
                             newInstructionsBo.setId(null);
                             session.save(newInstructionsBo);
+                            oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newInstructionsBo.getId());
 
                             List<InstructionsLangBO> instructionsLangBOS =
                                 session
@@ -6454,6 +6502,7 @@ public class StudyDAOImpl implements StudyDAO {
                             // newQuestionsBo.setAnchorDateId(anchordateoldnewMapList.get(questionsBo.getAnchorDateId()));
                             // update source anchor date id end
                             session.save(newQuestionsBo);
+                            oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newQuestionsBo.getId());
 
                             if (mlFlag) {
                               List<QuestionLangBO> questionLangBOS =
@@ -6547,6 +6596,7 @@ public class StudyDAOImpl implements StudyDAO {
                             FormBo newFormBo = SerializationUtils.clone(formBo);
                             newFormBo.setFormId(null);
                             session.save(newFormBo);
+                            oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newFormBo.getFormId());
 
                             if (mlFlag) {
                               List<FormLangBO> formLangBOS =
@@ -6678,7 +6728,45 @@ public class StudyDAOImpl implements StudyDAO {
                       }
                     }
                   }
-                  if (destinationList != null && !destinationList.isEmpty()) {
+
+                List<GroupsBo> groupsBoList = session
+                        .createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
+                        .setParameter("questionnaireId", questionnaireBo.getId())
+                        .setParameter("id", studyBo.getId()).list();
+                if (groupsBoList != null) {
+                  for (GroupsBo groupsBo : groupsBoList) {
+                    GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
+                    newGroupsBo.setId(null);
+                    newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
+                    newGroupsBo.setQuestionnaireId(newQuestionnaireBo.getId());
+                    newGroupsBo.setIsPublished(1);
+                    session.save(newGroupsBo);
+                    groupsBo.setIsPublished(1);
+                    session.update(groupsBo);
+                    oldNewGroupIdMap.put(groupsBo.getId(), newGroupsBo.getId());
+
+                    List<GroupMappingBo> mappingBos = session
+                            .createQuery("from GroupMappingBo where status=true and grpId=:groupId")
+                            .setParameter("groupId", groupsBo.getId())
+                            .list();
+                    if (mappingBos != null && !mappingBos.isEmpty()) {
+                      for (GroupMappingBo mappingBo : mappingBos) {
+                        GroupMappingBo newMappingBo = SerializationUtils.clone(mappingBo);
+                        newMappingBo.setId(null);
+                        newMappingBo.setGrpId(newGroupsBo.getId());
+                        newMappingBo.setStepId(oldNewInstructionFormIdMap.containsKey(Integer.parseInt(mappingBo.getStepId()))
+                                ? String.valueOf(oldNewInstructionFormIdMap.get(Integer.parseInt(mappingBo.getStepId())))
+                                : mappingBo.getStepId());
+                        newMappingBo.setQuestionnaireStepId(oldNewStepIdMap.containsKey(mappingBo.getQuestionnaireStepId())
+                                ? oldNewStepIdMap.get(mappingBo.getQuestionnaireStepId())
+                                : mappingBo.getQuestionnaireStepId());
+                        session.save(newMappingBo);
+                      }
+                    }
+                  }
+                }
+
+                if (destinationList != null && !destinationList.isEmpty()) {
                     for (int i = 0; i < destinationList.size(); i++) {
                       int desId = 0;
                       if (destinationList.get(i) != -1) {
@@ -6810,6 +6898,70 @@ public class StudyDAOImpl implements StudyDAO {
 //                }
                 session.save(studyActivityVersionBo);
                 logger.info("StudyDAOImpl - studyDraftCreation() Questionnarie creation- Ends");
+              }
+
+              if (pipingSurveyIdMap != null) {
+                for (String surveyId : pipingSurveyIdMap.keySet()) {
+                  int oldSurveyId = Integer.parseInt(surveyId.split("_")[0]);
+                  Integer newSurveyId = oldNewQueIdMap.containsKey(oldSurveyId) ? oldNewQueIdMap.get(oldSurveyId) : null;
+                  if (newSurveyId != null) {
+                    session.createQuery("update QuestionnairesStepsBo set pipingSurveyId=:newId where stepId=:stepId")
+                            .setParameter("newId", newSurveyId)
+                            .setParameter("stepId", pipingSurveyIdMap.get(surveyId))
+                            .executeUpdate();
+                  }
+                }
+              }
+
+              if (oldNewSourceMap != null) {
+                for (String oldSrc : oldNewSourceMap.keySet()) {
+                  int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
+                  Integer newStepId = oldNewStepIdMap.containsKey(oldStepId) ? oldNewStepIdMap.get(oldStepId) : null;
+                  if (newStepId != null) {
+                    session.createQuery("update QuestionnairesStepsBo set pipingSourceQuestionKey=:newId where stepId=:stepId")
+                            .setParameter("newId", newStepId)
+                            .setParameter("stepId", oldNewSourceMap.get(oldSrc))
+                            .executeUpdate();
+                  }
+                }
+              }
+
+              if (preloadSurveyMap != null) {
+                for (String surveyId : preloadSurveyMap.keySet()) {
+                  int oldSurveyId = Integer.parseInt(surveyId.split("_")[0]);
+                  Integer newSurvey = oldNewQueIdMap.containsKey(oldSurveyId) ? oldNewQueIdMap.get(oldSurveyId) : null;
+                  if (newSurvey != null) {
+                    session.createQuery("update QuestionnairesStepsBo set preLoadSurveyId=:newId where stepId=:stepId")
+                            .setParameter("newId", newSurvey)
+                            .setParameter("stepId", preloadSurveyMap.get(surveyId))
+                            .executeUpdate();
+                  }
+                }
+              }
+
+              if (oldNewDestMap != null) {
+                for (String oldSrc : oldNewDestMap.keySet()) {
+                  int oldStepId = Integer.parseInt(oldSrc.split("_")[0]);
+                  // 0 refers to completion step
+                  String type = oldSrc.split("_")[1];
+                  Integer newStepId = null;
+                  if (oldStepId != 0) {
+                    if (FdahpStudyDesignerConstants.STEP.equals(type)) {
+                      newStepId = oldNewStepIdMap.containsKey(oldStepId) ? oldNewStepIdMap.get(oldStepId) : null;
+                    } else if (FdahpStudyDesignerConstants.GROUP.equals(type)){
+                      newStepId = oldNewGroupIdMap.containsKey(oldStepId) ? oldNewGroupIdMap.get(oldStepId) : null;
+                    }
+                  } else {
+                    newStepId = 0;
+                  }
+                  Integer newSrc = oldNewDestMap.get(oldSrc);
+                  if (newStepId != null && newSrc != null) {
+                    session.createQuery("update QuestionnairesStepsBo set destinationTrueAsGroup=:newId where stepId=:stepId")
+                            .setParameter("newId", newStepId)
+                            .setParameter("stepId", newSrc)
+                            .executeUpdate();
+                  }
+                }
               }
               // Executing draft version to 0
             } // If Questionarries updated flag -1 then update End
@@ -7609,10 +7761,11 @@ public class StudyDAOImpl implements StudyDAO {
   public String switchStudyToLiveMode(String studyId) {
     logger.info("StudyDAOImpl - switchStudyToLiveMode() - Starts");
     Transaction transaction = null;
+    Session session = null;
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       Query query = null;
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       StudyBo studyBo =
           (StudyBo)
@@ -7747,6 +7900,10 @@ public class StudyDAOImpl implements StudyDAO {
         transaction.rollback();
       }
       message = FdahpStudyDesignerConstants.FAILURE;
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - switchStudyToLiveMode() - Ends");
     return message;
@@ -8442,6 +8599,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getStudyVersionInfo() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
     return result;
@@ -8782,6 +8943,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("EXCEPTION : ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollment - Ends");
     return isExist;
@@ -8846,6 +9011,10 @@ public class StudyDAOImpl implements StudyDAO {
       }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
     return isExist;
@@ -9847,8 +10016,9 @@ public class StudyDAOImpl implements StudyDAO {
   public String updateDraftStatusInStudyBo(int userId, int studyId) {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       message =
           auditLogDAO.updateDraftToEditedStatus(
@@ -9857,6 +10027,10 @@ public class StudyDAOImpl implements StudyDAO {
     } catch (Exception e) {
       transaction.rollback();
       logger.error("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - ERROR ", e);
+    } finally {
+      if (null != session) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Ends");
     return message;
@@ -9866,8 +10040,9 @@ public class StudyDAOImpl implements StudyDAO {
   public String forceUpgradeApp(String appId, String androidUpdateType, String iosUpdateType) {
     logger.info("StudyDAOImpl - forceUpgradeApp() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
+    Session session = null;
     try {
-      Session session = hibernateTemplate.getSessionFactory().openSession();
+      session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       VersionInfo versionInfo = (VersionInfo) session.createQuery("from VersionInfo where appId=:appId")
               .setParameter("appId", appId)
@@ -9901,6 +10076,10 @@ public class StudyDAOImpl implements StudyDAO {
     } catch (Exception e) {
       logger.error("StudyDAOImpl - forceUpgradeApp() - ERROR ", e);
       transaction.commit();
+    } finally {
+      if (null != session) {
+        session.close();
+      }
     }
     logger.info("StudyDAOImpl - forceUpgradeApp() - Ends");
     return message;

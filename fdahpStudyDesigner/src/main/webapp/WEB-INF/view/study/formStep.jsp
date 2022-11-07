@@ -30,6 +30,32 @@
         pointer-events: none;
       }
 
+      .text-normal > button > .filter-option{
+          text-transform: inherit !important;
+      }
+
+      .formula-box {
+          height: 50px;
+          border:1px solid #bfdceb;
+          border-bottom:0;
+          padding: 15px;
+          color: #007cba;
+      }
+
+      .operator {
+          width: 63% !important;
+      }
+
+      .dest-label {
+          padding-left: 0 !important;
+          padding-top: 7px;
+      }
+
+
+      .dest-row {
+          margin-top: 12px;
+      }
+
       .langSpecific {
         position: relative;
       }
@@ -106,7 +132,7 @@
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f dis-line pull-left line34">
-				<span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
                         src="../images/icons/back-b.png"/></span>
                 <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
                 <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
@@ -179,7 +205,6 @@
                                 <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
 					</span>
                 </div>
-
             </c:if>
         </div>
     </div>
@@ -206,6 +231,9 @@
                          <input type="hidden" name="stepId" id="stepId"
                                 value="${questionnairesStepsBo.stepId}">
                          <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
+             <input type="hidden" id="stepOrGroupPostLoad" value="${questionnairesStepsBo.stepOrGroupPostLoad}" name="stepOrGroupPostLoad"/>
+             <input type="hidden" id="stepOrGroup" value="${questionnairesStepsBo.stepOrGroup}" name="stepOrGroup"/>
+             <input type="hidden" id="lastResponseType" value="${lastResponseType}"/>
                          <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
                           <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
                          <input
@@ -221,9 +249,10 @@
                              type="hidden" name="instructionFormId" id="instructionFormId"
                              value="${questionnairesStepsBo.instructionFormId}"> <input
                              type="hidden" id="type" name="type" value="complete"/> <input
-                             type="hidden" id="questionId" name="questionId"/> <input
+                             type="hidden" id="questionId" name="questionId"/><input
                              type="hidden" id="actionTypeForFormStep"
                              name="actionTypeForFormStep"/>
+             <input type="hidden" id="seqNo" value="${questionnairesStepsBo.sequenceNo}">
                          <select id="questionLangBOList" style="display: none">
                              <c:forEach items="${questionLangBOList}" var="questionLang">
                                  <option id='${questionLang.questionLangPK.id}' status="${questionLang.status}"
@@ -295,13 +324,16 @@
                                                 required>
                                             <c:forEach items="${destinationStepList}"
                                                        var="destinationStep">
-                                                <option value="${destinationStep.stepId}"
+                                                <option value="${destinationStep.stepId}" data-type="step"
                                                     ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
                                                     Step
                                                         ${destinationStep.sequenceNo} :
                                                         ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
-                                            <option value="0"
+                                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                <option value="${group.id}" data-type="group" id="selectGroup${group.id}">Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                            </c:forEach>
+                                            <option value="0" data-type="step"
                                                 ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
                                                 Completion
                                                 Step
@@ -312,7 +344,201 @@
                                 </div>
                             </c:if>
                         </div>
-                    </div>
+
+         <div>
+             <div class="gray-xs-f mb-xs">Default Visibility</div>
+             <div>
+                 <input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${questionnairesStepsBo.defaultVisibility}"/>
+                 <label class="switch bg-transparent mt-xs">
+                     <input type="checkbox" class="switch-input"
+                            id="groupDefaultVisibility"
+                            <c:if test="${groupsBo.defaultVisibility eq 'false'}">
+                              <c:out value="disabled='disabled'"/>
+                            </c:if>
+                     <c:if test="${empty questionnairesStepsBo.defaultVisibility || questionnairesStepsBo.defaultVisibility eq 'true'}"> checked</c:if>>
+                     <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+                     <span class="switch-handle"></span>
+                 </label>
+             </div>
+         </div>
+
+         <div id="logicDiv">
+             <div class="row">
+                 <div class="gray-xs-f mb-xs">Pre-Load Logic</div>
+             </div>
+             <div class="row">
+                 <div class="col-md-3 dest-label">
+                     If True, Destination step =
+                 </div>
+                 <div class="col-md-1"></div>
+                 <div class="col-md-3 mt__8">
+                        <span class="checkbox checkbox-inline">
+                                            <input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
+                                                   <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad
+                                                        and questionnairesStepsBo.differentSurveyPreLoad}">checked</c:if> />
+                                            <label for="differentSurveyPreLoad"> Is different survey? </label>
+                        </span>
+                 </div>
+                 <div class="col-md-5"></div>
+             </div>
+             <div class="row">
+                 <div class="col-md-4"></div>
+                 <div class="col-md-5 form-group" id="contents" style="display:none">
+                     <select class="selectpicker text-normal" name="preLoadSurveyId"
+                             <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> required </c:if>
+                             id="preLoadSurveyId" title="-select survey id-">
+                         <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+                             <option data-id="${key.id}" value="${key.id}" id="${key.shortTitle}"
+                                     <c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
+                                 Survey ${loop.index+1} : ${key.shortTitle}
+                             </option>
+                         </c:forEach>
+                         <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+                             <option style="text-align: center; color: #000000" disabled>- No items found -</option>
+                         </c:if>
+                     </select>
+                     <div class="help-block with-errors red-txt"></div>
+                 </div>
+                 <div class="col-md-3"></div>
+             </div>
+             <div class="row">
+                 <div class="col-md-4"></div>
+                 <div class="col-md-5 form-group">
+                     <select name="destinationTrueAsGroup" id="destinationTrueAsGroup" 
+                             data-error="Please select an option" class="selectpicker text-normal"  title="-select destination step-">
+                         <c:forEach items="${sameSurveyPreloadSourceKeys}" var="destinationStep">
+                             <option value="${destinationStep.stepId}" data-type="step"
+                                 ${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
+                                 Step ${destinationStep.sequenceNo} :${destinationStep.stepShortTitle}
+                             </option>
+                         </c:forEach>
+                         <option value="0" data-type="step"
+                             ${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
+                             Completion Step</option>
+                         <c:forEach items="${groupsListPreLoad}" var="group" varStatus="status">
+                             <option value="${group.id}" data-type="group"
+                                     <c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
+                                         selected
+                                     </c:if>
+                                     id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                         </c:forEach>
+<%--                         <c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&--%>
+<%--									         (groupsList eq null || groupsList.size() eq 0) }">--%>
+<%--                             <option style="text-align: center; color: #000000" disabled>- No items found -</option>--%>
+<%--                         </c:if>--%>
+                     </select>
+                     <div class="help-block with-errors red-txt"></div>
+                 </div>
+                 <div class="col-md-3"></div>
+         </div>
+         <br>
+
+             <div id="formulaContainer${status.index}">
+                 <c:choose>
+                     <c:when test="${questionnairesStepsBo.preLoadLogicBeans.size() gt 0}">
+                         <c:forEach items="${questionnairesStepsBo.preLoadLogicBeans}" var="preLoadLogicBean" varStatus="status">
+                             <div id="form-div${status.index}"
+                                  <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
+                                  <c:if test="${status.index eq 0}">style="height: 150px;"</c:if>
+                                  class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
+                                 <c:if test="${status.index gt 0}">
+                                     <div class="form-group">
+												<span class="radio radio-info radio-inline p-45 pl-2">
+													<input type="radio" id="andRadio${status.index}" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans[${status.index}].conditionOperator"
+                                                           <c:if test="${preLoadLogicBean.conditionOperator eq '&&'}">checked </c:if> />
+													<label for="andRadio${status.index}">AND</label>
+												</span>
+                                         <span class="radio radio-inline">
+													<input type="radio" id="orRadio${status.index}" value="||" class="con-radio con-op-or" name="preLoadLogicBeans[${status.index}].conditionOperator"
+                                                           <c:if test="${preLoadLogicBean.conditionOperator eq '||'}">checked </c:if> />
+													<label for="orRadio${status.index}">OR</label>
+												</span>
+                                     </div>
+                                 </c:if>
+                                 <div>
+                                     <div class="row formula-box">
+                                         <div class="col-md-2">
+                                             <strong class="font-family: arial;">Formula</strong>
+                                         </div>
+                                         <div class="col-md-10 text-right">
+                                             <c:if test="${status.index gt 0}">
+                                                 <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div${status.index}" onclick="removeFormulaContainer(this)"></span>
+                                             </c:if>
+                                         </div>
+                                     </div>
+                                     <div style="height: 100px; border:1px solid #bfdceb;">
+                                         <div class="row">
+                                             <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+                                             <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                             <div class="col-md-6"></div>
+                                         </div>
+                                         <div class="row data-div">
+                                             <div class="col-md-1" style="padding-top: 7px">Operator</div>
+                                             <div class="col-md-2 form-group">
+                                                 <select class="selectpicker operator text-normal" data-error="Please select an option" required
+                                                         id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
+                                                     <c:forEach items="${operators}" var="operator">
+                                                         <option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
+                                                     </c:forEach>
+                                                    </select>
+                                                 <div class="help-block with-errors red-txt"></div>
+                                             </div>
+
+                                             <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+                                             <div class="col-md-3 form-group">
+                                                 <input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
+                                                 <input type="text" required class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue" placeholder="Enter">
+                                                 <div class="help-block with-errors red-txt"></div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <br>
+                             </div>
+                         </c:forEach>
+                     </c:when>
+
+                     <c:otherwise>
+                         <div style="height: 136px" class="form-div">
+                             <div class="row formula-box">
+                                 <div class="col-md-2">
+                                     <strong class="font-family: arial;">Formula</strong>
+                                 </div>
+                             </div>
+                             <div style="height: 100px; border:1px solid #bfdceb;">
+                                 <div class="row">
+                                     <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+                                     <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                     <div class="col-md-6"></div>
+                                 </div>
+                                 <div class="row data-div">
+                                     <div class="col-md-1" style="padding-top: 7px">Operator</div>
+                                     <div class="col-md-2 form-group">
+                                         <select class="selectpicker operator text-normal"  data-error="Please select an option"
+                                                 id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+                                             <c:forEach items="${operators}" var="operator">
+                                                 <option value="${operator}">${operator}</option>
+                                             </c:forEach>
+                                         </select>
+                                         <div class="help-block with-errors red-txt"></div>
+                                     </div>
+
+                                     <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+                                     <div class="col-md-3 form-group">
+                                         <input type="hidden" id="id${status.index}">
+                                         <input type="text"  class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+                                         <div class="help-block with-errors red-txt"></div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <br>
+                     </c:otherwise>
+                 </c:choose>
+             </div>
+             <button type="button" id="addFormula" style="margin-top:10px" class="btn btn-primary blue-btn">Add Formula</button>
+         </div>
+     </div>
 
 
 
@@ -430,6 +656,7 @@
 
         </div>
     </form:form>
+
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
@@ -457,16 +684,28 @@
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+    var table1 = null;
+    var defaultVisibility = $('#groupDefaultVisibility');
 var idleTime = 0;
   $(document).ready(function () {
 
+      <c:if test="${(operators eq null || operators.size() eq 0)}">
+      defaultVisibility.prop('checked', true).trigger('change');
+      defaultVisibility.prop('disabled', true);
+      </c:if>
+
     <c:if test="${actionTypeForQuestionPage == 'view'}">
-    $('#formStepId input[type="text"]').prop('disabled', true);
-    $('#formStepId input[type="radio"]').prop('disabled', true);
-    $('#formStepId select').addClass('linkDis');
-    $('#studyLanguage').removeClass('linkDis');
-    $('.hideButtonOnView').addClass('dis-none');
-    $('.selectpicker').selectpicker('refresh');
+      $('#formStepId input[type="text"], input[type="checkbox"], input[type="radio"]').prop('disabled', true);
+      $('#formStepId select').addClass('linkDis');
+      $('#studyLanguage').removeClass('linkDis');
+      $('.hideButtonOnView').addClass('dis-none');
+      $('#logicDiv').find('div.bootstrap-select').each( function () {
+          $(this).addClass('ml-disabled');
+      });
+      $('#sourceQuestion').prop('disabled', true);
+      $('#differentSurvey').prop('disabled', true);
+      $('#addFormula').attr('disabled', true);
+      $('.selectpicker').selectpicker('refresh');
     </c:if>
     var id = "${questionnairesStepsBo.stepId}";
     if (id != '' && id != null && typeof id != 'undefined') {
@@ -497,6 +736,15 @@ var idleTime = 0;
       validateShortTitle('', function (val) {
         if (val) {
           if (isFromValid("#formStepId")) {
+              if (!$('#groupDefaultVisibility').is(':checked')) {
+                  $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+              }
+              if ('${questionnaireBo.branching}' === 'true') {
+                  $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
+              }
+              $('input.con-radio').each(function(e) {
+                  $(this).removeAttr('disabled');
+              })
             if (stepId != null && stepId != '' && typeof stepId != 'undefined') {
               if (!table.data().count()) {
                 $("#doneId").attr("disabled", false);
@@ -578,6 +826,17 @@ var idleTime = 0;
           }
         }
       });
+
+   
+    // if($('#differentSurveyPreLoad').is(':checked')) {
+    //     $('#preLoadSurveyId').prop('required', true);
+    // } else {
+    //     $('#preLoadSurveyId').val('').prop('required', false).selectpicker('refresh');
+    //     $("#preLoadSurveyId").parent().removeClass("has-danger").removeClass("has-error");
+    //     $("#preLoadSurveyId").parent().find(".help-block").empty();
+    // };
+
+
     });
     $("#stepShortTitle").blur(function () {
       validateShortTitle('', function (val) {
@@ -602,6 +861,11 @@ var idleTime = 0;
       }
     });
 
+      <c:if test="${questionnaireBo.branching}">
+      defaultVisibility.prop('checked', true).trigger('change');
+      defaultVisibility.prop('disabled', true);
+      </c:if>
+
     var actionPage = "${actionTypeForQuestionPage}";
     var reorder = true;
     if (actionPage == 'view') {
@@ -609,7 +873,8 @@ var idleTime = 0;
     } else {
       reorder = true;
     }
-    var table1 = $('#content').DataTable({
+
+    table1 = $('#content').DataTable({
       "paging": false,
       "info": false,
       "filter": false,
@@ -683,6 +948,11 @@ var idleTime = 0;
         });
       }
     });
+      if (table1 != null && $('#groupDefaultVisibility').is(':checked')) {
+          table1.rowReorder.enable();
+      } else {
+          table1.rowReorder.disable();
+      }
     if (document.getElementById("doneId") != null && document.getElementById("doneId").disabled) {
       $('[data-toggle="tooltip"]').tooltip();
     }
@@ -811,6 +1081,33 @@ var idleTime = 0;
     questionnaireStep.repeatableText = repeatableText;
     questionnaireStep.type = "save";
     questionnaireStep.stepType = step_type;
+      questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
+      questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+      if (!$('#groupDefaultVisibility').is(':checked')) {
+          questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
+      }
+      if ('${questionnaireBo.branching}' === 'true') {
+          questionnaireStep.stepOrGroupPostLoad = $('#destinationStepId option:selected').attr('data-type');
+      }
+      questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
+      questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
+      let beanArray = [];
+      $('#formulaContainer').find('div.form-div').each(function (index) {
+          let preLoadBean = {};
+          preLoadBean.operator = $(this).find('select.operator').val();
+          preLoadBean.id = $(this).find('input.id').val();
+          preLoadBean.inputValue = $(this).find('input.value').val();
+          if (index > 0) {
+              let isOr = $(this).find('input.con-op-or');
+              let coop = '&&';
+              if (isOr.val() !== undefined && isOr.is(':checked')) {
+                  coop = '||';
+              }
+              preLoadBean.conditionOperator = coop;
+          }
+          beanArray.push(preLoadBean);
+      });
+      questionnaireStep.preLoadLogicBeans = beanArray;
     if (quesstionnaireId != null && quesstionnaireId != '' && typeof quesstionnaireId != 'undefined'
         &&
         shortTitle != null && shortTitle != '' && typeof shortTitle != 'undefined') {
@@ -949,7 +1246,7 @@ var idleTime = 0;
               },
               success: function deleteConsentInfo(data) {
                 var status = data.message;
-                if (status == "SUCCESS") {
+                if (status === "SUCCESS") {
                   $("#alertMsg").removeClass('e-box').addClass('s-box').text(
                       "Questionnaire step deleted successfully");
                   $('#alertMsg').show();
@@ -961,6 +1258,10 @@ var idleTime = 0;
                       'sprites-icons-2 tick pull-right mt-xs')) {
                     $('.seventhQuestionnaires').find('span').removeClass(
                         'sprites-icons-2 tick pull-right mt-xs');
+                  }
+                  if (data.lastResponseType != null && data.lastResponseType !== '') {
+                      $('#lastResponseType').val(data.lastResponseType);
+                      setOperatorDropDown(data.lastResponseType);
                   }
                 } else {
                   if (status == 'FAILUREanchorused') {
@@ -1190,6 +1491,12 @@ var idleTime = 0;
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').addClass("ml-disabled").attr('disabled', true);
+            $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+                $(this).addClass('ml-disabled');
+                if ($(this).is("input")) {
+                    $(this).attr('disabled', true);
+                }
+            });
           $('#addQuestionId').attr('disabled', true);
           if ($('#repeatableYes').prop('checked') === true) {
             $('#repeatableText').val($('#mlText', htmlData).val());
@@ -1197,7 +1504,7 @@ var idleTime = 0;
           if (isBranching) {
             $('[data-id="destinationStepId"]').addClass("ml-disabled");
           }
-          $('.delete').addClass('cursor-none');
+          $('.delete, #addFormula, .switch').addClass('cursor-none');
           let mark=true;
           $('#questionLangBOList option', htmlData).each(function (index, value) {
             let id = '#row' + value.getAttribute('id');
@@ -1234,13 +1541,18 @@ var idleTime = 0;
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').removeClass("ml-disabled").attr('disabled', false);
+            $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+                $(this).removeClass('ml-disabled');
+                if ($(this).is("input")) {
+                    $(this).attr('disabled', false).removeClass('cursor-none');;
+                }
+            });
             $('#addQuestionId').attr('disabled', false);
           $('#repeatableText').val($('#repeatableText', htmlData).val());
           if (isBranching) {
             $('[data-id="destinationStepId"]').removeClass("ml-disabled");
           }
-          $('.delete').removeClass('cursor-none');
-
+          $('.delete, #addFormula, .switch').removeClass('cursor-none');
           <c:if test="${actionTypeForQuestionPage == 'view'}">
           $('#formStepId input[type="text"]').prop('disabled', true);
           $('#formStepId input[type="radio"]').prop('disabled', true);
@@ -1280,4 +1592,293 @@ var idleTime = 0;
       }
     })
   }
+
+$('#addFormula').on('click', function () {
+    let formContainer = $('#formulaContainer');
+    let count = formContainer.find('div.formula-box').length;
+    let formula =
+        '<div id="form-div' + count + '" class="form-div deletable" style="height: 200px; margin-top:20px">'+
+        '<div class="form-group">'+
+        '<span class="radio radio-info radio-inline p-45 pl-2">'+
+        '<input type="radio" id="andRadio' + count + '" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
+        '<label for="andRadio' + count + '">AND</label>'+
+        '</span>'+
+        '<span class="radio radio-inline">'+
+        '<input type="radio" id="orRadio' + count + '" value="||" class="con-radio con-op-or" name="preLoadLogicBeans['+count+'].conditionOperator" />'+
+        '<label for="orRadio' + count + '">OR</label>'+
+        '</span>'+
+        '</div>'+
+        '<div style="height: 150px">'+
+        '<div class="row formula-box">'+
+        '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>'+
+        '<div class="col-md-10 text-right">'+
+        '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div' + count + '" onclick="removeFormulaContainer(this)"></span>'+
+        '</div>'+
+        '</div>'+
+        '<div style="height: 100px; border:1px solid #bfdceb;">'+
+        '<div class="row">'+
+        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>'+
+        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
+        '<div class="col-md-6"></div>'+
+        '</div>'+
+        '<div class="row data-div">'+
+        '<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
+        '<div class="col-md-2 form-group">'+
+        '<select  class="selectpicker operator text-normal" data-error="Please select an option" '+
+        'id="operator' + count + '" name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
+        '<option> < </option>'+
+        '<option> > </option>'+
+        '<option> = </option>'+
+        '<option> != </option>'+
+        '<option> >= </option>'+
+        '<option> <= </option>'+
+        '</select>'+
+        '<div class="help-block with-errors red-txt"></div>'+
+        '</div>'+
+        '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
+        '<div class="col-md-3 form-group">'+
+        '<input type="hidden" class="id"/>'+
+        '<input type="text" data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter">'+
+        '<div class="help-block with-errors red-txt"></div>'+
+        '</div>'+
+        '</div>'+
+        '</div>'+
+        '</div>'+
+        '</div>';
+    formContainer.append(formula);
+    setOperatorDropDownOnAdd($('#lastResponseType').val());
+});
+
+if (defaultVisibility.is(':checked')) {
+    $('.deletable').remove();
+    $('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
+        $(this).addClass('ml-disabled');
+        if ($(this).is("input.con-radio")) {
+            $(this).attr('disabled', true);
+        }
+        $(this).attr('required', false);
+    });
+    $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+    $('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
+    $('#defaultVisibility').val('true');
+    $('#addFormula').attr('disabled', true);
+    $('#skiappableYes').prop('disabled', false);
+} else {
+    $('#skiappableYes').prop('checked', false).prop('disabled', true);
+    $('#skiappableNo').prop('checked', true);
+}
+
+defaultVisibility.on('change', function () {
+    let toggle = $(this);
+    let logicDiv = $('#logicDiv');
+    let addForm = $('#addFormula');
+    if  (toggle.is(':checked')) {
+        if (table1 != null) {
+            table1.rowReorder.enable();
+        }
+        $('.deletable').remove();
+        logicDiv.find('div.bootstrap-select, input, select').each( function () {
+            $(this).addClass('ml-disabled');
+            if ($(this).is("select")) {
+                $(this).val('').selectpicker('refresh');
+                $(this).removeClass('has-error has-danger').find(".help-block").empty();
+                $(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+            }
+            if ($(this).is("input")) {
+                $(this).val('').attr('disabled', true);
+                $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+            }
+            $(this).attr('required', false);
+        });
+
+        $('#defaultVisibility').val('true');
+        if($('#differentSurveyPreLoad').is(':checked')){
+            $('#contents').hide();
+        }
+        $('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+        $('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
+        $('#preLoadSurveyId').prop('required', false);
+        addForm.attr('disabled', true);
+        $('#skiappableYes').prop('disabled', false);
+    } else {
+        if (table1 != null) {
+            table1.rowReorder.disable();
+        }
+        logicDiv.find('div.bootstrap-select, input, select').each( function () {
+            $(this).removeClass('ml-disabled');
+            if ($(this).is("select")) {
+                $(this).selectpicker('refresh');
+            }
+            if ($(this).is("input")) {
+                $(this).attr('disabled', false);
+            }
+            $(this).attr('required',true);
+            $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+        });
+        $('#defaultVisibility').val('false');
+        $('#preLoadSurveyId').prop('required', false);
+        toggle.attr('checked', false);
+        addForm.attr('disabled', false);
+        $('#skiappableYes').prop('checked', false).prop('disabled', true);
+        $('#skiappableNo').prop('checked', true);
+    }
+})
+
+function removeFormulaContainer(object) {
+    let id = object.getAttribute('data-id');
+    $('#'+id).remove();
+}
+
+function setOperatorDropDown(responseType) {
+    if (responseType != null) {
+        if (responseType === '1'|| responseType === '2' ||
+            responseType === '8' || responseType === '14' ) {
+            defaultVisibility.prop('disabled', false);
+            let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+            let operator = $('select.operator');
+            operator.empty();
+            $.each(operatorList, function (index, val) {
+                operator.append('<option value="'+val+'">'+val+'</option>');
+            });
+            $('.selectpicker').selectpicker('refresh');
+        } else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+            defaultVisibility.prop('disabled', false);
+            let operatorList = ["=", "!="];
+            let operator = $('select.operator');
+            operator.empty();
+            $.each(operatorList, function (index, val) {
+                operator.append('<option value="'+val+'">'+val+'</option>');
+            });
+            $('.selectpicker').selectpicker('refresh');
+        } else {
+            defaultVisibility.prop('checked', true).trigger('change');
+            defaultVisibility.prop('disabled', true);
+        }
+    }
+}
+
+
+function setOperatorDropDownOnAdd(responseType) {
+	if (responseType != null) {
+		if (responseType === '1'|| responseType === '2' ||
+				responseType === '8' || responseType === '14' ) {
+			defaultVisibility.prop('disabled', false);
+			let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+			let operator = $('select.operator');
+			operator.empty();
+			$.each(operatorList, function (index, val) {
+				operator.append('<option value="'+val+'">'+val+'</option>');
+			});
+			$('.selectpicker').selectpicker();
+		} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+			defaultVisibility.prop('disabled', false);
+			let operatorList = ["=", "!="];
+			let operator = $('select.operator');
+			operator.empty();
+			$.each(operatorList, function (index, val) {
+				operator.append('<option value="'+val+'">'+val+'</option>');
+			});
+			$('.selectpicker').selectpicker();
+		} else {
+			defaultVisibility.prop('checked', true).trigger('change');
+			defaultVisibility.prop('disabled', true);
+		}
+	}
+}
+
+
+$('#differentSurveyPreLoad').on('change', function(e) {
+    if($(this).is(':checked')) {
+        $('#contents').show();
+        $('#preLoadSurveyId').prop('required', true);
+    } else {
+        $('#contents').hide();
+        refreshSourceKeys($('#questionnairesId').val(), 'preload');
+        $('#preLoadSurveyId').val('').prop('required', false).selectpicker('refresh');
+        $('#destinationTrueAsGroup').val('').selectpicker('refresh');
+    }
+});
+
+if($('#differentSurveyPreLoad').is(':checked')){
+    $('#contents').show();
+}
+
+$('#preLoadSurveyId').on('change', function () {
+    let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
+    refreshSourceKeys(surveyId, 'preload');
+})
+
+function refreshSourceKeys(surveyId, type) {
+	let id = $('#sourceQuestion');
+	if (type === 'preload') {
+		id = $('#destinationTrueAsGroup');
+	}
+	id.empty().selectpicker('refresh');
+    if (surveyId !== '') {
+        $.ajax({
+            url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
+            type : "GET",
+            datatype : "json",
+            data : {
+                caller : type,
+                seqNo : $('#seqNo').val(),
+                stepId : $('#stepId').val(),
+                questionnaireId : surveyId,
+                isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
+                "${_csrf.parameterName}":"${_csrf.token}"
+            },
+            success : function(data) {
+                let message = data.message;
+                if(message === 'SUCCESS'){
+                    let options = data.sourceKeys;
+                    if (options != null && options.length > 0) {
+                        $.each(options, function(index, option) {
+                            let $option = $("<option></option>")
+                                .attr("value", option.stepId)
+                                .attr("data-id", option.stepId)
+                                .text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
+                            id.append($option);
+                        });
+                    }
+                    if (type === 'preload') {
+                        id.append('<option value="0">Completion Step</option>');
+                        if (!$('#differentSurveyPreLoad').is(':checked')) {
+                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                            id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+                                'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+                                '</option>');
+                            </c:forEach>
+                        } else {
+                            let groups = data.groupList;
+                            if (groups != null && groups.length > 0) {
+                                $.each(groups, function (index, option) {
+                                    let $option = $("<option></option>")
+                                        .attr("value", option.id)
+                                        .attr("data-id", option.id)
+                                        .text("Group " + (index + 1) + " : " + option.groupName);
+                                    id.append($option);
+                                });
+                            }
+                        }
+                    }
+                    id.selectpicker('refresh');
+
+                    <%--let groupsList = '${groupsListPreLoad}';--%>
+                    <%--if ((options == null || options.length === 0) && (groupsList.length === 0)) {--%>
+                    <%--    let $option = $("<option></option>")--%>
+                    <%--        .attr("style", "text-align: center; color: #000000")--%>
+                    <%--        .attr("disabled", true)--%>
+                    <%--        .text("- No items found -");--%>
+                    <%--    id.append($option).selectpicker('refresh');--%>
+                    <%--}--%>
+                } else {
+                    showErrMsg('Server error while fetching data.');
+                }
+            },
+            error : function status(data, status) {
+                console.log(data, status);
+            },
+        });
+    }
+}
 </script>

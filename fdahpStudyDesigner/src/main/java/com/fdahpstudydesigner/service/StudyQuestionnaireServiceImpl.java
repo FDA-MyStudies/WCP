@@ -1,30 +1,11 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
+import com.fdahpstudydesigner.bean.GroupMappingStepBean;
+import com.fdahpstudydesigner.bean.GroupsBean;
+import com.fdahpstudydesigner.bean.PreLoadLogicBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.FormLangPK;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionLangPK;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.QuestionConditionBranchBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionLangPK;
-import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnaireLangPK;
-import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
+import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
@@ -236,13 +217,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       Integer questionnaireId,
       String stepType,
       SessionObject sessionObject,
-      String customStudyId) {
+      String customStudyId,
+      Integer deletionId) {
     logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
           studyQuestionnaireDAO.deleteQuestionnaireStep(
-              stepId, questionnaireId, stepType, sessionObject, customStudyId);
+              stepId, questionnaireId, stepType, sessionObject, customStudyId, deletionId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error", e);
     }
@@ -486,29 +468,39 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       questionnairesStepsBo =
           studyQuestionnaireDAO.getQuestionnaireStep(
               stepId, stepType, questionnaireShortTitle, customStudyId, questionnaireId);
-      if (questionnairesStepsBo != null
-          && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)
-          && questionnairesStepsBo.getFormQuestionMap() != null) {
-        List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList =
-            studyQuestionnaireDAO.getQuestionReponseTypeList();
-        if (questionResponseTypeMasterInfoList != null
-            && !questionResponseTypeMasterInfoList.isEmpty()) {
-          for (QuestionResponseTypeMasterInfoBo questionResponseTypeMasterInfoBo :
-              questionResponseTypeMasterInfoList) {
-            for (Entry<Integer, QuestionnaireStepBean> entry :
-                questionnairesStepsBo.getFormQuestionMap().entrySet()) {
-              QuestionnaireStepBean questionnaireStepBean = entry.getValue();
-              if (questionnaireStepBean.getResponseType() != null
-                  && questionnaireStepBean
-                      .getResponseType()
-                      .equals(questionResponseTypeMasterInfoBo.getId())) {
-                if (FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(
-                    questionResponseTypeMasterInfoBo.getResponseType())) {
-                  questionnaireStepBean.setResponseTypeText(
-                      questionResponseTypeMasterInfoBo.getResponseType());
-                } else {
-                  questionnaireStepBean.setResponseTypeText(
-                      questionResponseTypeMasterInfoBo.getDataType());
+
+      if (questionnairesStepsBo != null) {
+        List<PreLoadLogicBo> preLoadLogicBos = studyQuestionnaireDAO.getPreLoadLogicByStep(questionnairesStepsBo.getStepId());
+        List<PreLoadLogicBean> preLoadLogicBeans = new ArrayList<>();
+        for (PreLoadLogicBo bo : preLoadLogicBos) {
+          PreLoadLogicBean bean = new PreLoadLogicBean();
+          BeanUtils.copyProperties(bo, bean);
+          preLoadLogicBeans.add(bean);
+        }
+        questionnairesStepsBo.setPreLoadLogicBeans(preLoadLogicBeans);
+        if (stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)
+                && questionnairesStepsBo.getFormQuestionMap() != null) {
+          List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList =
+                  studyQuestionnaireDAO.getQuestionReponseTypeList();
+          if (questionResponseTypeMasterInfoList != null
+                  && !questionResponseTypeMasterInfoList.isEmpty()) {
+            for (QuestionResponseTypeMasterInfoBo questionResponseTypeMasterInfoBo :
+                    questionResponseTypeMasterInfoList) {
+              for (Entry<Integer, QuestionnaireStepBean> entry :
+                      questionnairesStepsBo.getFormQuestionMap().entrySet()) {
+                QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+                if (questionnaireStepBean.getResponseType() != null
+                        && questionnaireStepBean
+                        .getResponseType()
+                        .equals(questionResponseTypeMasterInfoBo.getId())) {
+                  if (FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(
+                          questionResponseTypeMasterInfoBo.getResponseType())) {
+                    questionnaireStepBean.setResponseTypeText(
+                            questionResponseTypeMasterInfoBo.getResponseType());
+                  } else {
+                    questionnaireStepBean.setResponseTypeText(
+                            questionResponseTypeMasterInfoBo.getDataType());
+                  }
                 }
               }
             }
@@ -760,11 +752,97 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       addOrUpdateQuestionnairesStepsBo =
           studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(
               questionnairesStepsBo, sesObj, customStudyId, studyId);
+      if (questionnairesStepsBo.getInstructionFormId() == null) {
+        questionnairesStepsBo.setInstructionFormId(addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
+        questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
+      }
+      this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error", e);
     }
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
     return addOrUpdateQuestionnairesStepsBo;
+  }
+
+  private void doPreLoadLogic(QuestionnairesStepsBo questionnairesStepsBo, String customStudyId) throws Exception{
+    try {
+      List<PreLoadLogicBean> preLoadLogicBeans = questionnairesStepsBo.getPreLoadLogicBeans();
+      if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
+        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(questionnairesStepsBo.getStepId());
+        for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+            if (preLoadLogicBo == null) {
+              preLoadLogicBo = new PreLoadLogicBo();
+              preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.STEP);
+              preLoadLogicBo.setStepGroupId(questionnairesStepsBo.getStepId());
+            } else {
+              preLoadIds.remove(preLoadLogicBo.getId());
+            }
+            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
+                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setInputValue(logicBean.getInputValue());
+            preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
+            studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
+          }
+        }
+        studyQuestionnaireDAO.deleteFormula(preLoadIds);
+        QuestionnairesStepsBo persistentStepsBo =
+                studyQuestionnaireDAO.getQuestionnaireStep(
+                        questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getStepType(), null,
+                        customStudyId, questionnairesStepsBo.getQuestionnairesId());
+        if (persistentStepsBo != null) {
+          persistentStepsBo.setDefaultVisibility("true".equals(questionnairesStepsBo.getGroupDefaultVisibility()));
+          persistentStepsBo.setDestinationTrueAsGroup(questionnairesStepsBo.getDestinationTrueAsGroup());
+          persistentStepsBo.setDifferentSurveyPreLoad(questionnairesStepsBo.getDifferentSurveyPreLoad());
+          persistentStepsBo.setPreLoadSurveyId(questionnairesStepsBo.getPreLoadSurveyId());
+          persistentStepsBo.setStepOrGroup(questionnairesStepsBo.getStepOrGroup());
+          studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("Exception : ", e);
+      throw e;
+    }
+  }
+
+  private void doGroupPreLoadLogic(GroupsBean groupsBo) throws Exception{
+    try {
+      List<PreLoadLogicBean> preLoadLogicBeans = groupsBo.getPreLoadLogicBeans();
+      if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
+        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(groupsBo.getId());
+        for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+            if (preLoadLogicBo == null) {
+              preLoadLogicBo = new PreLoadLogicBo();
+              preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.GROUP);
+              preLoadLogicBo.setStepGroupId(groupsBo.getId());
+            } else {
+              preLoadIds.remove(preLoadLogicBo.getId());
+            }
+            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
+                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setInputValue(logicBean.getInputValue());
+            preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
+            studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
+          }
+        }
+        studyQuestionnaireDAO.deleteFormula(preLoadIds);
+        GroupsBo persistentStepsBo = null;
+        if(groupsBo.getId()!=null){
+          persistentStepsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBo.getId());
+        }
+        if (persistentStepsBo != null) {
+          persistentStepsBo.setDefaultVisibility(Boolean.TRUE.equals(groupsBo.getDefaultVisibility()));
+          persistentStepsBo.setDestinationTrueAsGroup(groupsBo.getDestinationTrueAsGroup());
+          studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("Exception : ", e);
+      throw e;
+    }
   }
 
   /**
@@ -934,7 +1012,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
                 Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
                   public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
-                    return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                    if (StringUtils.isNoneBlank(object1.getSequenceNumber(), object2.getSequenceNumber())) {
+                      return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
+                    }
+                    return 0;
                   }
                 });
               }
@@ -1518,7 +1599,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           this.updateStudyLangSequence(
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
-
         if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
@@ -1719,6 +1799,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateQuestionnairesStepsBo =
               studyQuestionnaireDAO.saveOrUpdateQuestionStep(
                   questionnairesStepsBo, sessionObject, customStudyId);
+          if (questionnairesStepsBo.getInstructionFormId() == null) {
+            questionnairesStepsBo.setInstructionFormId(addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
+            questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
+          }
+          this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
         }
       }
     } catch (Exception e) {
@@ -2145,5 +2230,414 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       logger.error("StudyServiceImpl - updateStudyLangSequence() - Error", e);
     }
     logger.info("StudyServiceImpl - updateStudyLangSequence() - Ends");
+  }
+
+ 
+@Override
+public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
+	logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
+	List<GroupsBo> groups = null;
+    try {
+
+      if (isStep && stepId != null) {
+        groups = studyQuestionnaireDAO.getGroupsByStudyIdAndStepId(studyId,questionnaireId, stepId);
+      } else {
+        groups = studyQuestionnaireDAO.getGroupsByStudyId(studyId,questionnaireId);
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsByStudyId() - ERROR ", e);
+    }
+    logger.info("getGroupsByStudyId() - Ends");
+    return groups;
+	
+}
+
+  @Override
+  public GroupsBo getGroupsDetails(Integer id) {
+    logger.info("UsersServiceImpl - getGroupsDetails() - Starts");
+    GroupsBo groupsBo = null;
+    try {
+      groupsBo = studyQuestionnaireDAO.getGroupsDetails(id);
+    } catch (Exception e) {
+      logger.error("UsersServiceImpl - getGroupsDetails() - ERROR", e);
+    }
+    logger.info("UsersServiceImpl - getGroupsDetails() - Ends");
+    return groupsBo;
+  }
+
+  @Override
+  public String addOrUpdateGroupsDetails(GroupsBean groupsBean, SessionObject userSession) {
+    logger.info("UsersServiceImpl - addOrUpdateGroupsDetails() - Starts");
+    String msg = FdahpStudyDesignerConstants.FAILURE;
+    boolean addFlag = false;
+    String activity = "";
+    String activitydetails = "";
+
+    try {
+      GroupsBo groupsBo = null;
+      if(groupsBean.getId() != null ){
+          groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
+
+    	  if(groupsBean.isAction() == true)
+    	  {
+    		  groupsBo.setAction(groupsBean.isAction());
+    	  }
+    	  else
+    	  {
+    		  groupsBo.setAction(groupsBean.isAction());
+
+    	  }
+      }
+      
+      if (groupsBo == null) {
+        addFlag = true;
+        groupsBo = new GroupsBo();
+        groupsBo.setCreatedBy(userSession.getUserId());
+        groupsBo.setCreatedOn(userSession.getCreatedDate());
+        groupsBo.setAction(groupsBean.isAction());
+        groupsBo.setQuestionnaireId(groupsBean.getQuestionnaireId());
+        groupsBo.setStudyId(groupsBean.getStudyId());
+        groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
+        groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
+      } else {
+          groupsBo.setModifiedBy(userSession.getUserId());
+          groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
+        groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
+      }
+      groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
+      groupsBo.setGroupId(groupsBean.getGroupId());
+      studyQuestionnaireDAO.saveOrUpdateGroup(groupsBo);
+      this.doGroupPreLoadLogic(groupsBean);
+      if (addFlag) {
+          activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
+          activitydetails =
+                  " groups saved";
+        }
+        if (!addFlag) {
+          activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
+          activitydetails =
+                  "updated group";
+        }
+      msg=auditLogDAO.saveToAuditLog(
+              null,
+              null,
+              userSession,
+              activity,
+              activitydetails,
+              "StudyQuestionnaireServiceImpl - addOrUpdateGroupsDetails");
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - Ends");
+    return msg;
+  }
+
+@Override
+public String deleteGroup(String id, SessionObject sessionObject) {
+logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
+	
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message =
+          studyQuestionnaireDAO.deleteGroup( id,sessionObject);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Ends");
+    return message;
+}
+
+
+@Override
+public String checkGroupId(String questionnaireId, String groupId, String studyId) {
+  logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Starts");
+  String message = FdahpStudyDesignerConstants.FAILURE;
+  try {
+    message = studyQuestionnaireDAO.checkGroupId(questionnaireId, groupId,studyId);
+  } catch (Exception e) {
+    logger.error("StudyQuestionnaireServiceImpl - checkGroupId() - Error", e);
+  }
+  logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Ends");
+  return message;
+}
+
+@Override
+public String checkGroupName(String questionnaireId, String groupName, String studyId) {
+	logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Starts");
+	  String message = FdahpStudyDesignerConstants.FAILURE;
+	  try {
+	    message = studyQuestionnaireDAO.checkGroupName(questionnaireId, groupName,studyId);
+	  } catch (Exception e) {
+	    logger.error("StudyQuestionnaireServiceImpl - checkGroupName() - Error", e);
+	  }
+	  logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Ends");
+	  return message;
+}
+
+  @Override
+  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - assignQuestionsteps - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    List<GroupMappingBo> groupMappingBo = new ArrayList<>();;
+    try {
+      groupMappingBo = studyQuestionnaireDAO.assignQuestionSteps(arr,grpId,questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - assignQuestionSteps() - ERROR ", e);
+    }
+    logger.exit("assignQuestionSteps() - Ends");
+    return groupMappingBo;
+  }
+
+  @Override
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId) {
+    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId);
+  }
+
+  @Override
+  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive){
+    return studyQuestionnaireDAO.getQuestionnairesForPiping(queId, studyId, isLive);
+  }
+
+  @Override
+  public void saveOrUpdatePipingData(QuestionnaireStepBean questionnaireStepBean) {
+    studyQuestionnaireDAO.saveOrUpdatePipingData(questionnaireStepBean);
+  }
+
+  @Override
+  public List<GroupMappingBo> getStepId(String id, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - getStepId() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    List<GroupMappingBo> stepId = new ArrayList<>();;
+    try {
+      stepId = studyQuestionnaireDAO.getStepId(id, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getStepId() - ERROR ", e);
+    }
+    logger.exit("getStepId() - Ends");
+    return stepId;
+  }
+
+  @Override
+  public GroupMappingBo getStepDetails(String id, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - getStepId() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    GroupMappingBo stepId = null;
+    try {
+      stepId = studyQuestionnaireDAO.getStepDetails(id, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getStepId() - ERROR ", e);
+    }
+    logger.exit("getStepId() - Ends");
+    return stepId;
+  }
+
+  @Override
+  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      result = studyQuestionnaireDAO.groupFlagDisable(groupMappingBo, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
+    }
+    logger.exit("groupFlagDisable() - Ends");
+    return result;  }
+
+  @Override
+  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans) {
+  	List<GroupMappingStepBean> groupMappingBeanss = null;
+  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId,groupMappingBo, groupMappingBeans);
+  	return groupMappingBeanss;
+  }
+
+  @Override
+  public List<GroupMappingBo> getAssignSteps(int grpId) {
+      logger.info("StudyQuestionnaireServiceImpl - getAssignSteps - Starts");
+      List<GroupMappingBo> getAssignSteps = studyQuestionnaireDAO.getAssignSteps(grpId);
+
+  	return getAssignSteps;
+  }
+
+
+  @Override
+  public String deleteGroupMaprecords(String id) {
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
+
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message =
+              studyQuestionnaireDAO.deleteGroupMaprecords(id);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
+    return message;
+  }
+
+@Override
+public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId) {
+	 logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
+	    String result = FdahpStudyDesignerConstants.FAILURE;
+	    try {
+	      result = studyQuestionnaireDAO.stepFlagDisable(groupMappingBo, questionnaireId);
+	    } catch (Exception e) {
+	      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
+	    }
+	    logger.exit("groupFlagDisable() - Ends");
+	    return result;
+}
+
+@Override
+public String deleteStepMaprecords(String id) {
+	logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
+
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message =
+              studyQuestionnaireDAO.deleteStepMaprecords(id);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
+    return message;
+}
+
+  @Override
+  public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
+    return studyQuestionnaireDAO.isPreloadLogicAndPipingEnabled(queId);
+  }
+
+  @Override
+  public String deleteStepBasedOnStepId(String stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - deleteStepBasedOnStepId - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    List<GroupMappingBo> groupMappingBo = new ArrayList<>();;
+    try {
+      result = studyQuestionnaireDAO.deleteStepBasedOnStepId(stepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - deleteStepBasedOnStepId() - ERROR ", e);
+    }
+    logger.exit("deleteStepBasedOnStepId() - Ends");
+    return result;
+
+  }
+
+  @Override
+  public boolean isQuestionMultiSelect(int queId) {
+    return studyQuestionnaireDAO.isQuestionMultiSelect(queId);
+  }
+
+  @Override
+  public boolean isLastFormQuestion(String formId, String questionId) {
+    return studyQuestionnaireDAO.isLastFormQuestion(formId, questionId);
+  }
+
+  @Override
+ /* public boolean isGroupDefaultVisibilityEnabled(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
+    boolean isGroupDvEnabled = false;
+    try {
+      isGroupDvEnabled = studyQuestionnaireDAO.isGroupDefaultVisibilityEnabled(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
+    }
+    logger.info("getGroupIdBySendingquestionstepId() - Ends");
+    return isGroupDvEnabled;
+  } */
+
+
+  public Integer getGroupIdBySendingQuestionStepId(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
+    Integer groupId = null;
+    try {
+      groupId = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
+    }
+    logger.info("getGroupIdBySendingquestionstepId() - Ends");
+    return groupId;
+  }
+
+  @Override
+  public String getStepType(Integer questionStepId, Integer stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getStepType() - Starts");
+    String stepType = null;
+    try {
+      stepType = studyQuestionnaireDAO.getStepType(questionStepId, stepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getStepType() - ERROR ", e);
+    }
+    logger.info("getStepType() - Ends");
+    return stepType;
+
+  }
+
+  @Override
+  public Integer getResponseType(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getResponseType() - Starts");
+    Integer responseType = null;
+    try {
+      responseType = studyQuestionnaireDAO.getResponseType(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getResponseType() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return responseType;
+  }
+
+  @Override
+  public List<Integer> getQuestionIdList(Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getQuestionIdList() - Starts");
+    List<Integer> questionIdList = new ArrayList<>();
+    try {
+      questionIdList = studyQuestionnaireDAO.getQuestionIdList(questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getQuestionIdList() - ERROR ", e);
+    }
+    logger.info("questionIdList() - Ends");
+    return questionIdList;
+  }
+
+  @Override
+  public Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue) {
+    logger.info("StudyQuestionnaireServiceImpl - getResponseTypeForFormStep() - Starts");
+    Integer responseType = null;
+    try {
+      responseType = studyQuestionnaireDAO.getResponseTypeForFormStep(lastQuestinObjectValue);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getResponseType() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return responseType;
+  }
+
+  @Override
+  public Integer getGroupId(String stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupId() - Starts");
+ String result = FdahpStudyDesignerConstants.FAILURE;
+ Integer groupId = 0;
+ try {
+   groupId = studyQuestionnaireDAO.getGroupId(stepId);
+ } catch (Exception e) {
+ logger.error("StudyQuestionnaireServiceImpl - getGroupId() - ERROR ", e);
+ }
+logger.exit("getStepId() - Ends");
+ return groupId;
+
+  }
+
+  @Override
+  public List<PreLoadLogicBo> getPreLoadLogicDetails(Integer id) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Starts");
+    List<PreLoadLogicBo> preLoadLogicBo = null;
+    try {
+      preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicDetails(id);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsDetails() - ERROR", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Ends");
+    return preLoadLogicBo;
   }
 }

@@ -1118,7 +1118,7 @@ input[type=radio]:disabled+label::after {
 }
 
 .add-steps-btn {
-	width: 180px;
+	width: 160px;
 	padding: 5px;
 	text-align: center;
 	color: #fff;
@@ -2827,7 +2827,7 @@ background:#f3f6f8 !important;
 
 button:active {
     outline: none;
-    border: none;
+/*     border: none; */
 }
 .bootstrap-select>.dropdown-toggle {
 
@@ -2842,5 +2842,17 @@ button:active {
           display:flex !important
           }
     }
+      @media screen
+          and (min-device-width: 1280px)
+          and (max-device-width: 1600px)
+          {
+          .tit_wrapper{
+          width:190px !important;
+          }
+        }
+
+.sprites_icon img, .close_img img {
+	cursor: pointer !important;
+}
 
  /* css end here */

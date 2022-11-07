@@ -121,7 +121,7 @@
     <div class="right-content-head">
         <div class="text-right">
             <!-- <div class="black-md-f dis-line pull-left line34">
-                <span class="mr-sm" onclick="goToBackPage(this);"><img
+                <span class="mr-xs" onclick="goToBackPage(this);"><img
                         src="../images/icons/back-b.png" /></span> Add Property
             </div> -->
 

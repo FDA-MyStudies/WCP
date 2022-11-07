@@ -15,6 +15,8 @@ public class FdahpStudyDesignerConstants {
   public static final String ACTION_ON = "actionOn";
   public static final String ACTION_PAGE = "actionPage";
   public static final String ACTION_PAUSE = "pauseId";
+
+  public static final String ASSIGN_GROUP = "There should be at least two steps to form a group.";
   public static final String ACTION_PAUSE_SUCCESS_MSG =
       "The study has been Paused and is no longer in Active state.";
   // Action buttons
@@ -149,6 +151,8 @@ public class FdahpStudyDesignerConstants {
   public static final String ENCRYPT_SALT = "StudieGatewayApp";
   public static final String ERR_MSG = "errMsg";
   public static final String FAILURE = "FAILURE";
+
+  public static final String DELETE_ASSIGNSTEP_FAILURE = "DeleteAssignstepFailure";
   public static final String FAILURE_UPDATE_STUDY_MESSAGE =
       "Sorry, a technical error occurred and the update(s) could not be published.";
   public static final String FDA_ENV_LOCAL = "local";
@@ -280,6 +284,7 @@ public class FdahpStudyDesignerConstants {
   public static final String PW_DATE_FORMAT = "MMddyy";
   public static final String QUESTION_ID = "questionId";
   public static final String QUESTION_STEP = "Question";
+  public static final String GROUP = "group";
   public static final String QUESTION_STEP_IMAGE = "QuestionImage";
   public static final String QUESTION_STEP_SELECTEDIMAGE = "QuestionSelectedImage";
 
@@ -330,6 +335,8 @@ public class FdahpStudyDesignerConstants {
   // Button Name
   public static final String SAVE_BUTTON = "save";
   public static final String SAVE_STUDY_SUCCESS_MESSAGE = "save.study.success.message";
+  public static final String SAVE_GROUP_SUCCESS_MESSAGE = "Group created successfully.";
+  public static final String UPDATE_GROUP_SUCCESS_MESSAGE = "Group updated successfully.";
   public static final String SCHEDULE = "schedule";
   public static final String SCHEDULE_ERROR_MSG =
       "Activity Run duration must be greater than fetal kick record time duration.";
@@ -454,6 +461,7 @@ public class FdahpStudyDesignerConstants {
   // Multiple Languages
   public static final String STUDY_LANGUAGE_ENGLISH = "English";
   public static final String STUDY_LANGUAGE_SPANISH = "Spanish";
+  public static final String STEP = "step";
 
   private FdahpStudyDesignerConstants() {
     // Do nothing

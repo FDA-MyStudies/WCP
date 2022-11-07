@@ -36,7 +36,7 @@ public class ActiveTaskMasterAttributeBo implements Serializable {
   private String displayName;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "active_task_master_attr_id")
   private Integer masterId;
 

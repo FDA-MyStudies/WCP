@@ -151,6 +151,7 @@
         <div class="right-content-body">
             <!-- form- input-->
             <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
+            <input type="hidden" id="seqNo" value="${instructionsBo.questionnairesStepsBo.sequenceNo}">
             <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
             <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
             <input type="hidden" name="questionnaireId" id="questionnaireId"
@@ -161,6 +162,7 @@
                 type="hidden" name="questionnairesStepsBo.stepId" id="stepId"
                 value="${instructionsBo.questionnairesStepsBo.stepId}">
             <input type="hidden" id="mlTitle" value="${instructionsLangBO.instructionTitle}">
+            <input type="hidden" id="mlSnippet" value="${instructionsLangBO.pipingSnippet}">
             <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
              <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
@@ -227,6 +229,9 @@
                                         ${destinationStep.sequenceNo} :
                                         ${destinationStep.stepShortTitle}</option>
                             </c:forEach>
+                            <c:forEach items="${groupsList}" var="group" varStatus="status">
+                                <option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                            </c:forEach>
                             <option value="0"
                                 ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
                                 Completion
@@ -237,8 +242,91 @@
                     </div>
                 </div>
             </c:if>
+
+            <div class="row">
+                <button type="button" class="btn btn-primary blue-btn" id="pbutton">Piping</button>
+            </div><br>
         </div>
     </form:form>
+
+    <div class="modal fade" id="pipingModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="width: 65%; margin-left: 17%;">
+                <div class="pl-xlg cust-hdr pt-xl">
+                    <h5 class="modal-title">
+                        <b>Piping</b>
+                    </h5>
+                </div>
+                <br>
+                <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+                    <div class="gray-xs-f mb-xs">Target Element</div>
+                    <div class="mb-xs" id="titleText">Have you taken the medication?</div>
+                    <br>
+
+                    <div class="gray-xs-f mb-xs">Snippet</div>
+                    <div class="mb-xs">
+                        <input type="text" class="form-control req" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${instructionsBo.questionnairesStepsBo.pipingSnippet}"/>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                    <br>
+
+                    <div class="mb-xs">
+					<span class="checkbox checkbox-inline">
+						<input type="checkbox" id="differentSurvey" name="differentSurvey"
+                               <c:if test="${not empty instructionsBo.questionnairesStepsBo.differentSurvey
+								and instructionsBo.questionnairesStepsBo.differentSurvey}">checked</c:if> />
+						<label for="differentSurvey"> Is different survey? </label>
+					</span>
+                    </div>
+                    <br>
+
+                    <div id="surveyBlock" <c:if test="${empty instructionsBo.questionnairesStepsBo.differentSurvey
+				or !instructionsBo.questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
+                        <div class="gray-xs-f mb-xs">Survey ID</div>
+                        <div class="mb-xs">
+                            <select class="selectpicker text-normal req" name="pipingSurveyId" id="surveyId" title="-select-">
+                                <c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+                                    <option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+                                            <c:if test="${key.id eq instructionsBo.questionnairesStepsBo.pipingSurveyId}"> selected</c:if>>
+                                        Survey ${loop.index+1} : ${key.shortTitle}
+                                    </option>
+                                </c:forEach>
+                                <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+                                    <option style="text-align: center; color: #000000" disabled>- No items found -</option>
+                                </c:if>
+                            </select>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <br>
+                    </div>
+
+                    <div class="gray-xs-f mb-xs">Source Question</div>
+                    <div class="mb-xs">
+                        <select class="selectpicker text-normal req" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
+                            <c:forEach items="${sameSurveyPipingSourceKeys}" var="key" varStatus="loop">
+                                <option data-id="${key.stepId}" value="${key.stepId}"
+                                        <c:if test="${key.stepId eq instructionsBo.questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
+                                    Step ${key.sequenceNo} : ${key.stepShortTitle}
+                                </option>
+                            </c:forEach>
+                            <c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
+                                <option style="text-align: center; color: #000000" disabled>- No items found -</option>
+                            </c:if>
+                        </select>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                    <br><br>
+
+                    <div class="dis-line form-group mb-none mr-sm">
+                        <button type="button" class="btn btn-default gray-btn" id="cancelPiping">Cancel</button>
+                    </div>
+                    <div class="dis-line form-group mb-none mr-sm">
+                        <button type="button" class="btn btn-primary blue-btn" id="savePiping" onclick="submitPiping();">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--  End body tab section -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
@@ -272,6 +360,11 @@
 
     <c:if test="${actionTypeForQuestionPage == 'view'}">
     $('#basicInfoFormId input,textarea ').prop('disabled', true);
+    $('#pipingSnippet').prop('disabled', true);
+    		  $('#sourceQuestion').prop('disabled', true);
+    		  $('#surveyId').prop('disabled', true);
+    		  $('#savePiping').prop('disabled', true);
+    		  $('#differentSurvey').prop('disabled', true);
     $('#basicInfoFormId select').addClass('linkDis');
     $('#studyLanguage').removeClass('linkDis');
     $('.selectpicker').selectpicker('refresh');
@@ -310,6 +403,12 @@
             idleTime += 1;
             if (idleTime > 3) {
                     <c:if test="${actionTypeForQuestionPage ne 'view'}">
+                    console.log('starting auto save');
+                    if ($('#pipingModal').hasClass('show')) {
+                        console.log('auto saving piping');
+                        submitPiping();
+                    }
+                    console.log('auto saving step data');
                     autoSaveInstructionStepPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">
@@ -332,20 +431,25 @@
            if (i === 0) {
             $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
              if ($('#timeOutModal').hasClass('show')) {
-               $('#backToLoginPage').submit();
-            }
+                 $('#backToLoginPage').submit();
+             }
              clearInterval(timeOutInterval);
+           } else {
+               if (i === 1) {
+                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
                } else {
-                 if (i === 1) {
-               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                 } else {
-                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                }
-                 idleTime = 0;
-                 i-=1;
-                  }
-                  }, 60000);
-                  }
+                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+               }
+               idleTime = 0;
+               i-=1;
+           }
+          }, 60000);
+        }
+  });
+
+  $('#pbutton').on('click', function() {
+      $('#titleText').text($('#instructionTitle').val());
+      $('#pipingModal').modal('toggle');
   });
 
   function saveIns() {
@@ -431,7 +535,7 @@
     }
   }
 
-  function saveInstruction(item) {
+  function saveInstruction() {
     var instruction_id = $("#id").val();
     var questionnaire_id = $("#questionnaireId").val();
     var instruction_title = $("#instructionTitle").val();
@@ -476,24 +580,15 @@
           var message = data.message;
           if (message === "SUCCESS") {
             $("#preShortTitleId").val(shortTitle);
-            var instructionId = data.instructionId;
-            var stepId = data.stepId;
+            let instructionId = data.instructionId;
+            let stepId = data.stepId;
             $("#id").val(instructionId);
             $("#stepId").val(stepId);
-            $("#alertMsg").removeClass('e-box').addClass(
-                's-box')
-            .text("Content saved as draft.");
-            $(item).prop('disabled', false);
+            $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
             $("#saveId").attr("disabled", false);
             $('#alertMsg').show();
-            if ($('.seventhQuestionnaires')
-            .find('span')
-            .hasClass(
-                'sprites-icons-2 tick pull-right mt-xs')) {
-              $('.seventhQuestionnaires')
-              .find('span')
-              .removeClass(
-                  'sprites-icons-2 tick pull-right mt-xs');
+            if ($('.seventhQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+              $('.seventhQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
             }
             $("body").removeClass("loading");
             // pop message after 15 minutes
@@ -533,7 +628,6 @@
           setTimeout(hideDisplayMessage, 4000);
         },
         error: function (xhr, status, error) {
-          $(item).prop('disabled', false);
           $('#alertMsg').show();
           $("#alertMsg").removeClass('s-box').addClass(
               'e-box').text("Something went Wrong");
@@ -605,18 +699,28 @@
       success: function (data) {
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
+        validatePipingData();
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').addClass('ml-disabled');
+          $('#differentSurvey').attr('disabled', true).addClass('ml-disabled');
+          $('#surveyId, [data-id="surveyId"]').addClass('ml-disabled');
+          $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
           $('#instructionTitle').val($('#mlTitle', htmlData).val());
+          $('#pipingSnippet').val($('#mlSnippet', htmlData).val());
           $('#instructionText').val($('#mlText', htmlData).val());
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           $('#shortTitleId, [data-id="destinationStepId"]').removeClass('ml-disabled');
+          $('#piping').removeClass('cursor-none');
           $('#instructionTitle').val($('#instructionTitle', htmlData).val());
+          $('#pipingSnippet').val($('#pipingSnippet', htmlData).val());
           $('#instructionText').val($('#instructionText', htmlData).val());
+          $('#differentSurvey').attr('disabled', false).removeClass('ml-disabled');
+          $('#sourceQuestion, [data-id="sourceQuestion"]').removeClass('ml-disabled');
+          $('#surveyId, [data-id="surveyId"]').removeClass('ml-disabled');
 
           <c:if test="${actionTypeForQuestionPage == 'view'}">
           $('#basicInfoFormId input,textarea ').prop('disabled', true);
@@ -624,5 +728,200 @@
         }
       }
     })
+  }
+
+
+  $('#cancelPiping').on('click', function() {
+      $('#pipingModal').modal('hide');
+  })
+
+  $('#differentSurvey').on('change', function(e) {
+      if ($('#surveyId').closest('div.mb-xs').hasClass('has-error has-danger')) {
+          $('#surveyId').closest('div.mb-xs').removeClass('has-error has-danger').find(".help-block").empty();
+      }
+      if($(this).is(':checked')) {
+          $('#surveyBlock').show();
+      } else {
+          $('#surveyBlock').hide();
+          refreshSourceKeys($('#questionnaireId').val(), null);
+          $('#surveyId').val('').selectpicker('refresh');
+          $('#sourceQuestion').val('').selectpicker('refresh');
+      }
+  });
+
+  $('#surveyId').on('change', function () {
+      let surveyId = $('#surveyId option:selected').attr('data-id');
+      refreshSourceKeys(surveyId, 'piping');
+  })
+
+  function refreshSourceKeys(surveyId, type) {
+      let id = $('#sourceQuestion');
+      id.empty().selectpicker('refresh');
+      if (surveyId !== '') {
+          $.ajax({
+              url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
+              type : "GET",
+              datatype : "json",
+              data : {
+                  caller : "piping",
+                  seqNo : $('#seqNo').val(),
+                  questionnaireId : surveyId,
+                  isDifferentSurveyPiping : $('#differentSurvey').is(':checked'),
+                  "${_csrf.parameterName}":"${_csrf.token}"
+              },
+              success : function(data) {
+                  let message = data.message;
+                  if(message === 'SUCCESS'){
+                      let options = data.sourceKeys;
+                      if (options != null && options.length > 0) {
+                          $.each(options, function(index, option) {
+                              let $option = $("<option></option>")
+                                  .attr("value", option.stepId)
+                                  .attr("data-id", option.stepId)
+                                  .text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
+                              id.append($option);
+                          });
+                      }
+                      id.selectpicker('refresh');
+                      if (options == null || options.length === 0) {
+                          let $option = $("<option></option>")
+                              .attr("style", "text-align: center; color: #000000")
+                              .attr("disabled", true)
+                              .text("- No items found -");
+                          id.append($option).selectpicker('refresh');
+                      }
+                  } else {
+                      showErrMsg('Server error while fetching data.');
+                  }
+              },
+              error : function status(data, status) {
+                  console.log(data, status);
+              },
+          });
+      }
+  }
+
+  $('select.req, input.req').on('change', function () {
+      let parent = $(this).parent();
+      if ($(this).is('select')) {
+          parent = $(this).closest('div.mb-xs');
+      }
+      if ($(this).val() === '') {
+          if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+              parent.addClass('has-error has-danger').find(".help-block")
+                  .empty()
+                  .append($("<ul><li> </li></ul>")
+                      .attr("class","list-unstyled")
+                      .text("Please fill out this field."));
+          }
+      } else {
+          if (parent.hasClass('has-error has-danger')) {
+              parent.removeClass('has-error has-danger').find(".help-block").empty();
+          }
+      }
+  });
+
+  function submitPiping() {
+      let valid = true;
+      let language = $('#studyLanguage').val();
+      if (language != null && language != undefined && language !== 'en') {
+      let parent = $('#pipingSnippet').parent();
+            if ($('#pipingSnippet').val() === '') {
+                                          parent.addClass('has-error has-danger').find(".help-block")
+                                              .empty()
+                                              .append($("<ul><li> </li></ul>")
+                                              .attr("class","list-unstyled")
+                                              .text("Please fill out this field."));
+                                          if (valid) {
+                                              valid = false;
+                                          }
+                                  } else {
+                                      if (parent.hasClass('has-error has-danger')) {
+                                          parent.removeClass('has-error has-danger').find(".help-block").empty();
+                                      }
+                                  }
+      }
+      else {
+            $('select.req, input.req').each(function () {
+                      let parent = $(this).parent();
+                      let id = $(this).attr('id');
+                      if ($(this).is('select')) {
+                          parent = $(this).closest('div.mb-xs');
+                      }
+                      if ($(this).val() === '') {
+                          if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+                              parent.addClass('has-error has-danger').find(".help-block")
+                                  .empty()
+                                  .append($("<ul><li> </li></ul>")
+                                      .attr("class","list-unstyled")
+                                      .text("Please fill out this field."));
+                              if (valid) {
+                                  valid = false;
+                              }
+                          }
+                      } else {
+                          if (parent.hasClass('has-error has-danger')) {
+                              parent.removeClass('has-error has-danger').find(".help-block").empty();
+                          }
+                      }
+                  });
+      }
+      if (!valid) {
+          return false;
+      }
+      if ($('#stepId').val() !== '') {
+          let pipingObject = {};
+          pipingObject.pipingSnippet = $('#pipingSnippet').val();
+          pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+          if ($('#differentSurvey').is(':checked')) {
+              pipingObject.differentSurvey = true;
+              pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+          }
+          pipingObject.language = $('#studyLanguage').val();
+          pipingObject.stepId = $('#stepId').val();
+          let dataObject = JSON.stringify(pipingObject);
+          $.ajax({
+              url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
+              type: "POST",
+              datatype: "json",
+              data: {
+                  dataObject : dataObject
+              },
+              beforeSend: function (xhr) {
+                  xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+              },
+              success: function (data) {
+                  let message = data.message;
+                  let status = data.status
+                  $('#pipingModal').modal('hide');
+                  if (status === 'SUCCESS') {
+                      showSucMsg(message);
+                  } else {
+                      showErrMsg(message);
+                  }
+
+              },
+              error: function (xhr, status, error) {
+                  $('#pipingModal').modal('hide');
+                  showErrMsg("Error while saving piping details");
+              }
+          });
+      } else {
+          $('#pipingModal').modal('hide');
+          showErrMsg("Please save step first!");
+      }
+  }
+
+  function validatePipingData() {
+        $('select.req, input.req').each(function () {
+            let parent = $(this).parent();
+            let id = $(this).attr('id');
+            if ($(this).is('select')) {
+                parent = $(this).closest('div.mb-xs');
+            }
+            if (parent.hasClass('has-error has-danger')) {
+                parent.removeClass('has-error has-danger').find(".help-block").empty();
+            }
+        });
   }
 </script>

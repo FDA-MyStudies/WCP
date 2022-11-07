@@ -15,6 +15,10 @@
 	display: inline-block;
 }
 
+.text-normal > button > .filter-option{
+	text-transform: inherit !important;
+}
+
 .tool-tip [disabled] {
 	pointer-events: none;
 }
@@ -117,6 +121,14 @@
     margin-bottom: 10px !important;
 }
 
+.formula-box {
+	height: 50px;
+	border:1px solid #bfdceb;
+	border-bottom:0;
+	padding: 15px;
+	color: #007cba;
+}
+
 input[type=button] {
     -webkit-appearance: button;
     cursor: pointer;
@@ -167,6 +179,24 @@ input[type=number] {
 }
 
 .hide{ display: none;}
+
+.operator {
+	width: 63% !important;
+}
+
+.dest-label {
+	padding-left: 0 !important;
+	padding-top: 7px;
+}
+
+
+.dest-row {
+	margin-top: 12px;
+}
+
+.accordion>.card {
+    overflow: inherit !important;
+}
     </style>
 </head>
 <script type="text/javascript">
@@ -218,10 +248,16 @@ input[type=number] {
 		<input type="hidden" name="questionId" id="queId">
 	</form:form>
 	<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
+
+  <form:form
+  action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
+  name="questionStepId" id="questionStepId" method="post"  data-toggle="validator" autocomplete="off" role="form"
+  enctype="multipart/form-data">
+
 	<div class="right-content-head">
 		<div class="text-right">
 			<div class="black-md-f dis-line pull-left line34">
-				<span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
 					src="../images/icons/back-b.png" /></span>
 				<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Question Step</c:if>
 				<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step <c:set
@@ -283,11 +319,7 @@ input[type=number] {
 	</div>
 	<!--  End  top tab section-->
 	<!--  Start body tab section -->
-	<form:form
-		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
-		name="questionStepId" id="questionStepId" method="post"
-		data-toggle="validator" autocomplete="off" role="form"
-		enctype="multipart/form-data">
+
 		<div class="right-content-body pt-none pl-none pr-none">
 			<ul class="nav nav-tabs  customTabs gray-bg">
 				<li class=" nav-item stepLevel active">
@@ -351,7 +383,9 @@ input[type=number] {
 					type="hidden" id="mlResponseTypeId"
 					value="${questionLangBO.responseTypeId}"> <input
 					type="hidden" id="mlOtherText" value="${questionLangBO.otherText}">
+					<input type="hidden" id="mlSnippet" value="${questionLangBO.pipingSnippet}">
 				 <input type="hidden" id="mlChartTitle" value="${questionLangBO.chartTitle}">
+				<input type="hidden" id="seqNo" value="${questionnairesStepsBo.sequenceNo}">
 				<input
 					type="hidden" id="mlOtherDescription" value="${questionLangBO.otherDescription}">
 				<input
@@ -366,6 +400,8 @@ input[type=number] {
 					type="hidden" id="isShorTitleDuplicate" name="isShorTitleDuplicate"
 					value="${questionnairesStepsBo.isShorTitleDuplicate}" />
 					<input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+					<input type="hidden" id="stepOrGroupPostLoad" value="${questionnairesStepsBo.stepOrGroupPostLoad}" name="stepOrGroupPostLoad"/>
+					<input type="hidden" id="stepOrGroup" value="${questionnairesStepsBo.stepOrGroup}" name="stepOrGroup"/>
 				<div id="sla" class="tab-pane fade in show active mt-xlg">
 					<div class="row">
 						<div class="col-md-6 pl-none">
@@ -406,12 +442,15 @@ input[type=number] {
 										required>
 										<c:forEach items="${destinationStepList}"
 											var="destinationStep">
-											<option value="${destinationStep.stepId}"
+											<option value="${destinationStep.stepId}" data-type="step"
 												${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
 												Step ${destinationStep.sequenceNo} :
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
-										<option value="0"
+										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+											<option value="${group.id}" data-type="group" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+										</c:forEach>
+										<option value="0" data-type="step"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
 											Completion Step</option>
 									</select>
@@ -419,6 +458,205 @@ input[type=number] {
 								</div>
 							</div>
 						</c:if>
+					</div>
+
+					<div>
+						<div class="gray-xs-f mb-xs">Default Visibility</div>
+						<div>
+							<input type="hidden" id="defaultVisibility" name="groupDefaultVisibility" value="${questionnairesStepsBo.defaultVisibility}"/>
+							<label class="switch bg-transparent mt-xs">
+								<input type="checkbox" class="switch-input"
+									   id="groupDefaultVisibility"
+									    <c:if test="${groupsBo.defaultVisibility eq 'false'}">
+                                             <c:out value="disabled='disabled'"/>
+                                        </c:if>
+									   <c:if test="${empty questionnairesStepsBo.defaultVisibility || questionnairesStepsBo.defaultVisibility eq 'true'}"> checked</c:if>>
+								<span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+								<span class="switch-handle"></span>
+							</label>
+						</div>
+					</div>
+
+					<div id="logicDiv">
+						<div class="row">
+							<div class="gray-xs-f mb-xs">Pre-Load Logic</div>
+						</div>
+
+
+						<div class="row">
+							<div class="col-md-3 dest-label">
+								If True, Destination step =
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-3 mt__8">
+
+                                <span class="checkbox checkbox-inline">
+									<input type="checkbox" id="differentSurveyPreLoad" name="differentSurveyPreLoad"
+											<c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> checked</c:if> />
+									<label for="differentSurveyPreLoad"> Is different survey? </label>
+                                </span>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+                            <div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-5 form-group" id="content" style="display:none">
+									<select class="selectpicker text-normal" name="preLoadSurveyId" data-error="Please select an option"
+                                            <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> required</c:if>
+											id="preLoadSurveyId" title="-select survey id-">
+										<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+											<option data-id="${key.id}" value="${key.id}" id="${key.shortTitle}"
+													<c:if test="${key.id eq questionnairesStepsBo.preLoadSurveyId}"> selected</c:if>>
+												Survey ${loop.index+1} : ${key.shortTitle}
+											</option>
+										</c:forEach>
+										<c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+											<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+										</c:if>
+									</select>
+									<div class="help-block with-errors red-txt"></div>
+								</div>
+								<div class="col-md-3"></div>
+                            </div>
+                            <div class="row">
+                             <div class="col-md-4"></div>
+                              <div class="col-md-5 form-group">
+								<select name="destinationTrueAsGroup" id="destinationTrueAsGroup" required
+										data-error="Please select an option" class="selectpicker text-normal" required title="-select destination step-">
+									<c:forEach items="${sameSurveyPreloadSourceKeys}" var="destinationStep">
+										<option value="${destinationStep.stepId}" data-type="step"
+												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq destinationStep.stepId}">
+													selected
+												</c:if>>
+											Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}
+										</option>
+									</c:forEach>
+									<option value="0" data-type="step"
+										${questionnairesStepsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
+										Completion Step</option>
+									<c:forEach items="${groupsListPreLoad}" var="group" varStatus="status">
+										<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
+													selected
+												</c:if>>
+											Group  ${status.index + 1} :  ${group.groupName}&nbsp;
+										</option>
+									</c:forEach>
+<%--									<c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&--%>
+<%--									         (groupsList eq null || groupsList.size() eq 0) }">--%>
+<%--										<option style="text-align: center; color: #000000" disabled>- No items found -</option>--%>
+<%--									</c:if>--%>
+								</select>
+								  <div class="help-block with-errors red-txt"></div>
+								</div>
+								 <div class="col-md-3"></div>
+							</div>
+						<br>
+
+						<div id="formulaContainer${status.index}">
+							<c:choose>
+								<c:when test="${questionnairesStepsBo.preLoadLogicBeans.size() gt 0}">
+									<c:forEach items="${questionnairesStepsBo.preLoadLogicBeans}" var="preLoadLogicBean" varStatus="status">
+										<div id="form-div${status.index}"
+											 <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
+											 <c:if test="${status.index eq 0}">style="height: 150px;"</c:if>
+											 class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
+											<c:if test="${status.index gt 0}">
+												<div class="form-group">
+												<span class="radio radio-info radio-inline p-45 pl-2">
+													<input type="radio" id="andRadio${status.index}" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans[${status.index}].conditionOperator"
+														   <c:if test="${preLoadLogicBean.conditionOperator eq '&&'}">checked </c:if> />
+													<label for="andRadio${status.index}">AND</label>
+												</span>
+													<span class="radio radio-inline">
+													<input type="radio" id="orRadio${status.index}" value="||" class="con-radio con-op-or" name="preLoadLogicBeans[${status.index}].conditionOperator"
+														   <c:if test="${preLoadLogicBean.conditionOperator eq '||'}">checked </c:if> />
+													<label for="orRadio${status.index}">OR</label>
+												</span>
+												</div>
+											</c:if>
+											<div>
+												<div class="row formula-box">
+													<div class="col-md-2">
+														<strong class="font-family: arial;">Formula</strong>
+													</div>
+													<div class="col-md-10 text-right">
+														<c:if test="${status.index gt 0}">
+															<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div${status.index}" onclick="removeFormulaContainer(this)"></span>
+														</c:if>
+													</div>
+												</div>
+												<div style="height: 100px; border:1px solid #bfdceb;">
+													<div class="row">
+														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+														<div class="col-md-6"></div>
+													</div>
+													<div class="row data-div">
+														<div class="col-md-1" style="padding-top: 7px">Operator</div>
+														<div class="col-md-2 form-group">
+															<select class="selectpicker operator text-normal" data-error="Please select an option" required
+																	id="operator${status.index}" name="preLoadLogicBeans[${status.index}].operator" title="-select-">
+																<c:forEach items="${operators}" var="operator">
+																	<option value="${operator}" ${preLoadLogicBean.operator eq operator ?'selected':''}>${operator}</option>
+																</c:forEach>
+															</select>
+															<div class="help-block with-errors red-txt"></div>
+														</div>
+
+														<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+														<div class="col-md-3 form-group">
+															<input type="hidden" value="${preLoadLogicBean.id}" class="id" name="preLoadLogicBeans[${status.index}].id" >
+															<input type="text"  class="form-control value" value="${preLoadLogicBean.inputValue}" id="value${status.index}" name="preLoadLogicBeans[${status.index}].inputValue"  placeholder="Enter">
+															<div class="help-block with-errors red-txt"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<br>
+										</div>
+									</c:forEach>
+								</c:when>
+
+								<c:otherwise>
+									<div style="height: 150px" class="form-div">
+										<div class="row formula-box">
+											<div class="col-md-2">
+												<strong class="font-family: arial;">Formula</strong>
+											</div>
+										</div>
+										<div style="height: 100px; border:1px solid #bfdceb;">
+											<div class="row">
+												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
+												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+												<div class="col-md-6"></div>
+											</div>
+											<div class="row data-div">
+												<div class="col-md-1" style="padding-top: 7px">Operator</div>
+												<div class="col-md-2 form-group">
+													<select  class="selectpicker operator text-normal" data-error="Please select an option"
+															id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+														<c:forEach items="${operators}" var="operator">
+															<option value="${operator}">${operator}</option>
+														</c:forEach>
+													</select>
+													<div class="help-block with-errors red-txt"></div>
+												</div>
+
+												<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>
+												<div class="col-md-3 form-group">
+													<input type="hidden" id="id${status.index}">
+													<input type="text"  class="form-control value" id="value0" name="preLoadLogicBeans[0].inputValue" placeholder="Enter">
+													<div class="help-block with-errors red-txt"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+										<br>
+								</c:otherwise>
+							</c:choose>
+						</div>
+						<button type="button" id="addFormula" style="margin-top:10px" class="btn btn-primary blue-btn">Add Formula</button>
 					</div>
 				</div>
 				<!---  Form-level Attributes --->
@@ -493,6 +731,9 @@ input[type=number] {
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<button type="button" class="btn btn-primary blue-btn" id="pbutton">Piping</button>
+					</div><br>
 					<div class="clearfix"></div>
 					<div class="row">
 						<div class="col-md-6 pl-none mb-lg">
@@ -2656,7 +2897,7 @@ input[type=number] {
                                     name="questionResponseSubTypeList[0].text"
                                     id="displayTextChoiceText0"
                                     value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}"
-                                    maxlength="100">
+                                    maxlength="100"><div class="help-block with-errors red-txt"></div>
 
 
                                 </div>
@@ -2764,7 +3005,6 @@ input[type=number] {
 
                          <td>
                           <div class="accordion" id="accordionExample">
-                            <input type="hidden" name="">
                             <div class="card">
                               <div class="card-header" id="headingTwo">
 
@@ -2822,10 +3062,6 @@ input[type=number] {
                                           id="displayTextChoiceText1"
                                           value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}"
                                           maxlength="100">
-
-
-
-
                                         <div class="help-block with-errors red-txt"></div>
                                       </div>
                                     </div>
@@ -3080,7 +3316,7 @@ input[type=number] {
 												Display Text (1 to 100 characters)<span class="requiredStar">*</span>
 											</div>
 											<div class="form-group mb-none">
-												<input type="text"
+												<input type="text" id="textChoiceOtherText"
 													class="form-control lang-specific TextChoiceRequired"
 													name="questionReponseTypeBo.otherText"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherText}"
@@ -3093,10 +3329,11 @@ input[type=number] {
 												Value (1 to 100 characters)<span class="requiredStar">*</span>
 											</div>
 											<div class="form-group mb-none">
-												<input type="text" class="form-control TextChoiceRequired"
+												<input type="text" class="form-control TextChoiceRequired text-choice textChoiceVal"
+													   id="textchoiceOtherValue"
 													name="questionReponseTypeBo.otherValue"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}"
-													maxlength="100">
+													maxlength="100" />
 												<div class="help-block with-errors red-txt"></div>
 											</div>
 										</div>
@@ -3150,7 +3387,7 @@ input[type=number] {
 												<div class="gray-xs-f mb-xs">Description(1 to 150
 													characters)</div>
 												<div class="form-group">
-													<textarea class="form-control lang-specific"
+													<textarea class="form-control lang-specific" id="textchoiceOtherDescription"
 														name="questionReponseTypeBo.otherDescription"
 														maxlength="150">${questionnairesStepsBo.questionReponseTypeBo.otherDescription}</textarea>
 												</div>
@@ -4059,7 +4296,7 @@ input[type=number] {
 					</div>
 
 				</div>
-			</div>
+			</div
 	</form:form>
     <div class="modal fade" id="myAutoModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
@@ -4087,10 +4324,91 @@ input[type=number] {
                             </div>
 </div>
 
+
+<div class="modal fade" id="pipingModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="width: 65%; margin-left: 17%;">
+			<div class="pl-xlg cust-hdr pt-xl">
+				<h5 class="modal-title">
+					<b>Piping</b>
+				</h5>
+			</div>
+			<br>
+			<div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+				<div class="gray-xs-f mb-xs">Target Element</div>
+				<div class="mb-xs" id="titleText">Have you taken the medication?</div>
+				<br>
+
+				<div class="gray-xs-f mb-xs">Snippet</div>
+				<div class="mb-xs">
+					<input type="text" class="form-control req" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${questionnairesStepsBo.pipingSnippet}"/>
+					<div class="help-block with-errors red-txt"></div>
+				</div>
+				<br>
+
+				<div class="mb-xs">
+					<span class="checkbox checkbox-inline">
+						<input type="checkbox" id="differentSurvey" name="differentSurvey"
+								<c:if test="${not empty questionnairesStepsBo.differentSurvey
+								and questionnairesStepsBo.differentSurvey}">checked</c:if> />
+						<label for="differentSurvey"> Is different survey? </label>
+					</span>
+				</div>
+				<br>
+
+				<div id="surveyBlock" <c:if test="${empty questionnairesStepsBo.differentSurvey
+				or !questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
+					<div class="gray-xs-f mb-xs">Survey ID</div>
+					<div class="mb-xs">
+						<select class="selectpicker text-normal req" name="pipingSurveyId" id="surveyId" title="-select-">
+							<c:forEach items="${questionnaireIds}" var="key" varStatus="loop">
+								<option data-id="${key.id}" value="${key.shortTitle}" id="${key.shortTitle}"
+								<c:if test="${key.id eq questionnairesStepsBo.pipingSurveyId}"> selected</c:if>>
+									Survey ${loop.index+1} : ${key.shortTitle}
+								</option>
+							</c:forEach>
+							<c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
+								<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+							</c:if>
+						</select>
+						<div class="help-block with-errors red-txt"></div>
+					</div>
+					<br>
+				</div>
+
+				<div class="gray-xs-f mb-xs">Source Question</div>
+				<div class="mb-xs">
+					<select class="selectpicker text-normal req" name="pipingSourceQuestionKey" id="sourceQuestion" title="-select-">
+						<c:forEach items="${sameSurveyPipingSourceKeys}" var="key" varStatus="loop">
+							<option data-id="${key.stepId}" value="${key.stepId}"
+									<c:if test="${key.stepId eq questionnairesStepsBo.pipingSourceQuestionKey}"> selected</c:if>>
+								Step ${key.sequenceNo} : ${key.stepShortTitle}
+							</option>
+						</c:forEach>
+						<c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
+							<option style="text-align: center; color: #000000" disabled>- No items found -</option>
+						</c:if>
+					</select>
+					<div class="help-block with-errors red-txt"></div>
+				</div>
+				<br><br>
+
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-default gray-btn" id="cancelPiping">Cancel</button>
+				</div>
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-primary blue-btn" id="savePiping" onclick="submitPiping();">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- End right Content here -->
 
 
 <script type="text/javascript">
+	var defaultVisibility = $('#groupDefaultVisibility');
     var idleTime = 0;
       $(document).ready(function () {
 
@@ -4165,6 +4483,10 @@ input[type=number] {
 
             $('.textchoiceOtherCls').hide();
             $('.textchoiceOtherCls').find('input:text,select').removeAttr('required');
+			  $('#textChoiceOtherText').val('');
+			  $('#textchoiceOtherValue').val('');
+			  $('#textchoiceOtherDescription').val('');
+			  $('#otherExclusive').val('');
           }
         });
 
@@ -4180,19 +4502,29 @@ input[type=number] {
         });
 
         <c:if test="${actionTypeForQuestionPage == 'view'}">
-        $('#questionStepId input,textarea ').prop('disabled', true);
-        $('#questionStepId select').addClass('linkDis');
-        $('#responseTypeId').addClass('disabled_css');  
-        $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
-        $("#trailId").hide();
-        $(".removeImageId").css("visibility", "hidden");
-        $("tbody").removeClass('ui-sortable');
-    $("tr").removeClass('ui-sortable-handle');
-    $('table.order_sequenceNumber').removeAttr('id');
-    $('tr.text-choice').removeAttr('id');
-    $(".table").removeClass('order_sequenceNumber ');
-    $(".table").removeClass('TextChoiceContainer  ');
-    $("span.delete").addClass('disabled');
+		  $('#questionStepId input,textarea ').prop('disabled', true);
+		  $('#questionStepId select').addClass('linkDis');
+		  $('#responseTypeId').addClass('disabled_css');
+		  $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
+		  $('#pipingSnippet').prop('disabled', true);
+		  $('#sourceQuestion').prop('disabled', true);
+		  $('#surveyId').prop('disabled', true);
+		  $('#savePiping').prop('disabled', true);
+		  $('#studyLanguage').removeClass('linkDis');
+		  $('#differentSurvey').prop('disabled', true);
+		  $("#trailId").hide();
+		  $(".removeImageId").css("visibility", "hidden");
+		  $("tbody").removeClass('ui-sortable');
+		  $("tr").removeClass('ui-sortable-handle');
+		  $('table.order_sequenceNumber').removeAttr('id');
+		  $('tr.text-choice').removeAttr('id');
+		  $(".table").removeClass('order_sequenceNumber ');
+		  $(".table").removeClass('TextChoiceContainer  ');
+		  $("span.delete").addClass('disabled');
+		  $('#logicDiv').find('div.bootstrap-select').each( function () {
+			  $(this).addClass('ml-disabled');
+		  });
+		  $('#addFormula').attr('disabled', true);
         </c:if>
 
         if ($('.value-picker').length > 2) {
@@ -4285,6 +4617,12 @@ input[type=number] {
 				}
 			}
           if (isFromValid("#questionStepId")) {
+			  if (!$('#groupDefaultVisibility').is(':checked')) {
+				  $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+			  }
+			  if ('${questionnaireBo.branching}' === 'true') {
+				  $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
+			  }
             $("body").addClass("loading");
             var placeholderText = '';
             var stepText = "";
@@ -4465,6 +4803,9 @@ input[type=number] {
             }
             $("#placeholderTextId").val(placeholderText);
             $("#stepValueId").val(stepText);
+			  $('input.con-radio').each(function(e) {
+				  $(this).removeAttr('disabled');
+			  })
             if (isValid && isImageValid && validateResponseDataElement()
                 && validateSingleResponseDataElement()) {
               validateQuestionShortTitle('', function (val) {
@@ -5072,8 +5413,9 @@ input[type=number] {
           getResponseType(responseTypeId);
         }
         $("#responseTypeId").on("change", function () {
-          var value = $(this).val();
-          getResponseType(value);
+			var value = $(this).val();
+			getResponseType(value);
+			setOperatorDropDown($(this).val());
         });
         $('.DateStyleRequired').on("change", function () {
           var value = $(this).val();
@@ -5404,6 +5746,12 @@ input[type=number] {
                   idleTime += 1;
                   if (idleTime > 3) { // 5 minutes
                           <c:if test="${actionTypeForQuestionPage ne 'view'}">
+					      console.log('starting auto save');
+					      if ($('#pipingModal').hasClass('show')) {
+						      console.log('auto saving piping');
+						      submitPiping();
+					      }
+					      console.log('auto saving step data');
                           autoSaveQuestionStep('auto');
                            </c:if>
                           <c:if test="${actionTypeForQuestionPage eq 'view'}">
@@ -5441,6 +5789,12 @@ input[type=number] {
                         }, 60000);
                         }
       });
+
+	$('#pbutton').on('click', function() {
+		$('#titleText').text($('#questionTextId').val());
+		$('#pipingModal').modal('toggle');
+	});
+
         function autoSaveQuestionStep(mode){
            	  $("body").addClass("loading");
                  validateQuestionShortTitle('', function (val) {
@@ -5534,6 +5888,62 @@ input[type=number] {
           reader.readAsDataURL(input.files[0]);
         }
       }
+
+	function setOperatorDropDown(responseType) {
+		if (responseType != null) {
+			if (responseType === '1'|| responseType === '2' ||
+					responseType === '8' || responseType === '14' ) {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker('refresh');
+			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["=", "!="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker('refresh');
+			} else {
+				defaultVisibility.prop('checked', true).trigger('change');
+				defaultVisibility.prop('disabled', true);
+			}
+		}
+	}
+
+	function setOperatorDropDownOnAdd(responseType) {
+		if (responseType != null) {
+			if (responseType === '1'|| responseType === '2' ||
+					responseType === '8' || responseType === '14' ) {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker();
+			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["=", "!="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker();
+			} else {
+				defaultVisibility.prop('checked', true).trigger('change');
+				defaultVisibility.prop('disabled', true);
+			}
+		}
+	}
 
       function toJSDate(dateTime) {
         if (dateTime != null && dateTime != '' && typeof dateTime != 'undefined') {
@@ -6206,12 +6616,39 @@ input[type=number] {
         questionReponseTypeBo.questionsResponseTypeId = question_response_type_id;
 
         questionnaireStep.questionReponseTypeBo = questionReponseTypeBo;
+		  questionnaireStep.groupDefaultVisibility = $('#groupDefaultVisibility').is(':checked');
+		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
+		  if (!$('#groupDefaultVisibility').is(':checked')) {
+			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
+			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
+		  }
+		  if ('${questionnaireBo.branching}' === 'true') {
+			  questionnaireStep.stepOrGroupPostLoad = $('#destinationStepId option:selected').attr('data-type');
+		  }
+		  questionnaireStep.differentSurveyPreLoad = $('#differentSurveyPreLoad').is(':checked');
+		  questionnaireStep.preLoadSurveyId = $('#preLoadSurveyId option:selected').attr('data-id');
+		  let beanArray = [];
+		  $('#formulaContainer').find('div.form-div').each(function (index) {
+			  let preLoadBean = {};
+			  preLoadBean.operator = $(this).find('select.operator').val();
+			  preLoadBean.id = $(this).find('input.id').val();
+			  preLoadBean.inputValue = $(this).find('input.value').val();
+			  if (index > 0) {
+				  let isOr = $(this).find('input.con-op-or');
+				  let coop = '&&';
+				  if (isOr.val() !== undefined && isOr.is(':checked')) {
+					  coop = '||';
+				  }
+				  preLoadBean.conditionOperator = coop;
+			  }
+			  beanArray.push(preLoadBean);
+		  });
+		  questionnaireStep.preLoadLogicBeans = beanArray;
         if (quesstionnaireId && shortTitle) {
 
           formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep));
           formData.append('language', $('#studyLanguage').val());
 		  formData.append('isAutoSaved', $('#isAutoSaved').val());
-          var data = JSON.stringify(questionnaireStep);
           $.ajax({
             url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do?_S=${param._S}",
             type: "POST",
@@ -6365,6 +6802,16 @@ input[type=number] {
         </c:if>
       }
 
+	<c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle && questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">
+	defaultVisibility.prop('checked', true).trigger('change');
+	defaultVisibility.prop('disabled', true);
+	</c:if>
+
+	<c:if test="${questionnaireBo.branching}">
+	defaultVisibility.prop('checked', true).trigger('change');
+	defaultVisibility.prop('disabled', true);
+	</c:if>
+
       function getSelectionStyle(item) {
         var value = $(item).val();
         if (value == 'Single') {
@@ -6375,10 +6822,15 @@ input[type=number] {
           $('.destionationYes').attr("disabled", false);
           $('.selectpicker').selectpicker('refresh');
           $(".textChoiceExclusive").validator('validate');
+		  if (defaultVisibility.prop('disabled') === true) {
+			  defaultVisibility.prop('disabled', false);
+		  }
         } else {
           $('.textChoiceExclusive').attr("disabled", false);
           $('.textChoiceExclusive').attr("required", true);
           $('.selectpicker').selectpicker('refresh');
+			defaultVisibility.prop('checked', true).trigger('change');
+			defaultVisibility.prop('disabled', true);
         }
       }
 
@@ -7174,41 +7626,57 @@ input[type=number] {
 
           });
           callback(isValid);
-        } else if (responsetype == "Text Choice") {
-			let id = $("#" + selected_id);
-			let valField = $(id).val();
-			if (valField !== '' && valField !== undefined) {
-				id.parent().removeClass("has-danger").removeClass("has-error");
-				id.parent().find(".help-block").empty();
-				if (valueArrayTxtChoice.includes(valField.toLowerCase())) {
-					id.val('');
-					id.parent().addClass("has-danger").addClass("has-error");
-					id.parent().find(".help-block")
-							.append($("<ul><li> </li></ul>")
-									.attr("class", "list-unstyled")
-									.text("The value should be unique "));
-					return false;
-				} else {
-					valueArrayTxtChoice = new Array();
-					$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
-						let val = $(ele).val();
-						if (val !== '' && val !== undefined) {
-							valueArrayTxtChoice.push(val);
+        } else if (responsetype === "Text Choice") {
+			valueArrayTxtChoice = [];
+			$('.text-choice').each(function () {
+				let id = $(this).attr("id");
+				if (id === 'textchoiceOtherValue') {
+					if ($('#textchoiceOtherId').is(':checked')) {
+						let txtChoiceOther = $('#textchoiceOtherValue');
+						let otherValue = txtChoiceOther.val();
+						if (otherValue !== '' && valueArrayTxtChoice.indexOf(otherValue.toLowerCase()) !== -1) {
+							txtChoiceOther.val('').parent()
+									.addClass("has-danger has-error")
+									.find(".help-block")
+									.empty();
+							txtChoiceOther.parent().find(".help-block")
+									.append($("<ul><li> </li></ul>")
+											.attr("class", "list-unstyled")
+											.text("The value should be unique "));
+							return false;
+						} else {
+							let val = otherValue.toLowerCase();
+							if (val !== '' && val !== undefined) {
+								valueArrayTxtChoice.push(val);
+							}
 						}
-					});
-				}
-			} else {
-				valueArrayTxtChoice = new Array();
-				$('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
-					let val = $(ele).val();
-					if (val !== '' && val !== undefined) {
-						valueArrayTxtChoice.push(val);
 					}
-				});
-			}
-          callback(isValid);
-        }
-      }
+				} else {
+					let valField =  $("#displayTextChoiceValue" + id).val();
+					if (valField !== '' && valField !== undefined) {
+						$("#displayTextChoiceValue" + id).parent().removeClass("has-danger has-error");
+						$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+						if (valueArrayTxtChoice.indexOf(valField.toLowerCase()) !== -1) {
+							$("#displayTextChoiceValue" + id).val('');
+							$("#displayTextChoiceValue" + id).parent().addClass("has-danger").addClass("has-error");
+							$("#displayTextChoiceValue" + id).parent().find(".help-block").empty();
+							$("#displayTextChoiceValue" + id).parent().find(".help-block")
+									.append($("<ul><li> </li></ul>")
+											.attr("class", "list-unstyled")
+											.text("The value should be unique "));
+							return false;
+						} else {
+							let val = valField.toLowerCase();
+							if (val !== '' && val !== undefined) {
+								valueArrayTxtChoice.push(val);
+							}
+						}
+					}
+				}
+			});
+			callback(isValid);
+		}
+	  }
 
       function addFunctions(item) {
         var index = $(item).attr('index');
@@ -7986,6 +8454,7 @@ input[type=number] {
           success: function (data) {
             let htmlData = document.createElement('html');
             htmlData.innerHTML = data;
+            validatePipingData();
             let responseTypeId = $('[data-id="responseTypeId"]');
             if (language !== 'en') {
               updateCompletionTicks(htmlData);
@@ -7994,6 +8463,12 @@ input[type=number] {
 					  '#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 					  '[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').addClass(
                   'ml-disabled').attr('disabled', true);
+				$('#logicDiv').find('div.bootstrap-select, input').each( function () {
+					$(this).addClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', true);
+					}
+				});
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', true);
               // $('[data-id="lineChartTimeRangeId"]').addClass('ml-disabled').attr('disabled', true);
               $('#trailId, #removeUrl').addClass('cursor-none');
@@ -8027,12 +8502,16 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn').addClass('cursor-none');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').addClass('cursor-none');
+              $('#differentSurvey').attr('disabled', true);
+              $('#sourceQuestion, [data-id="sourceQuestion"]').addClass('ml-disabled');
+              $('#surveyId, [data-id="surveyId"]').addClass('ml-disabled');
 
               // setting ml data
               $('#questionTextId').val($('#mlQuestion', htmlData).val());
               $('#descriptionId').val($('#mlDescription', htmlData).val());
               $('#chartTitleId').val($('#mlChartTitle', htmlData).val());
+              $('#pipingSnippet').val($('#mlSnippet', htmlData).val());
               let previousResponseType = $('#mlResponseTypeId', htmlData).val();
               // if response type mismatches
               if (previousResponseType!=='' && (previousResponseType !== $('#responseTypeId').val())) {
@@ -8202,6 +8681,12 @@ input[type=number] {
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 						'[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
 						'ml-disabled').attr('disabled', false);
+				$('#logicDiv').find('div.bootstrap-select, input').each( function () {
+					$(this).removeClass('ml-disabled');
+					if ($(this).is("input")) {
+						$(this).attr('disabled', false);
+					}
+				});
               // $('#addLineChart, #allowRollbackChartYes, #allowRollbackChartNo').attr('disabled', false);
               // $('[data-id="lineChartTimeRangeId"]').removeClass('ml-disabled').attr('disabled', false);
               $('#trailId, #removeUrl').removeAttr('style').removeClass('cursor-none');
@@ -8236,11 +8721,15 @@ input[type=number] {
                   }
                 });
               }
-              $('.sm-thumb-btn, .remBtnDis, .addbtn').removeClass('cursor-none');
+              $('.sm-thumb-btn, .remBtnDis, .addbtn, #addFormula, .switch').removeClass('cursor-none');
+              $('#differentSurvey').attr('disabled', false);
+              $('#surveyId, [data-id="surveyId"]').removeClass('ml-disabled');
+              $('#sourceQuestion, [data-id="sourceQuestion"]').removeClass('ml-disabled');
 
               // setting english data
               $('#questionTextId').val($('#questionTextId', htmlData).val());
               $('#descriptionId').val($('#descriptionId', htmlData).val());
+              $('#pipingSnippet').val($('#pipingSnippet', htmlData).val());
               $('#statDisplayNameId').val($('#statDisplayNameId', htmlData).val());
               $('#statDisplayUnitsId').val($('#statDisplayUnitsId', htmlData).val());
               $('#chartTitleId').val($('#chartTitleId', htmlData).val());
@@ -8316,10 +8805,35 @@ input[type=number] {
 				<c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}">
 				$('#stepShortTitle').attr('disabled', true);
 				</c:if>
-              <c:if test="${actionTypeForQuestionPage == 'view'}">
+              <c:if test="${actionTypeForQuestionPage == 'view'}"> 
               $('#questionStepId input,textarea ').prop('disabled', true);
-              </c:if>
-              
+              $('#logicDiv').find('div.bootstrap-select, input').addClass('disabled');
+              $('#differentSurvey').prop('disabled', true);
+            </c:if>
+
+
+            /* code start here  for checking pre load logic when user clicks on spanis and coming back again to english lang then check preload logic condition here */
+            if (dv.is(':checked')) {
+	$('.deletable').remove();
+	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
+		$(this).addClass('ml-disabled');
+		if ($(this).is("input.con-radio")) {
+			$(this).attr('disabled', true);
+		}
+		$(this).attr('required', false);
+	});
+	$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
+	$('#defaultVisibility').val('true');
+	$('#addFormula').attr('disabled', true);
+	$('#skiappableYes').prop('disabled', false);
+} else {
+	$('#skiappableYes').prop('checked', false).prop('disabled', true);
+	$('#skiappableNo').prop('checked', true);
+}
+
+/* end here */
+
               view_spanish_activemode();
             }
           }
@@ -8332,9 +8846,10 @@ input[type=number] {
 
 <script>
   $(document).ready(function() {
-var maxWidth = 1;
-
-
+	  <c:if test="${(operators eq null || operators.size() eq 0)}">
+	  $('#groupDefaultVisibility').prop('checked', true).trigger('change');
+	  $('#groupDefaultVisibility').prop('disabled', true);
+	  </c:if>
 var fixHelperModified = function(e, tr) {
   var $originals = tr.children();
   var $helper = tr.clone();
@@ -8362,7 +8877,11 @@ $("#diagnosis_list tbody").sortable({
   stop: updateIndex
 }).disableSelection();
 
+    if($('#differentSurveyPreLoad').is(':checked')){
+        $('#content').show();
+    }
 });
+
 
   let nav = $('#nav').val();
   if (nav !== null && nav !== '') {
@@ -8374,12 +8893,11 @@ $("#diagnosis_list tbody").sortable({
 
 <script>
 
-
 // $(document).on('click','.remove',function(){
 //       $(this).parents('tr').remove();
 //   delete_reorder();
 //   });
-
+let dv = $('#groupDefaultVisibility');
 function delete_reset1()   {
 // alert('working ');
       jQuery(this).closest('.text-choice').remove();
@@ -8391,6 +8909,257 @@ $('.text-choice').each(function(i){
 });
 
     }
+
+	$('#addFormula').on('click', function () {
+		let formContainer = $('#formulaContainer');
+		let count = formContainer.find('div.formula-box').length;
+		let formula =
+				'<div id="form-div' + count + '" class="form-div deletable" style="height: 200px; margin-top:20px">'+
+				'<div class="form-group">'+
+						'<span class="radio radio-info radio-inline p-45 pl-2">'+
+							'<input type="radio" id="andRadio' + count + '" value="&&" class="con-radio con-op-and" name="preLoadLogicBeans['+count+'].conditionOperator" checked/>'+
+							'<label for="andRadio' + count + '">AND</label>'+
+						'</span>'+
+					'<span class="radio radio-inline">'+
+							'<input type="radio" id="orRadio' + count + '" value="||" class="con-radio con-op-or" name="preLoadLogicBeans['+count+'].conditionOperator" />'+
+							'<label for="orRadio' + count + '">OR</label>'+
+				    '</span>'+
+				'</div>'+
+				'<div style="height: 150px">'+
+					'<div class="row formula-box">'+
+				        '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>'+
+				        '<div class="col-md-10 text-right">'+
+						     '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div' + count + '" onclick="removeFormulaContainer(this)"></span>'+
+					    '</div>'+
+					'</div>'+
+					'<div style="height: 100px; border:1px solid #bfdceb;">'+
+						'<div class="row">'+
+							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>'+
+							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
+							'<div class="col-md-6"></div>'+
+						'</div>'+
+						'<div class="row data-div">'+
+							'<div class="col-md-1" style="padding-top: 7px">Operator</div>'+
+							'<div class="col-md-2 form-group">'+
+								'<select class="selectpicker operator text-normal" data-error="Please select an option" '+
+										' id="operator' + count + '"  name="preLoadLogicBeans['+count+'].operator" title="-select-">'+
+									'<option> < </option>'+
+									'<option> > </option>'+
+				                    '<option> = </option>'+
+				                    '<option> != </option>'+
+				                    '<option> >= </option>'+
+				                    '<option> <= </option>'+
+								'</select>'+
+				                '<div class="help-block with-errors red-txt"></div>'+
+							'</div>'+
+							'<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>'+
+							'<div class="col-md-3 form-group">'+
+								'<input type="text" data-error="Please fill out this field." class="form-control value" id="value' + count + '" name="preLoadLogicBeans['+count+'].inputValue" placeholder="Enter" />'+
+				                '<input type="hidden" class="id"/>'+
+				                '<div class="help-block with-errors red-txt"></div>'+
+				            '</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+				'</div>';
+		formContainer.append(formula);
+		setOperatorDropDownOnAdd($('#responseTypeId').val());
+	});
+
+if (dv.is(':checked')) {
+	$('.deletable').remove();
+	$('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
+		$(this).addClass('ml-disabled');
+		if ($(this).is("input.con-radio")) {
+			$(this).attr('disabled', true);
+		}
+		$(this).attr('required', false);
+	});
+	$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
+	$('#defaultVisibility').val('true');
+	$('#addFormula').attr('disabled', true);
+	$('#skiappableYes').prop('disabled', false);
+} else {
+	$('#skiappableYes').prop('checked', false).prop('disabled', true);
+	$('#skiappableNo').prop('checked', true);
+}
+
+dv.on('change', function () {
+	if  (dv.is(':checked')) {
+		disablePreLoadLogic();
+	} else {
+		enablePreLoadLogic();
+	}
+})
+
+function disablePreLoadLogic() {
+	let logicDiv = $('#logicDiv');
+	let addForm = $('#addFormula');
+	$('.deletable').remove();
+	logicDiv.find('div.bootstrap-select, input, select').each( function () {
+		$(this).addClass('ml-disabled');
+		if ($(this).is("select")) {
+			$(this).val('').selectpicker('refresh');
+			$(this).removeClass('has-error has-danger').find(".help-block").empty();
+			$(this).parent().parent().removeClass('has-error has-danger').find(".help-block").empty();
+		}
+		if ($(this).is("input")) {
+			$(this).val('').attr('disabled', true);
+			$(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+		}
+		$(this).attr('required', false);
+	});
+
+	$('#defaultVisibility').val('true');
+	if($('#differentSurveyPreLoad').is(':checked')){
+		$('#content').hide();
+	}
+	$('#destinationTrueAsGroup, #preLoadSurveyId').val('').selectpicker('refresh');
+	$('#differentSurveyPreLoad').prop('checked', false).attr('disabled', true);
+	$('#preLoadSurveyId').prop('required', false);
+	addForm.attr('disabled', true);
+	$('#skiappableYes').prop('disabled', false);
+}
+
+function enablePreLoadLogic() {
+	let logicDiv = $('#logicDiv');
+	let addForm = $('#addFormula');
+	logicDiv.find('div.bootstrap-select, input, select').each( function () {
+		$(this).removeClass('ml-disabled');
+		if ($(this).is("select")) {
+			$(this).selectpicker('refresh');
+		}
+		if ($(this).is("input")) {
+			$(this).attr('disabled', false);
+		}
+		$(this).attr('required',true);
+		$(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+	});
+	$('#defaultVisibility').val('false');
+	$('#preLoadSurveyId').prop('required', false);
+	dv.attr('checked', false);
+	addForm.attr('disabled', false);
+	$('#skiappableYes').prop('checked', false).prop('disabled', true);
+	$('#skiappableNo').prop('checked', true);
+}
+
+$('#cancelPiping').on('click', function() {
+	$('#pipingModal').modal('hide');
+})
+
+$('#differentSurvey').on('change', function(e) {
+	if ($('#surveyId').closest('div.mb-xs').hasClass('has-error has-danger')) {
+		$('#surveyId').closest('div.mb-xs').removeClass('has-error has-danger').find(".help-block").empty();
+	}
+	if($(this).is(':checked')) {
+		$('#surveyBlock').show();
+	} else {
+		$('#surveyBlock').hide();
+		refreshSourceKeys($('#questionnairesId').val(), null);
+		$('#surveyId').val('').selectpicker('refresh');
+		$('#sourceQuestion').val('').selectpicker('refresh');
+	}
+});
+
+$('#differentSurveyPreLoad').on('change', function() {
+	if($(this).is(':checked')) {
+		$('#content').show();
+        $('#preLoadSurveyId').prop('required', true);
+	} else {
+		$('#content').hide();
+		refreshSourceKeys($('#questionnairesId').val(), 'preload');
+		$('#preLoadSurveyId').val('').prop('required', false).selectpicker('refresh');
+		$('#destinationTrueAsGroup').val('').selectpicker('refresh');
+	}
+});
+
+$('#surveyId').on('change', function () {
+    let surveyId = $('#surveyId option:selected').attr('data-id');
+	refreshSourceKeys(surveyId, null);
+})
+
+$('#preLoadSurveyId').on('change', function () {
+    let surveyId = $('#preLoadSurveyId option:selected').attr('data-id');
+	refreshSourceKeys(surveyId,  'preload');
+})
+
+function refreshSourceKeys(surveyId, type) {
+	let id = $('#sourceQuestion');
+	if (type === 'preload') {
+		id = $('#destinationTrueAsGroup');
+	}
+	id.empty().selectpicker('refresh');
+	if (surveyId !== '') {
+		$.ajax({
+			url : "/fdahpStudyDesigner/adminStudies/refreshSourceKeys.do",
+			type : "GET",
+			datatype : "json",
+			data : {
+				caller : type,
+				seqNo : $('#seqNo').val(),
+				questionnaireId : surveyId,
+				stepId : $('#stepId').val(),
+				isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
+				isDifferentSurveyPiping : $('#differentSurvey').is(':checked'),
+				"${_csrf.parameterName}":"${_csrf.token}"
+			},
+			success : function(data) {
+				let message = data.message;
+				if(message === 'SUCCESS'){
+					let options = data.sourceKeys;
+					if (options != null && options.length > 0) {
+						$.each(options, function(index, option) {
+							let $option = $("<option></option>")
+									.attr("value", option.stepId)
+									.attr("data-id", option.stepId)
+									.text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
+							id.append($option);
+						});
+					}
+					if (type === 'preload') {
+						id.append('<option value="0">Completion Step</option>');
+						if (!$('#differentSurveyPreLoad').is(':checked')) {
+							<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+							id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+									'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+									'</option>');
+							</c:forEach>
+						} else {
+							let groups = data.groupList;
+							if (groups != null && groups.length > 0) {
+								$.each(groups, function(index, option) {
+									let $option = $("<option></option>")
+											.attr("value", option.id)
+											.attr("data-id", option.id)
+											.text("Group " + (index+1) + " : " + option.groupName);
+									id.append($option);
+								});
+							}
+						}
+					}
+					id.selectpicker('refresh');
+
+					<%--let groupsList = '${groupsListPreLoad}';--%>
+					// if ((type === 'preload' && (options == null || options.length === 0) && (groupsList.length === 0))
+					// 		||  (type !== 'preload' && (options == null || options.length === 0))) {
+					if (type !== 'preload' && (options == null || options.length === 0)) {
+						let $option = $("<option></option>")
+								.attr("style", "text-align: center; color: #000000")
+								.attr("disabled", true)
+								.text("- No items found -");
+						id.append($option).selectpicker('refresh');
+					}
+				} else {
+					showErrMsg('Server error while fetching data.');
+				}
+			},
+			error : function status(data, status) {
+				console.log(data, status);
+			},
+		});
+	}
+}
 </script>
 
 
@@ -8427,5 +9196,139 @@ $("#diagnosis_list tbody").sortable({
   stop: updateIndex
 }).disableSelection();
 }
+
+function removeFormulaContainer(object) {
+	let id = object.getAttribute('data-id');
+	$('#'+id).remove()
+}
+
+$('select.req, input.req').on('change', function () {
+	let parent = $(this).parent();
+	if ($(this).is('select')) {
+		parent = $(this).closest('div.mb-xs');
+	}
+	if ($(this).val() === '') {
+		if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+			parent.addClass('has-error has-danger').find(".help-block")
+					.empty()
+					.append($("<ul><li> </li></ul>")
+							.attr("class","list-unstyled")
+							.text("Please fill out this field."));
+			if (valid) {
+				valid = false;
+			}
+		}
+	} else {
+		if (parent.hasClass('has-error has-danger')) {
+			parent.removeClass('has-error has-danger').find(".help-block").empty();
+		}
+	}
+});
+
+function submitPiping() {
+	let valid = true;
+	let language = $('#studyLanguage').val();
+	if (language != null && language != undefined && language !== 'en') {
+	let parent = $('#pipingSnippet').parent();
+	if ($('#pipingSnippet').val() === '') {
+                                              parent.addClass('has-error has-danger').find(".help-block")
+                                                  .empty()
+                                                  .append($("<ul><li> </li></ul>")
+                                                  .attr("class","list-unstyled")
+                                                  .text("Please fill out this field."));
+                                              if (valid) {
+                                                  valid = false;
+                                              }
+                                      } else {
+                                          if (parent.hasClass('has-error has-danger')) {
+                                              parent.removeClass('has-error has-danger').find(".help-block").empty();
+                                          }
+                                      }
+	}
+	else {
+	    $('select.req, input.req').each(function () {
+        		let parent = $(this).parent();
+        		let id = $(this).attr('id');
+        		console.log(id);
+        		if ($(this).is('select')) {
+        			parent = $(this).closest('div.mb-xs');
+        		}
+        		if ($(this).val() === '') {
+        			if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+        				parent.addClass('has-error has-danger').find(".help-block")
+        						.empty()
+        						.append($("<ul><li> </li></ul>")
+        								.attr("class","list-unstyled")
+        								.text("Please fill out this field."));
+        				if (valid) {
+        					valid = false;
+        				}
+        			}
+        		} else {
+        			if (parent.hasClass('has-error has-danger')) {
+        				parent.removeClass('has-error has-danger').find(".help-block").empty();
+        			}
+        		}
+        	});
+	}
+
+	if (!valid) {
+		return false;
+	}
+	if ($('#stepId').val() !== '') {
+		let pipingObject = {};
+		pipingObject.pipingSnippet = $('#pipingSnippet').val();
+		pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+		if ($('#differentSurvey').is(':checked')) {
+			pipingObject.differentSurvey = true;
+			pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+		}
+		pipingObject.language = $('#studyLanguage').val();
+		pipingObject.stepId = $('#stepId').val();
+		let dataObject = JSON.stringify(pipingObject);
+		$.ajax({
+			url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
+			type: "POST",
+			datatype: "json",
+			data: {
+				dataObject : dataObject
+			},
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+			},
+			success: function (data) {
+				let message = data.message;
+				let status = data.status
+				$('#pipingModal').modal('hide');
+				if (status === 'SUCCESS') {
+					showSucMsg(message);
+				} else {
+					showErrMsg(message);
+				}
+			},
+			error: function (xhr, status, error) {
+				$('#pipingModal').modal('hide');
+				showErrMsg("Error while saving piping details");
+			}
+		});
+	} else {
+		$('#pipingModal').modal('hide');
+		showErrMsg("Please save step first!");
+	}
+}
+
+function validatePipingData() {
+        $('select.req, input.req').each(function () {
+                              let parent = $(this).parent();
+                              let id = $(this).attr('id');
+                              console.log(id);
+                              if ($(this).is('select')) {
+                                  parent = $(this).closest('div.mb-xs');
+                              }
+                              if (parent.hasClass('has-error has-danger')) {
+                                  parent.removeClass('has-error has-danger').find(".help-block").empty();
+                              }
+                          });
+  }
   </script>
 

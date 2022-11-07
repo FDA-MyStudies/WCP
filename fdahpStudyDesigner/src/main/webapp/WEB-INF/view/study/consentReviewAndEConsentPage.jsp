@@ -1246,7 +1246,6 @@ var idleTime = 0;
              consentInfo.signatures = customArray;
            }
          $('#loader').show();
-         // debugger
          let sourceCode = $('textarea.tox-textarea').val();
          if (mode === 'auto') {
              $("#isAutoSaved").val('true');

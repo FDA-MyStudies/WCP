@@ -262,6 +262,21 @@
                        value="/WEB-INF/view/study/formStep.jsp"/>
     </definition>
 
+    <definition name="viewGroupsPage" extends="study.definition">
+        <put-attribute name="body"
+                       value="/WEB-INF/view/study/viewGroups.jsp"/>
+    </definition>
+
+    <definition name="addOrEditGroupsPage" extends="study.definition">
+        <put-attribute name="body"
+                       value="/WEB-INF/view/study/addGroups.jsp"/>
+    </definition>
+
+	<definition name="deAssignGroup" extends="study.definition">
+        <put-attribute name="body"
+                       value="/WEB-INF/view/study/deAssignGroup.jsp"/>
+    </definition>
+
     <definition name="questionStepPage"
                 extends="study.definition">
         <put-attribute name="body"

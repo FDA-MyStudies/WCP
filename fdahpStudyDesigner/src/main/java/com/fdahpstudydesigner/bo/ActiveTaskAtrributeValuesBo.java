@@ -47,7 +47,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
   private String attributeVal;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "active_task_attribute_id")
   private Integer attributeValueId;
 

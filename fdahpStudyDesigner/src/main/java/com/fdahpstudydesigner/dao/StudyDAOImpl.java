@@ -6757,7 +6757,7 @@ public class StudyDAOImpl implements StudyDAO {
                         newMappingBo.setStepId(oldNewInstructionFormIdMap.containsKey(Integer.parseInt(mappingBo.getStepId()))
                                 ? String.valueOf(oldNewInstructionFormIdMap.get(Integer.parseInt(mappingBo.getStepId())))
                                 : mappingBo.getStepId());
-                        newMappingBo.setQuestionnaireStepId(oldNewInstructionFormIdMap.containsKey(mappingBo.getQuestionnaireStepId())
+                        newMappingBo.setQuestionnaireStepId(oldNewStepIdMap.containsKey(mappingBo.getQuestionnaireStepId())
                                 ? oldNewStepIdMap.get(mappingBo.getQuestionnaireStepId())
                                 : mappingBo.getQuestionnaireStepId());
                         session.save(newMappingBo);

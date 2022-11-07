@@ -4268,7 +4268,7 @@ public class StudyQuestionnaireController {
 			}
 			Integer val=index-groupMappingBo.size();
 			Iterator<Entry<Integer, QuestionnaireStepBean>> iter = qTreeMap.entrySet().iterator();
-			Integer count=0;
+			int count=0;
 			while (iter.hasNext()) {
 			    Entry<Integer, QuestionnaireStepBean> entry = iter.next();
 			    if (count <val) {

@@ -996,6 +996,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                       newgroupsBo.setQuestionnaireId(newQuestionnairesStepsBo.getQuestionnairesId());
                       session.saveOrUpdate(newgroupsBo);
                       groupIdMap.put(groupsBo.getId(), newgroupsBo.getId());
+
+                      List<PreLoadLogicBo> preLoadLogicBoGroupsList = session.createQuery("from PreLoadLogicBo where stepGroupId=:id and stepOrGroup=:group")
+                              .setParameter("id", groupsBo.getId())
+                              .setParameter(FdahpStudyDesignerConstants.GROUP, FdahpStudyDesignerConstants.GROUP)
+                              .list();
+
+                      for (PreLoadLogicBo preLoadLogicBo : preLoadLogicBoGroupsList) {
+                        PreLoadLogicBo newPreLoadLogicBo = SerializationUtils.clone(preLoadLogicBo);
+                        newPreLoadLogicBo.setId(null);
+                        newPreLoadLogicBo.setStepGroupId(newgroupsBo.getId());
+                        session.save(newPreLoadLogicBo);
+                      }
                     }
                   }
                 }

@@ -8,7 +8,6 @@ import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.SessionObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -227,5 +226,13 @@ public String deleteStepMaprecords(String id);
 
   Integer getGroupIdBySendingQuestionStepId(Integer questionStepId);
 
- // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
+  String getStepType(Integer questionStepId, Integer stepId);
+
+  Integer getResponseType(Integer questionStepId);
+
+  List<Integer> getQuestionIdList(Integer questionStepId);
+
+  Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue);
+
+  // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
 }

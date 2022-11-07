@@ -1,7 +1,6 @@
 package com.fdahpstudydesigner.dao;
 
 import com.fdahpstudydesigner.bean.GroupMappingStepBean;
-import com.fdahpstudydesigner.bean.GroupsBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.*;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -225,7 +224,15 @@ public String deleteStepMaprecords(String id);
 
  Integer getGroupIdBySendingQuestionStepId(Integer questionStepId);
 
- // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
+  String getStepType(Integer questionStepId, Integer stepId);
+
+  Integer getResponseType(Integer questionStepId);
+
+  List<Integer> getQuestionIdList(Integer questionStepId);
+
+  Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue);
+
+  // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
 
 
 }

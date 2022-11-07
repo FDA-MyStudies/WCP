@@ -7121,23 +7121,6 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
   }
 
   @Override
- /* public boolean isGroupDefaultVisibilityEnabled(Integer questionStepId) {
-    logger.info("StudyDAOImpl - isGroupDefaultVisibilityEnabled() - Starts");
-    GroupsBo groupsBo = null;
-    Query query;
-    String queryString;
-    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
-      queryString = " FROM GroupsBo GBO WHERE GBO.id = (select grpId FROM GroupMappingBo GBO WHERE GBO.questionnaireStepId=:questionStepId)";
-      query = session.createQuery(queryString).setParameter("questionStepId", questionStepId);
-      groupsBo = (GroupsBo) query.uniqueResult();
-    } catch (Exception e) {
-      logger.error("StudyDAOImpl - isGroupDefaultVisibilityEnabled() - ERROR", e);
-    }
-    logger.info("StudyDAOImpl - isGroupDefaultVisibilityEnabled() - Ends");
-    return groupsBo != null && groupsBo.getDefaultVisibility() != null && groupsBo.getDefaultVisibility();
-  } */
-
-
   public Integer getGroupIdBySendingQuestionStepId(Integer questionStepId) {
     logger.info("StudyDAOImpl - getGroupIdBySendingquestionstepId() - Starts");
     Session session = null;
@@ -7189,5 +7172,76 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
         }
       }
     }
+  }
+
+  @Override
+  public String getStepType(Integer questionStepId, Integer stepId) {
+    logger.info("StudyDAOImpl - getStepType() - Starts");
+    String stepType = null;
+    Query query;
+    String queryString;
+    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+      queryString = " select stepType from QuestionnairesStepsBo QSB where QSB.instructionFormId =:stepId and QSB.stepId =:questionStepId";
+      query = session.createQuery(queryString).setParameter("questionStepId", questionStepId).setParameter("stepId", stepId);
+      stepType = (String) query.uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStepType() - ERROR", e);
+    }
+    logger.info("StudyDAOImpl - getStepType() - Ends");
+    return stepType;
+  }
+
+  @Override
+  public Integer getResponseType(Integer questionStepId) {
+    logger.info("StudyDAOImpl - getResponseType() - Starts");
+    Integer responseType = null;
+    Query query;
+    String queryString;
+    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+      queryString = " select responseType from QuestionsBo QS where QS.id = (select instructionFormId from QuestionnairesStepsBo QSB where QSB.stepId =:questionStepId)";
+      query = session.createQuery(queryString).setParameter("questionStepId", questionStepId);
+      responseType = (Integer) query.uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getResponseType() - ERROR", e);
+    }
+    logger.info("StudyDAOImpl - getResponseType() - Ends");
+    return responseType;
+
+  }
+
+  @Override
+  public List<Integer> getQuestionIdList(Integer questionStepId) {
+    logger.info("StudyDAOImpl - getResponseType() - Starts");
+    List<Integer> questionIdList = new ArrayList<>();
+    Query query;
+    String queryString;
+    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+      queryString = " select questionId from FormMappingBo FMB where FMB.formId = (select instructionFormId from QuestionnairesStepsBo QSB where QSB.stepId =:questionStepId) order by FMB.sequenceNo desc";
+      query = session.createQuery(queryString).setParameter("questionStepId", questionStepId);
+      questionIdList = query.getResultList();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getResponseType() - ERROR", e);
+    }
+    logger.info("StudyDAOImpl - getResponseType() - Ends");
+    return questionIdList;
+
+  }
+
+  @Override
+  public Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue) {
+    logger.info("StudyDAOImpl - getResponseTypeForFormStep() - Starts");
+    Integer responseType = null;
+    Query query;
+    String queryString;
+    try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+      queryString = " select responseType from QuestionsBo QS where QS.id =:lastQuestinObjectValue";
+      query = session.createQuery(queryString).setParameter("lastQuestinObjectValue", lastQuestinObjectValue);
+      responseType = (Integer) query.uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getResponseTypeForFormStep() - ERROR", e);
+    }
+    logger.info("StudyDAOImpl - getResponseTypeForFormStep() - Ends");
+    return responseType;
+
   }
 }

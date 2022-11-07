@@ -367,6 +367,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
 
         <!-- End right Content here -->
+<input type="hidden" id="responseType" value="${responseType}" name="responseType">
+<input type="hidden" id="stepType" value="${stepType}" name="stepType">
+<input type="hidden" id="questionIdList" value="${questionIdList}" name="questionIdList">
 
         <div class="modal fade dominate" id="myModal" role="dialog" style="z-index: 1301 !important;">
                 <div class="modal-dialog modal-sm flr_modal">
@@ -579,6 +582,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
     $('#addFormula').on('click', function () {
         let formContainer = $('#formulaContainer');
+        let responseType = $('#responseType').val();
         let count = formContainer.find('div.formula-box').length;
         let formula =
             '<div id="form-div' + count + '" class="form-div deletable" style="height: 200px; margin-top:20px">' +
@@ -628,6 +632,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             '</div>' +
             '</div>';
         formContainer.append(formula);
+        setOperatorDropDownOnAdd(responseType);
         $('.selectpicker').selectpicker();
     });
 
@@ -719,6 +724,43 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
              }
          })
 
+       //Disable defaultVisibility when lastStep is instruction and if formstep doesnot contains questions
+           let stepType = $('#stepType').val();
+           let size=${fn:length(questionIdList)}
+           console.log(size);
+            if(stepType == 'Instruction' || stepType == 'Form' && size == 0){
+                  defaultVisibility.prop('checked', true);
+                  defaultVisibility.prop('disabled', true);
+            }
+
+        //show operators based on responseType for Questionstep and formStep
+        function setOperatorDropDownOnAdd(responseType) {
+        		if (responseType != null) {
+        			if (responseType == 1 || responseType == 2 ||
+        					responseType == 8 || responseType == 14 ) {
+        				defaultVisibility.prop('disabled', false);
+        				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+        				let operator = $('select.operator');
+        				operator.empty();
+        				$.each(operatorList, function (index, val) {
+        					operator.append('<option value="'+val+'">'+val+'</option>');
+        				});
+        				$('.selectpicker').selectpicker();
+        			} else if ((responseType >= 3 && responseType <= 7) || responseType == 11) {
+        				defaultVisibility.prop('disabled', false);
+        				let operatorList = ["=", "!="];
+        				let operator = $('select.operator');
+        				operator.empty();
+        				$.each(operatorList, function (index, val) {
+        					operator.append('<option value="'+val+'">'+val+'</option>');
+        				});
+        				$('.selectpicker').selectpicker();
+        			} else {
+        				defaultVisibility.prop('checked', true).trigger('change');
+        				defaultVisibility.prop('disabled', true);
+        			}
+        		}
+        	}
     function removeFormulaContainer(object) {
         let id = object.getAttribute('data-id');
         $('#' + id).remove();
@@ -915,16 +957,28 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
       		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
       		          $('#groupName').attr('disabled', false);
       		          $('#groupId').attr('disabled', false);
-      		          $('#groupDefaultVisibility').attr('disabled', false);
+      		         // $('#groupDefaultVisibility').attr('disabled', false);
+      		          <c:choose>
+                       <c:when test = "${groupStepLists.size() >= 2}">
+                       $('#groupDefaultVisibility').attr('disabled', false);
+                         </c:when>
+                           <c:otherwise>
+                            $('#groupDefaultVisibility').attr('disabled', true);
+                            $('#groupDefaultVisibility').attr('checked', true);
+                            </c:otherwise>
+                      </c:choose>
+                      let stepType = $('#stepType').val();
+                       let size=${fn:length(questionIdList)}
+                       if(stepType == 'Instruction' || stepType == 'Form' && size == 0){
+                       $('#groupDefaultVisibility').attr('disabled', true);
+                        $('#groupDefaultVisibility').attr('checked', true);
+                        }
       		          $('#studyProtocolId').prop('disabled', false);
-                        $('#addFormula').attr('disabled', false);
-
+                      $('#addFormula').attr('disabled', false);
                         $('#saveId').attr('disabled', false);
                          $('#doneGroupId').attr('disabled', false);
-
                          $('.radio').removeClass('disabled');
                          $('.remBtnDis').removeClass('disabled');
-
                         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
 					$(this).removeClass('ml-disabled');
 					if ($(this).is("input")) {
@@ -960,8 +1014,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
              $('#addFormula').attr('disabled', true);
              $('#value0').attr('disabled', true);
              $('#operator0').attr('disabled', true);
-            //  $('#operator0').parent().addClass('ml-disabled');
-
          }
 
       		        }

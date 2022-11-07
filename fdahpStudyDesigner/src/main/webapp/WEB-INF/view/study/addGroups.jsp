@@ -482,6 +482,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
 
     function saveAddGroupsPage(mode) {
+        $('#groupId').prop('disabled', false)
         let isValid = true;
         $('.req').each(function () {
             let parent = $(this).parent();
@@ -724,6 +725,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
     }
 
     $("#doneGroupId").click(function () {
+        $('#groupId').prop('disabled', false)
         if (isFormValid()) {
             $('#buttonText').val('done');
             $("#action").val('true');

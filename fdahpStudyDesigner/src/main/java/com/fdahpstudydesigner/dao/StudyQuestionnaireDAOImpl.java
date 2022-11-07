@@ -6169,6 +6169,8 @@ public String deleteGroup(String id, SessionObject sessionObject) {
         count = query.setString("id", id).executeUpdate();
         if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
       }
+      int gpId = Integer.parseInt(id);
+      this.validatePreLoadLogicForGroups(session, gpId);
       transaction.commit();
     } catch (Exception e) {
       transaction.rollback();
@@ -7145,5 +7147,35 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
     }
     logger.info("StudyDAOImpl - getGroupIdBySendingquestionstepId() - Ends");
     return groupId;
+  }
+
+  private void validatePreLoadLogicForGroups(Session session, int gpId) {
+    List<QuestionnairesStepsBo> stepsBos = session.createQuery("from QuestionnairesStepsBo where active=true and destinationTrueAsGroup=:groupId and stepOrGroup <> 'step'")
+            .setParameter("groupId", gpId)
+            .list();
+    for (QuestionnairesStepsBo stepsBo : stepsBos) {
+      stepsBo.setStatus(false);
+      session.update(stepsBo);
+      QuestionnaireBo questionnaireBo = session.get(QuestionnaireBo.class, stepsBo.getQuestionnairesId());
+      if (questionnaireBo != null) {
+        questionnaireBo.setStatus(false);
+        session.update(questionnaireBo);
+      }
+      String stepType = stepsBo.getStepType();
+      int id = stepsBo.getInstructionFormId();
+      if (FdahpStudyDesignerConstants.QUESTION_STEP.equals(stepType)) {
+        QuestionsBo questionsBo = session.get(QuestionsBo.class, id);
+        if (questionsBo != null) {
+          questionsBo.setStatus(false);
+          session.update(questionsBo);
+        }
+      } else if (FdahpStudyDesignerConstants.INSTRUCTION_STEP.equals(stepType)) {
+        InstructionsBo instructionsBo = session.get(InstructionsBo.class, id);
+        if (instructionsBo != null) {
+          instructionsBo.setStatus(false);
+          session.update(instructionsBo);
+        }
+      }
+    }
   }
 }

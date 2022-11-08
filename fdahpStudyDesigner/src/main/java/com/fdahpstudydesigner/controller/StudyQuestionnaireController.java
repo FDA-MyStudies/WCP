@@ -4270,13 +4270,18 @@ public class StudyQuestionnaireController {
             actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
-            for(GroupsBo grps:groupsList) {
-              if(grps.getId() == groupsBo.getId()) {
-                groupsList.remove(grps);
-                map.addAttribute("groupsList", groupsList);
-                break;
-              }
-            }
+            //Destination step dropdown should display other groups created for the same survey
+             Iterator<GroupsBo> iter = groupsList.iterator();
+             while (iter.hasNext()) {
+                 GroupsBo grps = iter.next();
+                 if(grps.getId().equals(groupsBo.getId())) {
+                     iter.remove();
+                     break;
+                   }
+                   else {
+                       iter.remove();
+                   }
+             }
             preLoadLogicBoList = studyQuestionnaireService.getPreLoadLogicDetails(StringUtils.isNotEmpty(id) ? Integer.parseInt(id) : null);
           } else {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
@@ -4314,7 +4319,7 @@ public class StudyQuestionnaireController {
 			    }
 	         map.addAttribute("qTreeMap", qTreeMap);
 			}
-			
+		   map.addAttribute("groupsList", groupsList);
           map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);
@@ -4403,13 +4408,16 @@ public class StudyQuestionnaireController {
           groupsList =
                   studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId, false, null);
         }
-        for(GroupsBo grps:groupsList) {
-          if(grps.getId() == groupsBo.getId()) {
-            groupsList.remove(grps);
-
-            map.addAttribute("groupsList", groupsList);
-            break;
-          }
+        Iterator<GroupsBo> iterator = groupsList.iterator();
+        while (iterator.hasNext()) {
+            GroupsBo grps = iterator.next();
+            if(grps.getId().equals(groupsBo.getId())) {
+            	iterator.remove();
+                break;
+              }
+              else {
+            	  iterator.remove();
+              }
         }
      if (StringUtils.isEmpty(id)) {
     	 id =
@@ -4525,19 +4533,30 @@ public class StudyQuestionnaireController {
         Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
-        if (!groupMappingBo.isEmpty()) {
+        int index=0;
           for (GroupMappingBo groupMappingBos : groupMappingBo) {
             for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
               if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
+            	  index=entry.getKey();
                 qTreeMap.remove(entry.getKey());
                 break;
               }
             }
-            map.addAttribute("qTreeMap", qTreeMap);
           }
-        } else {
-          map.addAttribute("qTreeMap", qTreeMap);
-        }
+        //Destination step dropdown should display other steps created for the same survey
+          Integer val=index-groupMappingBo.size();
+			Iterator<Entry<Integer, QuestionnaireStepBean>> iter = qTreeMap.entrySet().iterator();
+			int count=0;
+			while (iter.hasNext()) {
+			    Entry<Integer, QuestionnaireStepBean> entry = iter.next();
+			    if (count <val) {
+			        iter.remove();
+			        count++;
+			    }
+			    map.addAttribute("qTreeMap", qTreeMap);
+			}
+        
+        map.addAttribute("groupsList", groupsList);
         map.addAttribute("actionType", actionType);
         map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("preLoadLogicBoList", preLoadLogicBoList);

@@ -89,6 +89,7 @@
                    cellspacing="0" width="100%">
                 <thead>
                 <tr>
+                    <th style="display: none;"></th>
                     <th>GROUP ID<span class="sort"></span></th>
                     <th>GROUP NAME<span class="sort"></span></th>
                     <th>ACTION</th>
@@ -97,6 +98,7 @@
                 <tbody>
                  <c:forEach items="${groupsList}" var="groupsList">
                  <tr id="row${groupsList.groupId}">
+                 <td style="display: none">${groupsList.id}</td>
                  <td>${groupsList.groupId}</td>
                  <td class="wid50 title">${groupsList.groupName}</td>
                  <td style="width: 200px !important;">

@@ -2299,6 +2299,8 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
         groupsBo.setStudyId(groupsBean.getStudyId());
         groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
+        groupsBo.setModifiedBy(userSession.getUserId());
+        groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
       } else {
           groupsBo.setModifiedBy(userSession.getUserId());
           groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());

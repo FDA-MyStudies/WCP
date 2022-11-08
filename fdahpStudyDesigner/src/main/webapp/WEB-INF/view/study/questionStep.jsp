@@ -634,12 +634,12 @@ input[type=number] {
 											<div class="row data-div">
 												<div class="col-md-1" style="padding-top: 7px">Operator</div>
 												<div class="col-md-2 form-group">
-													<select  class="selectpicker operator text-normal" data-error="Please select an option"
-															id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
-														<c:forEach items="${operators}" var="operator">
-															<option value="${operator}">${operator}</option>
-														</c:forEach>
-													</select>
+                                                    <select class="selectpicker operator text-normal" data-error="Please select an option" required
+                                                            id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+                                                        <c:forEach items="${operators}" var="operator">
+                                                            <option value="${operator}"> ${operator} </option>
+                                                        </c:forEach>
+                                                    </select>
 													<div class="help-block with-errors red-txt"></div>
 												</div>
 
@@ -5917,27 +5917,26 @@ input[type=number] {
 		}
 	}
 
-	function setOperatorDropDownOnAdd(responseType) {
+	function setOperatorDropDownOnAdd(responseType, count) {
 		if (responseType != null) {
+			let operator = $('#operator' + count);
 			if (responseType === '1'|| responseType === '2' ||
 					responseType === '8' || responseType === '14' ) {
 				defaultVisibility.prop('disabled', false);
 				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
-				let operator = $('select.operator');
 				operator.empty();
 				$.each(operatorList, function (index, val) {
 					operator.append('<option value="'+val+'">'+val+'</option>');
 				});
-				$('.selectpicker').selectpicker();
+				operator.selectpicker('refresh');
 			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
 				defaultVisibility.prop('disabled', false);
 				let operatorList = ["=", "!="];
-				let operator = $('select.operator');
 				operator.empty();
 				$.each(operatorList, function (index, val) {
 					operator.append('<option value="'+val+'">'+val+'</option>');
 				});
-				$('.selectpicker').selectpicker();
+				$('.selectpicker').selectpicker('refresh');
 			} else {
 				defaultVisibility.prop('checked', true).trigger('change');
 				defaultVisibility.prop('disabled', true);
@@ -8963,7 +8962,7 @@ $('.text-choice').each(function(i){
 				'</div>'+
 				'</div>';
 		formContainer.append(formula);
-		setOperatorDropDownOnAdd($('#responseTypeId').val());
+		setOperatorDropDownOnAdd($('#responseTypeId').val(), count);
 	});
 
 if (dv.is(':checked')) {

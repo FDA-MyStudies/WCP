@@ -779,10 +779,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             } else {
               preLoadIds.remove(preLoadLogicBo.getId());
             }
-            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
-                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setOperator(logicBean.getOperator());
             preLoadLogicBo.setInputValue(logicBean.getInputValue());
-            preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
+            preLoadLogicBo.setConditionOperator(StringUtils.isNotBlank(logicBean.getConditionOperator())
+                    ? "&&" : logicBean.getConditionOperator());
             studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
           }
         }

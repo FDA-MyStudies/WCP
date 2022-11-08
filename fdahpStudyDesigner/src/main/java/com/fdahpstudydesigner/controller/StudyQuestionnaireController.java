@@ -4063,7 +4063,7 @@ public class StudyQuestionnaireController {
             }
           }
           map.addAttribute("languageList", langMap);
-          if ("edit".equals(actionType)) {
+          if ("edit".equals(actionType) || "add".equals(actionType)) {
               map.addAttribute("actionType", "edit");
               request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
             } else {

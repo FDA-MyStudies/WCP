@@ -6739,11 +6739,24 @@ public class StudyDAOImpl implements StudyDAO {
                     newGroupsBo.setId(null);
                     newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
                     newGroupsBo.setQuestionnaireId(newQuestionnaireBo.getId());
+                    newGroupsBo.setDestinationTrueAsGroup(oldNewStepIdMap.get(groupsBo.getDestinationTrueAsGroup()));
                     newGroupsBo.setIsPublished(1);
                     session.save(newGroupsBo);
                     groupsBo.setIsPublished(1);
                     session.update(groupsBo);
                     oldNewGroupIdMap.put(groupsBo.getId(), newGroupsBo.getId());
+
+                    List<PreLoadLogicBo> preLoadLogicBoList = session.createQuery("from PreLoadLogicBo where stepGroupId=:groupId and stepOrGroup=:group")
+                            .setParameter("groupId", groupsBo.getId())
+                            .setParameter(FdahpStudyDesignerConstants.GROUP, FdahpStudyDesignerConstants.GROUP)
+                            .list();
+
+                    for (PreLoadLogicBo preLoadLogicBo : preLoadLogicBoList) {
+                      PreLoadLogicBo newPreLoadLogicBo = SerializationUtils.clone(preLoadLogicBo);
+                      newPreLoadLogicBo.setId(null);
+                      newPreLoadLogicBo.setStepGroupId(newGroupsBo.getId());
+                      session.save(newPreLoadLogicBo);
+                    }
 
                     List<GroupMappingBo> mappingBos = session
                             .createQuery("from GroupMappingBo where status=true and grpId=:groupId")

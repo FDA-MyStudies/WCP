@@ -203,18 +203,17 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                                          data-error="Please choose one option" class="selectpicker text-normal req-pll"
                                          title="-select-">
-                             <c:forEach items="${qTreeMap}"
-								var="destinationStep">
+                             <c:forEach items="${qTreeMap}" var="destinationStep">
 								<c:if
 									test="${destinationStep.value.stepType eq 'Instruction' || destinationStep.value.stepType eq 'Question'}">
-									<option value="${destinationStep.key}"
+									<option value="${destinationStep.value.deletionId}"
 										${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
 										Step ${destinationStep.key} : ${destinationStep.value.title}</option>
 								</c:if>
 								<c:if test="${destinationStep.value.stepType eq 'Form'}">
 									<c:forEach items="${destinationStep.value.fromMap}"
 										var="subentry">
-										<option value="${destinationStep.key}"
+										<option value="${destinationStep.value.deletionId}"
 											${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
 											Step ${destinationStep.key} : ${subentry.value.title}</option>
 									</c:forEach>

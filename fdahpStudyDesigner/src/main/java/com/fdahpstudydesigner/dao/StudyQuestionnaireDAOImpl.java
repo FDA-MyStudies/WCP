@@ -6039,11 +6039,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       	
         session = hibernateTemplate.getSessionFactory().openSession();
         if (StringUtils.isNotBlank(studyId)) {
-          query = session.createQuery("From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId order by GBO.id asc")
+          query = session.createQuery("From GroupsBo GBO WHERE GBO.studyId =:studyId and GBO.questionnaireId=:questionnaireId order by GBO.id desc")
                   .setParameter("studyId", Integer.parseInt(studyId))
                   .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
         } else {
-          query = session.createQuery("From GroupsBo GBO WHERE GBO.questionnaireId=:questionnaireId order by GBO.id asc")
+          query = session.createQuery("From GroupsBo GBO WHERE GBO.questionnaireId=:questionnaireId order by GBO.id desc")
                   .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
         }
         groups = query.list();

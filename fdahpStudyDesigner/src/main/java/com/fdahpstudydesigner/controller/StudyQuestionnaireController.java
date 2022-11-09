@@ -4272,15 +4272,13 @@ public class StudyQuestionnaireController {
             groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
             //Destination step dropdown should display other groups created for the same survey
              Iterator<GroupsBo> iter = groupsList.iterator();
+             boolean flag=false;
              while (iter.hasNext()) {
                  GroupsBo grps = iter.next();
-                 if(grps.getId().equals(groupsBo.getId())) {
-                     iter.remove();
-                     break;
-                   }
-                   else {
-                       iter.remove();
-                   }
+                 if(grps.getId().equals(groupsBo.getId()) || flag == true) {
+                	 flag = true;
+                	 iter.remove();
+                 }
              }
             preLoadLogicBoList = studyQuestionnaireService.getPreLoadLogicDetails(StringUtils.isNotEmpty(id) ? Integer.parseInt(id) : null);
           } else {
@@ -4409,15 +4407,13 @@ public class StudyQuestionnaireController {
                   studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId, false, null);
         }
         Iterator<GroupsBo> iterator = groupsList.iterator();
+        boolean flag=false;
         while (iterator.hasNext()) {
             GroupsBo grps = iterator.next();
-            if(grps.getId().equals(groupsBo.getId())) {
-            	iterator.remove();
-                break;
-              }
-              else {
-            	  iterator.remove();
-              }
+            if(grps.getId().equals(groupsBo.getId()) || flag == true) {
+           	 flag = true;
+           	iterator.remove();
+            }
         }
      if (StringUtils.isEmpty(id)) {
     	 id =

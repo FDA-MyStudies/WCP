@@ -7132,17 +7132,23 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
   }
 
   @Override
-  public Integer getGroupIdBySendingQuestionStepId(Integer questionStepId) {
+  public GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId) {
     logger.info("StudyDAOImpl - getGroupIdBySendingquestionstepId() - Starts");
     Session session = null;
     Integer groupId = null;
     Query query;
+    GroupsBo groupsBo = null;
     String queryString;
     try{
       session = hibernateTemplate.getSessionFactory().openSession();
-      queryString = "select grpId FROM GroupMappingBo GBO WHERE GBO.questionnaireStepId =:questionStepId";
-      query = session.createQuery(queryString).setParameter("questionStepId", questionStepId);
-      groupId = (Integer) query.uniqueResult();
+      //queryString = "select grpId FROM GroupMappingBo GBO WHERE GBO.questionnaireStepId =:questionStepId";
+      groupId = (Integer) session.createQuery("select grpId FROM GroupMappingBo GBO WHERE GBO.questionnaireStepId =:questionStepId")
+              .setParameter("questionStepId", questionStepId)
+              .setMaxResults(1)
+              .uniqueResult();
+      if (groupId != null) {
+        groupsBo = (GroupsBo) session.createQuery("from GroupsBo where id=:id").setParameter("id", groupId).uniqueResult();
+      }
     }
     catch(Exception e){
       logger.error("StudyDAOImpl - getGroupIdBySendingquestionstepId() - ERROR",e);
@@ -7152,7 +7158,7 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
       }
     }
     logger.info("StudyDAOImpl - getGroupIdBySendingquestionstepId() - Ends");
-    return groupId;
+    return groupsBo;
   }
 
   private void validatePreLoadLogicForGroups(Session session, int gpId) {

@@ -706,10 +706,7 @@ public class StudyQuestionnaireController {
           int preloadSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
           Integer currStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
           Integer questionStepId = currStepId;
-          Integer grpId = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
-          if(grpId != null){
-            groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
-          }
+          groupsBo = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
           map.addAttribute("groupsBo", groupsBo);
           if (questionnairesStepsBo != null) {
             if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
@@ -1893,12 +1890,9 @@ public class StudyQuestionnaireController {
           }
         }
         Integer questionStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
-        //getting groupId by sending stepId
-        Integer grpId = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
-        //getting groupdetails by sending groupId
-        if(grpId != null){
-          groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
-        }
+        //getting groupId by sending questionstepId from GroupMapping table and getting the groupsBo for that particular groupId
+        groupsBo = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
+
 
         map.addAttribute("groupsBo", groupsBo);
         map.addAttribute("permission", permission);

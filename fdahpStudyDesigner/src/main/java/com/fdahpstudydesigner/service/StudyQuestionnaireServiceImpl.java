@@ -2550,16 +2550,16 @@ public String deleteStepMaprecords(String id) {
   } */
 
 
-  public Integer getGroupIdBySendingQuestionStepId(Integer questionStepId) {
+  public GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
-    Integer groupId = null;
+    GroupsBo groupsBo = null;
     try {
-      groupId = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
+      groupsBo = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
     }
     logger.info("getGroupIdBySendingquestionstepId() - Ends");
-    return groupId;
+    return groupsBo;
   }
 
   @Override

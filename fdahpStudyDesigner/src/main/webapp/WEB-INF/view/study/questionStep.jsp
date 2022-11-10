@@ -5387,6 +5387,10 @@ input[type=number] {
           var maxValue = $("#numericMaxValueId").val();
           $(this).parent().removeClass("has-danger").removeClass("has-error");
           $(this).parent().find(".help-block").empty();
+		  var minValue = $("#numericMinValueId").val();
+		  if(minValue==''){
+			  $("#numericMinValueId").val("0");
+		  }
           if (maxValue != '') {
             if (parseInt(value) >= parseInt(maxValue)) {
               $(this).val('');
@@ -5404,6 +5408,10 @@ input[type=number] {
         $("#numericMaxValueId").blur(function () {
           var value = $(this).val();
           var minValue = $("#numericMinValueId").val();
+		  var maxValue = $("#numericMaxValueId").val();
+		  if(maxValue==''){
+			  $("#numericMaxValueId").val("10000");
+		  }
           $(this).parent().removeClass("has-danger").removeClass("has-error");
           $(this).parent().find(".help-block").empty();
           if (minValue != '') {
@@ -6210,6 +6218,14 @@ input[type=number] {
             }
             $("#" + responseType.replace(/\s/g, '')).show();
             $("." + responseType.replace(/\s/g, '') + "Required").attr("required", true);
+			  if (responseType === 'Numeric'){
+				  if($("#numericMinValueId").val() === ''){
+					  $("#numericMinValueId").val("0");
+				  }
+				  if($("#numericMaxValueId").val() === ''){
+					  $("#numericMaxValueId").val("10000");
+				  }
+			  }
           } else {
 
           }

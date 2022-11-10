@@ -3870,6 +3870,10 @@ input[type=number] {
       var maxValue = $("#numericMaxValueId").val();
       $(this).parent().removeClass("has-danger").removeClass("has-error");
       $(this).parent().find(".help-block").empty();
+      var minValue = $("#numericMinValueId").val();
+      if(minValue==''){
+          $("#numericMinValueId").val("0");
+      }
       if (maxValue != '') {
         if (parseInt(value) >= parseInt(maxValue)) {
           $(this).val('');
@@ -3889,6 +3893,10 @@ input[type=number] {
       var minValue = $("#numericMinValueId").val();
       $(this).parent().removeClass("has-danger").removeClass("has-error");
       $(this).parent().find(".help-block").empty();
+      var maxValue = $("#numericMaxValueId").val();
+      if(maxValue==''){
+          $("#numericMaxValueId").val("10000");
+      }
       if (minValue != '') {
         if (parseInt(value) <= parseInt(minValue)) {
           $(this).val('');
@@ -4450,6 +4458,14 @@ input[type=number] {
             $("#healthkitDatatypeId").val('');
             $('.selectpicker').selectpicker('refresh');
           }
+            if (responseType === 'Numeric'){
+                if($("#numericMinValueId").val() === ''){
+                    $("#numericMinValueId").val("0");
+                }
+                if($("#numericMaxValueId").val() === ''){
+                    $("#numericMaxValueId").val("10000");
+                }
+            }
         } else {
           $("#allowHealthKitId").hide();
           $("#healthKitContainerId").hide();

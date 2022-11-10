@@ -6183,6 +6183,13 @@ public String deleteGroup(String id, SessionObject sessionObject) {
       }
       int gpId = Integer.parseInt(id);
       this.validatePreLoadLogicForGroups(session, gpId);
+      if (StringUtils.isNotEmpty(id)){
+        count = session.createQuery("delete PreLoadLogicBo PBO where PBO.stepGroupId=:gpId and stepOrGroup=:group")
+                .setParameter("gpId", gpId)
+                .setParameter("group", "group")
+                .executeUpdate();
+        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+      }
       transaction.commit();
     } catch (Exception e) {
       transaction.rollback();
@@ -6269,6 +6276,13 @@ public String saveOrUpdateGroup(GroupsBo groupsBO) {
     	  groupsBO.setAction(groupsBO.getAction());
         session.saveOrUpdate(groupsBO);
  	   msg = FdahpStudyDesignerConstants.SUC_MSG;
+      }
+      QuestionnaireBo questionnaireBo = session.get(QuestionnaireBo.class, groupsBO.getQuestionnaireId());
+      if (questionnaireBo != null) {
+        if (Boolean.FALSE.equals(groupsBO.getAction())) {
+          questionnaireBo.setStatus(false);
+          session.update(questionnaireBo);
+        }
       }
       transaction.commit();
     } catch (Exception e) {

@@ -783,10 +783,12 @@ public class StudyQuestionnaireController {
     try {
       if (responseType != null) {
         if (responseType.equals(1) || responseType.equals(2) ||
-                responseType.equals(8) || responseType.equals(14) ) {
+                responseType.equals(8)) {
           operatorsList = Arrays.asList("<", ">", "=", "!=", "<=", ">=");
         } else if ((responseType >= 3 && responseType <= 7) || responseType == 11) {
           operatorsList = Arrays.asList("=", "!=");
+        } else if (responseType.equals(14)) {
+          operatorsList = Arrays.asList("<", ">");
         }
       }
     } catch (Exception e) {

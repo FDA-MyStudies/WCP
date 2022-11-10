@@ -30,6 +30,10 @@
         pointer-events: none;
       }
 
+      .preload-tooltip {
+          margin-bottom: 3px;
+      }
+
       .text-normal > button > .filter-option{
           text-transform: inherit !important;
       }
@@ -469,7 +473,12 @@
                                      <div style="height: 100px; border:1px solid #bfdceb;">
                                          <div class="row">
                                              <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-                                             <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                             <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+                                                 Define Inputs
+                                                 <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+                                                       title="For response including 'Height' please provide response in cm.">
+                                                 </span>
+                                             </div>
                                              <div class="col-md-6"></div>
                                          </div>
                                          <div class="row data-div">
@@ -508,7 +517,12 @@
                              <div style="height: 100px; border:1px solid #bfdceb;">
                                  <div class="row">
                                      <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-                                     <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                     <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+                                         Define Inputs
+                                         <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+                                               title="For response including 'Height' please provide response in cm.">
+                                         </span>
+                                     </div>
                                      <div class="col-md-6"></div>
                                  </div>
                                  <div class="row data-div">
@@ -1618,7 +1632,11 @@ $('#addFormula').on('click', function () {
         '<div style="height: 100px; border:1px solid #bfdceb;">'+
         '<div class="row">'+
         '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>'+
-        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
+        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs ' +
+        '<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip" ' +
+        'title="For response including \'Height\' please provide response in cm.">' +
+        '</span>'+
+        '</div>'+
         '<div class="col-md-6"></div>'+
         '</div>'+
         '<div class="row data-div">'+
@@ -1646,7 +1664,8 @@ $('#addFormula').on('click', function () {
         '</div>'+
         '</div>';
     formContainer.append(formula);
-    setOperatorDropDownOnAdd($('#lastResponseType').val());
+    setOperatorDropDownOnAdd($('#lastResponseType').val(), count);
+    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 });
 
 if (defaultVisibility.is(':checked')) {
@@ -1729,62 +1748,76 @@ function removeFormulaContainer(object) {
     $('#'+id).remove();
 }
 
-function setOperatorDropDown(responseType) {
-    if (responseType != null) {
-        if (responseType === '1'|| responseType === '2' ||
-            responseType === '8' || responseType === '14' ) {
-            defaultVisibility.prop('disabled', false);
-            let operatorList = ["<", ">", "=", "!=", "<=", ">="];
-            let operator = $('select.operator');
-            operator.empty();
-            $.each(operatorList, function (index, val) {
-                operator.append('<option value="'+val+'">'+val+'</option>');
-            });
-            $('.selectpicker').selectpicker('refresh');
-        } else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
-            defaultVisibility.prop('disabled', false);
-            let operatorList = ["=", "!="];
-            let operator = $('select.operator');
-            operator.empty();
-            $.each(operatorList, function (index, val) {
-                operator.append('<option value="'+val+'">'+val+'</option>');
-            });
-            $('.selectpicker').selectpicker('refresh');
-        } else {
-            defaultVisibility.prop('checked', true).trigger('change');
-            defaultVisibility.prop('disabled', true);
+    function setOperatorDropDown(responseType) {
+        if (responseType != null) {
+            if (responseType === '1'|| responseType === '2' ||
+                responseType === '8') {
+                defaultVisibility.prop('disabled', false);
+                let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+                let operator = $('select.operator');
+                operator.empty();
+                $.each(operatorList, function (index, val) {
+                    operator.append('<option value="'+val+'">'+val+'</option>');
+                });
+                $('.selectpicker').selectpicker('refresh');
+            } else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+                defaultVisibility.prop('disabled', false);
+                let operatorList = ["=", "!="];
+                let operator = $('select.operator');
+                operator.empty();
+                $.each(operatorList, function (index, val) {
+                    operator.append('<option value="'+val+'">'+val+'</option>');
+                });
+                $('.selectpicker').selectpicker('refresh');
+            } else if (responseType === '14') {
+                let operatorList = ["<", ">"];
+                let operator = $('select.operator');
+                operator.empty();
+                $.each(operatorList, function (index, val) {
+                    operator.append('<option value="'+val+'">'+val+'</option>');
+                });
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                defaultVisibility.prop('checked', true).trigger('change');
+                defaultVisibility.prop('disabled', true);
+            }
         }
     }
-}
 
-
-function setOperatorDropDownOnAdd(responseType) {
-	if (responseType != null) {
-		if (responseType === '1'|| responseType === '2' ||
-				responseType === '8' || responseType === '14' ) {
-			defaultVisibility.prop('disabled', false);
-			let operatorList = ["<", ">", "=", "!=", "<=", ">="];
-			let operator = $('select.operator');
-			operator.empty();
-			$.each(operatorList, function (index, val) {
-				operator.append('<option value="'+val+'">'+val+'</option>');
-			});
-			$('.selectpicker').selectpicker();
-		} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
-			defaultVisibility.prop('disabled', false);
-			let operatorList = ["=", "!="];
-			let operator = $('select.operator');
-			operator.empty();
-			$.each(operatorList, function (index, val) {
-				operator.append('<option value="'+val+'">'+val+'</option>');
-			});
-			$('.selectpicker').selectpicker();
-		} else {
-			defaultVisibility.prop('checked', true).trigger('change');
-			defaultVisibility.prop('disabled', true);
-		}
-	}
-}
+    function setOperatorDropDownOnAdd(responseType, count) {
+        if (responseType != null) {
+            let operator = $('#operator' + count);
+            if (responseType === '1'|| responseType === '2' ||
+                responseType === '8') {
+                defaultVisibility.prop('disabled', false);
+                let operatorList = ["<", ">", "=", "!=", "<=", ">="];
+                operator.empty();
+                $.each(operatorList, function (index, val) {
+                    operator.append('<option value="'+val+'">'+val+'</option>');
+                });
+                operator.selectpicker('refresh');
+            } else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
+                defaultVisibility.prop('disabled', false);
+                let operatorList = ["=", "!="];
+                operator.empty();
+                $.each(operatorList, function (index, val) {
+                    operator.append('<option value="'+val+'">'+val+'</option>');
+                });
+                operator.selectpicker('refresh');
+            } else if (responseType === '14') {
+                defaultVisibility.prop('disabled', false);
+                let operatorList = ["<", ">"];
+                operator.empty();
+                $.each(operatorList, function (index, val) {
+                    operator.append('<option value="'+val+'">'+val+'</option>');
+                });
+                operator.selectpicker('refresh');
+            } else {
+                defaultVisibility.prop('checked', true).trigger('change');
+                defaultVisibility.prop('disabled', true);
+            }
+        }
+    }
 
 
 $('#differentSurveyPreLoad').on('change', function(e) {

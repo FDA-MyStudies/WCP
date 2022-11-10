@@ -22,6 +22,7 @@ public class GroupsBean {
     private Boolean defaultVisibility;
     private Integer destinationTrueAsGroup;
     private Integer isPublished;
+    private String stepOrGroup;
 
     @Transient private String groupDefaultVisibility;
 
@@ -187,6 +188,12 @@ public class GroupsBean {
 	public void setIsPublished(Integer isPublished) {
 		this.isPublished = isPublished;
 	}
-    
-   
+
+    public String getStepOrGroup() {
+        return stepOrGroup;
+    }
+
+    public void setStepOrGroup(String stepOrGroup) {
+        this.stepOrGroup = stepOrGroup;
+    }
 }

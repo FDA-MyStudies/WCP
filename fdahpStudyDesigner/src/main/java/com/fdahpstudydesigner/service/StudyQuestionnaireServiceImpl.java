@@ -2278,14 +2278,11 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
       if(groupsBean.getId() != null ){
           groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
 
-    	  if(groupsBean.isAction() == true)
-    	  {
+    	  if(groupsBean != null && groupsBean.isAction()) {
     		  groupsBo.setAction(groupsBean.isAction());
     	  }
-    	  else
-    	  {
+    	  else {
     		  groupsBo.setAction(groupsBean.isAction());
-
     	  }
       }
       
@@ -2307,6 +2304,7 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
         groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       }
+      groupsBo.setStepOrGroup(groupsBean.getStepOrGroup());
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
       studyQuestionnaireDAO.saveOrUpdateGroup(groupsBo);

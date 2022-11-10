@@ -6734,14 +6734,15 @@ public class StudyDAOImpl implements StudyDAO {
                         .setParameter("questionnaireId", questionnaireBo.getId())
                         .setParameter("id", studyBo.getId()).list();
                 if (groupsBoList != null) {
+                  List<GroupsBo> newGroupsList = new ArrayList<>();
                   for (GroupsBo groupsBo : groupsBoList) {
                     GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
                     newGroupsBo.setId(null);
                     newGroupsBo.setStudyId(newQuestionnaireBo.getStudyId());
                     newGroupsBo.setQuestionnaireId(newQuestionnaireBo.getId());
-                    newGroupsBo.setDestinationTrueAsGroup(oldNewStepIdMap.get(groupsBo.getDestinationTrueAsGroup()));
                     newGroupsBo.setIsPublished(1);
                     session.save(newGroupsBo);
+                    newGroupsList.add(newGroupsBo);
                     groupsBo.setIsPublished(1);
                     session.update(groupsBo);
                     oldNewGroupIdMap.put(groupsBo.getId(), newGroupsBo.getId());
@@ -6775,6 +6776,14 @@ public class StudyDAOImpl implements StudyDAO {
                                 : mappingBo.getQuestionnaireStepId());
                         session.save(newMappingBo);
                       }
+                    }
+                  }
+
+                  for (GroupsBo groupsBo : newGroupsList) {
+                    if (FdahpStudyDesignerConstants.GROUP.equals(groupsBo.getStepOrGroup())) {
+                      groupsBo.setDestinationTrueAsGroup(oldNewGroupIdMap.get(groupsBo.getDestinationTrueAsGroup()));
+                    } else {
+                      groupsBo.setDestinationTrueAsGroup(oldNewStepIdMap.get(groupsBo.getDestinationTrueAsGroup()));
                     }
                   }
                 }

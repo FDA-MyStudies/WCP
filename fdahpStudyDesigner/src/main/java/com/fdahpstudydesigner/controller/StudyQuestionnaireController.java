@@ -4331,7 +4331,7 @@ public class StudyQuestionnaireController {
 
   @RequestMapping("/adminStudies/addOrUpdateGroupsDetails.do")
   public ModelAndView addOrUpdateGroupsDetails(
-          HttpServletRequest request, GroupsBean groupsBo) {
+          HttpServletRequest request, GroupsBean groupsBean) {
     logger.info("UsersController - addOrUpdateGroupsDetails() - Starts");
     ModelAndView mav = new ModelAndView();
     ModelMap map = new ModelMap();
@@ -4404,7 +4404,7 @@ public class StudyQuestionnaireController {
         boolean flag=false;
         while (iterator.hasNext()) {
             GroupsBo grps = iterator.next();
-            if(grps.getId().equals(groupsBo.getId()) || flag == true) {
+            if(grps.getId().equals(groupsBean.getId()) || flag == true) {
            	 flag = true;
            	iterator.remove();
             }
@@ -4421,9 +4421,9 @@ public class StudyQuestionnaireController {
                  : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
          if (!("").equals(buttonText)) {
            if (("save").equalsIgnoreCase(buttonText)) {
-        	   groupsBo.setAction(false);
+        	   groupsBean.setAction(false);
            } else if (("done").equalsIgnoreCase(buttonText)) {
-        	   groupsBo.setAction(true);
+        	   groupsBean.setAction(true);
            }
          }
          String actionType =
@@ -4437,14 +4437,14 @@ public class StudyQuestionnaireController {
         		 StringUtils.isNumeric(request.getParameter("isPublished"))
                  ? Integer.parseInt(request.getParameter("isPublished"))
                  : 0;
-         groupsBo.setIsPublished(isPublished);
-         groupsBo.setQuestionnaireId(Integer.parseInt(questionnaireId));
-         groupsBo.setStudyId(Integer.parseInt(studyId));
-         msg = studyQuestionnaireService.addOrUpdateGroupsDetails(groupsBo, userSession);
+         groupsBean.setIsPublished(isPublished);
+         groupsBean.setQuestionnaireId(Integer.parseInt(questionnaireId));
+         groupsBean.setStudyId(Integer.parseInt(studyId));
+         msg = studyQuestionnaireService.addOrUpdateGroupsDetails(groupsBean, userSession);
         preLoadLogicBoList = studyQuestionnaireService.getPreLoadLogicDetails(StringUtils.isNotEmpty(id) ? Integer.parseInt(id) : null);
 
         if (!msg.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE) ) {
-            if ((groupsBo != null) && (groupsBo.getId() == null)) {
+            if ((groupsBean != null) && (groupsBean.getId() == null)) {
               if (("save").equalsIgnoreCase(buttonText)) {
                 map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Content saved as draft");
               } else {
@@ -4466,7 +4466,7 @@ public class StudyQuestionnaireController {
           }
         }
       } else {
-        if ((groupsBo != null) && (groupsBo.getId() == null)) {
+        if ((groupsBean != null) && (groupsBean.getId() == null)) {
           request
               .getSession()
               .setAttribute(
@@ -4550,7 +4550,7 @@ public class StudyQuestionnaireController {
         map.addAttribute("actionType", actionType);
         map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("preLoadLogicBoList", preLoadLogicBoList);
-        map.addAttribute("groupsBo", groupsBo);
+        map.addAttribute("groupsBo", groupsBean);
         map.addAttribute("isAutoSaved", request.getParameter("isAutoSaved"));
         if (("save").equalsIgnoreCase(buttonText)) {
           mav = new ModelAndView("addOrEditGroupsPage", map);

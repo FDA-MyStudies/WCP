@@ -87,6 +87,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 <input type="hidden" id="isPublished" name="isPublished" value="${groupsBo.isPublished}">
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
 <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
+<input type="hidden" id="stepOrGroup" value="${groupsBo.stepOrGroup}" name="stepOrGroup"/>
 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
@@ -206,7 +207,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                              <c:forEach items="${qTreeMap}" var="destinationStep">
 								<c:if
 									test="${destinationStep.value.stepType eq 'Instruction' || destinationStep.value.stepType eq 'Question'}">
-									<option value="${destinationStep.value.deletionId}"
+									<option value="${destinationStep.value.deletionId}" data-type="step"
 										${groupsBo.destinationTrueAsGroup eq destinationStep.value.deletionId ? 'selected' :''}>
 										Step ${destinationStep.key} : ${destinationStep.value.title}</option>
 								</c:if>
@@ -220,12 +221,12 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 								</c:if>
 							</c:forEach>
 							<c:forEach items="${groupsList}" var="group" varStatus="status">
-                                <option value="${group.id}" id="selectGroup${group.id}"
+                                <option value="${group.id}" id="selectGroup${group.id}" data-type="group"
                                     ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
                                     Group ${status.index + 1} : ${group.groupName}&nbsp;
                                 </option>
                             </c:forEach>
-                            <option value="0"
+                            <option value="0" data-type="group"
                                 ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
                                 Completion Step
                             </option>
@@ -509,6 +510,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         } else {
             $("#isAutoSaved").val('false');
         }
+        if (!$('#groupDefaultVisibility').is(':checked')) {
+            $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+        } else {
+            $('#stepOrGroup').val('');
+        }
         $('#addGroupFormId').submit();
     }
 
@@ -771,6 +777,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             $('#buttonText').val('done');
             $("#action").val('true');
             $('#doneGroupId').prop('disabled', true);
+            if (!$('#groupDefaultVisibility').is(':checked')) {
+                $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+            } else {
+                $('#stepOrGroup').val('');
+            }
             $('#addGroupFormId').submit();
         }
     });

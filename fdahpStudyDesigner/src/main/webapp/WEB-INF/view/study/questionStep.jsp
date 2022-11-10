@@ -3329,7 +3329,7 @@ input[type=number] {
 												Value (1 to 100 characters)<span class="requiredStar">*</span>
 											</div>
 											<div class="form-group mb-none">
-												<input type="text" class="form-control TextChoiceRequired text-choice textChoiceVal"
+												<input type="text" class="form-control TextChoiceRequired text-choice-other textChoiceVal"
 													   id="textchoiceOtherValue"
 													name="questionReponseTypeBo.otherValue"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}"
@@ -6619,7 +6619,6 @@ input[type=number] {
 		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
 		  if (!$('#groupDefaultVisibility').is(':checked')) {
 			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
-			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
 		  }
 		  if ('${questionnaireBo.branching}' === 'true') {
 			  questionnaireStep.stepOrGroupPostLoad = $('#destinationStepId option:selected').attr('data-type');
@@ -7627,7 +7626,7 @@ input[type=number] {
           callback(isValid);
         } else if (responsetype === "Text Choice") {
 			valueArrayTxtChoice = [];
-			$('.text-choice').each(function () {
+			$('.text-choice, .text-choice-other').each(function () {
 				let id = $(this).attr("id");
 				if (id === 'textchoiceOtherValue') {
 					if ($('#textchoiceOtherId').is(':checked')) {

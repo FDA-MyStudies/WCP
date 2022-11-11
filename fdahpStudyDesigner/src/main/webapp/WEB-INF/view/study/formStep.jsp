@@ -708,6 +708,11 @@ var idleTime = 0;
       defaultVisibility.prop('disabled', true);
       </c:if>
 
+       <c:if test = "${IsSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+           $('#skiappableNo').attr('checked', true);
+           $('[name="skiappable"]').addClass('ml-disabled').attr('disabled', true);
+       </c:if>
+
     <c:if test="${actionTypeForQuestionPage == 'view'}">
       $('#formStepId input[type="text"], input[type="checkbox"], input[type="radio"]').prop('disabled', true);
       $('#formStepId select').addClass('linkDis');
@@ -1554,7 +1559,16 @@ var idleTime = 0;
           $('td.sorting_1').removeClass('sorting_disabled');
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#stepShortTitle, [name="skiappable"], [name="repeatable"]').removeClass("ml-disabled").attr('disabled', false);
+          $('#stepShortTitle, [name="repeatable"]').removeClass("ml-disabled").attr('disabled', false);
+          <c:choose>
+            <c:when test = "${IsSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+             $('[name="skiappable"]').addClass('ml-disabled').attr('disabled', true);
+             $('#skiappableNo').attr('checked', true);
+            </c:when>
+            <c:otherwise>
+            $('[name="skiappable"]').removeClass('ml-disabled').attr('disabled', false);
+             </c:otherwise>
+          </c:choose>
             $('#logicDiv').find('div.bootstrap-select, input').each( function () {
                 $(this).removeClass('ml-disabled');
                 if ($(this).is("input")) {

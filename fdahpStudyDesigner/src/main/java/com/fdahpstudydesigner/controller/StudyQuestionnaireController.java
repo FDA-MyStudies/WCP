@@ -498,6 +498,7 @@ public class StudyQuestionnaireController {
     GroupsBo groupsBo = null;
     QuestionnaireBo questionnaireBo = null;
     QuestionnairesStepsBo questionnairesStepsBo = null;
+    List<GroupMappingBo> groupStepLists = new ArrayList<>();
     StudyBo studyBo = null;
     String customStudyId = "";
     try {
@@ -708,6 +709,23 @@ public class StudyQuestionnaireController {
           Integer questionStepId = currStepId;
           groupsBo = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
           map.addAttribute("groupsBo", groupsBo);
+          if(groupsBo != null) {
+            Integer id = groupsBo.getId();
+            // Skippable should be false and non-editable for last step in a group if group level pre-load logic is enabled
+            //getting Assigned stepList for particular groupId by sending questionStepId
+            if (!"".equals(id)) {
+              groupStepLists = studyQuestionnaireService.getStepId(String.valueOf(id), questionnaireId);
+            }
+          }
+          GroupMappingBo lastStepObject;
+          boolean IsSkippableFlag = false;
+          if(groupStepLists.size() != 0) {
+            lastStepObject = groupStepLists.get(groupStepLists.size() - 1);
+            if(lastStepObject.getQuestionnaireStepId().equals(questionStepId)){
+              IsSkippableFlag = true;
+            }
+          }
+          map.addAttribute("IsSkippableFlag", IsSkippableFlag);
           if (questionnairesStepsBo != null) {
             if (questionnairesStepsBo.getDifferentSurveyPreLoad() != null && questionnairesStepsBo.getDifferentSurveyPreLoad()) {
               preloadQueId = questionnairesStepsBo.getPreLoadSurveyId();
@@ -997,6 +1015,27 @@ public class StudyQuestionnaireController {
                   studyBo.getCustomStudyId(),
                   questionnaireBo.getId());
 
+          if(questionId != null && !questionId.isEmpty()) {
+            List<FormMappingBo> questionLists = new ArrayList<>();
+            GroupsBo groupsBo = null;
+            Integer currStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
+            Integer questionStepId = currStepId;
+            groupsBo = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
+            map.addAttribute("groupsBo", groupsBo);
+            //getting List of questions for this particular formId
+            questionLists = studyQuestionnaireService.getListOfQuestions(Integer.valueOf(formId));
+            FormMappingBo lastQuestionStepObject;
+            boolean IsQuestionSkippableFlag = false;
+            if (questionLists.size() != 0) {
+              lastQuestionStepObject = questionLists.get(questionLists.toArray().length - 1);
+              System.out.println(lastQuestionStepObject.getQuestionId());
+              System.out.println(questionId);
+              if (lastQuestionStepObject.getQuestionId().equals(Integer.valueOf(questionId))) {
+                IsQuestionSkippableFlag = true;
+              }
+            }
+            map.addAttribute("IsQuestionSkippableFlag", IsQuestionSkippableFlag);
+          }
           if (questionId != null && !questionId.isEmpty()) {
             questionsBo =
                 studyQuestionnaireService.getQuestionsById(
@@ -1119,6 +1158,7 @@ public class StudyQuestionnaireController {
     InstructionsBo instructionsBo = null;
     QuestionnaireBo questionnaireBo = null;
     QuestionnairesStepsBo questionnairesStepsBo = null;
+    List<GroupsBo> groupsPostLoadList = null;
     StudyBo studyBo = null;
     try {
       SessionObject sesObj =
@@ -1305,6 +1345,15 @@ public class StudyQuestionnaireController {
                           questionnaireBo.getShortTitle(),
                           studyBo.getCustomStudyId(),
                           questionnaireBo.getId());
+        }
+
+        if (questionnairesStepsBo != null) {
+          Integer questionStepId = questionnairesStepsBo.getStepId();
+          if (StringUtils.isNotEmpty(questionnaireId)) {
+            groupsPostLoadList =
+                    studyQuestionnaireService.getGroupListBySendingQuestionStepId(studyId, questionnaireId, questionStepId);
+          }
+          map.addAttribute("groupsPostLoadList", groupsPostLoadList);
         }
         int pipingQueId = StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : 0;
         int pipingSeqNo = questionnairesStepsBo != null ? questionnairesStepsBo.getSequenceNo() : 0;
@@ -1596,6 +1645,7 @@ public class StudyQuestionnaireController {
     ModelMap map = new ModelMap();
     QuestionnaireBo questionnaireBo = null;
     QuestionnairesStepsBo questionnairesStepsBo = null;
+    List<GroupMappingBo> groupStepLists = new ArrayList<>();
     StudyBo studyBo = null;
     List<String> timeRangeList = new ArrayList<>();
     List<GroupsBo> groupsListPreLoad = null;
@@ -1894,9 +1944,28 @@ public class StudyQuestionnaireController {
         Integer questionStepId = questionnairesStepsBo != null ? questionnairesStepsBo.getStepId() : null;
         //getting groupId by sending questionstepId from GroupMapping table and getting the groupsBo for that particular groupId
         groupsBo = studyQuestionnaireService.getGroupIdBySendingQuestionStepId(questionStepId);
-
-
         map.addAttribute("groupsBo", groupsBo);
+
+        if(groupsBo != null) {
+          Integer id = groupsBo.getId();
+          // Skippable should be false and non-editable for last step in a group if group level pre-load logic is enabled
+          //getting Assigned stepList for particular groupId by sending questionStepId
+          if (!"".equals(id)) {
+            groupStepLists = studyQuestionnaireService.getStepId(String.valueOf(id), questionnaireId);
+          }
+        }
+        GroupMappingBo lastStepObject;
+        boolean IsSkippableFlag = false;
+        if(groupStepLists.size() != 0) {
+          lastStepObject = groupStepLists.get(groupStepLists.size() - 1);
+          System.out.println(lastStepObject.getQuestionnaireStepId());
+          System.out.println(questionStepId);
+          if(lastStepObject.getQuestionnaireStepId().equals(questionStepId)){
+            IsSkippableFlag = true;
+          }
+        }
+
+        map.addAttribute("IsSkippableFlag", IsSkippableFlag);
         map.addAttribute("permission", permission);
         map.addAttribute("timeRangeList", timeRangeList);
         map.addAttribute("statisticImageList", statisticImageList);

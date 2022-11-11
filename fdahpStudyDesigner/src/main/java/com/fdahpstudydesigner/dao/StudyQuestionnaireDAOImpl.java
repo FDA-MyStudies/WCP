@@ -7275,4 +7275,57 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
     return responseType;
 
   }
+
+  @Override
+  public List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId) {
+    logger.info("begin getGroupsByStudyId()");
+    Session session = null;
+    List<GroupsBo> groups = null;
+    String searchQuery = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      searchQuery =
+              "from GroupsBo WHERE studyId =:studyId and questionnaireId=:questionnaireId and " +
+                      "id not in (select grpId from GroupMappingBo where questionnaireStepId=:questionStepId) order by id desc";
+      query = session.createQuery(searchQuery)
+              .setParameter("studyId", Integer.parseInt(studyId))
+              .setParameter("questionStepId", questionStepId)
+              .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
+      groups = query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getGroupListBySendingQuestionStepId() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    logger.info("getGroupListBySendingQuestionStepId() - Ends");
+    return groups;
+  }
+
+  @Override
+  public List<FormMappingBo> getListOfQuestions(Integer formId) {
+    logger.info("begin getListOfQuestions()");
+    Session session = null;
+    List<FormMappingBo> questionList = new ArrayList<>();
+    String searchQuery = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      searchQuery =
+              "from FormMappingBo WHERE formId =:formId";
+      query = session.createQuery(searchQuery)
+              .setParameter("formId", formId);
+      questionList = query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - getListOfQuestions() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    logger.info("getListOfQuestions() - Ends");
+    return questionList;
+  }
 }

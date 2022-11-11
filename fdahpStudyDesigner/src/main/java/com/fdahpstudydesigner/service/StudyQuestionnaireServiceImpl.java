@@ -2640,4 +2640,30 @@ logger.exit("getStepId() - Ends");
     logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Ends");
     return preLoadLogicBo;
   }
+
+  @Override
+  public List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - Starts");
+    List<GroupsBo> groupsBo = null;
+    try {
+      groupsBo = studyQuestionnaireDAO.getGroupListBySendingQuestionStepId(studyId, questionnaireId, questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return groupsBo;
+  }
+
+  @Override
+  public List<FormMappingBo> getListOfQuestions(Integer formId) {
+    logger.info("StudyQuestionnaireServiceImpl - getListOfQuestions() - Starts");
+    List<FormMappingBo> questionList = new ArrayList<>();
+    try {
+      questionList = studyQuestionnaireDAO.getListOfQuestions(formId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getListOfQuestions() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return questionList;
+  }
 }

@@ -73,6 +73,10 @@ display:contents !important;
           margin-top: 12px;
       }
 
+.preload-tooltip {
+    margin-bottom: 3px;
+}
+
 </style>
 
 </head>
@@ -280,8 +284,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                             <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define
                                                 Functions
                                             </div>
-                                            <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define
-                                                Inputs
+                                            <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+                                                Define Inputs
+                                                <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+                                                      title="For response including 'Height' please provide response in cm.">
+                                                </span>
                                             </div>
                                             <div class="col-md-6"></div>
                                         </div>
@@ -331,7 +338,12 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                 <div class="row">
                                     <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions
                                     </div>
-                                    <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                    <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+                                        Define Inputs
+                                        <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+                                              title="For response including 'Height' please provide response in cm.">
+                                        </span>
+                                    </div>
                                     <div class="col-md-6"></div>
                                 </div>
                                 <div class="row data-div">
@@ -611,7 +623,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             '<div style="height: 100px; border:1px solid #bfdceb;">' +
             '<div class="row">' +
             '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>' +
-            '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>' +
+            '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs' +
+            '<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip" ' +
+            'title="For response including \'Height\' please provide response in cm.">' +
+            '</span>'+
+            '</div>' +
             '<div class="col-md-6"></div>' +
             '</div>' +
             '<div class="row data-div">' +
@@ -638,7 +654,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             '</div>';
         formContainer.append(formula);
         setOperatorDropDownOnAdd(responseType);
-        $('.selectpicker').selectpicker();
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     });
 
          let defaultVisibility = $('#groupDefaultVisibility');
@@ -741,8 +757,8 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         //show operators based on responseType for Questionstep and formStep
         function setOperatorDropDownOnAdd(responseType) {
         		if (responseType != null) {
-        			if (responseType == 1 || responseType == 2 ||
-        					responseType == 8 || responseType == 14 ) {
+        			if (responseType === '1' || responseType === '2' ||
+        					responseType === '8') {
         				defaultVisibility.prop('disabled', false);
         				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
         				let operator = $('select.operator');
@@ -751,7 +767,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         					operator.append('<option value="'+val+'">'+val+'</option>');
         				});
         				$('.selectpicker').selectpicker();
-        			} else if ((responseType >= 3 && responseType <= 7) || responseType == 11) {
+        			} else if ((responseType >= '3' && responseType <= '7') || responseType == '11') {
         				defaultVisibility.prop('disabled', false);
         				let operatorList = ["=", "!="];
         				let operator = $('select.operator');
@@ -760,7 +776,16 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         					operator.append('<option value="'+val+'">'+val+'</option>');
         				});
         				$('.selectpicker').selectpicker();
-        			} else {
+        			} else if (responseType === '14') {
+                        defaultVisibility.prop('disabled', false);
+                        let operatorList = ["<", ">"];
+                        let operator = $('select.operator');
+                        operator.empty();
+                        $.each(operatorList, function (index, val) {
+                            operator.append('<option value="'+val+'">'+val+'</option>');
+                        });
+                        $('.selectpicker').selectpicker();
+                    } else {
         				defaultVisibility.prop('checked', true).trigger('change');
         				defaultVisibility.prop('disabled', true);
         			}

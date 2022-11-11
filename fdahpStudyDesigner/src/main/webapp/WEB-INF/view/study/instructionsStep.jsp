@@ -403,12 +403,6 @@
             idleTime += 1;
             if (idleTime > 3) {
                     <c:if test="${actionTypeForQuestionPage ne 'view'}">
-                    console.log('starting auto save');
-                    if ($('#pipingModal').hasClass('show')) {
-                        console.log('auto saving piping');
-                        submitPiping();
-                    }
-                    console.log('auto saving step data');
                     autoSaveInstructionStepPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">
@@ -455,13 +449,19 @@
   function saveIns() {
    autoSaveInstructionStepPage('manual');
   }
-  function autoSaveInstructionStepPage(mode){
+  function autoSaveInstructionStepPage(mode) {
       $("body").addClass("loading");
       $("#saveId").attr("disabled", true);
       validateShortTitle('', function (val) {
         if (val) {
             if (mode === 'auto') {
                 $('#isAutoSaved').val('true');
+                console.log('starting auto save');
+                if ($('#pipingModal').hasClass('show')) {
+                    console.log('auto saving piping');
+                    submitPiping();
+                }
+                console.log('auto saving step data');
             }
           saveInstruction();
         } else {

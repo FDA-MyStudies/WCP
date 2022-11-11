@@ -5772,12 +5772,6 @@ input[type=number] {
                   idleTime += 1;
                   if (idleTime > 3) { // 5 minutes
                           <c:if test="${actionTypeForQuestionPage ne 'view'}">
-					      console.log('starting auto save');
-					      if ($('#pipingModal').hasClass('show')) {
-						      console.log('auto saving piping');
-						      submitPiping();
-					      }
-					      console.log('auto saving step data');
                           autoSaveQuestionStep('auto');
                            </c:if>
                           <c:if test="${actionTypeForQuestionPage eq 'view'}">
@@ -5821,7 +5815,7 @@ input[type=number] {
 		$('#pipingModal').modal('toggle');
 	});
 
-        function autoSaveQuestionStep(mode){
+        function autoSaveQuestionStep(mode) {
            	  $("body").addClass("loading");
                  validateQuestionShortTitle('', function (val) {
                    if (val) {
@@ -5833,6 +5827,12 @@ input[type=number] {
                           $('#loader').show();
                           if (mode === 'auto') {
 							  $("#isAutoSaved").val('true');
+							  console.log('starting auto save');
+							  if ($('#pipingModal').hasClass('show')) {
+								  console.log('auto saving piping');
+								  submitPiping();
+							  }
+							  console.log('auto saving step data');
 						  }
                            saveQuestionStepQuestionnaire('', '');
                          } else {
@@ -9291,48 +9291,46 @@ $('select.req, input.req').on('change', function () {
 function submitPiping() {
 	let valid = true;
 	let language = $('#studyLanguage').val();
-	if (language != null && language != undefined && language !== 'en') {
+	if (language !== null && language !== undefined && language !== 'en') {
 	let parent = $('#pipingSnippet').parent();
-	if ($('#pipingSnippet').val() === '') {
-                                              parent.addClass('has-error has-danger').find(".help-block")
-                                                  .empty()
-                                                  .append($("<ul><li> </li></ul>")
-                                                  .attr("class","list-unstyled")
-                                                  .text("Please fill out this field."));
-                                              if (valid) {
-                                                  valid = false;
-                                              }
-                                      } else {
-                                          if (parent.hasClass('has-error has-danger')) {
-                                              parent.removeClass('has-error has-danger').find(".help-block").empty();
-                                          }
-                                      }
-	}
-	else {
-	    $('select.req, input.req').each(function () {
-        		let parent = $(this).parent();
-        		let id = $(this).attr('id');
-        		console.log(id);
-        		if ($(this).is('select')) {
-        			parent = $(this).closest('div.mb-xs');
-        		}
-        		if ($(this).val() === '') {
-        			if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
-        				parent.addClass('has-error has-danger').find(".help-block")
-        						.empty()
-        						.append($("<ul><li> </li></ul>")
-        								.attr("class","list-unstyled")
-        								.text("Please fill out this field."));
-        				if (valid) {
-        					valid = false;
-        				}
-        			}
-        		} else {
-        			if (parent.hasClass('has-error has-danger')) {
-        				parent.removeClass('has-error has-danger').find(".help-block").empty();
-        			}
-        		}
-        	});
+		if ($('#pipingSnippet').val() === '') {
+			parent.addClass('has-error has-danger').find(".help-block")
+					.empty()
+					.append($("<ul><li> </li></ul>")
+							.attr("class", "list-unstyled")
+							.text("Please fill out this field."));
+			if (valid) {
+				valid = false;
+			}
+		} else {
+			if (parent.hasClass('has-error has-danger')) {
+				parent.removeClass('has-error has-danger').find(".help-block").empty();
+			}
+		}
+	} else {
+		$('select.req, input.req').each(function () {
+			let parent = $(this).parent();
+			let id = $(this).attr('id');
+			if ($(this).is('select')) {
+				parent = $(this).closest('div.mb-xs');
+			}
+			if ($(this).val() === '') {
+				if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+					parent.addClass('has-error has-danger').find(".help-block")
+							.empty()
+							.append($("<ul><li> </li></ul>")
+									.attr("class", "list-unstyled")
+									.text("Please fill out this field."));
+					if (valid) {
+						valid = false;
+					}
+				}
+			} else {
+				if (parent.hasClass('has-error has-danger')) {
+					parent.removeClass('has-error has-danger').find(".help-block").empty();
+				}
+			}
+		});
 	}
 
 	if (!valid) {

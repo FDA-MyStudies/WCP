@@ -5169,6 +5169,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           $('#groupsBtn').removeClass('ml-disabled').attr('disabled', false);
           // $('.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
           //     ' .signDropDown').addClass('cursor-none');
+          $('.checkbox').addClass('ml-disabled').prop('disabled', true);
           $('#titleId').val($('#mlTitle', htmlData).val());
           let mark=true;
           $('tbody tr', htmlData).each(function (index, value) {

@@ -4266,16 +4266,7 @@ public class StudyQuestionnaireController {
             actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             groupsBo = studyQuestionnaireService.getGroupsDetails(grpId);
-            //Destination step dropdown should display other groups created for the same survey
-             Iterator<GroupsBo> iter = groupsList.iterator();
-             boolean flag=false;
-             while (iter.hasNext()) {
-                 GroupsBo grps = iter.next();
-                 if(grps.getId().equals(groupsBo.getId()) || flag == true) {
-                	 flag = true;
-                	 iter.remove();
-                 }
-             }
+            
             preLoadLogicBoList = studyQuestionnaireService.getPreLoadLogicDetails(StringUtils.isNotEmpty(id) ? Integer.parseInt(id) : null);
           } else {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
@@ -4289,14 +4280,17 @@ public class StudyQuestionnaireController {
             request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
           }
         }
-        
-        qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
+		if (StringUtils.isNotEmpty(questionnaireId)) {
+			qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
+		}
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
+        int indexOfSequenceNumber = 0;
         Integer index=0;
 			for (GroupMappingBo groupMappingBos : groupMappingBo) {
 				for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
 					if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
 						index=entry.getKey();
+						 indexOfSequenceNumber=entry.getValue().getSequenceNo();
 						qTreeMap.remove(entry.getKey());
 						break;
 					}
@@ -4313,8 +4307,44 @@ public class StudyQuestionnaireController {
 			    }
 	         map.addAttribute("qTreeMap", qTreeMap);
 			}
-		   map.addAttribute("groupsList", groupsList);
-          map.addAttribute("actionPage", actionPage);
+			
+			//Destination step dropdown should display other groups created for the same survey
+			if(groupsList != null) {
+			Iterator<GroupsBo> iterator = groupsList.iterator();
+			boolean flag = false;
+			List<GroupMappingBo> groupMappingStepBean = null;
+			while (iterator.hasNext()) {
+				GroupsBo grps = iterator.next();
+				groupMappingStepBean = studyQuestionnaireService.getStepId(grps.getId().toString(), questionnaireId);
+				int size=groupMappingStepBean.size();
+				int counts=0;
+				if (!groupMappingStepBean.isEmpty() && (!grps.getId().equals((groupsBo.getId())))) {
+					Iterator<GroupMappingBo> groupMappingStepBeans = groupMappingStepBean.iterator();
+					while (groupMappingStepBeans.hasNext()) {
+						GroupMappingBo groupMappingBos = groupMappingStepBeans.next();
+						Iterator<Entry<Integer, QuestionnaireStepBean>> updatedStepsList = qTreeMap.entrySet()
+								.iterator();
+						while (updatedStepsList.hasNext()) {
+							Entry<Integer, QuestionnaireStepBean> entry = updatedStepsList.next();
+							if (groupMappingBos.getStepId().equals(entry.getValue().getStepId().toString())) {
+								if (entry.getValue().getSequenceNo() > indexOfSequenceNumber) {
+									counts++;
+								}
+							}
+						}
+					}
+				}
+				if (groupsBo != null) {
+					if (grps.getId().equals(groupsBo.getId()) || (!groupMappingStepBean.isEmpty() && flag == true && counts!=size) ||
+							(groupMappingStepBean.isEmpty() && flag == true)) {
+						flag = true;
+						iterator.remove();
+					}
+				}
+				map.addAttribute("groupsList", groupsList);
+			}
+			}
+		  map.addAttribute("actionPage", actionPage);
           map.addAttribute("studyBo", studyBo);
           map.addAttribute("groupsBo", groupsBo);
           map.addAttribute("preLoadLogicBoList", preLoadLogicBoList);
@@ -4402,15 +4432,7 @@ public class StudyQuestionnaireController {
           groupsList =
                   studyQuestionnaireService.getGroupsByStudyId(studyId,questionnaireId, false, null);
         }
-        Iterator<GroupsBo> iterator = groupsList.iterator();
-        boolean flag=false;
-        while (iterator.hasNext()) {
-            GroupsBo grps = iterator.next();
-            if(grps.getId().equals(groupsBean.getId()) || flag == true) {
-           	 flag = true;
-           	iterator.remove();
-            }
-        }
+       
      if (StringUtils.isEmpty(id)) {
     	 id =
              (String) request.getSession().getAttribute(sessionStudyCount + "id");
@@ -4526,10 +4548,12 @@ public class StudyQuestionnaireController {
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
         int index=0;
+        int indexOfSequenceNumber = 0;
           for (GroupMappingBo groupMappingBos : groupMappingBo) {
             for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
               if (Integer.parseInt(groupMappingBos.getStepId()) == entry.getValue().getStepId()) {
             	  index=entry.getKey();
+            	  indexOfSequenceNumber=entry.getValue().getSequenceNo();
                 qTreeMap.remove(entry.getKey());
                 break;
               }
@@ -4547,8 +4571,39 @@ public class StudyQuestionnaireController {
 			    }
 			    map.addAttribute("qTreeMap", qTreeMap);
 			}
-        
-        map.addAttribute("groupsList", groupsList);
+			Iterator<GroupsBo> iterator = groupsList.iterator();
+			boolean flag = false;
+			List<GroupMappingBo> groupMappingStepBean = null;
+			while (iterator.hasNext()) {
+				GroupsBo grps = iterator.next();
+				groupMappingStepBean = studyQuestionnaireService.getStepId(grps.getId().toString(), questionnaireId);
+				int size=groupMappingStepBean.size();
+				int counts=0;
+				if (!groupMappingStepBean.isEmpty() && (!grps.getId().equals((groupsBean.getId())))) {
+					Iterator<GroupMappingBo> groupMappingStepBeans = groupMappingStepBean.iterator();
+					while (groupMappingStepBeans.hasNext()) {
+						GroupMappingBo groupMappingBos = groupMappingStepBeans.next();
+						Iterator<Entry<Integer, QuestionnaireStepBean>> updatedStepsList = qTreeMap.entrySet()
+								.iterator();
+						while (updatedStepsList.hasNext()) {
+							Entry<Integer, QuestionnaireStepBean> entry = updatedStepsList.next();
+							if (groupMappingBos.getStepId().equals(entry.getValue().getStepId().toString())) {
+								if (entry.getValue().getSequenceNo() > indexOfSequenceNumber) {
+									counts++;
+								}
+							}
+						}
+					}
+				}
+				if (groupsBean != null) {
+					if (grps.getId().equals(groupsBean.getId()) || (!groupMappingStepBean.isEmpty() && flag == true && counts!=size) ||
+							(groupMappingStepBean.isEmpty() && flag == true)) {
+						flag = true;
+						iterator.remove();
+					}
+				}
+				map.addAttribute("groupsList", groupsList);
+			}
         map.addAttribute("actionType", actionType);
         map.addAttribute("_S", sessionStudyCount);
         map.addAttribute("preLoadLogicBoList", preLoadLogicBoList);

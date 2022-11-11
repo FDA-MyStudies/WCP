@@ -6780,10 +6780,13 @@ public class StudyDAOImpl implements StudyDAO {
                   }
 
                   for (GroupsBo groupsBo : newGroupsList) {
-                    if (FdahpStudyDesignerConstants.GROUP.equals(groupsBo.getStepOrGroup())) {
-                      groupsBo.setDestinationTrueAsGroup(oldNewGroupIdMap.get(groupsBo.getDestinationTrueAsGroup()));
-                    } else {
-                      groupsBo.setDestinationTrueAsGroup(oldNewStepIdMap.get(groupsBo.getDestinationTrueAsGroup()));
+                    if (groupsBo.getDestinationTrueAsGroup() != null && !groupsBo.getDestinationTrueAsGroup().equals(0)) {
+                      if (FdahpStudyDesignerConstants.GROUP.equals(groupsBo.getStepOrGroup())) {
+                        groupsBo.setDestinationTrueAsGroup(oldNewGroupIdMap.get(groupsBo.getDestinationTrueAsGroup()));
+                      } else {
+                        groupsBo.setDestinationTrueAsGroup(oldNewStepIdMap.get(groupsBo.getDestinationTrueAsGroup()));
+                      }
+                      session.update(groupsBo);
                     }
                   }
                 }

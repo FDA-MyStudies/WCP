@@ -219,7 +219,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                     Group ${status.index + 1} : ${group.groupName}&nbsp;
                                 </option>
                             </c:forEach>
-                            <option value="0" data-type="group"
+                            <option value="0" data-type="step"
                                 ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
                                 Completion Step
                             </option>

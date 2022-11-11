@@ -3082,6 +3082,11 @@ input[type=number] {
       });
     });
 
+      <c:if test = "${IsQuestionSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+           $('#skiappableNo').attr('checked', true);
+           $('[name="skippable"]').addClass('ml-disabled').attr('disabled', true);
+      </c:if>
+
     <c:if test="${actionTypeForFormStep == 'view'}">
     $('#questionStepId input,textarea ').prop('disabled', true);
     $('#questionStepId select').addClass('linkDis');
@@ -5907,10 +5912,19 @@ input[type=number] {
         } else {   // for English Language
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          $('#shortTitle, [name="skippable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId,' +
+          $('#shortTitle, #allowHealthKit, #useStasticData, #formulaBasedLogicId,' +
               ' #conditionDestinationId0, #conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, ' +
               '#inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, [data-id="destinationStepId"], #addLineChart')
           .removeClass('ml-disabled').attr('disabled', false);
+           <c:choose>
+                    <c:when test = "${IsQuestionSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+                    $('[name="skippable"]').addClass('ml-disabled').attr('disabled', true);
+                    $('#skiappableNo').attr('checked', true);
+                    </c:when>
+                    <c:otherwise>
+                    $('[name="skippable"]').removeClass('ml-disabled').attr('disabled', false);
+                    </c:otherwise>
+           </c:choose>
           $('#trailId, .removeImageId').removeAttr('style').removeClass('cursor-none');
           responseTypeId.removeClass('ml-disabled');
           if ($('#allowHealthKit').prop('checked') === true) {

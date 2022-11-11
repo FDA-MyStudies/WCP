@@ -232,6 +232,10 @@ public String deleteStepMaprecords(String id);
 
   Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue);
 
+  List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId);
+
+  List<FormMappingBo> getListOfQuestions(Integer formId);
+
   // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
 
 

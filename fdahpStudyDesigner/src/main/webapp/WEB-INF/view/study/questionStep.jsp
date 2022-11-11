@@ -4514,6 +4514,11 @@ input[type=number] {
           }
         });
 
+            <c:if test = "${IsSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+                $('#skiappableNo').attr('checked', true);
+                $('[name="skiappable"]').addClass('ml-disabled').attr('disabled', true);
+            </c:if>
+
         <c:if test="${actionTypeForQuestionPage == 'view'}">
 		  $('#questionStepId input,textarea ').prop('disabled', true);
 		  $('#questionStepId select').addClass('linkDis');
@@ -8720,10 +8725,20 @@ input[type=number] {
             } else {   // for English Language
               updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-				$('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
+				$('#stepShortTitle, #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 						'[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
 						'ml-disabled').attr('disabled', false);
+                 <c:choose>
+                      <c:when test = "${IsSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+                          $('[name="skiappable"]').addClass('ml-disabled').attr('disabled', true);
+                          $('#skiappableNo').attr('checked', true);
+                      </c:when>
+                      <c:otherwise>
+                         $('[name="skiappable"]').removeClass('ml-disabled').attr('disabled', false);
+                       </c:otherwise>
+                 </c:choose>
+
 				$('#logicDiv').find('div.bootstrap-select, input').each( function () {
 					$(this).removeClass('ml-disabled');
 					if ($(this).is("input")) {
@@ -8869,7 +8884,7 @@ input[type=number] {
 	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
 	$('#defaultVisibility').val('true');
 	$('#addFormula').attr('disabled', true);
-	$('#skiappableYes').prop('disabled', false);
+	/* $('#skiappableYes').prop('disabled', false); */
 } else {
 	$('#skiappableYes').prop('checked', false).prop('disabled', true);
 	$('#skiappableNo').prop('checked', true);

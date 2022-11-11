@@ -4378,7 +4378,7 @@ public class StudyQuestionnaireController {
 			}
 			
 			//Destination step dropdown should display other groups created for the same survey
-			if(groupsList != null) {
+			if(groupsList != null && groupsBo !=null) {
 			Iterator<GroupsBo> iterator = groupsList.iterator();
 			boolean flag = false;
 			List<GroupMappingBo> groupMappingStepBean = null;

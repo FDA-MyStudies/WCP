@@ -314,10 +314,17 @@ width:142px !important;
 					<span class="tool-tip" data-toggle="tooltip"
                           data-placement="bottom" id="helpNote"
                             <c:if test="${empty questionnaireBo.id}"> title="Please click on Next to continue." </c:if>
+                        <c:forEach items="${groupsList}" var="groupList">
+                        <c:if test="${groupList.action eq 'false'}"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
+                        </c:forEach>
 						<c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
 						<c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if>>
 						<button type="button" class="btn btn-primary blue-btn" id="doneId"
-                                <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Done</button>
+                                <c:if test="${fn:length(qTreeMap) eq 0 || !isDone}">disabled</c:if>
+                                <c:forEach items="${groupsList}" var="groupList">
+                                         <c:if test="${groupList.action eq 'false'}">disabled</c:if>
+                                </c:forEach>
+                                >Done</button>
 					</span>
                 </div>
                 <%-- /c:if> --%>

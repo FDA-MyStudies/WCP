@@ -6393,7 +6393,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public PreLoadLogicBo getPreLoadLogicById(Integer id) {
+  public PreLoadLogicBo getPreLoadLogicByIdAndType(Integer id, String type) {
     logger.info("StudyQuestionnaireDAOImpl - getPreLoadLogicById() - Starts");
     Session session = null;
     PreLoadLogicBo preLoadLogicBo = null;
@@ -6401,8 +6401,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       if (id != null) {
-        String queryString  = "from PreLoadLogicBo where id=:id";
-        preLoadLogicBo = (PreLoadLogicBo) session.createQuery(queryString).setParameter("id", id).uniqueResult();
+        String queryString  = "from PreLoadLogicBo where id=:id and stepOrGroup=:type";
+        preLoadLogicBo = (PreLoadLogicBo) session.createQuery(queryString)
+                .setParameter("id", id)
+                .setParameter("type", type)
+                .uniqueResult();
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - getPreLoadLogicById() - ERROR ", e);

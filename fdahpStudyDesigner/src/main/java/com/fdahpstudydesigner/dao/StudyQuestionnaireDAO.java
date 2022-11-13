@@ -178,7 +178,7 @@ public interface StudyQuestionnaireDAO {
   public String checkGroupId(String questionnaireId, String groupId, String studyId);
 
 
-  PreLoadLogicBo getPreLoadLogicById(Integer id);
+  PreLoadLogicBo getPreLoadLogicByIdAndType(Integer id, String type);
 
   void deleteFormula(List<Integer> ids);
   

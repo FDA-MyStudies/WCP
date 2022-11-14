@@ -452,7 +452,9 @@ input[type=number] {
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
 										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-											<option value="${group.id}" data-type="group" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+											<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+											${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
+											Group  ${status.index + 1} :  ${group.groupName}&nbsp; </option>
 										</c:forEach>
 										<option value="0" data-type="step"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
@@ -2090,6 +2092,11 @@ input[type=number] {
 														Step ${destinationStep.sequenceNo} :
 														${destinationStep.stepShortTitle}</option>
 												</c:forEach>
+												<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                    ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                   Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                 </c:forEach>
 												<option value="0"
 													${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 													Completion Step</option>
@@ -2135,6 +2142,11 @@ input[type=number] {
 														Step ${destinationStep.sequenceNo} :
 														${destinationStep.stepShortTitle}</option>
 												</c:forEach>
+												<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                    ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq group.id ? 'selected' :''}>
+                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                 </c:forEach>
 												<option value="0"
 													${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 													Completion Step</option>
@@ -2225,6 +2237,11 @@ input[type=number] {
 																			Step ${destinationStep.sequenceNo} :
 																			${destinationStep.stepShortTitle}</option>
 																	</c:forEach>
+																	<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                        <option value="${group.id}" id="selectGroup${group.id}"
+                                                                        ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
+                                                                        Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                     </c:forEach>
 																	<option value="0"
 																		${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																		Completion Step</option>
@@ -2281,6 +2298,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -2334,6 +2356,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}"  id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -2428,6 +2455,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp; </option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -2496,6 +2528,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -2548,6 +2585,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -2786,6 +2828,11 @@ input[type=number] {
                                                 Step ${destinationStep.sequenceNo} :
                                                 ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
+                                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                             </c:forEach>
                                             <option value="0"
                                               ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                               Completion Step</option>
@@ -2967,6 +3014,11 @@ input[type=number] {
                                           Step ${destinationStep.sequenceNo} :
                                           ${destinationStep.stepShortTitle}</option>
                                       </c:forEach>
+                                      <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                          <option value="${group.id}" id="selectGroup${group.id}"
+                                           ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                          Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                       </c:forEach>
                                       <option value="0"
                                         ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                         Completion Step</option>
@@ -3130,6 +3182,11 @@ input[type=number] {
                                                 Step ${destinationStep.sequenceNo} :
                                                 ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
+                                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                <option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+                                                 ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                 Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                             </c:forEach>
                                             <option value="0"
                                               ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                               Completion Step</option>
@@ -3270,6 +3327,11 @@ input[type=number] {
                                               Step ${destinationStep.sequenceNo} :
                                               ${destinationStep.stepShortTitle}</option>
                                           </c:forEach>
+                                          <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                              <option value="${group.id}" id="selectGroup${group.id}"
+                                              ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                              Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                           </c:forEach>
                                           <option value="0"
                                             ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                             Completion Step</option>
@@ -3387,6 +3449,11 @@ input[type=number] {
 																Step ${destinationStep.sequenceNo} :
 																${destinationStep.stepShortTitle}</option>
 														</c:forEach>
+														<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                            <option value="${group.id}" id="selectGroup${group.id}"
+                                                            ${questionnairesStepsBo.questionReponseTypeBo.otherDestinationStepId eq group.id ? 'selected' :''}>
+                                                            Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                         </c:forEach>
 														<option value="0"
 															${questionnairesStepsBo.questionReponseTypeBo.otherDestinationStepId eq 0 ? 'selected' :''}>
 															Completion Step</option>
@@ -3622,6 +3689,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -3737,6 +3809,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -3848,6 +3925,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -3912,6 +3994,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -3936,6 +4023,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -6932,6 +7024,9 @@ input[type=number] {
         <c:forEach items='${destinationStepList}' var='destinationStep'>
         newValuePicker += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
         </c:forEach>
+        <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+        newValuePicker += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
+        </c:forEach>
         newValuePicker += "<option value='0'>Completion Step</option>" +
             "</select>" +
             "  <div class='help-block with-errors red-txt'></div>" +
@@ -7004,6 +7099,9 @@ input[type=number] {
               + "' title='select' data-error='Please choose one option'><option value='' disabled selected>Select</option>";
           <c:forEach items="${destinationStepList}" var="destinationStep">
           newTextScale += "<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+          </c:forEach>
+          <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+          newTextScale += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
           </c:forEach>
           newTextScale += "	<option value='0'>Completion Step</option>" +
               "	     </select>" +
@@ -7236,6 +7334,9 @@ input[type=number] {
         <c:forEach items='${destinationStepList}' var='destinationStep'>
         newTextChoice += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
         </c:forEach>
+        <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+        newTextChoice += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
+        </c:forEach>
         newTextChoice += "<option value='0'>Completion Step</option>" +
             "</select>" +
             "  <div class='help-block with-errors red-txt'></div>" +
@@ -7377,6 +7478,9 @@ input[type=number] {
             + "' title='select' data-error='Please choose one option' class='selectpicker'><option value=''>Select</option>";
         <c:forEach items="${destinationStepList}" var="destinationStep">
         newImageChoice += "<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+        </c:forEach>
+        <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+        newImageChoice += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
         </c:forEach>
         newImageChoice += "<option value='0'>Completion Step</option>" +
             "	     </select>" +

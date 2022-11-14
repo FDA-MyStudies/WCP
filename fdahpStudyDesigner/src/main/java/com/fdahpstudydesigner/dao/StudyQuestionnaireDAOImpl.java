@@ -4107,7 +4107,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         if (instructionsBo.getQuestionnairesStepsBo().getDestinationStep() != null) {
           questionnairesStepsBo.setDestinationStep(
               instructionsBo.getQuestionnairesStepsBo().getDestinationStep());
-        }
+          questionnairesStepsBo.setStepOrGroupPostLoad(
+                  instructionsBo.getQuestionnairesStepsBo().getStepOrGroupPostLoad());
+          }
         if (instructionsBo.getQuestionnairesStepsBo().getCreatedOn() != null) {
           questionnairesStepsBo.setCreatedOn(
               instructionsBo.getQuestionnairesStepsBo().getCreatedOn());

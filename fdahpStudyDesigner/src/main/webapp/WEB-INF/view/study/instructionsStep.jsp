@@ -166,6 +166,7 @@
             <input type="hidden" id="mlText" value="${instructionsLangBO.instructionText}">
             <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
              <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+             <input type="hidden" id="stepOrGroupPostLoad" value="${instructionsBo.questionnairesStepsBo.stepOrGroupPostLoad}" name="questionnairesStepsBo.stepOrGroupPostLoad"/>
             <div class="row"><div class="col-md-6 pl-none">
                 <div class="gray-xs-f mb-xs">
                     Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span
@@ -223,16 +224,18 @@
                                 id="destinationStepId" data-error="Please choose one title"
                                 class="selectpicker" required>
                             <c:forEach items="${destinationStepList}" var="destinationStep">
-                                <option value="${destinationStep.stepId}"
+                                <option value="${destinationStep.stepId}" data-type="step"
                                     ${instructionsBo.questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
                                     Step
                                         ${destinationStep.sequenceNo} :
                                         ${destinationStep.stepShortTitle}</option>
                             </c:forEach>
-                            <c:forEach items="${groupsList}" var="group" varStatus="status">
-                                <option value="${group.groupId}" id="selectGroup${group.groupId}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                            <c:forEach items="${groupsPostLoadList}" var="group" varStatus="status">
+                                <option value="${group.id}"  data-type="group" id="selectGroup${group.id}"
+                                ${instructionsBo.questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
+                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                             </c:forEach>
-                            <option value="0"
+                            <option value="0" data-type="step"
                                 ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
                                 Completion
                                 Step
@@ -391,6 +394,11 @@
         if (val) {
           $('#shortTitleId').prop('disabled', false);
           if (isFromValid("#basicInfoFormId")) {
+          			  if ('${questionnaireBo.branching}' === 'true') {
+                            $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
+          			  } else {
+                             $('#stepOrGroupPostLoad').val('');
+                           }
             document.basicInfoFormId.submit();
           } else {
             $("#doneId").attr("disabled", false);
@@ -554,7 +562,10 @@
       var questionnaireStep = new Object();
       questionnaireStep.stepId = step_id;
       questionnaireStep.stepShortTitle = shortTitle;
-      questionnaireStep.destinationStep = destinationStep
+      questionnaireStep.destinationStep = destinationStep;
+      if ('${questionnaireBo.branching}' === 'true') {
+         questionnaireStep.stepOrGroupPostLoad =  $('#destinationStepId option:selected').attr('data-type');
+         }
       instruction.questionnairesStepsBo = questionnaireStep;
 
       var data = JSON.stringify(instruction);

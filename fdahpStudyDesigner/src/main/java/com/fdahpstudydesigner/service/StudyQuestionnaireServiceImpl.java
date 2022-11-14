@@ -859,7 +859,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId) {
+      String studyId,
+      QuestionnaireStepBean pipingBean) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Starts");
     InstructionsBo addOrUpdateInstructionsBo = null;
     InstructionsLangBO instructionsLangBO = null;
@@ -950,6 +951,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateInstructionsBo =
               studyQuestionnaireDAO.saveOrUpdateInstructionsBo(
                   addOrUpdateInstructionsBo, sessionObject, customStudyId);
+
+          // auto-save piping
+          if (pipingBean != null) {
+            this.saveOrUpdatePipingData(pipingBean);
+          }
         }
       }
     } catch (Exception e) {
@@ -1568,7 +1574,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId) {
+      String studyId,
+      QuestionnaireStepBean pipingBean) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
     QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
     QuestionLangBO questionLangBO = null;
@@ -1802,6 +1809,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
           }
           this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
+        }
+
+        // auto-save piping
+        if (pipingBean != null) {
+          this.saveOrUpdatePipingData(pipingBean);
         }
       }
     } catch (Exception e) {

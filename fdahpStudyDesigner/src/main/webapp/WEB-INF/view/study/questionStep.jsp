@@ -4349,7 +4349,7 @@ input[type=number] {
 			<br>
 			<div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
 				<div class="gray-xs-f mb-xs">Target Element</div>
-				<div class="mb-xs" id="titleText">Have you taken the medication?</div>
+				<div class="mb-xs" id="titleText"></div>
 				<br>
 
 				<div class="gray-xs-f mb-xs">Snippet</div>
@@ -5827,12 +5827,6 @@ input[type=number] {
                           $('#loader').show();
                           if (mode === 'auto') {
 							  $("#isAutoSaved").val('true');
-							  console.log('starting auto save');
-							  if ($('#pipingModal').hasClass('show')) {
-								  console.log('auto saving piping');
-								  submitPiping();
-							  }
-							  console.log('auto saving step data');
 						  }
                            saveQuestionStepQuestionnaire('', '');
                          } else {
@@ -6693,7 +6687,20 @@ input[type=number] {
 		  });
 		  questionnaireStep.preLoadLogicBeans = beanArray;
         if (quesstionnaireId && shortTitle) {
-
+			let pipingObject = {};
+			if ($('#isAutoSaved').val() === 'true' && $('#pipingModal').hasClass('show') && validatePipingRequiredFields()) {
+				let object = {};
+				object.pipingSnippet = $('#pipingSnippet').val();
+				object.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+				if ($('#differentSurvey').is(':checked')) {
+					object.differentSurvey = true;
+					object.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+				}
+				object.language = $('#studyLanguage').val();
+				object.stepId = $('#stepId').val();
+				pipingObject = JSON.stringify(object);
+			}
+			formData.append("pipingObject", pipingObject);
           formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep));
           formData.append('language', $('#studyLanguage').val());
 		  formData.append('isAutoSaved', $('#isAutoSaved').val());
@@ -9289,10 +9296,55 @@ $('select.req, input.req').on('change', function () {
 });
 
 function submitPiping() {
+	if (validatePipingRequiredFields()) {
+		if ($('#stepId').val() !== '') {
+			let pipingObject = {};
+			pipingObject.pipingSnippet = $('#pipingSnippet').val();
+			pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+			if ($('#differentSurvey').is(':checked')) {
+				pipingObject.differentSurvey = true;
+				pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+			}
+			pipingObject.language = $('#studyLanguage').val();
+			pipingObject.stepId = $('#stepId').val();
+			let dataObject = JSON.stringify(pipingObject);
+			$.ajax({
+				url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
+				type: "POST",
+				datatype: "json",
+				data: {
+					dataObject : dataObject
+				},
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+				},
+				success: function (data) {
+					let message = data.message;
+					let status = data.status
+					$('#pipingModal').modal('hide');
+					if (status === 'SUCCESS') {
+						showSucMsg(message);
+					} else {
+						showErrMsg(message);
+					}
+				},
+				error: function (xhr, status, error) {
+					$('#pipingModal').modal('hide');
+					showErrMsg("Error while saving piping details");
+				}
+			});
+		} else {
+			$('#pipingModal').modal('hide');
+			showErrMsg("Please save step first!");
+		}
+	}
+}
+
+function validatePipingRequiredFields() {
 	let valid = true;
 	let language = $('#studyLanguage').val();
 	if (language !== null && language !== undefined && language !== 'en') {
-	let parent = $('#pipingSnippet').parent();
+		let parent = $('#pipingSnippet').parent();
 		if ($('#pipingSnippet').val() === '') {
 			parent.addClass('has-error has-danger').find(".help-block")
 					.empty()
@@ -9332,50 +9384,7 @@ function submitPiping() {
 			}
 		});
 	}
-
-	if (!valid) {
-		return false;
-	}
-	if ($('#stepId').val() !== '') {
-		let pipingObject = {};
-		pipingObject.pipingSnippet = $('#pipingSnippet').val();
-		pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
-		if ($('#differentSurvey').is(':checked')) {
-			pipingObject.differentSurvey = true;
-			pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
-		}
-		pipingObject.language = $('#studyLanguage').val();
-		pipingObject.stepId = $('#stepId').val();
-		let dataObject = JSON.stringify(pipingObject);
-		$.ajax({
-			url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
-			type: "POST",
-			datatype: "json",
-			data: {
-				dataObject : dataObject
-			},
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-			},
-			success: function (data) {
-				let message = data.message;
-				let status = data.status
-				$('#pipingModal').modal('hide');
-				if (status === 'SUCCESS') {
-					showSucMsg(message);
-				} else {
-					showErrMsg(message);
-				}
-			},
-			error: function (xhr, status, error) {
-				$('#pipingModal').modal('hide');
-				showErrMsg("Error while saving piping details");
-			}
-		});
-	} else {
-		$('#pipingModal').modal('hide');
-		showErrMsg("Please save step first!");
-	}
+	return valid;
 }
 
 function validatePipingData() {

@@ -103,7 +103,8 @@ public interface StudyQuestionnaireService {
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId);
+      String studyId,
+      QuestionnaireStepBean pipingBean);
 
   public QuestionsBo saveOrUpdateQuestion(
       QuestionsBo questionsBo,
@@ -126,7 +127,8 @@ public interface StudyQuestionnaireService {
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId);
+      String studyId,
+      QuestionnaireStepBean pipingBean);
 
   public String validateLineChartSchedule(Integer questionnaireId, String frequency);
 

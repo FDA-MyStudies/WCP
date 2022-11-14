@@ -260,7 +260,7 @@
                 <br>
                 <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
                     <div class="gray-xs-f mb-xs">Target Element</div>
-                    <div class="mb-xs" id="titleText">Have you taken the medication?</div>
+                    <div class="mb-xs" id="titleText"></div>
                     <br>
 
                     <div class="gray-xs-f mb-xs">Snippet</div>
@@ -342,16 +342,18 @@
             </div>
         </div>
 
-                <div class="modal fade" id="timeOutModal" role="dialog">
-                                    <div class="modal-dialog modal-sm flr_modal">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                                <div class="modal-body">
-                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                            </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img
+                            src="../images/timer2.png"/></span>Your session expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
@@ -456,12 +458,6 @@
         if (val) {
             if (mode === 'auto') {
                 $('#isAutoSaved').val('true');
-                console.log('starting auto save');
-                if ($('#pipingModal').hasClass('show')) {
-                    console.log('auto saving piping');
-                    submitPiping();
-                }
-                console.log('auto saving step data');
             }
           saveInstruction();
         } else {
@@ -562,13 +558,27 @@
       instruction.questionnairesStepsBo = questionnaireStep;
 
       var data = JSON.stringify(instruction);
-      $
-      .ajax({
+
+        let pipingObject = {};
+        if ($('#isAutoSaved').val() === 'true' && $('#pipingModal').hasClass('show') && validatePipingRequiredFields()) {
+            let object = {};
+            object.pipingSnippet = $('#pipingSnippet').val();
+            object.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+            if ($('#differentSurvey').is(':checked')) {
+                object.differentSurvey = true;
+                object.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+            }
+            object.language = $('#studyLanguage').val();
+            object.stepId = $('#stepId').val();
+            pipingObject = JSON.stringify(object);
+        }
+      $.ajax({
         url: "/fdahpStudyDesigner/adminStudies/saveInstructionStep.do?_S=${param._S}",
         type: "POST",
         datatype: "json",
         data: {
           instructionsInfo: data,
+          pipingObject: pipingObject,
           language: $('#studyLanguage').val(),
           isAutoSaved : $('#isAutoSaved').val()
         },
@@ -822,94 +832,97 @@
   });
 
   function submitPiping() {
+      if (validatePipingRequiredFields()) {
+          if ($('#stepId').val() !== '') {
+              let pipingObject = {};
+              pipingObject.pipingSnippet = $('#pipingSnippet').val();
+              pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+              if ($('#differentSurvey').is(':checked')) {
+                  pipingObject.differentSurvey = true;
+                  pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+              }
+              pipingObject.language = $('#studyLanguage').val();
+              pipingObject.stepId = $('#stepId').val();
+              let dataObject = JSON.stringify(pipingObject);
+              $.ajax({
+                  url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
+                  type: "POST",
+                  datatype: "json",
+                  data: {
+                      dataObject : dataObject
+                  },
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                  },
+                  success: function (data) {
+                      let message = data.message;
+                      let status = data.status
+                      $('#pipingModal').modal('hide');
+                      if (status === 'SUCCESS') {
+                          showSucMsg(message);
+                      } else {
+                          showErrMsg(message);
+                      }
+
+                  },
+                  error: function (xhr, status, error) {
+                      $('#pipingModal').modal('hide');
+                      showErrMsg("Error while saving piping details");
+                  }
+              });
+          } else {
+              $('#pipingModal').modal('hide');
+              showErrMsg("Please save step first!");
+          }
+      }
+  }
+
+  function validatePipingRequiredFields() {
       let valid = true;
       let language = $('#studyLanguage').val();
-      if (language != null && language != undefined && language !== 'en') {
-      let parent = $('#pipingSnippet').parent();
-            if ($('#pipingSnippet').val() === '') {
-                                          parent.addClass('has-error has-danger').find(".help-block")
-                                              .empty()
-                                              .append($("<ul><li> </li></ul>")
-                                              .attr("class","list-unstyled")
-                                              .text("Please fill out this field."));
-                                          if (valid) {
-                                              valid = false;
-                                          }
-                                  } else {
-                                      if (parent.hasClass('has-error has-danger')) {
-                                          parent.removeClass('has-error has-danger').find(".help-block").empty();
-                                      }
-                                  }
+      if (language !== null && language !== undefined && language !== 'en') {
+          let parent = $('#pipingSnippet').parent();
+          if ($('#pipingSnippet').val() === '') {
+              parent.addClass('has-error has-danger').find(".help-block")
+                  .empty()
+                  .append($("<ul><li> </li></ul>")
+                      .attr("class","list-unstyled")
+                      .text("Please fill out this field."));
+              if (valid) {
+                  valid = false;
+              }
+          } else {
+              if (parent.hasClass('has-error has-danger')) {
+                  parent.removeClass('has-error has-danger').find(".help-block").empty();
+              }
+          }
       }
       else {
-            $('select.req, input.req').each(function () {
-                      let parent = $(this).parent();
-                      let id = $(this).attr('id');
-                      if ($(this).is('select')) {
-                          parent = $(this).closest('div.mb-xs');
+          $('select.req, input.req').each(function () {
+              let parent = $(this).parent();
+              let id = $(this).attr('id');
+              if ($(this).is('select')) {
+                  parent = $(this).closest('div.mb-xs');
+              }
+              if ($(this).val() === '') {
+                  if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+                      parent.addClass('has-error has-danger').find(".help-block")
+                          .empty()
+                          .append($("<ul><li> </li></ul>")
+                              .attr("class","list-unstyled")
+                              .text("Please fill out this field."));
+                      if (valid) {
+                          valid = false;
                       }
-                      if ($(this).val() === '') {
-                          if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
-                              parent.addClass('has-error has-danger').find(".help-block")
-                                  .empty()
-                                  .append($("<ul><li> </li></ul>")
-                                      .attr("class","list-unstyled")
-                                      .text("Please fill out this field."));
-                              if (valid) {
-                                  valid = false;
-                              }
-                          }
-                      } else {
-                          if (parent.hasClass('has-error has-danger')) {
-                              parent.removeClass('has-error has-danger').find(".help-block").empty();
-                          }
-                      }
-                  });
-      }
-      if (!valid) {
-          return false;
-      }
-      if ($('#stepId').val() !== '') {
-          let pipingObject = {};
-          pipingObject.pipingSnippet = $('#pipingSnippet').val();
-          pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
-          if ($('#differentSurvey').is(':checked')) {
-              pipingObject.differentSurvey = true;
-              pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
-          }
-          pipingObject.language = $('#studyLanguage').val();
-          pipingObject.stepId = $('#stepId').val();
-          let dataObject = JSON.stringify(pipingObject);
-          $.ajax({
-              url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
-              type: "POST",
-              datatype: "json",
-              data: {
-                  dataObject : dataObject
-              },
-              beforeSend: function (xhr) {
-                  xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-              },
-              success: function (data) {
-                  let message = data.message;
-                  let status = data.status
-                  $('#pipingModal').modal('hide');
-                  if (status === 'SUCCESS') {
-                      showSucMsg(message);
-                  } else {
-                      showErrMsg(message);
                   }
-
-              },
-              error: function (xhr, status, error) {
-                  $('#pipingModal').modal('hide');
-                  showErrMsg("Error while saving piping details");
+              } else {
+                  if (parent.hasClass('has-error has-danger')) {
+                      parent.removeClass('has-error has-danger').find(".help-block").empty();
+                  }
               }
           });
-      } else {
-          $('#pipingModal').modal('hide');
-          showErrMsg("Please save step first!");
       }
+      return valid;
   }
 
   function validatePipingData() {

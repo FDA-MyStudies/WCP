@@ -2347,9 +2347,14 @@ public class StudyQuestionnaireController {
               }
             }
             String language = request.getParameter("language");
+            String pipingObject = request.getParameter("pipingObject");
+            QuestionnaireStepBean pipingBean = null;
+            if (StringUtils.isNotBlank(pipingObject)) {
+              pipingBean = mapper.readValue(pipingObject, QuestionnaireStepBean.class);
+            }
             addInstructionsBo =
                 studyQuestionnaireService.saveOrUpdateInstructionsBo(
-                    instructionsBo, sesObj, customStudyId, language, studyId);
+                    instructionsBo, sesObj, customStudyId, language, studyId, pipingBean);
           }
         }
         if (addInstructionsBo != null) {
@@ -2666,7 +2671,7 @@ public class StudyQuestionnaireController {
           }
           addInstructionsBo =
               studyQuestionnaireService.saveOrUpdateInstructionsBo(
-                  instructionsBo, sesObj, customStudyId, language, studyId);
+                  instructionsBo, sesObj, customStudyId, language, studyId, null);
         }
         if (addInstructionsBo != null) {
           if (StringUtils.isNotEmpty(studyId)
@@ -2869,7 +2874,7 @@ public class StudyQuestionnaireController {
           }
           addQuestionnairesStepsBo =
               studyQuestionnaireService.saveOrUpdateQuestionStep(
-                  questionnairesStepsBo, sesObj, customStudyId, language, studyId);
+                  questionnairesStepsBo, sesObj, customStudyId, language, studyId, null);
         }
         if (addQuestionnairesStepsBo != null) {
           if (StringUtils.isNotEmpty(studyId)) {
@@ -3252,9 +3257,14 @@ public class StudyQuestionnaireController {
               }
             }
           }
+          String pipingObject = multipleRequest.getParameter("pipingObject");
+          QuestionnaireStepBean pipingBean = null;
+          if (StringUtils.isNotBlank(pipingObject)) {
+            pipingBean = mapper.readValue(pipingObject, QuestionnaireStepBean.class);
+          }
           addQuestionnairesStepsBo =
               studyQuestionnaireService.saveOrUpdateQuestionStep(
-                  questionnairesStepsBo, sesObj, customStudyId, language, studyId);
+                  questionnairesStepsBo, sesObj, customStudyId, language, studyId, pipingBean);
         }
         if (addQuestionnairesStepsBo != null) {
           jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());

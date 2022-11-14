@@ -851,7 +851,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                       session.save(newQuestionsLang);
                     }
                   }
-                  oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), questionsBo.getId());
+                  oldNewInstructionFormIdMap.put(questionnairesStepsBo.getInstructionFormId(), newQuestionnairesStepsBo.getInstructionFormId());
                 }
               } else if (questionnairesStepsBo
                   .getStepType()

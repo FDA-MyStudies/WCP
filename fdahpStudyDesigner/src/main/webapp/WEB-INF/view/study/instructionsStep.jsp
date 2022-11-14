@@ -559,7 +559,7 @@
 
       var data = JSON.stringify(instruction);
 
-        let pipingObject = {};
+        let pipingObject = null;
         if ($('#isAutoSaved').val() === 'true' && $('#pipingModal').hasClass('show') && validatePipingRequiredFields()) {
             let object = {};
             object.pipingSnippet = $('#pipingSnippet').val();

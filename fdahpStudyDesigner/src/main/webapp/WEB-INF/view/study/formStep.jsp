@@ -1883,15 +1883,16 @@ function refreshSourceKeys(surveyId, type) {
                             let $option = $("<option></option>")
                                 .attr("value", option.stepId)
                                 .attr("data-id", option.stepId)
+                                .attr("data-type", 'step')
                                 .text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
                             id.append($option);
                         });
                     }
                     if (type === 'preload') {
-                        id.append('<option value="0">Completion Step</option>');
+                        id.append('<option data-type="step" value="0">Completion Step</option>');
                         if (!$('#differentSurveyPreLoad').is(':checked')) {
                             <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-                            id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+                            id.append('<option data-type="group" value="${group.id}" id="selectGroup${group.id}">'+
                                 'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
                                 '</option>');
                             </c:forEach>
@@ -1902,6 +1903,7 @@ function refreshSourceKeys(surveyId, type) {
                                     let $option = $("<option></option>")
                                         .attr("value", option.id)
                                         .attr("data-id", option.id)
+                                        .attr("data-type", 'group')
                                         .text("Group " + (index + 1) + " : " + option.groupName);
                                     id.append($option);
                                 });

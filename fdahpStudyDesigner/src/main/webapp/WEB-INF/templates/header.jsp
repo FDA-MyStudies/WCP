@@ -165,3 +165,10 @@ display:flex;
 // 		document.body.appendChild(a).click();
 	}
  </script>
+ <!-- browser back button disable code here -->
+  <script type="text/javascript">
+  history.pushState(null, null, location.href);
+  history.back();
+  history.forward();
+  window.onpopstate = function () { history.go(1); };
+</script> 

@@ -7099,7 +7099,7 @@ public String deleteStepMaprecords(String id) {
     Query query;
     String queryString;
     try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
-      queryString = " FROM PreLoadLogicBo PBO WHERE PBO.stepGroupId = :id and stepOrGroup = :group";
+      queryString = " FROM PreLoadLogicBo PBO WHERE PBO.stepGroupId=:id and stepOrGroup=:group";
       query = session.createQuery(queryString).setParameter("id", id).setParameter("group", "group");
       preLoadLogicBo = (List<PreLoadLogicBo>) query.getResultList();
     } catch (Exception e) {

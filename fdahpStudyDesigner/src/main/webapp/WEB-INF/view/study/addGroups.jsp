@@ -970,18 +970,23 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                          $('.remBtnDis').addClass('disabled');
 
 
-                         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+                         $('#logicDiv').find('div.bootstrap-select, .text-normal, input').each( function () {
 					$(this).addClass('ml-disabled');
 					if ($(this).is("input")) {
 						$(this).attr('disabled', true);
 					}
 				});
-                $('.data-div').find('div.bootstrap-select, input').each( function () {
+                $('.data-div').find('div.bootstrap-select, .text-normal , input').each( function () {
 					$(this).addClass('ml-disabled');
 					if ($(this).is("input")) {
 						$(this).attr('disabled', true);
 					}
 				});
+              
+
+               
+
+
 
       		          let mark=true;
       		          $('#groups_list option', htmlData).each(function (index, value) {

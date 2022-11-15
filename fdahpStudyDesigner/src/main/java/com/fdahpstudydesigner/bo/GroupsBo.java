@@ -52,17 +52,7 @@ public class GroupsBo implements Serializable {
 
     @Transient private String type;
 
-
     @Transient private List<PreLoadLogicBean> preLoadLogicBeans;
-
-    public List<PreLoadLogicBean> getPreLoadLogicBeans() {
-        return preLoadLogicBeans;
-    }
-
-    public void setPreLoadLogicBeans(List<PreLoadLogicBean> preLoadLogicBeans) {
-        this.preLoadLogicBeans = preLoadLogicBeans;
-    }
-
     
     @Column(name = "action", length = 1)
     private Boolean action;
@@ -82,20 +72,6 @@ public class GroupsBo implements Serializable {
     @Column(name = "default_visibility")
     private Boolean defaultVisibility;
 
-    public Integer getDestinationTrueAsGroup() {
-        return destinationTrueAsGroup;
-    }
-
-    public void setDestinationTrueAsGroup(Integer destinationTrueAsGroup) {
-        this.destinationTrueAsGroup = destinationTrueAsGroup;
-    }
-
-    public Boolean getDefaultVisibility() {
-        return defaultVisibility;
-    }
-
-    public void setDefaultVisibility(Boolean defaultVisibility) {
-        this.defaultVisibility = defaultVisibility;
-    }
-
+    @Column(name = "step_or_group")
+    private String stepOrGroup;
 }

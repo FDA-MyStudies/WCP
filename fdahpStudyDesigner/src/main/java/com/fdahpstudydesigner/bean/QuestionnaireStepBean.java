@@ -23,6 +23,7 @@ public class QuestionnaireStepBean {
   private Integer deletionId;
   private String stepType;
 
+  private String stepShortTitle;
   private String title;
 
   private Boolean useAnchorDate;

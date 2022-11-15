@@ -178,7 +178,7 @@ public interface StudyQuestionnaireDAO {
   public String checkGroupId(String questionnaireId, String groupId, String studyId);
 
 
-  PreLoadLogicBo getPreLoadLogicById(Integer id);
+  PreLoadLogicBo getPreLoadLogicByIdAndType(Integer id, String type);
 
   void deleteFormula(List<Integer> ids);
   
@@ -222,7 +222,7 @@ public String deleteStepMaprecords(String id);
 
   boolean isLastFormQuestion(String formId, String questionId);
 
- Integer getGroupIdBySendingQuestionStepId(Integer questionStepId);
+ GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId);
 
   String getStepType(Integer questionStepId, Integer stepId);
 
@@ -231,6 +231,10 @@ public String deleteStepMaprecords(String id);
   List<Integer> getQuestionIdList(Integer questionStepId);
 
   Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue);
+
+  List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId);
+
+  List<FormMappingBo> getListOfQuestions(Integer formId);
 
   // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
 

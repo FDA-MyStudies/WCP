@@ -103,7 +103,8 @@ public interface StudyQuestionnaireService {
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId);
+      String studyId,
+      QuestionnaireStepBean pipingBean);
 
   public QuestionsBo saveOrUpdateQuestion(
       QuestionsBo questionsBo,
@@ -126,7 +127,8 @@ public interface StudyQuestionnaireService {
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId);
+      String studyId,
+      QuestionnaireStepBean pipingBean);
 
   public String validateLineChartSchedule(Integer questionnaireId, String frequency);
 
@@ -224,7 +226,7 @@ public String deleteStepMaprecords(String id);
 
   boolean isLastFormQuestion(String formId, String questionId);
 
-  Integer getGroupIdBySendingQuestionStepId(Integer questionStepId);
+  GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId);
 
   String getStepType(Integer questionStepId, Integer stepId);
 
@@ -233,6 +235,10 @@ public String deleteStepMaprecords(String id);
   List<Integer> getQuestionIdList(Integer questionStepId);
 
   Integer getResponseTypeForFormStep(Integer lastQuestinObjectValue);
+
+  List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId);
+
+  List<FormMappingBo> getListOfQuestions(Integer formId);
 
   // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
 }

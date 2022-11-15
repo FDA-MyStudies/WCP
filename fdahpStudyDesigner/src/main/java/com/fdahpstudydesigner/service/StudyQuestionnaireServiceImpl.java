@@ -770,7 +770,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
         List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(questionnairesStepsBo.getStepId());
         for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
-          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicByIdAndType(logicBean.getId(), FdahpStudyDesignerConstants.STEP);
           if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
             if (preLoadLogicBo == null) {
               preLoadLogicBo = new PreLoadLogicBo();
@@ -779,8 +779,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             } else {
               preLoadIds.remove(preLoadLogicBo.getId());
             }
-            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
-                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setOperator(logicBean.getOperator());
             preLoadLogicBo.setInputValue(logicBean.getInputValue());
             preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
             studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
@@ -812,7 +811,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
         List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(groupsBo.getId());
         for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
-          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicById(logicBean.getId());
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicByIdAndType(logicBean.getId(), FdahpStudyDesignerConstants.GROUP);
           if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
             if (preLoadLogicBo == null) {
               preLoadLogicBo = new PreLoadLogicBo();
@@ -821,8 +820,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             } else {
               preLoadIds.remove(preLoadLogicBo.getId());
             }
-            preLoadLogicBo.setOperator(StringUtils.isBlank(logicBean.getOperator())
-                    ? "&&" : logicBean.getOperator());
+            preLoadLogicBo.setOperator(logicBean.getOperator());
             preLoadLogicBo.setInputValue(logicBean.getInputValue());
             preLoadLogicBo.setConditionOperator(logicBean.getConditionOperator());
             studyQuestionnaireDAO.saveOrUpdateObject(preLoadLogicBo);
@@ -861,7 +859,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId) {
+      String studyId,
+      QuestionnaireStepBean pipingBean) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Starts");
     InstructionsBo addOrUpdateInstructionsBo = null;
     InstructionsLangBO instructionsLangBO = null;
@@ -952,6 +951,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           addOrUpdateInstructionsBo =
               studyQuestionnaireDAO.saveOrUpdateInstructionsBo(
                   addOrUpdateInstructionsBo, sessionObject, customStudyId);
+
+          // auto-save piping
+          if (pipingBean != null) {
+            this.saveOrUpdatePipingData(pipingBean);
+          }
         }
       }
     } catch (Exception e) {
@@ -1570,7 +1574,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       SessionObject sessionObject,
       String customStudyId,
       String language,
-      String studyId) {
+      String studyId,
+      QuestionnaireStepBean pipingBean) {
     logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
     QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
     QuestionLangBO questionLangBO = null;
@@ -1804,6 +1809,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
           }
           this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
+        }
+
+        // auto-save piping
+        if (pipingBean != null) {
+          this.saveOrUpdatePipingData(pipingBean);
         }
       }
     } catch (Exception e) {
@@ -2277,15 +2287,10 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
       GroupsBo groupsBo = null;
       if(groupsBean.getId() != null ){
           groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
-
-    	  if(groupsBean.isAction() == true)
-    	  {
+    	  if(groupsBean.isAction()) {
     		  groupsBo.setAction(groupsBean.isAction());
-    	  }
-    	  else
-    	  {
+    	  } else {
     		  groupsBo.setAction(groupsBean.isAction());
-
     	  }
       }
       
@@ -2299,12 +2304,15 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
         groupsBo.setStudyId(groupsBean.getStudyId());
         groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
+        groupsBo.setModifiedBy(userSession.getUserId());
+        groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
       } else {
-          groupsBo.setModifiedBy(userSession.getUserId());
-          groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        groupsBo.setModifiedBy(userSession.getUserId());
+        groupsBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         groupsBo.setDefaultVisibility(groupsBean.getDefaultVisibility());
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       }
+      groupsBo.setStepOrGroup(groupsBean.getStepOrGroup());
       groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
       studyQuestionnaireDAO.saveOrUpdateGroup(groupsBo);
@@ -2548,16 +2556,16 @@ public String deleteStepMaprecords(String id) {
   } */
 
 
-  public Integer getGroupIdBySendingQuestionStepId(Integer questionStepId) {
+  public GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
-    Integer groupId = null;
+    GroupsBo groupsBo = null;
     try {
-      groupId = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
+      groupsBo = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
     }
     logger.info("getGroupIdBySendingquestionstepId() - Ends");
-    return groupId;
+    return groupsBo;
   }
 
   @Override
@@ -2639,5 +2647,31 @@ logger.exit("getStepId() - Ends");
     }
     logger.info("StudyQuestionnaireServiceImpl - getGroupsDetails() - Ends");
     return preLoadLogicBo;
+  }
+
+  @Override
+  public List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - Starts");
+    List<GroupsBo> groupsBo = null;
+    try {
+      groupsBo = studyQuestionnaireDAO.getGroupListBySendingQuestionStepId(studyId, questionnaireId, questionStepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return groupsBo;
+  }
+
+  @Override
+  public List<FormMappingBo> getListOfQuestions(Integer formId) {
+    logger.info("StudyQuestionnaireServiceImpl - getListOfQuestions() - Starts");
+    List<FormMappingBo> questionList = new ArrayList<>();
+    try {
+      questionList = studyQuestionnaireDAO.getListOfQuestions(formId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getListOfQuestions() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return questionList;
   }
 }

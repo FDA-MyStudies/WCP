@@ -27,6 +27,10 @@
 	width: 175px;
 }
 
+.preload-tooltip {
+	margin-bottom: 3px;
+}
+
 .display__flex__ {
 	display: flex;
 	align-items: center;
@@ -448,7 +452,9 @@ input[type=number] {
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
 										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-											<option value="${group.id}" data-type="group" id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+											<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+											${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
+											Group  ${status.index + 1} :  ${group.groupName}&nbsp; </option>
 										</c:forEach>
 										<option value="0" data-type="step"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
@@ -589,7 +595,12 @@ input[type=number] {
 												<div style="height: 100px; border:1px solid #bfdceb;">
 													<div class="row">
 														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+														<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+															Define Inputs
+															<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+																  title="For response including 'Height' please provide response in cm.">
+															</span>
+														</div>
 														<div class="col-md-6"></div>
 													</div>
 													<div class="row data-div">
@@ -628,18 +639,22 @@ input[type=number] {
 										<div style="height: 100px; border:1px solid #bfdceb;">
 											<div class="row">
 												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>
-												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+												<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs
+													<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+														  title="For response including 'Height' please provide response in cm.">
+													</span>
+												</div>
 												<div class="col-md-6"></div>
 											</div>
 											<div class="row data-div">
 												<div class="col-md-1" style="padding-top: 7px">Operator</div>
 												<div class="col-md-2 form-group">
-													<select  class="selectpicker operator text-normal" data-error="Please select an option"
-															id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
-														<c:forEach items="${operators}" var="operator">
-															<option value="${operator}">${operator}</option>
-														</c:forEach>
-													</select>
+                                                    <select class="selectpicker operator text-normal" data-error="Please select an option" required
+                                                            id="operator0" name="preLoadLogicBeans[0].operator" title="-select-">
+                                                        <c:forEach items="${operators}" var="operator">
+                                                            <option value="${operator}"> ${operator} </option>
+                                                        </c:forEach>
+                                                    </select>
 													<div class="help-block with-errors red-txt"></div>
 												</div>
 
@@ -2077,6 +2092,11 @@ input[type=number] {
 														Step ${destinationStep.sequenceNo} :
 														${destinationStep.stepShortTitle}</option>
 												</c:forEach>
+												<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                    ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                   Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                 </c:forEach>
 												<option value="0"
 													${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 													Completion Step</option>
@@ -2122,6 +2142,11 @@ input[type=number] {
 														Step ${destinationStep.sequenceNo} :
 														${destinationStep.stepShortTitle}</option>
 												</c:forEach>
+												<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                    ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq group.id ? 'selected' :''}>
+                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                 </c:forEach>
 												<option value="0"
 													${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 													Completion Step</option>
@@ -2212,6 +2237,11 @@ input[type=number] {
 																			Step ${destinationStep.sequenceNo} :
 																			${destinationStep.stepShortTitle}</option>
 																	</c:forEach>
+																	<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                        <option value="${group.id}" id="selectGroup${group.id}"
+                                                                        ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
+                                                                        Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                     </c:forEach>
 																	<option value="0"
 																		${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																		Completion Step</option>
@@ -2268,6 +2298,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -2321,6 +2356,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}"  id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -2415,6 +2455,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp; </option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -2483,6 +2528,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -2535,6 +2585,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -2773,6 +2828,11 @@ input[type=number] {
                                                 Step ${destinationStep.sequenceNo} :
                                                 ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
+                                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                             </c:forEach>
                                             <option value="0"
                                               ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                               Completion Step</option>
@@ -2954,6 +3014,11 @@ input[type=number] {
                                           Step ${destinationStep.sequenceNo} :
                                           ${destinationStep.stepShortTitle}</option>
                                       </c:forEach>
+                                      <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                          <option value="${group.id}" id="selectGroup${group.id}"
+                                           ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                          Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                       </c:forEach>
                                       <option value="0"
                                         ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                         Completion Step</option>
@@ -3117,6 +3182,11 @@ input[type=number] {
                                                 Step ${destinationStep.sequenceNo} :
                                                 ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
+                                            <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                <option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+                                                 ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                 Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                             </c:forEach>
                                             <option value="0"
                                               ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                               Completion Step</option>
@@ -3257,6 +3327,11 @@ input[type=number] {
                                               Step ${destinationStep.sequenceNo} :
                                               ${destinationStep.stepShortTitle}</option>
                                           </c:forEach>
+                                          <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                              <option value="${group.id}" id="selectGroup${group.id}"
+                                              ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                              Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                           </c:forEach>
                                           <option value="0"
                                             ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
                                             Completion Step</option>
@@ -3329,7 +3404,7 @@ input[type=number] {
 												Value (1 to 100 characters)<span class="requiredStar">*</span>
 											</div>
 											<div class="form-group mb-none">
-												<input type="text" class="form-control TextChoiceRequired text-choice textChoiceVal"
+												<input type="text" class="form-control TextChoiceRequired text-choice-other textChoiceVal"
 													   id="textchoiceOtherValue"
 													name="questionReponseTypeBo.otherValue"
 													value="${questionnairesStepsBo.questionReponseTypeBo.otherValue}"
@@ -3374,6 +3449,11 @@ input[type=number] {
 																Step ${destinationStep.sequenceNo} :
 																${destinationStep.stepShortTitle}</option>
 														</c:forEach>
+														<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                            <option value="${group.id}" id="selectGroup${group.id}"
+                                                            ${questionnairesStepsBo.questionReponseTypeBo.otherDestinationStepId eq group.id ? 'selected' :''}>
+                                                            Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                         </c:forEach>
 														<option value="0"
 															${questionnairesStepsBo.questionReponseTypeBo.otherDestinationStepId eq 0 ? 'selected' :''}>
 															Completion Step</option>
@@ -3609,6 +3689,11 @@ input[type=number] {
 																		Step ${destinationStep.sequenceNo} :
 																		${destinationStep.stepShortTitle}</option>
 																</c:forEach>
+																<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                    <option value="${group.id}" id="selectGroup${group.id}"
+                                                                    ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
+                                                                    Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                                 </c:forEach>
 																<option value="0"
 																	${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>
 																	Completion Step</option>
@@ -3724,6 +3809,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -3835,6 +3925,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -3899,6 +3994,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -3923,6 +4023,11 @@ input[type=number] {
 																	Step ${destinationStep.sequenceNo} :
 																	${destinationStep.stepShortTitle}</option>
 															</c:forEach>
+															<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+                                                                <option value="${group.id}" id="selectGroup${group.id}"
+                                                                ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq group.id ? 'selected' :''}>
+                                                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                             </c:forEach>
 															<option value="0"
 																${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>
 																Completion Step</option>
@@ -4336,7 +4441,7 @@ input[type=number] {
 			<br>
 			<div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
 				<div class="gray-xs-f mb-xs">Target Element</div>
-				<div class="mb-xs" id="titleText">Have you taken the medication?</div>
+				<div class="mb-xs" id="titleText"></div>
 				<br>
 
 				<div class="gray-xs-f mb-xs">Snippet</div>
@@ -4501,6 +4606,11 @@ input[type=number] {
           }
         });
 
+            <c:if test = "${IsSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+                $('#skiappableNo').attr('checked', true);
+                $('[name="skiappable"]').addClass('ml-disabled').attr('disabled', true);
+            </c:if>
+
         <c:if test="${actionTypeForQuestionPage == 'view'}">
 		  $('#questionStepId input,textarea ').prop('disabled', true);
 		  $('#questionStepId select').addClass('linkDis');
@@ -4549,6 +4659,7 @@ input[type=number] {
         }
         $(".menuNav li.active").removeClass('active');
         $(".seventhQuestionnaires").addClass('active');
+
         $("#doneId").click(function () {
           $("#doneId").attr("disabled", true);
           var isValid = true;
@@ -5374,6 +5485,10 @@ input[type=number] {
           var maxValue = $("#numericMaxValueId").val();
           $(this).parent().removeClass("has-danger").removeClass("has-error");
           $(this).parent().find(".help-block").empty();
+		  var minValue = $("#numericMinValueId").val();
+		  if(minValue==''){
+			  $("#numericMinValueId").val("0");
+		  }
           if (maxValue != '') {
             if (parseInt(value) >= parseInt(maxValue)) {
               $(this).val('');
@@ -5391,6 +5506,10 @@ input[type=number] {
         $("#numericMaxValueId").blur(function () {
           var value = $(this).val();
           var minValue = $("#numericMinValueId").val();
+		  var maxValue = $("#numericMaxValueId").val();
+		  if(maxValue==''){
+			  $("#numericMaxValueId").val("10000");
+		  }
           $(this).parent().removeClass("has-danger").removeClass("has-error");
           $(this).parent().find(".help-block").empty();
           if (minValue != '') {
@@ -5746,12 +5865,6 @@ input[type=number] {
                   idleTime += 1;
                   if (idleTime > 3) { // 5 minutes
                           <c:if test="${actionTypeForQuestionPage ne 'view'}">
-					      console.log('starting auto save');
-					      if ($('#pipingModal').hasClass('show')) {
-						      console.log('auto saving piping');
-						      submitPiping();
-					      }
-					      console.log('auto saving step data');
                           autoSaveQuestionStep('auto');
                            </c:if>
                           <c:if test="${actionTypeForQuestionPage eq 'view'}">
@@ -5795,7 +5908,7 @@ input[type=number] {
 		$('#pipingModal').modal('toggle');
 	});
 
-        function autoSaveQuestionStep(mode){
+        function autoSaveQuestionStep(mode) {
            	  $("body").addClass("loading");
                  validateQuestionShortTitle('', function (val) {
                    if (val) {
@@ -5892,7 +6005,7 @@ input[type=number] {
 	function setOperatorDropDown(responseType) {
 		if (responseType != null) {
 			if (responseType === '1'|| responseType === '2' ||
-					responseType === '8' || responseType === '14' ) {
+					responseType === '8') {
 				defaultVisibility.prop('disabled', false);
 				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
 				let operator = $('select.operator');
@@ -5904,6 +6017,14 @@ input[type=number] {
 			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
 				defaultVisibility.prop('disabled', false);
 				let operatorList = ["=", "!="];
+				let operator = $('select.operator');
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				$('.selectpicker').selectpicker('refresh');
+			} else if (responseType === '14') {
+				let operatorList = ["<", ">"];
 				let operator = $('select.operator');
 				operator.empty();
 				$.each(operatorList, function (index, val) {
@@ -5917,27 +6038,34 @@ input[type=number] {
 		}
 	}
 
-	function setOperatorDropDownOnAdd(responseType) {
+	function setOperatorDropDownOnAdd(responseType, count) {
 		if (responseType != null) {
+			let operator = $('#operator' + count);
 			if (responseType === '1'|| responseType === '2' ||
-					responseType === '8' || responseType === '14' ) {
+					responseType === '8') {
 				defaultVisibility.prop('disabled', false);
 				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
-				let operator = $('select.operator');
 				operator.empty();
 				$.each(operatorList, function (index, val) {
 					operator.append('<option value="'+val+'">'+val+'</option>');
 				});
-				$('.selectpicker').selectpicker();
+				operator.selectpicker('refresh');
 			} else if ((responseType >= '3' && responseType <= '7') || responseType === '11') {
 				defaultVisibility.prop('disabled', false);
 				let operatorList = ["=", "!="];
-				let operator = $('select.operator');
 				operator.empty();
 				$.each(operatorList, function (index, val) {
 					operator.append('<option value="'+val+'">'+val+'</option>');
 				});
-				$('.selectpicker').selectpicker();
+				operator.selectpicker('refresh');
+			} else if (responseType === '14') {
+				defaultVisibility.prop('disabled', false);
+				let operatorList = ["<", ">"];
+				operator.empty();
+				$.each(operatorList, function (index, val) {
+					operator.append('<option value="'+val+'">'+val+'</option>');
+				});
+				operator.selectpicker('refresh');
 			} else {
 				defaultVisibility.prop('checked', true).trigger('change');
 				defaultVisibility.prop('disabled', true);
@@ -6182,6 +6310,14 @@ input[type=number] {
             }
             $("#" + responseType.replace(/\s/g, '')).show();
             $("." + responseType.replace(/\s/g, '') + "Required").attr("required", true);
+			  if (responseType === 'Numeric'){
+				  if($("#numericMinValueId").val() === ''){
+					  $("#numericMinValueId").val("0");
+				  }
+				  if($("#numericMaxValueId").val() === ''){
+					  $("#numericMaxValueId").val("10000");
+				  }
+			  }
           } else {
 
           }
@@ -6620,7 +6756,6 @@ input[type=number] {
 		  questionnaireStep.destinationTrueAsGroup = $('#destinationTrueAsGroup').val();
 		  if (!$('#groupDefaultVisibility').is(':checked')) {
 			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
-			  questionnaireStep.stepOrGroup = $('#destinationTrueAsGroup option:selected').attr('data-type');
 		  }
 		  if ('${questionnaireBo.branching}' === 'true') {
 			  questionnaireStep.stepOrGroupPostLoad = $('#destinationStepId option:selected').attr('data-type');
@@ -6645,7 +6780,20 @@ input[type=number] {
 		  });
 		  questionnaireStep.preLoadLogicBeans = beanArray;
         if (quesstionnaireId && shortTitle) {
-
+			let pipingObject = null;
+			if ($('#isAutoSaved').val() === 'true' && $('#pipingModal').hasClass('show') && validatePipingRequiredFields()) {
+				let object = {};
+				object.pipingSnippet = $('#pipingSnippet').val();
+				object.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+				if ($('#differentSurvey').is(':checked')) {
+					object.differentSurvey = true;
+					object.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+				}
+				object.language = $('#studyLanguage').val();
+				object.stepId = $('#stepId').val();
+				pipingObject = JSON.stringify(object);
+			}
+			formData.append("pipingObject", pipingObject);
           formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep));
           formData.append('language', $('#studyLanguage').val());
 		  formData.append('isAutoSaved', $('#isAutoSaved').val());
@@ -6876,6 +7024,9 @@ input[type=number] {
         <c:forEach items='${destinationStepList}' var='destinationStep'>
         newValuePicker += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
         </c:forEach>
+        <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+        newValuePicker += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
+        </c:forEach>
         newValuePicker += "<option value='0'>Completion Step</option>" +
             "</select>" +
             "  <div class='help-block with-errors red-txt'></div>" +
@@ -6948,6 +7099,9 @@ input[type=number] {
               + "' title='select' data-error='Please choose one option'><option value='' disabled selected>Select</option>";
           <c:forEach items="${destinationStepList}" var="destinationStep">
           newTextScale += "<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+          </c:forEach>
+          <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+          newTextScale += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
           </c:forEach>
           newTextScale += "	<option value='0'>Completion Step</option>" +
               "	     </select>" +
@@ -7180,6 +7334,9 @@ input[type=number] {
         <c:forEach items='${destinationStepList}' var='destinationStep'>
         newTextChoice += " <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
         </c:forEach>
+        <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+        newTextChoice += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
+        </c:forEach>
         newTextChoice += "<option value='0'>Completion Step</option>" +
             "</select>" +
             "  <div class='help-block with-errors red-txt'></div>" +
@@ -7321,6 +7478,9 @@ input[type=number] {
             + "' title='select' data-error='Please choose one option' class='selectpicker'><option value=''>Select</option>";
         <c:forEach items="${destinationStepList}" var="destinationStep">
         newImageChoice += "<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+        </c:forEach>
+        <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+        newImageChoice += "<option value='${group.id}' id='selectGroup${group.id}'>Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>";
         </c:forEach>
         newImageChoice += "<option value='0'>Completion Step</option>" +
             "	     </select>" +
@@ -7628,7 +7788,7 @@ input[type=number] {
           callback(isValid);
         } else if (responsetype === "Text Choice") {
 			valueArrayTxtChoice = [];
-			$('.text-choice').each(function () {
+			$('.text-choice, .text-choice-other').each(function () {
 				let id = $(this).attr("id");
 				if (id === 'textchoiceOtherValue') {
 					if ($('#textchoiceOtherId').is(':checked')) {
@@ -8677,10 +8837,20 @@ input[type=number] {
             } else {   // for English Language
               updateCompletionTicksForEnglish();
               $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-				$('#stepShortTitle, [name="skiappable"], #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
+				$('#stepShortTitle, #allowHealthKit, #useStasticData, #formulaBasedLogicId, #conditionDestinationId0, ' +
 						'#conditionDestinationId1, #inputTypeValueId0, #inputTypeId2, #inputTypeId3, #inputTypeValueId1, #inputTypeValueId2, ' +
 						'[data-id="destinationStepId"], #addLineChart, #allowRollbackChartYes, #allowRollbackChartNo, [data-id="lineChartTimeRangeId"]').removeClass(
 						'ml-disabled').attr('disabled', false);
+                 <c:choose>
+                      <c:when test = "${IsSkippableFlag eq 'true' && groupsBo.defaultVisibility eq 'false'}">
+                          $('[name="skiappable"]').addClass('ml-disabled').attr('disabled', true);
+                          $('#skiappableNo').attr('checked', true);
+                      </c:when>
+                      <c:otherwise>
+                         $('[name="skiappable"]').removeClass('ml-disabled').attr('disabled', false);
+                       </c:otherwise>
+                 </c:choose>
+
 				$('#logicDiv').find('div.bootstrap-select, input').each( function () {
 					$(this).removeClass('ml-disabled');
 					if ($(this).is("input")) {
@@ -8826,7 +8996,7 @@ input[type=number] {
 	$('#differentSurveyPreLoad').attr('checked', false).attr('disabled', true);
 	$('#defaultVisibility').val('true');
 	$('#addFormula').attr('disabled', true);
-	$('#skiappableYes').prop('disabled', false);
+	/* $('#skiappableYes').prop('disabled', false); */
 } else {
 	$('#skiappableYes').prop('checked', false).prop('disabled', true);
 	$('#skiappableNo').prop('checked', true);
@@ -8935,7 +9105,11 @@ $('.text-choice').each(function(i){
 					'<div style="height: 100px; border:1px solid #bfdceb;">'+
 						'<div class="row">'+
 							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>'+
-							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>'+
+							'<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs ' +
+				            '<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip" ' +
+					             'title="For response including \'Height\' please provide response in cm.">' +
+							'</span>'+
+				            '</div>'+
 							'<div class="col-md-6"></div>'+
 						'</div>'+
 						'<div class="row data-div">'+
@@ -8963,7 +9137,8 @@ $('.text-choice').each(function(i){
 				'</div>'+
 				'</div>';
 		formContainer.append(formula);
-		setOperatorDropDownOnAdd($('#responseTypeId').val());
+		setOperatorDropDownOnAdd($('#responseTypeId').val(), count);
+		$('[data-toggle="tooltip"]').tooltip({container: 'body'});
 	});
 
 if (dv.is(':checked')) {
@@ -9113,15 +9288,16 @@ function refreshSourceKeys(surveyId, type) {
 							let $option = $("<option></option>")
 									.attr("value", option.stepId)
 									.attr("data-id", option.stepId)
+									.attr("data-type", 'step')
 									.text("Step " + (option.sequenceNo) + " : " + option.stepShortTitle);
 							id.append($option);
 						});
 					}
 					if (type === 'preload') {
-						id.append('<option value="0">Completion Step</option>');
+						id.append('<option data-type="step" value="0">Completion Step</option>');
 						if (!$('#differentSurveyPreLoad').is(':checked')) {
 							<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-							id.append('<option value="${group.id}" id="selectGroup${group.id}">'+
+							id.append('<option data-type="group" value="${group.id}" id="selectGroup${group.id}">'+
 									'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
 									'</option>');
 							</c:forEach>
@@ -9132,6 +9308,7 @@ function refreshSourceKeys(surveyId, type) {
 									let $option = $("<option></option>")
 											.attr("value", option.id)
 											.attr("data-id", option.id)
+											.attr("data-type", 'group')
 											.text("Group " + (index+1) + " : " + option.groupName);
 									id.append($option);
 								});
@@ -9226,95 +9403,95 @@ $('select.req, input.req').on('change', function () {
 });
 
 function submitPiping() {
+	if (validatePipingRequiredFields()) {
+		if ($('#stepId').val() !== '') {
+			let pipingObject = {};
+			pipingObject.pipingSnippet = $('#pipingSnippet').val();
+			pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
+			if ($('#differentSurvey').is(':checked')) {
+				pipingObject.differentSurvey = true;
+				pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+			}
+			pipingObject.language = $('#studyLanguage').val();
+			pipingObject.stepId = $('#stepId').val();
+			let dataObject = JSON.stringify(pipingObject);
+			$.ajax({
+				url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
+				type: "POST",
+				datatype: "json",
+				data: {
+					dataObject : dataObject
+				},
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+				},
+				success: function (data) {
+					let message = data.message;
+					let status = data.status
+					$('#pipingModal').modal('hide');
+					if (status === 'SUCCESS') {
+						showSucMsg(message);
+					} else {
+						showErrMsg(message);
+					}
+				},
+				error: function (xhr, status, error) {
+					$('#pipingModal').modal('hide');
+					showErrMsg("Error while saving piping details");
+				}
+			});
+		} else {
+			$('#pipingModal').modal('hide');
+			showErrMsg("Please save step first!");
+		}
+	}
+}
+
+function validatePipingRequiredFields() {
 	let valid = true;
 	let language = $('#studyLanguage').val();
-	if (language != null && language != undefined && language !== 'en') {
-	let parent = $('#pipingSnippet').parent();
-	if ($('#pipingSnippet').val() === '') {
-                                              parent.addClass('has-error has-danger').find(".help-block")
-                                                  .empty()
-                                                  .append($("<ul><li> </li></ul>")
-                                                  .attr("class","list-unstyled")
-                                                  .text("Please fill out this field."));
-                                              if (valid) {
-                                                  valid = false;
-                                              }
-                                      } else {
-                                          if (parent.hasClass('has-error has-danger')) {
-                                              parent.removeClass('has-error has-danger').find(".help-block").empty();
-                                          }
-                                      }
-	}
-	else {
-	    $('select.req, input.req').each(function () {
-        		let parent = $(this).parent();
-        		let id = $(this).attr('id');
-        		console.log(id);
-        		if ($(this).is('select')) {
-        			parent = $(this).closest('div.mb-xs');
-        		}
-        		if ($(this).val() === '') {
-        			if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
-        				parent.addClass('has-error has-danger').find(".help-block")
-        						.empty()
-        						.append($("<ul><li> </li></ul>")
-        								.attr("class","list-unstyled")
-        								.text("Please fill out this field."));
-        				if (valid) {
-        					valid = false;
-        				}
-        			}
-        		} else {
-        			if (parent.hasClass('has-error has-danger')) {
-        				parent.removeClass('has-error has-danger').find(".help-block").empty();
-        			}
-        		}
-        	});
-	}
-
-	if (!valid) {
-		return false;
-	}
-	if ($('#stepId').val() !== '') {
-		let pipingObject = {};
-		pipingObject.pipingSnippet = $('#pipingSnippet').val();
-		pipingObject.pipingSourceQuestionKey = $('#sourceQuestion option:selected').attr('data-id');
-		if ($('#differentSurvey').is(':checked')) {
-			pipingObject.differentSurvey = true;
-			pipingObject.pipingSurveyId = $('#surveyId option:selected').attr('data-id');
+	if (language !== null && language !== undefined && language !== 'en') {
+		let parent = $('#pipingSnippet').parent();
+		if ($('#pipingSnippet').val() === '') {
+			parent.addClass('has-error has-danger').find(".help-block")
+					.empty()
+					.append($("<ul><li> </li></ul>")
+							.attr("class", "list-unstyled")
+							.text("Please fill out this field."));
+			if (valid) {
+				valid = false;
+			}
+		} else {
+			if (parent.hasClass('has-error has-danger')) {
+				parent.removeClass('has-error has-danger').find(".help-block").empty();
+			}
 		}
-		pipingObject.language = $('#studyLanguage').val();
-		pipingObject.stepId = $('#stepId').val();
-		let dataObject = JSON.stringify(pipingObject);
-		$.ajax({
-			url: "/fdahpStudyDesigner/adminStudies/submitPiping.do?_S=${param._S}",
-			type: "POST",
-			datatype: "json",
-			data: {
-				dataObject : dataObject
-			},
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-			},
-			success: function (data) {
-				let message = data.message;
-				let status = data.status
-				$('#pipingModal').modal('hide');
-				if (status === 'SUCCESS') {
-					showSucMsg(message);
-				} else {
-					showErrMsg(message);
+	} else {
+		$('select.req, input.req').each(function () {
+			let parent = $(this).parent();
+			let id = $(this).attr('id');
+			if ($(this).is('select')) {
+				parent = $(this).closest('div.mb-xs');
+			}
+			if ($(this).val() === '') {
+				if (id !== 'surveyId' || (id === 'surveyId' && $('#differentSurvey').is(':checked'))) {
+					parent.addClass('has-error has-danger').find(".help-block")
+							.empty()
+							.append($("<ul><li> </li></ul>")
+									.attr("class", "list-unstyled")
+									.text("Please fill out this field."));
+					if (valid) {
+						valid = false;
+					}
 				}
-			},
-			error: function (xhr, status, error) {
-				$('#pipingModal').modal('hide');
-				showErrMsg("Error while saving piping details");
+			} else {
+				if (parent.hasClass('has-error has-danger')) {
+					parent.removeClass('has-error has-danger').find(".help-block").empty();
+				}
 			}
 		});
-	} else {
-		$('#pipingModal').modal('hide');
-		showErrMsg("Please save step first!");
 	}
+	return valid;
 }
 
 function validatePipingData() {

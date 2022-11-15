@@ -73,6 +73,10 @@ display:contents !important;
           margin-top: 12px;
       }
 
+.preload-tooltip {
+    margin-bottom: 3px;
+}
+
 </style>
 
 </head>
@@ -81,12 +85,13 @@ display:contents !important;
 <form:form
 action="/fdahpStudyDesigner/adminStudies/addOrUpdateGroupsDetails.do?_S=${param._S}"
 name="addGroupFormId" id="addGroupFormId" method="post" >
-<input type="hidden" name="language" value="${currLanguage}">
+<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
 <input type="hidden" id="buttonText" name="buttonText" value="">
 <input type="hidden" id="isPublished" name="isPublished" value="${groupsBo.isPublished}">
 <input type="hidden" value="${groupsBean.action}" id="action" name="action">
 <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
+<input type="hidden" id="stepOrGroup" value="${groupsBo.stepOrGroup}" name="stepOrGroup"/>
 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
           <div class="col-sm-10 col-rc white-bg p-none">
             <!--  Start top tab section-->
@@ -203,30 +208,26 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                                          data-error="Please choose one option" class="selectpicker text-normal req-pll"
                                          title="-select-">
-                             <c:forEach items="${qTreeMap}"
-								var="destinationStep">
-								<c:if
+                             <c:forEach items="${qTreeMap}" var="destinationStep">
+                             <c:if
 									test="${destinationStep.value.stepType eq 'Instruction' || destinationStep.value.stepType eq 'Question'}">
-									<option value="${destinationStep.key}"
-										${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
+									<option value="${destinationStep.value.deletionId}" data-type="step"
+										${groupsBo.destinationTrueAsGroup eq destinationStep.value.deletionId ? 'selected' :''}>
 										Step ${destinationStep.key} : ${destinationStep.value.title}</option>
-								</c:if>
+							</c:if>
 								<c:if test="${destinationStep.value.stepType eq 'Form'}">
-									<c:forEach items="${destinationStep.value.fromMap}"
-										var="subentry">
-										<option value="${destinationStep.key}"
-											${groupsBo.destinationTrueAsGroup eq destinationStep.key ? 'selected' :''}>
-											Step ${destinationStep.key} : ${subentry.value.title}</option>
-									</c:forEach>
+										<option value="${destinationStep.value.deletionId}"
+											${groupsBo.destinationTrueAsGroup eq destinationStep.value.deletionId ? 'selected' :''}>
+											Step ${destinationStep.key} : ${destinationStep.value.stepShortTitle}</option>
 								</c:if>
 							</c:forEach>
 							<c:forEach items="${groupsList}" var="group" varStatus="status">
-                                <option value="${group.id}" id="selectGroup${group.id}"
+                                <option value="${group.id}" id="selectGroup${group.id}" data-type="group"
                                     ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
                                     Group ${status.index + 1} : ${group.groupName}&nbsp;
                                 </option>
                             </c:forEach>
-                            <option value="0"
+                            <option value="0" data-type="step"
                                 ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
                                 Completion Step
                             </option>
@@ -280,8 +281,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                             <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define
                                                 Functions
                                             </div>
-                                            <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define
-                                                Inputs
+                                            <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+                                                Define Inputs
+                                                <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+                                                      title="For response including 'Height' please provide response in cm.">
+                                                </span>
                                             </div>
                                             <div class="col-md-6"></div>
                                         </div>
@@ -331,7 +335,12 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                 <div class="row">
                                     <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions
                                     </div>
-                                    <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>
+                                    <div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">
+                                        Define Inputs
+                                        <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip"
+                                              title="For response including 'Height' please provide response in cm.">
+                                        </span>
+                                    </div>
                                     <div class="col-md-6"></div>
                                 </div>
                                 <div class="row data-div">
@@ -510,6 +519,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         } else {
             $("#isAutoSaved").val('false');
         }
+        if (!$('#groupDefaultVisibility').is(':checked')) {
+            $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+        } else {
+            $('#stepOrGroup').val('');
+        }
         $('#addGroupFormId').submit();
     }
 
@@ -518,6 +532,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
    $('#currentLanguage').val(currLang);
    refreshAndFetchLanguageData(currLang);
  }
+ else {
+      $('#currentLanguage').val('en');
+    }
 
  function goToBackPage(item) {
      var actionPage = "${actionType}";
@@ -606,7 +623,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             '<div style="height: 100px; border:1px solid #bfdceb;">' +
             '<div class="row">' +
             '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>' +
-            '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs</div>' +
+            '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs' +
+            '<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip" ' +
+            'title="For response including \'Height\' please provide response in cm.">' +
+            '</span>'+
+            '</div>' +
             '<div class="col-md-6"></div>' +
             '</div>' +
             '<div class="row data-div">' +
@@ -633,7 +654,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             '</div>';
         formContainer.append(formula);
         setOperatorDropDownOnAdd(responseType);
-        $('.selectpicker').selectpicker();
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     });
 
          let defaultVisibility = $('#groupDefaultVisibility');
@@ -736,8 +757,8 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         //show operators based on responseType for Questionstep and formStep
         function setOperatorDropDownOnAdd(responseType) {
         		if (responseType != null) {
-        			if (responseType == 1 || responseType == 2 ||
-        					responseType == 8 || responseType == 14 ) {
+        			if (responseType === '1' || responseType === '2' ||
+        					responseType === '8') {
         				defaultVisibility.prop('disabled', false);
         				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
         				let operator = $('select.operator');
@@ -746,7 +767,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         					operator.append('<option value="'+val+'">'+val+'</option>');
         				});
         				$('.selectpicker').selectpicker();
-        			} else if ((responseType >= 3 && responseType <= 7) || responseType == 11) {
+        			} else if ((responseType >= '3' && responseType <= '7') || responseType == '11') {
         				defaultVisibility.prop('disabled', false);
         				let operatorList = ["=", "!="];
         				let operator = $('select.operator');
@@ -755,7 +776,16 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         					operator.append('<option value="'+val+'">'+val+'</option>');
         				});
         				$('.selectpicker').selectpicker();
-        			} else {
+        			} else if (responseType === '14') {
+                        defaultVisibility.prop('disabled', false);
+                        let operatorList = ["<", ">"];
+                        let operator = $('select.operator');
+                        operator.empty();
+                        $.each(operatorList, function (index, val) {
+                            operator.append('<option value="'+val+'">'+val+'</option>');
+                        });
+                        $('.selectpicker').selectpicker();
+                    } else {
         				defaultVisibility.prop('checked', true).trigger('change');
         				defaultVisibility.prop('disabled', true);
         			}
@@ -772,6 +802,11 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             $('#buttonText').val('done');
             $("#action").val('true');
             $('#doneGroupId').prop('disabled', true);
+            if (!$('#groupDefaultVisibility').is(':checked')) {
+                $('#stepOrGroup').val($('#destinationTrueAsGroup option:selected').attr('data-type'));
+            } else {
+                $('#stepOrGroup').val('');
+            }
             $('#addGroupFormId').submit();
         }
     });
@@ -932,18 +967,23 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                          $('.remBtnDis').addClass('disabled');
 
 
-                         $('#logicDiv').find('div.bootstrap-select, input').each( function () {
+                         $('#logicDiv').find('div.bootstrap-select, .text-normal, input').each( function () {
 					$(this).addClass('ml-disabled');
 					if ($(this).is("input")) {
 						$(this).attr('disabled', true);
 					}
 				});
-                $('.data-div').find('div.bootstrap-select, input').each( function () {
+                $('.data-div').find('div.bootstrap-select, .text-normal , input').each( function () {
 					$(this).addClass('ml-disabled');
 					if ($(this).is("input")) {
 						$(this).attr('disabled', true);
 					}
 				});
+              
+
+               
+
+
 
       		          let mark=true;
       		          $('#groups_list option', htmlData).each(function (index, value) {

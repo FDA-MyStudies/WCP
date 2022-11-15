@@ -2851,7 +2851,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       // of questionnaire
       if (!formIdList.isEmpty()) {
         String fromQuery =
-            "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("
+            "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date,qs.step_short_title from questionnaires_steps qs , questions q, form_mapping f where qs.instruction_form_id=f.form_id and q.id=f.question_id and q.active=1 and f.form_id IN ("
                 + " :formIdList ) and f.active=1 order by f.form_id";
         List<?> result =
             session.createSQLQuery(fromQuery).setParameterList("formIdList", formIdList).list();
@@ -2869,6 +2869,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             String statData = (String) objects[7];
             Boolean status = (Boolean) objects[8];
             Boolean useAnchorDate = (Boolean) objects[9];
+            String stepShortTitle = (String) objects[10];
             if (formIdList.get(i).equals(formId)) {
               QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
               questionnaireStepBean.setStepId(formId);
@@ -2881,6 +2882,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               questionnaireStepBean.setStatData(statData);
               questionnaireStepBean.setStatus(status);
               questionnaireStepBean.setUseAnchorDate(useAnchorDate);
+              questionnaireStepBean.setStepShortTitle(stepShortTitle);
               formQuestionMap.put(sequenceNo, questionnaireStepBean);
             }
           }
@@ -2905,6 +2907,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           fQuestionnaireStepBean.setDestinationText(
               destinationText.get(
                   destinationMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP)));
+          fQuestionnaireStepBean.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
           qTreeMap.put(
               sequenceNoMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP),
               fQuestionnaireStepBean);
@@ -6712,7 +6715,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     Query query;
     String queryString;
     try{
-    	if (StringUtils.isNotBlank(id)) {
+    	if (StringUtils.isNotBlank(id) && (null != id)) {
     	      session = hibernateTemplate.getSessionFactory().openSession();
     	      queryString = "FROM  GroupMappingBo GBO WHERE GBO.grpId =:id";
     	      query = session.createQuery(queryString).setParameter("id", Integer.parseInt(id));  

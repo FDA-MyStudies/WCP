@@ -216,12 +216,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 										Step ${destinationStep.key} : ${destinationStep.value.title}</option>
 							</c:if>
 								<c:if test="${destinationStep.value.stepType eq 'Form'}">
-									<c:forEach items="${destinationStep.value.fromMap}"
-										var="subentry">
 										<option value="${destinationStep.value.deletionId}"
 											${groupsBo.destinationTrueAsGroup eq destinationStep.value.deletionId ? 'selected' :''}>
-											Step ${destinationStep.key} : ${subentry.value.title}</option>
-									</c:forEach>
+											Step ${destinationStep.key} : ${destinationStep.value.stepShortTitle}</option>
 								</c:if>
 							</c:forEach>
 							<c:forEach items="${groupsList}" var="group" varStatus="status">

@@ -6206,7 +6206,9 @@ public String deleteGroup(String id, SessionObject sessionObject) {
                 .setParameter("gpId", gpId)
                 .setParameter("group", "group")
                 .executeUpdate();
-        if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
+        if (count > 0) {
+          message = FdahpStudyDesignerConstants.SUCCESS;
+        }
       }
       transaction.commit();
     } catch (Exception e) {
@@ -6295,7 +6297,8 @@ public String saveOrUpdateGroup(GroupsBo groupsBO) {
         session.saveOrUpdate(groupsBO);
  	   msg = FdahpStudyDesignerConstants.SUC_MSG;
       }
-      QuestionnaireBo questionnaireBo = session.get(QuestionnaireBo.class, groupsBO.getQuestionnaireId());
+      QuestionnaireBo questionnaireBo = session.get(QuestionnaireBo.class,
+              groupsBO.getQuestionnaireId());
       if (questionnaireBo != null) {
         if (Boolean.FALSE.equals(groupsBO.getAction())) {
           questionnaireBo.setStatus(false);

@@ -535,6 +535,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
    $('#currentLanguage').val(currLang);
    refreshAndFetchLanguageData(currLang);
  }
+ else {
+      $('#currentLanguage').val('en');
+    }
 
  function goToBackPage(item) {
      var actionPage = "${actionType}";

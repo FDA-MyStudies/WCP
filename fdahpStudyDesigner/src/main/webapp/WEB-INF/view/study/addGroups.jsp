@@ -85,7 +85,7 @@ display:contents !important;
 <form:form
 action="/fdahpStudyDesigner/adminStudies/addOrUpdateGroupsDetails.do?_S=${param._S}"
 name="addGroupFormId" id="addGroupFormId" method="post" >
-<input type="hidden" name="language" value="${currLanguage}">
+<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 <input type="hidden" id="actionType" name="actionType" value="${fn:escapeXml(actionType)}">
 <input type="hidden" id="buttonText" name="buttonText" value="">
 <input type="hidden" id="isPublished" name="isPublished" value="${groupsBo.isPublished}">

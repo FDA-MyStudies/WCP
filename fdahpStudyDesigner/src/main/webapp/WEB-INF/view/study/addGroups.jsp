@@ -224,7 +224,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 							<c:forEach items="${groupsList}" var="group" varStatus="status">
                                 <option value="${group.id}" id="selectGroup${group.id}" data-type="group"
                                     ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
-                                    Group ${status.index + 1} : ${group.groupName}&nbsp;
+                                    Group : ${group.groupName}&nbsp;
                                 </option>
                             </c:forEach>
                             <option value="0" data-type="step"

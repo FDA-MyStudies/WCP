@@ -545,7 +545,7 @@ input[type=number] {
 												<c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
 													selected
 												</c:if>>
-											Group  ${status.index + 1} :  ${group.groupName}&nbsp;
+											Group :  ${group.groupName}&nbsp;
 										</option>
 									</c:forEach>
 <%--									<c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&--%>

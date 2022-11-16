@@ -337,7 +337,7 @@
                                             <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
                                                 <option value="${group.id}" data-type="group" id="selectGroup${group.id}"
                                                 ${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
-                                                Group ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                                Group :  ${group.groupName}&nbsp;</option>
                                             </c:forEach>
                                             <option value="0" data-type="step"
                                                 ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>
@@ -426,7 +426,7 @@
                                      <c:if test="${questionnairesStepsBo.destinationTrueAsGroup eq group.id}">
                                          selected
                                      </c:if>
-                                     id="selectGroup${group.id}">Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                     id="selectGroup${group.id}">Group :  ${group.groupName}&nbsp;</option>
                          </c:forEach>
 <%--                         <c:if test="${(sameSurveyPreloadSourceKeys eq null || sameSurveyPreloadSourceKeys.size() eq 0) &&--%>
 <%--									         (groupsList eq null || groupsList.size() eq 0) }">--%>

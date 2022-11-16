@@ -2239,7 +2239,7 @@ input[type=number] {
 																	</c:forEach>
 																	<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
                                                                         <option value="${group.id}" id="selectGroup${group.id}"
-                                                                        ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''}>
+                                                                        ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
                                                                         Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                                                                      </c:forEach>
 																	<option value="0"
@@ -3183,7 +3183,7 @@ input[type=number] {
                                                 ${destinationStep.stepShortTitle}</option>
                                             </c:forEach>
                                             <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-                                                <option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+                                                <option value="${group.id}" id="selectGroup${group.id}"
                                                  ${questionResponseSubType.destinationStepId eq group.id ? 'selected' :''}>
                                                  Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
                                              </c:forEach>

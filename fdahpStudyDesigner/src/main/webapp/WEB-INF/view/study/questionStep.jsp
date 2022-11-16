@@ -4361,13 +4361,13 @@ input[type=number] {
 				<div class="modal-dialog">
 
 					<!-- Modal content-->
-					<div class="modal-content">
+					<div class="modal-content" id="formulaModal">
 						<div class="modal-header trial_header">
+							<div class="trial_title">Try your formula</div>
 							<button type="button" id="closeformulaId" class="close"
 								data-dismiss="modal">&times;</button>
 						</div>
 						<div class="modal-body trial_body">
-							<div class="trial_title">Try your formula</div>
 							<div class="trial_section1">
 								<span class="tealfont">Your Formula : </span><span
 									class="tryFormula"> -NA- </span>
@@ -8596,7 +8596,11 @@ input[type=number] {
           $('.OtherOptionCls').hide();
           $('.OtherOptionCls').find('input:text,select').removeAttr('required');
         }
-      })
+      });
+
+	  $('#closeformulaId').on('click', function (e) {
+		  $('#formulaModal').modal('hide');
+	  });
 
       $('#studyLanguage').on('change', function () {
         let currLang = $('#studyLanguage').val();

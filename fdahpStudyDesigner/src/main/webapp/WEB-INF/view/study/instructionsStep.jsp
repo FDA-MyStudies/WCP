@@ -233,7 +233,7 @@
                             <c:forEach items="${groupsPostLoadList}" var="group" varStatus="status">
                                 <option value="${group.id}"  data-type="group" id="selectGroup${group.id}"
                                 ${instructionsBo.questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
-                                Group  ${status.index + 1} :  ${group.groupName}&nbsp;</option>
+                                Group :  ${group.groupName}&nbsp;</option>
                             </c:forEach>
                             <option value="0" data-type="step"
                                 ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>

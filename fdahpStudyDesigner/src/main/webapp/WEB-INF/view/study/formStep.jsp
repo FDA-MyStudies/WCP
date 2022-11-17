@@ -1895,7 +1895,7 @@ function refreshSourceKeys(surveyId, type) {
                         if (!$('#differentSurveyPreLoad').is(':checked')) {
                             <c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
                             id.append('<option data-type="group" value="${group.id}" id="selectGroup${group.id}">'+
-                                'Group  ${status.index + 1} :  ${group.groupName}&nbsp;'+
+                                'Group : ${group.groupName}&nbsp;'+
                                 '</option>');
                             </c:forEach>
                         } else {

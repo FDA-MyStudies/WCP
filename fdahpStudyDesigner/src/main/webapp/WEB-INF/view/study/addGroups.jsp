@@ -224,7 +224,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 							<c:forEach items="${groupsList}" var="group" varStatus="status">
                                 <option value="${group.id}" id="selectGroup${group.id}" data-type="group"
                                     ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
-                                    Group ${status.index + 1} : ${group.groupName}&nbsp;
+                                    Group : ${group.groupName}&nbsp;
                                 </option>
                             </c:forEach>
                             <option value="0" data-type="step"
@@ -653,7 +653,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             '</div>' +
             '</div>';
         formContainer.append(formula);
-        setOperatorDropDownOnAdd(responseType);
+        setOperatorDropDownOnAdd(responseType, count);
         $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     });
 
@@ -755,36 +755,34 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             }
 
         //show operators based on responseType for Questionstep and formStep
-        function setOperatorDropDownOnAdd(responseType) {
+        function setOperatorDropDownOnAdd(responseType, count) {
         		if (responseType != null) {
+        		    let operator = $('#operator' + count);
         			if (responseType === '1' || responseType === '2' ||
         					responseType === '8') {
         				defaultVisibility.prop('disabled', false);
         				let operatorList = ["<", ">", "=", "!=", "<=", ">="];
-        				let operator = $('select.operator');
         				operator.empty();
         				$.each(operatorList, function (index, val) {
         					operator.append('<option value="'+val+'">'+val+'</option>');
         				});
-        				$('.selectpicker').selectpicker();
+        				operator.selectpicker('refresh');
         			} else if ((responseType >= '3' && responseType <= '7') || responseType == '11') {
         				defaultVisibility.prop('disabled', false);
         				let operatorList = ["=", "!="];
-        				let operator = $('select.operator');
         				operator.empty();
         				$.each(operatorList, function (index, val) {
         					operator.append('<option value="'+val+'">'+val+'</option>');
         				});
-        				$('.selectpicker').selectpicker();
+        				operator.selectpicker('refresh');
         			} else if (responseType === '14') {
                         defaultVisibility.prop('disabled', false);
                         let operatorList = ["<", ">"];
-                        let operator = $('select.operator');
                         operator.empty();
                         $.each(operatorList, function (index, val) {
                             operator.append('<option value="'+val+'">'+val+'</option>');
                         });
-                        $('.selectpicker').selectpicker();
+                        operator.selectpicker('refresh');
                     } else {
         				defaultVisibility.prop('checked', true).trigger('change');
         				defaultVisibility.prop('disabled', true);
@@ -810,7 +808,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             $('#addGroupFormId').submit();
         }
     });
-
 
          function validateGroupId(item, callback) {
         	    var groupId = $("#groupId").val();
@@ -979,11 +976,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 						$(this).attr('disabled', true);
 					}
 				});
-              
-
-               
-
-
 
       		          let mark=true;
       		          $('#groups_list option', htmlData).each(function (index, value) {
@@ -1042,7 +1034,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
       		          $('.delete').addClass('cursor-none');
       		          </c:if>
 
-                        let defaultVisibility = $('#groupDefaultVisibility');
+         let defaultVisibility = $('#groupDefaultVisibility');
          if (defaultVisibility.is(':checked')) {
              $('#logicDiv').find('div.bootstrap-select, input, select').each( function () {
                  $(this).addClass('ml-disabled');

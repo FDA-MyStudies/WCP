@@ -2454,20 +2454,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     return result;  }
 
   @Override
-  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans) {
+  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId) {
   	List<GroupMappingStepBean> groupMappingBeanss = null;
-  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId,groupMappingBo, groupMappingBeans);
+  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId);
   	return groupMappingBeanss;
   }
-
-  @Override
-  public List<GroupMappingBo> getAssignSteps(int grpId) {
-      logger.info("StudyQuestionnaireServiceImpl - getAssignSteps - Starts");
-      List<GroupMappingBo> getAssignSteps = studyQuestionnaireDAO.getAssignSteps(grpId);
-
-  	return getAssignSteps;
-  }
-
 
   @Override
   public String deleteGroupMaprecords(String id) {

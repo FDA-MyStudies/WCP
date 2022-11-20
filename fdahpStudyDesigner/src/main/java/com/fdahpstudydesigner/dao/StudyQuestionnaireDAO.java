@@ -198,9 +198,7 @@ public interface StudyQuestionnaireDAO {
 
   public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
 
-  public List<GroupMappingStepBean> getGroupsList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans);
-
-  public List<GroupMappingBo> getAssignSteps(int grpId);
+  public List<GroupMappingStepBean> getGroupsList(Integer grpId);
 
   public String deleteGroupMaprecords(String id);
 

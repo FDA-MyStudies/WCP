@@ -200,11 +200,7 @@ String checkGroupName(String questionnaireId, String groupName, String studyId);
 
   public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
 
-  public List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans);
-
-
-  List<GroupMappingBo> getAssignSteps(int grpId);
-
+  public List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId);
 
   public String deleteGroupMaprecords(String id);
 

@@ -5149,12 +5149,9 @@ public class StudyQuestionnaireController {
           request.getSession().setAttribute(sessionStudyCount + "id", grpId);
         }
 
-        groupMappingBo =
-                studyQuestionnaireService.getAssignSteps( Integer.parseInt(grpId));
-        
         groupMappingBeans =
                 studyQuestionnaireService.getGroupsAssignedList(
-                    Integer.valueOf(grpId),groupMappingBo, groupMappingBeans);
+                    Integer.valueOf(grpId));
       map.addAttribute("groupsAssignedList", groupMappingBeans);
         map.addAttribute("groupMappingBo", groupMappingBo);
         map.addAttribute("grpId", grpId);

@@ -4313,10 +4313,13 @@ public class StudyQuestionnaireController {
           System.out.println(stepType);
         }
         map.addAttribute("stepType", stepType);
+        String selectionStyle = null;
         if(stepType != null && questionStepId != null){
           if(stepType.equals("Question")){
             responseType = studyQuestionnaireService.getResponseType(questionStepId);
-            System.out.println(responseType);
+            if(responseType.equals(6)) {
+              selectionStyle = studyQuestionnaireService.getTextChoiceSelectionStyle(stepId);
+            }
             operatorsList = getOperatorsListByResponseType(responseType);
           }
           else if(stepType.equals("Form")){
@@ -4326,13 +4329,16 @@ public class StudyQuestionnaireController {
               lastQuestinObjectValue = questionIdList.get(0);
               System.out.println(lastQuestinObjectValue);
               responseType = studyQuestionnaireService.getResponseTypeForFormStep(lastQuestinObjectValue);
-              System.out.println(responseType);
+              if(responseType.equals(6)) {
+                selectionStyle = studyQuestionnaireService.getTextChoiceSelectionStyle(lastQuestinObjectValue);
+              }
               operatorsList = getOperatorsListByResponseType(responseType);
             }
           }
           map.addAttribute("operators",operatorsList);
           map.addAttribute("responseType",responseType);
         }
+        map.addAttribute("selectionStyle", selectionStyle);
 
         if (StringUtils.isNotEmpty(questionnaireId)) {
           groupsList =
@@ -4604,9 +4610,13 @@ public class StudyQuestionnaireController {
           stepType = studyQuestionnaireService.getStepType(questionStepId, stepId);
         }
         map.addAttribute("stepType", stepType);
+        String selectionStyle = null;
         if(stepType != null && questionStepId != null){
           if(stepType.equals("Question")){
             responseType = studyQuestionnaireService.getResponseType(questionStepId);
+            if(responseType.equals(6)) {
+              selectionStyle = studyQuestionnaireService.getTextChoiceSelectionStyle(stepId);
+            }
             operatorsList = getOperatorsListByResponseType(responseType);
           }
           else if(stepType.equals("Form")){
@@ -4616,13 +4626,16 @@ public class StudyQuestionnaireController {
               lastQuestinObjectValue = questionIdList.get(0);
               System.out.println(lastQuestinObjectValue);
               responseType = studyQuestionnaireService.getResponseTypeForFormStep(lastQuestinObjectValue);
+              if(responseType.equals(6)) {
+                selectionStyle = studyQuestionnaireService.getTextChoiceSelectionStyle(lastQuestinObjectValue);
+              }
               operatorsList = getOperatorsListByResponseType(responseType);
             }
           }
           map.addAttribute("operators",operatorsList);
           map.addAttribute("responseType",responseType);
         }
-
+        map.addAttribute("selectionStyle", selectionStyle);
         Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
         qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.parseInt(questionnaireId));
         List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);

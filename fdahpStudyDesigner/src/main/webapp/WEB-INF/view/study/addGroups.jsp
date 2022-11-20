@@ -745,6 +745,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
              }
          })
 
+         <c:if test = "${selectionStyle eq 'Multiple'}">
+                     defaultVisibility.prop('checked', true).trigger('change');
+                     defaultVisibility.prop('disabled', true);
+          </c:if>
        //Disable defaultVisibility when lastStep is instruction and if formstep doesnot contains questions
            let stepType = $('#stepType').val();
            let size=${fn:length(questionIdList)}
@@ -754,6 +758,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                   defaultVisibility.prop('disabled', true);
             }
 
+        <c:if test = "${responseType eq '9' || responseType eq '10' || responseType eq '12' || responseType eq '13' || responseType eq '15'}">
+        defaultVisibility.prop('checked', true).trigger('change');
+        defaultVisibility.prop('disabled', true);
+        </c:if>
         //show operators based on responseType for Questionstep and formStep
         function setOperatorDropDownOnAdd(responseType, count) {
         		if (responseType != null) {
@@ -999,6 +1007,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                             $('#groupDefaultVisibility').attr('checked', true);
                             </c:otherwise>
                       </c:choose>
+                       <c:if test = "${responseType eq '9' || responseType eq '10' || responseType eq '12' || responseType eq '13' || responseType eq '15' || selectionStyle eq 'Multiple'}">
+                               $('#groupDefaultVisibility').attr('disabled', true);
+                               $('#groupDefaultVisibility').attr('checked', true);
+                       </c:if>
                       let stepType = $('#stepType').val();
                        let size=${fn:length(questionIdList)}
                        if(stepType == 'Instruction' || stepType == 'Form' && size == 0){

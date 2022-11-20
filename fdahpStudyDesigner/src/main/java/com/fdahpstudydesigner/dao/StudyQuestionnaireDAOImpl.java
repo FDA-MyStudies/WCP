@@ -7424,4 +7424,30 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
     logger.info("getListOfQuestions() - Ends");
     return questionList;
   }
+
+  @Override
+  public String getTextChoiceSelectionStyle(Integer questionStepId) {
+     logger.info("begin getTextChoiceSelectionStyle()");
+      Session session = null;
+      String selectionStyle = null;
+      String searchQuery = "";
+        try {
+             session = hibernateTemplate.getSessionFactory().openSession();
+               searchQuery =
+                       "select selectionStyle from QuestionReponseTypeBo WHERE questionsResponseTypeId =:questionStepId";
+                       query = session.createQuery(searchQuery)
+                       .setParameter("questionStepId", questionStepId);
+                        selectionStyle = (String) query.uniqueResult();
+
+            } catch (Exception e) {
+             logger.error("StudyQuestionnaireDAOImpl - getTextChoiceSelectionStyle() - ERROR ", e);
+              } finally {
+              if (session != null) {
+               session.close();
+               }
+              }
+               logger.info("getTextChoiceSelectionStyle() - Ends");
+         return selectionStyle;
+  }
+
 }

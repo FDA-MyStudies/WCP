@@ -236,7 +236,6 @@ public String deleteStepMaprecords(String id);
 
   List<FormMappingBo> getListOfQuestions(Integer formId);
 
-  // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
-
+  public String getTextChoiceSelectionStyle(Integer questionStepId);
 
 }

@@ -2674,4 +2674,19 @@ logger.exit("getStepId() - Ends");
     logger.info("getResponseType() - Ends");
     return questionList;
   }
+
+  @Override
+  public String getTextChoiceSelectionStyle(Integer questionStepId) {
+  logger.info("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - Starts");
+    String selectionStyle = null;
+ try {
+      selectionStyle = studyQuestionnaireDAO.getTextChoiceSelectionStyle(questionStepId);
+      } catch (Exception e) {
+     logger.error("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - ERROR ", e);
+     }
+     logger.info("getResponseType() - Ends");
+        return selectionStyle;
+  }
+
+
 }

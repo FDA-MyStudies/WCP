@@ -5025,7 +5025,6 @@ public class StudyQuestionnaireController {
   String errMsg = "";
   String actionPage = "";
   StudyBo studyBo=null;
-  List<GroupMappingBo> groupMappingBo =null;
   List<GroupMappingStepBean> groupMappingBeans=new ArrayList<GroupMappingStepBean>();
   try {
     SessionObject sesObj =
@@ -5153,7 +5152,6 @@ public class StudyQuestionnaireController {
                 studyQuestionnaireService.getGroupsAssignedList(
                     Integer.valueOf(grpId));
       map.addAttribute("groupsAssignedList", groupMappingBeans);
-        map.addAttribute("groupMappingBo", groupMappingBo);
         map.addAttribute("grpId", grpId);
         map.addAttribute("_S", sessionStudyCount);
         mav = new ModelAndView("deAssignGroup", map);

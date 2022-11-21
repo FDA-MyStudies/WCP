@@ -744,7 +744,10 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                  op.parent().removeClass('ml-disabled');
              }
          })
-
+           	<c:if test="${questionnaireBo.branching}">
+           	defaultVisibility.prop('checked', true).trigger('change');
+           	defaultVisibility.prop('disabled', true);
+           	</c:if>
          <c:if test = "${selectionStyle eq 'Multiple'}">
                      defaultVisibility.prop('checked', true).trigger('change');
                      defaultVisibility.prop('disabled', true);
@@ -1007,7 +1010,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                             $('#groupDefaultVisibility').attr('checked', true);
                             </c:otherwise>
                       </c:choose>
-                       <c:if test = "${responseType eq '9' || responseType eq '10' || responseType eq '12' || responseType eq '13' || responseType eq '15' || selectionStyle eq 'Multiple'}">
+                       <c:if test = "${responseType eq '9' || responseType eq '10' || responseType eq '12' || responseType eq '13' || responseType eq '15' || selectionStyle eq 'Multiple' || questionnaireBo.branching eq true}">
                                $('#groupDefaultVisibility').attr('disabled', true);
                                $('#groupDefaultVisibility').attr('checked', true);
                        </c:if>

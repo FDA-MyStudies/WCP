@@ -4171,6 +4171,7 @@ public class StudyQuestionnaireController {
     ModelMap map = new ModelMap();
     GroupsBo groupsBo = null;
     String questionnaireId = "";
+    QuestionnaireBo questionnaireBo = null;
     String sucMsg = "";
     StudyBo studyBo = null;
     List<GroupMappingBo> groupStepLists = new ArrayList<>();
@@ -4267,6 +4268,13 @@ public class StudyQuestionnaireController {
           questionnaireId =
                   (String) request.getSession().getAttribute(sessionStudyCount + "questionnaireId");
           request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
+        }
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          request.getSession().removeAttribute(sessionStudyCount + "actionType");
+          questionnaireBo =
+                  studyQuestionnaireService.getQuestionnaireById(
+                          Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+          map.addAttribute("questionnaireBo", questionnaireBo);
         }
         String id =
                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
@@ -4456,6 +4464,7 @@ public class StudyQuestionnaireController {
     boolean addFlag = false;
     StudyBo studyBo = null;
     List<GroupMappingBo> groupStepLists = new ArrayList<>();
+    QuestionnaireBo questionnaireBo = null;
     List<Integer> questionIdList = new ArrayList<>();
     List<String> operatorsList = new ArrayList<>();
     Integer responseType = null;
@@ -4509,6 +4518,13 @@ public class StudyQuestionnaireController {
         map.addAttribute("languageList", langMap);
 
         String questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount +"questionnaireId");
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          request.getSession().removeAttribute(sessionStudyCount + "actionType");
+          questionnaireBo =
+                  studyQuestionnaireService.getQuestionnaireById(
+                          Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+          map.addAttribute("questionnaireBo", questionnaireBo);
+        }
                   String id =
              FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
                      ? ""

@@ -6877,7 +6877,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     	      for (int j = 0; j < result.size(); j++) {
     	        question.add(result.get(j));
     	      }
-    	    groupMappingStepBean1.setStepId(stepsBo.getStepId());
+    	    groupMappingStepBean1.setStepId(stepsBo.getInstructionFormId());
     	    groupMappingStepBean1.setDescription(question);
     	    groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
     	    groupMappingBeanss.add(groupMappingStepBean1);

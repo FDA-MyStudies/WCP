@@ -7018,7 +7018,7 @@ public String deleteStepMaprecords(String id) {
         BigInteger count = (BigInteger) session
                 .createSQLQuery("select count(*) from questionnaires_steps where questionnaires_id=:queId " +
                         "and active=:active and ((default_visibility=:dv and destination_true_as_group is not null and is_different_survey_pre_load is not true) " +
-                        "or (is_piping = :isPiping and is_different_survey is not true))")
+                        "or (is_piping = :isPiping and is_different_survey is not true) or (group_flag is true))")
                 .setParameter("queId", queId)
                 .setParameter("active", true)
                 .setParameter("dv", false)
@@ -7027,17 +7027,18 @@ public String deleteStepMaprecords(String id) {
         if (count.intValue() > 0) {
           allowReorder = false;
         }
-      }
-      if (queId != null) {
-          BigInteger count = (BigInteger) session
+
+        if (allowReorder) {
+          BigInteger groupCount = (BigInteger) session
                   .createSQLQuery("select count(*) from grouppp where questionnaire_id=:queId "
                           + "and ((default_visibility=:dv and destination_true_as_group is not null))")
                   .setParameter("queId", queId)
                   .setParameter("dv", false)
                   .uniqueResult();
-          if (count.intValue() > 0) {
-              allowReorder = false;
+          if (groupCount.intValue() > 0) {
+            allowReorder = false;
           }
+        }
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - ERROR ", e);

@@ -3128,8 +3128,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
       if ('${allowReorder}' === 'false') {
           table1.rowReorder.disable();
-          $('#branchingId').prop('disabled', true);
+          //$('#branchingId').prop('disabled', true);
       }
+
+      //If defaultVisibility for group is false then disable the branching checkbox
+          <c:forEach items="${groupsList}" var="groupList">
+             <c:if test="${groupList.defaultVisibility eq 'false'}">
+              $('#branchingId').prop('disabled', true);
+              </c:if>
+          </c:forEach>
     // Branching Logic starts here
 
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');

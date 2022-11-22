@@ -137,12 +137,11 @@ name="addGroupFormId" id="addGroupFormId" method="post">
 										</span>
 										</c:if>
 										<c:if test="${loop.index >= 2}">
-                                        	<img style="cursor:pointer" src="/fdahpStudyDesigner/images/icons/close.png"
-                                            	 onclick="del(${groupsAssignedList.stepId});" />
+                                        	<span class="mr-md close_img"><img
+                                            	src="/fdahpStudyDesigner/images/icons/close.png"
+                                            onclick="del(${groupsAssignedList.stepId});" /></span>
                                         </c:if>
-
-
-											<c:if test="${groupsAssignedList.stepType ne 'Form'}">
+                                            <c:if test="${groupsAssignedList.stepType ne 'Form'}">
 											<c:forEach items="${groupsAssignedList.description}" var="descriptions">
 											<span>
 									${descriptions}</span>

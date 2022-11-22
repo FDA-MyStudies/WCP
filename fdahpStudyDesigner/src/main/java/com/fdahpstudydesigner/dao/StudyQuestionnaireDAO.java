@@ -206,7 +206,7 @@ public GroupMappingBo getStepDetails(String id, String questionnaireId);
 
 public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId);
 
-public String deleteStepMaprecords(String id);
+public String deleteStepMaprecords(String id,String questionnaireId);
 
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 

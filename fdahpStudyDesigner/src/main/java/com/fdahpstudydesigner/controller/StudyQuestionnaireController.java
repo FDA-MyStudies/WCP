@@ -5216,7 +5216,7 @@ public class StudyQuestionnaireController {
           String msg = studyQuestionnaireService.stepFlagDisable(groupMappingBo,questionnaireId);
 
           // Delete all the steps in mapping table based on step id
-          String msgg = studyQuestionnaireService.deleteStepMaprecords(id);
+          String msgg = studyQuestionnaireService.deleteStepMaprecords(id,questionnaireId);
           if(msg.equalsIgnoreCase("success") && msgg.equalsIgnoreCase("success"))
           {
         	  message=FdahpStudyDesignerConstants.SUCCESS;

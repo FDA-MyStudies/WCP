@@ -2489,13 +2489,13 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
 }
 
 @Override
-public String deleteStepMaprecords(String id) {
+public String deleteStepMaprecords(String id,String questionnaireId) {
 	logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
 
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
-              studyQuestionnaireDAO.deleteStepMaprecords(id);
+              studyQuestionnaireDAO.deleteStepMaprecords(id,questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
     }

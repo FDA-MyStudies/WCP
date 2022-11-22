@@ -6647,7 +6647,7 @@ input[type=number] {
             questionReponseTypeBo.otherIncludeText = $(
                 '[name="questionReponseTypeBo.otherIncludeText"]:checked').val();
             questionReponseTypeBo.otherParticipantFill = $(
-                '[name="questionReponseTypeBo.otherParticipantFill"]').val();
+					'input[name="questionReponseTypeBo.otherParticipantFill"]:checked').val();
           });
           questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
         } else if (resType == "Image Choice") {

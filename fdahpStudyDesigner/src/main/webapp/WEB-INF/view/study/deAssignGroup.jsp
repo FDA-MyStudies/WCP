@@ -126,14 +126,22 @@ name="addGroupFormId" id="addGroupFormId" method="post">
                 <div class="row form-group">
                   <div class="col-md-6 pl-none" id="deassignId">
                   		<div class="study-selected mt-md">
- 							<c:forEach items="${groupsAssignedList}" var="groupsAssignedList">
- 								<div class="study-selected-item selStd" id="std${groupsAssignedList.stepId}">
+ 							<c:forEach items="${groupsAssignedList}" var="groupsAssignedList" varStatus="loop">
+ 				 					<div class="study-selected-item selStd" id="std${groupsAssignedList.stepId}">
 									<input type="hidden" class="stdCls" id="${groupsAssignedList.stepId}" name=""
 										value="${groupsAssignedList.stepId}"
 										stdTxt="${groupsAssignedList.description}">
-										<span class="mr-md close_img"><img
-											src="/fdahpStudyDesigner/images/icons/close.png"
-											onclick="del(${groupsAssignedList.stepId});" /></span>
+										<c:if test="${loop.index < 2}">
+										<span class="mr-md close_img tool-tip" data-toggle="tooltip" data-placement="bottom" title="Cannot deassign first two steps">
+										<img src="/fdahpStudyDesigner/images/icons/close.png"/>
+										</span>
+										</c:if>
+										<c:if test="${loop.index >= 2}">
+                                        	<img style="cursor:pointer" src="/fdahpStudyDesigner/images/icons/close.png"
+                                            	 onclick="del(${groupsAssignedList.stepId});" />
+                                        </c:if>
+
+
 											<c:if test="${groupsAssignedList.stepType ne 'Form'}">
 											<c:forEach items="${groupsAssignedList.description}" var="descriptions">
 											<span>
@@ -308,6 +316,18 @@ var idleTime = 0;
           let size=${fn:length(groupsAssignedList)}
           let count=size;
             function del(stepId){
+            bootbox.confirm({
+                  message: "This step and following steps will be deassigned. Are you sure?",
+                  buttons: {
+                    confirm: {
+                      label: 'Yes',
+                    },
+                    cancel: {
+                      label: 'No',
+                    }
+                  },
+                  callback: function (result) {
+                if (result) {
             	if(count>2){
                     if(size>2){
                	$.ajax({
@@ -324,10 +344,12 @@ var idleTime = 0;
                         	 $('#std'+stepId).remove();
                         	 count--;
                         }
+                        window.location.reload();
                     }
-               	 
+
               	})
             	}
+
         	}
         	else
             {
@@ -336,7 +358,12 @@ var idleTime = 0;
             $('#alertMsg').show();
             }
         	setTimeout(hideDisplayMessage, 4000);
+
+
     	}
+              }
+            });
+            }
 
 <c:if test="${actionType == 'view'}">
 $('#deassignId').addClass('ml-disabled');

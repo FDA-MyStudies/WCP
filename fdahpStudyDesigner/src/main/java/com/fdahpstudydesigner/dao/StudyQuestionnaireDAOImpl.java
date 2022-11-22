@@ -6948,18 +6948,20 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
 	logger.info("StudyQuestionnaireDAOImpl - groupFlagDisable() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
   Query query = null;
-  try (Session session = hibernateTemplate.getSessionFactory().openSession()) {
+  try  {
+    Session session = hibernateTemplate.getSessionFactory().openSession();
     transaction = session.beginTransaction();
-
-    String stepId = groupMappingBo.getStepId();
-    query = session
-            .createQuery(
-                    "update QuestionnairesStepsBo Q set Q.groupFlag=0"
-                            + " where Q.instructionFormId=:stepId and Q.questionnairesId=:questionnaireId");
-    query.setString("stepId", stepId);
-    query.setString("questionnaireId", questionnaireId);
+    int id = groupMappingBo.getGrpId();
+    Integer stepId = Integer.valueOf(groupMappingBo.getStepId());
+    Integer seqNum = (Integer) session.createQuery("select sequenceNo from QuestionnairesStepsBo where instructionFormId=: stepId").setParameter("stepId",stepId)
+            .setMaxResults(1).uniqueResult();
+    List<Integer> stepList = session.createQuery("select questionnaireStepId from GroupMappingBo where grpId=:id").setParameter("id",id).getResultList();
+    String updateQuery = "update QuestionnairesStepsBo set groupFlag=false where questionnairesId=:questionnaireId and sequenceNo>=(:seq) and stepId in (:stepList)";
+    query = session.createQuery(updateQuery)
+            .setString("questionnaireId", questionnaireId)
+            .setParameter("seq",seqNum)
+            .setParameterList("stepList",stepList);
     query.executeUpdate();
-
     message = FdahpStudyDesignerConstants.SUCCESS;
     if (transaction.getStatus().equals(TransactionStatus.ACTIVE)) {
       transaction.commit();
@@ -6974,7 +6976,7 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
 }
 
 @Override
-public String deleteStepMaprecords(String id) {
+public String deleteStepMaprecords(String id,String questionnaireId) {
   logger.info("StudyQuestionnaireDAOImpl - deleteGroupMaprecords() - Starts");
   Session session = null;
   String message = FdahpStudyDesignerConstants.FAILURE;
@@ -6987,9 +6989,11 @@ public String deleteStepMaprecords(String id) {
     if (StringUtils.isNotEmpty(id)) {
       //delete the qroup based on id
       queryString =
-              "delete GroupMappingBo GBO where GBO.stepId=:id ";
+              "delete GroupMappingBo GBO where GBO.stepId in "
+      +"(select instructionFormId from QuestionnairesStepsBo where questionnairesId=:questionnaireId and sequenceNo>="
+      +"(select sequenceNo from QuestionnairesStepsBo where instructionFormId=:id))";
       query = session.createQuery(queryString);
-      count = query.setString("id", id).executeUpdate();
+      count = query.setString("id", id).setString("questionnaireId", questionnaireId).executeUpdate();
       if (count > 0) message = FdahpStudyDesignerConstants.SUCCESS;
     }
     transaction.commit();

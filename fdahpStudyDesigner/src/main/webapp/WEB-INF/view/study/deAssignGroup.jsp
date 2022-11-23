@@ -312,7 +312,7 @@ var idleTime = 0;
    		    });
    		  }
 
-          let size=${fn:length(groupsAssignedList)}
+          let size=${fn:length(groupsAssignedList)};
           let count=size;
             function del(stepId){
             bootbox.confirm({

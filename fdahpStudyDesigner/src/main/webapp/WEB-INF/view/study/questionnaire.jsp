@@ -446,7 +446,7 @@ width:142px !important;
                                        class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>" id="groupsBtn"
                                         onclick="getQuestionnaireStep('Groups');" >Groups
                                </div>
-                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
+                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
       							<span class="checkbox checkbox-inline">
@@ -486,13 +486,13 @@ width:142px !important;
                                           <c:choose>
                                           <c:when test="${entry.value.groupFlag eq true}">
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                          <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
+                                          <input type="checkbox" data-seq="${entry.key}" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
                                           <label for="${entry.value.stepId}"></label></span>
                                           </c:when>
                                            <c:otherwise>
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
                                         <!--  <c:if test="${actionType ne 'view'}"> </c:if>-->
-                                          <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
+                                          <input type="checkbox" data-seq="${entry.key}" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
 
                                           <label for="${entry.value.stepId}"></label></span>
                                            </c:otherwise>
@@ -515,14 +515,14 @@ width:142px !important;
                                                    <c:choose>
 													<c:when test="${entry.value.groupFlag eq true}">
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                                    <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
+                                                    <input type="checkbox" data-seq="${entry.key}" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
                                                     <label for="${entry.value.stepId}"></label>
                                                     </span>
                                                     </c:when>
                                                     <c:otherwise>
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
                                                   <!-- <c:if test="${actionType ne 'view'}">  </c:if> -->
-													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
+													<input type="checkbox" data-seq="${entry.key}" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
 
 													<label for="${entry.value.stepId}"></label>
 													</span>
@@ -1887,7 +1887,7 @@ width:142px !important;
 </div>
 
 <!-- assignGroup -->
-<div id ="assignGroup"class="modal" tabindex="-1" role="dialog">
+<div id ="assignGroup" class="modal" tabindex="-1" role="dialog">
    <div class="modal-dialog assignGroup" role="document">
       <div class="modal-content">
         <div class="modal-body" style="padding:40px;">
@@ -3154,6 +3154,29 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             '#' + $(this).attr('id'));
       }
     });
+
+    $('#assigndisable').on('click', function() {
+        let firstSeq;
+        let isValidSequence = true;
+        $.each($('.step-check:checked'), function(index, ele) {
+            console.log('first seq :' + firstSeq);
+            console.log('index :' + index);
+            console.log('ele :' + $(ele).attr('data-seq'));
+            if (index === 0) {
+                firstSeq = $(ele).attr('data-seq');
+            } else {
+                if (parseInt(firstSeq) !== parseInt($(ele).attr('data-seq'))) {
+                    bootbox.alert("Group can be assigned for consecutive steps only.");
+                    isValidSequence = false;
+                }
+            }
+            firstSeq++;
+        })
+
+        if (isValidSequence) {
+            $('#assignGroup').modal('show');
+        }
+    })
 
     $(document).on('click change dp.change', '.dailyClock, #startDate', function (e) {
       var dt = $('#startDate').val();

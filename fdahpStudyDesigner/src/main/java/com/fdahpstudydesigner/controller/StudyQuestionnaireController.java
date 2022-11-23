@@ -4057,6 +4057,12 @@ public class StudyQuestionnaireController {
                     .getSession()
                     .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.SUC_MSG);
           }
+          if (null != request.getSession() &&
+                  null != request.getSession().getAttribute("gId") &&
+                    null != request.getSession().getAttribute("flag")) {
+            request.getSession().removeAttribute("gId");
+            request.getSession().removeAttribute("flag");
+          }
           if (null
                   != request
                   .getSession()
@@ -4185,9 +4191,10 @@ public class StudyQuestionnaireController {
     String actionPage = "";
     int grpId = 0;
     try {
+      HttpSession session = request.getSession();
       SessionObject sesObj =
               (SessionObject)
-                      request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+                      session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
       Integer sessionStudyCount =
               StringUtils.isNumeric(request.getParameter("_S"))
                       ? Integer.parseInt(request.getParameter("_S"))
@@ -4276,20 +4283,33 @@ public class StudyQuestionnaireController {
                           Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
           map.addAttribute("questionnaireBo", questionnaireBo);
         }
-        String id =
-                FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
-                        ? ""
-                        : request.getParameter("id");
-        String checkRefreshFlag =
-                FdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag"))
-                        ? ""
-                        : request.getParameter("checkRefreshFlag");
         String actionType =
                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))
                         ? ""
                         : request.getParameter("actionType");
         if (StringUtils.isEmpty(actionType)) {
           actionType = (String) request.getSession().getAttribute(sessionStudyCount + "actionType");
+        }
+        String id = "";
+        String checkRefreshFlag = "";
+        if (!"add".equals(actionType)) {
+          if (session != null
+                  && session.getAttribute("gId") != null && request.getParameter("id") == null) {
+            id = (String) session.getAttribute("gId");
+            checkRefreshFlag = (String) session.getAttribute("flag");
+          } else {
+            id =
+                    FdahpStudyDesignerUtil.isEmpty(request.getParameter("id"))
+                            ? ""
+                            : request.getParameter("id");
+            checkRefreshFlag =
+                    FdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag"))
+                            ? ""
+                            : request.getParameter("checkRefreshFlag");
+
+            session.setAttribute("gId", id);
+            session.setAttribute("flag", checkRefreshFlag);
+          }
         }
         String actionOn =
                 FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionOn"))
@@ -4365,7 +4385,7 @@ public class StudyQuestionnaireController {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
           }
-          if ("edit".equals(actionType)) {
+          if ("edit".equals(actionType) || "add".equals(actionType) || !"".equals(id)) {
             map.addAttribute("actionType", "edit");
             request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
           } else {

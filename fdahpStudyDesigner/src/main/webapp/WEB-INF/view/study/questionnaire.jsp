@@ -3166,7 +3166,6 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                 firstSeq = $(ele).attr('data-seq');
             } else {
                 if (parseInt(firstSeq) !== parseInt($(ele).attr('data-seq'))) {
-                    bootbox.alert("Group can be assigned for consecutive steps only.");
                     isValidSequence = false;
                 }
             }
@@ -3175,6 +3174,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
 
         if (isValidSequence) {
             $('#assignGroup').modal('show');
+        }
+        else{
+        bootbox.alert("Group can be assigned for consecutive steps only.");
         }
     })
 

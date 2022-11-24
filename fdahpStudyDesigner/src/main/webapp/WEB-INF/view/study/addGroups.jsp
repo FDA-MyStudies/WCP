@@ -809,6 +809,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
         $('#groupId').prop('disabled', false)
         if (isFormValid()) {
             $('#buttonText').val('done');
+            $('#actionType').val('edit');
             $("#action").val('true');
             $('#doneGroupId').prop('disabled', true);
             if (!$('#groupDefaultVisibility').is(':checked')) {

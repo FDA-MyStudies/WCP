@@ -345,6 +345,7 @@ var idleTime = 0;
 		          updateCompletionTicks(htmlData);
 		          $('.tit_wrapper').text($('#mlName', htmlData).val());
 		          $('.addOrEditGroups').attr('disabled', true);
+		          $('.addGroups').attr('disabled', true);
 		          $('.delete,thead').addClass('cursor-none');
 		          let mark=true;
 		          $('#groups_list option', htmlData).each(function (index, value) {
@@ -357,6 +358,7 @@ var idleTime = 0;
 		          updateCompletionTicksForEnglish();
 		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 		          $('.addOrEditGroups').attr('disabled', false);
+		          $('.addGroups').attr('disabled', false);
 		          $('.delete, thead').removeClass('cursor-none');
 		          $('#studyProtocolId').prop('disabled', false);
 		          let mark=true;
@@ -374,6 +376,7 @@ var idleTime = 0;
 		  }
       <c:if test="${actionType eq 'view'}">
        $('.addOrEditGroups').attr('disabled', true);
+       $('.addGroups').attr('disabled', true);
        $('.delete,thead').addClass('cursor-none');
       </c:if>
 </script>

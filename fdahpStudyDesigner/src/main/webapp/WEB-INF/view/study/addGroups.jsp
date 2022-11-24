@@ -208,36 +208,28 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                  <select name="destinationTrueAsGroup" id="destinationTrueAsGroup"
                                          data-error="Please choose one option" class="selectpicker text-normal req-pll"
                                          title="-select-">
-                             <c:forEach items="${qTreeMap}" var="destinationStep">
-                             <c:if
-									test="${destinationStep.value.stepType eq 'Instruction' || destinationStep.value.stepType eq 'Question'}">
-									<option value="${destinationStep.value.deletionId}" data-type="step"
-										${groupsBo.destinationTrueAsGroup eq destinationStep.value.deletionId ? 'selected' :''}>
-										Step ${destinationStep.key} : ${destinationStep.value.title}</option>
-							</c:if>
-								<c:if test="${destinationStep.value.stepType eq 'Form'}">
-										<option value="${destinationStep.value.deletionId}"
-											${groupsBo.destinationTrueAsGroup eq destinationStep.value.deletionId ? 'selected' :''}>
-											Step ${destinationStep.key} : ${destinationStep.value.stepShortTitle}</option>
-								</c:if>
-							</c:forEach>
-							<c:forEach items="${groupsList}" var="group" varStatus="status">
-                                <option value="${group.id}" id="selectGroup${group.id}" data-type="group"
-                                    ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
-                                    Group : ${group.groupName}&nbsp;
-                                </option>
-                            </c:forEach>
-                            <option value="0" data-type="step"
-                                ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
-                                Completion Step
-                            </option>
-                        </select>
-                        <div class="help-block with-errors red-txt"></div>
-                    </div>
-                </div>
+                                     <c:forEach items="${qTreeMap}" var="destinationStep">
+                                         <option value="${destinationStep.stepId}" data-type="step"
+                                             ${groupsBo.destinationTrueAsGroup eq destinationStep.stepId ? 'selected' :''}>
+                                             Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+                                     </c:forEach>
+                                     <option value="0" data-type="step"
+                                         ${groupsBo.destinationTrueAsGroup eq 0 ? 'selected' :''}>
+                                         Completion Step
+                                     </option>
+                                     <c:forEach items="${groupsList}" var="group" varStatus="status">
+                                         <option value="${group.id}" id="selectGroup${group.id}" data-type="group"
+                                             ${groupsBo.destinationTrueAsGroup eq group.id ? 'selected' :''}>
+                                             Group : ${group.groupName}&nbsp;
+                                         </option>
+                                     </c:forEach>
+                                 </select>
+                                 <div class="help-block with-errors red-txt"></div>
+                             </div>
+                         </div>
+                         <br>
+                     </div>
                 <br>
-            </div>
-            <br>
 
                          <div id="formulaContainer${status.index}">
                              <c:choose>

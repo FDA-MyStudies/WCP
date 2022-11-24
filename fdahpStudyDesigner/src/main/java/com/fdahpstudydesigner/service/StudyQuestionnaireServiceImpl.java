@@ -2262,15 +2262,28 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId) {
+  public List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId, boolean isPreload) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad - Starts");
     List<GroupsBo> groups = null;
     try {
-      groups = studyQuestionnaireDAO.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId);
+      groups = studyQuestionnaireDAO.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId, isPreload);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad() - ERROR ", e);
     }
     logger.info("getGroupsForPreloadAndPostLoad() - Ends");
+    return groups;
+  }
+
+  @Override
+  public List<GroupsBo> getGroupsListForGroupsPage(String questionnaireId, int groupId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsListForGroupsPage - Starts");
+    List<GroupsBo> groups = null;
+    try {
+      groups = studyQuestionnaireDAO.getGroupsListForGroupsPage(questionnaireId, groupId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsListForGroupsPage() - ERROR ", e);
+    }
+    logger.info("getGroupsListForGroupsPage() - Ends");
     return groups;
 
   }
@@ -2414,6 +2427,16 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   @Override
   public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId, Integer currQuestionnaireId) {
     return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId, currQuestionnaireId);
+  }
+
+  @Override
+  public List<QuestionnairesStepsBo> getStepsForGroups(int queId, int groupId) {
+    return studyQuestionnaireDAO.getStepsForGroups(queId, groupId);
+  }
+
+  @Override
+  public List<QuestionnairesStepsBo> getPostLoadDestinationKeys(Integer currQuestionnaireId, int seq, Integer stepId) {
+    return studyQuestionnaireDAO.getPostLoadDestinationKeys(currQuestionnaireId, seq, stepId);
   }
 
   @Override

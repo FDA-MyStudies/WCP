@@ -451,14 +451,14 @@ input[type=number] {
 												Step ${destinationStep.sequenceNo} :
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
-										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-											<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
-											${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
-											Group :  ${group.groupName}&nbsp; </option>
-										</c:forEach>
 										<option value="0" data-type="step"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
 											Completion Step</option>
+										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+											<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+												${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
+												Group :  ${group.groupName}&nbsp; </option>
+										</c:forEach>
 									</select>
 									<div class="help-block with-errors red-txt"></div>
 								</div>

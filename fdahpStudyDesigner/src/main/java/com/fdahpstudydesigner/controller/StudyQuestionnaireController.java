@@ -732,25 +732,22 @@ public class StudyQuestionnaireController {
               preloadSeqNo = -1;
             }
             map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService
-                    .getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload", currStepId));
+                    .getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload", currStepId,
+                            StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : null));
           }
 
-          String queIdForGroups = questionnaireId;
-          boolean isStep = true;
           Integer stepId = questionnairesStepsBo != null ? questionnairesStepsBo.getInstructionFormId() : null;
+          String queIdForGroups = questionnaireId;
           if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurveyPreLoad() != null
                   && questionnairesStepsBo.getDifferentSurveyPreLoad()
                   && questionnairesStepsBo.getPreLoadSurveyId() != null) {
             queIdForGroups = String.valueOf(questionnairesStepsBo.getPreLoadSurveyId());
-            isStep = false;
-            stepId = null;
-          }
-          if (StringUtils.isNotEmpty(queIdForGroups)) {
-            groupsListPreLoad = studyQuestionnaireService.getGroupsByStudyId(studyId, queIdForGroups, isStep, stepId);
           }
           if (StringUtils.isNotEmpty(questionnaireId)) {
-            groupsListPostLoad = studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId, true,
-                    questionnairesStepsBo != null ? questionnairesStepsBo.getInstructionFormId() : null);
+            groupsListPreLoad = studyQuestionnaireService.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId);
+          }
+          if (StringUtils.isNotEmpty(questionnaireId)) {
+            groupsListPostLoad = studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId, true, stepId);
           }
           map.addAttribute("groupsListPostLoad", groupsListPostLoad);
           map.addAttribute("groupsListPreLoad", groupsListPreLoad);
@@ -1366,7 +1363,7 @@ public class StudyQuestionnaireController {
         } else {
           pipingSeqNo = -1;
         }
-        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping", currStepId));
+        map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService.getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping", currStepId, null));
         if (studyBo != null && FdahpStudyDesignerConstants.YES.equals(isLive)) {
           studyId = studyBo.getCustomStudyId();
         }
@@ -1900,25 +1897,23 @@ public class StudyQuestionnaireController {
             preloadSeqNo = -1;
           }
           map.addAttribute("sameSurveyPreloadSourceKeys", studyQuestionnaireService
-                  .getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload", currStepId));
+                  .getSameSurveySourceKeys(preloadQueId, preloadSeqNo, "preload", currStepId,
+                          StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : null));
         } else {
           pipingSeqNo = -1;
         }
         map.addAttribute("sameSurveyPipingSourceKeys", studyQuestionnaireService
-                .getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping", currStepId));
+                .getSameSurveySourceKeys(pipingQueId, pipingSeqNo, "piping", currStepId, null));
 
         String queIdForGroups = questionnaireId;
-        boolean isStep = true;
         Integer stepId = questionnairesStepsBo != null ? questionnairesStepsBo.getInstructionFormId() : null;
         if (questionnairesStepsBo != null && questionnairesStepsBo.getDifferentSurveyPreLoad() != null
                 && questionnairesStepsBo.getDifferentSurveyPreLoad()
                 && questionnairesStepsBo.getPreLoadSurveyId() != null) {
           queIdForGroups = String.valueOf(questionnairesStepsBo.getPreLoadSurveyId());
-          isStep = false;
-          stepId = null;
         }
-        if (StringUtils.isNotEmpty(queIdForGroups)) {
-          groupsListPreLoad = studyQuestionnaireService.getGroupsByStudyId(studyId, queIdForGroups, isStep, stepId);
+        if (StringUtils.isNotEmpty(questionnaireId)) {
+          groupsListPreLoad = studyQuestionnaireService.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId);
         }
         if (StringUtils.isNotEmpty(questionnaireId)) {
           groupsListPostLoad = studyQuestionnaireService.getGroupsByStudyId(studyId, questionnaireId, true,
@@ -5282,8 +5277,11 @@ public class StudyQuestionnaireController {
       }
       if (seqNo != null && StringUtils.isNotBlank(questionnaireId)) {
         List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(
-                Integer.parseInt(questionnaireId), seqNo, bean.getCaller(), bean.getStepId());
-        List<GroupsBo> groupsList = studyQuestionnaireService.getGroupsByStudyId(null, questionnaireId, false, null);
+                Integer.parseInt(questionnaireId), seqNo, bean.getCaller(), bean.getStepId(),
+                StringUtils.isNotBlank(bean.getPreLoadQuestionnaireId()) ? Integer.parseInt(bean.getPreLoadQuestionnaireId()) : null);
+
+        List<GroupsBo> groupsList = studyQuestionnaireService.getGroupsForPreloadAndPostLoad(
+                bean.getPreLoadQuestionnaireId(), questionnaireId, bean.getInstructionFormId());
         jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
         jsonobject.put("groupList", new JSONArray(new Gson().toJson(groupsList)));
       }

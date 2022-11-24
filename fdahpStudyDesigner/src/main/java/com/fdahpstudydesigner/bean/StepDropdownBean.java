@@ -10,7 +10,9 @@ public class StepDropdownBean {
     String studyId;
     Integer seqNo;
     Integer stepId;
+    Integer instructionFormId;
     String caller;
     Boolean isDifferentSurveyPreload;
+    String preLoadQuestionnaireId;
     Boolean isDifferentSurveyPiping;
 }

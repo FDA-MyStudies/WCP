@@ -1874,6 +1874,8 @@ function refreshSourceKeys(surveyId, type) {
                 stepId : $('#stepId').val(),
                 questionnaireId : surveyId,
                 isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
+                preLoadQuestionnaireId : $('#questionnairesId').val(),
+                instructionFormId : $('#instructionFormId').val(),
                 "${_csrf.parameterName}":"${_csrf.token}"
             },
             success : function(data) {

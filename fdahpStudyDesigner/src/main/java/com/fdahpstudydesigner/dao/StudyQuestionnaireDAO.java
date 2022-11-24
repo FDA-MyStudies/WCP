@@ -162,6 +162,8 @@ public interface StudyQuestionnaireDAO {
 
   List<GroupsBo> getGroupsByStudyIdAndStepId(String studyId,String questionnaireId, int stepId);
 
+  List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId);
+
   public GroupsBo getGroupsDetails(int id);
 
   public String addOrUpdateGroupsDetails(
@@ -188,7 +190,7 @@ public interface StudyQuestionnaireDAO {
 
   List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 
-  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId);
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId, Integer currQuestionnaireId);
 
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive);
 

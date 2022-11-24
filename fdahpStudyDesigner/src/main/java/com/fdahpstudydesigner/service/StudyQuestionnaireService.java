@@ -177,6 +177,8 @@ public interface StudyQuestionnaireService {
   
   List<GroupsBo> getGroupsByStudyId(String studyId,String questionnaireId, boolean isStep, Integer stepId);
 
+  List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId);
+
   public GroupsBo getGroupsDetails(Integer id);
 
   public String addOrUpdateGroupsDetails(
@@ -190,7 +192,7 @@ String checkGroupName(String questionnaireId, String groupName, String studyId);
 
   public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 
-  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId);
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId, Integer currQuestionnaireId);
 
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive);
 

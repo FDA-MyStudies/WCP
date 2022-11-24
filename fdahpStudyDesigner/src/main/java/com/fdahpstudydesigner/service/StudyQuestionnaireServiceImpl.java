@@ -2242,11 +2242,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     logger.info("StudyServiceImpl - updateStudyLangSequence() - Ends");
   }
 
- 
-@Override
-public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
-	logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
-	List<GroupsBo> groups = null;
+  @Override
+  public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
+    List<GroupsBo> groups = null;
     try {
 
       if (isStep && stepId != null) {
@@ -2259,8 +2258,22 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
     }
     logger.info("getGroupsByStudyId() - Ends");
     return groups;
-	
-}
+
+  }
+
+  @Override
+  public List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad - Starts");
+    List<GroupsBo> groups = null;
+    try {
+      groups = studyQuestionnaireDAO.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad() - ERROR ", e);
+    }
+    logger.info("getGroupsForPreloadAndPostLoad() - Ends");
+    return groups;
+
+  }
 
   @Override
   public GroupsBo getGroupsDetails(Integer id) {
@@ -2399,8 +2412,8 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId) {
-    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId);
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId, Integer currQuestionnaireId) {
+    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId, currQuestionnaireId);
   }
 
   @Override

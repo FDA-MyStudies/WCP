@@ -6291,14 +6291,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       if (groupId != 0) {
         query = session.createQuery("from GroupsBo WHERE questionnaireId=:questionnaireId and id <> :groupId and " +
                         "id not in (select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='group') and " +
-                        "id not in (select grpId from GroupMappingBo where questionnaireStepId in (select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='step')) " +
+                        "id not in (select destinationTrueAsGroup from GroupsBo where questionnaireId=:questionnaireId and stepOrGroup='group' and id <> :groupId) and " +
+                        "id not in (select grpId from GroupMappingBo where questionnaireStepId in " +
+                        "(select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='step') " +
+                        "or questionnaireStepId in (select destinationTrueAsGroup from GroupsBo where stepOrGroup = 'step' and questionnaireId = :questionnaireId and id <> :groupId)) " +
                         "order by id")
                 .setParameter("groupId", groupId)
                 .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
       } else {
         query = session.createQuery("from GroupsBo WHERE questionnaireId=:questionnaireId and " +
                         "id not in (select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='group') and " +
-                        "id not in (select grpId from GroupMappingBo where questionnaireStepId in (select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='step')) " +
+                        "id not in (select destinationTrueAsGroup from GroupsBo where questionnaireId=:questionnaireId and stepOrGroup='group') and " +
+                        "id not in (select grpId from GroupMappingBo where questionnaireStepId in " +
+                        "(select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='step') " +
+                        "or questionnaireStepId in (select destinationTrueAsGroup from GroupsBo where stepOrGroup = 'step' and questionnaireId = :questionnaireId)) " +
                         "order by id")
                 .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
       }
@@ -6860,8 +6866,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
                 .list();
         List<Integer> assignedStepsList = session.createQuery("select stepId from QuestionnairesStepsBo where stepId in " +
                         "(select questionnaireStepId from GroupMappingBo where grpId in " +
-                        "(select destinationTrueAsGroup from QuestionnairesStepsBo where stepOrGroup = 'group' and questionnairesId = :queId))")
+                        "(select destinationTrueAsGroup from QuestionnairesStepsBo where stepOrGroup = 'group' and questionnairesId = :queId)" +
+                        "or grpId in (select destinationTrueAsGroup from GroupsBo where stepOrGroup = 'group' and questionnaireId = :queId and id <> :grpId)) " +
+                        "or stepId in (select destinationTrueAsGroup from GroupsBo where stepOrGroup = 'step' and questionnaireId = :queId and id <> :grpId)")
                 .setParameter("queId", queId)
+                .setParameter("grpId", groupId)
                 .list();
         if (groupId != 0) {
           assignedSteps = session.createQuery("select questionnaireStepId from GroupMappingBo where grpId=:grpId")

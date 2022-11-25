@@ -1043,7 +1043,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 if (FdahpStudyDesignerConstants.GROUP.equals(groupsBo.getStepOrGroup())) {
                   groupsBo.setDestinationTrueAsGroup(groupIdMap.get(groupsBo.getDestinationTrueAsGroup()));
                 } else {
-                  groupsBo.setDestinationTrueAsGroup(groupIdMap.get(groupsBo.getDestinationTrueAsGroup()));
+                	for(QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
+                		if(questionnairesStepsBo.getStepId().equals(groupsBo.getDestinationTrueAsGroup())) {
+                			int seqNumber=questionnairesStepsBo.getSequenceNo();
+                			for(QuestionnairesStepsBo questionnairesSteps : newQuestionnairesStepsBoList) {
+                				if(questionnairesSteps.getSequenceNo().equals(seqNumber)) {
+                					groupsBo.setDestinationTrueAsGroup(questionnairesSteps.getStepId());
+                				}
+                			}
+                		}
+                	}
+                  
                 }
                 session.update(groupsBo);
               }

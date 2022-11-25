@@ -2784,6 +2784,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
             QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
             questionnaireStepBean.setStepId(instructionsBo.getId());
+            if (questionnairesStepsBo.getGroupFlag() != null && questionnairesStepsBo.getGroupFlag()) {
+              questionnaireStepBean.setGroupId(this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId()));
+            }
             questionnaireStepBean.setDeletionId(questionnairesStepsBo.getStepId());
             questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
             questionnaireStepBean.setSequenceNo(
@@ -2852,6 +2855,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
             questionnaireStepBean.setSequenceNo(
                 sequenceNoMap.get(questionsBo.getId() + FdahpStudyDesignerConstants.QUESTION_STEP));
+            if (questionnairesStepsBo.getGroupFlag() != null && questionnairesStepsBo.getGroupFlag()) {
+              questionnaireStepBean.setGroupId(this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId()));
+            }
             questionnaireStepBean.setTitle(questionsBo.getQuestion());
             questionnaireStepBean.setResponseType(questionsBo.getResponseType());
             questionnaireStepBean.setLineChart(questionsBo.getAddLineChart());
@@ -2900,8 +2906,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       // of questionnaire
       if (!formIdList.isEmpty()) {
         String fromQuery =
-            "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date,qs.step_short_title from questionnaires_steps qs , questions q, form_mapping f where qs.instruction_form_id=f.form_id and q.id=f.question_id and q.active=1 and f.form_id IN ("
-                + " :formIdList ) and f.active=1 order by f.form_id";
+            "select f.form_id, f.question_id, f.sequence_no, q.id, q.question, q.response_type, q.add_line_chart, " +
+                    "q.use_stastic_data, q.status, q.use_anchor_date, qs.step_short_title from questionnaires_steps qs, " +
+                    "questions q, form_mapping f where qs.instruction_form_id=f.form_id and q.id=f.question_id and " +
+                    "q.active=1 and f.form_id IN (:formIdList ) and f.active=1 order by f.form_id";
         List<?> result =
             session.createSQLQuery(fromQuery).setParameterList("formIdList", formIdList).list();
         for (int i = 0; i < formIdList.size(); i++) {
@@ -2943,6 +2951,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
           QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
           fQuestionnaireStepBean.setStepId(formIdList.get(i));
+          if (questionnairesStepsBo.getGroupFlag() != null && questionnairesStepsBo.getGroupFlag()) {
+            fQuestionnaireStepBean.setGroupId(this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId()));
+          }
           fQuestionnaireStepBean.setDeletionId(questionnairesStepsBo.getStepId());
           fQuestionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
           fQuestionnaireStepBean.setSequenceNo(
@@ -2994,6 +3005,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     }
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
     return qTreeMap;
+  }
+
+  private Integer getGroupIdByStepId(Session session, Integer stepId) {
+    if (stepId != null) {
+      return (Integer) session.createQuery("select grpId from GroupMappingBo where questionnaireStepId=:stepId")
+              .setParameter("stepId", stepId)
+              .uniqueResult();
+    }
+    return null;
   }
 
   /**
@@ -6199,7 +6219,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             query = session.createQuery("from GroupsBo WHERE questionnaireId=:questionnaireId and " +
                             "id not in (select grpId from GroupMappingBo where stepId=:stepId) and " +
                             "id not in (select destinationTrueAsGroup from QuestionnairesStepsBo where instructionFormId <> :stepId and questionnairesId=:questionnaireId and stepOrGroup='group') and " +
-                            "id not in (select grpId from GroupMappingBo where questionnaireStepId in (select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='step')) " +
+                            "id not in (select grpId from GroupMappingBo where questionnaireStepId in (select destinationTrueAsGroup from QuestionnairesStepsBo where questionnairesId=:questionnaireId and stepOrGroup='step')) and " +
+                            "id not in (select destinationTrueAsGroup from GroupsBo where questionnaireId=:questionnaireId and stepOrGroup='group') and " +
+                            "id not in (select grpId from GroupMappingBo where questionnaireStepId in (select destinationTrueAsGroup from GroupsBo where questionnaireId=:questionnaireId and stepOrGroup='step'))" +
                             "order by id")
                     .setParameter("stepId", String.valueOf(stepId))
                     .setParameter("questionnaireId", Integer.parseInt(questionnaireId));
@@ -6712,7 +6734,9 @@ public String checkGroupName(String questionnaireId, String groupName, String st
                       .list();
               assignedStepsList = session.createQuery("select stepId from QuestionnairesStepsBo where stepId in " +
                               "(select questionnaireStepId from GroupMappingBo where grpId in " +
-                              "(select destinationTrueAsGroup from QuestionnairesStepsBo where stepOrGroup = 'group' and questionnairesId = :queId and stepId <> :stepId))")
+                              "(select destinationTrueAsGroup from QuestionnairesStepsBo where stepOrGroup = 'group' and questionnairesId = :queId and stepId <> :stepId) or " +
+                              "grpId in (select destinationTrueAsGroup from GroupsBo where stepOrGroup = 'group' and questionnaireId = :queId)) or " +
+                              "stepId in (select destinationTrueAsGroup from GroupsBo where stepOrGroup = 'step' and questionnaireId = :queId)")
                       .setParameter("queId", queId)
                       .setParameter("stepId", currStepId)
                       .list();

@@ -2795,7 +2795,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
             questionnaireStepBean.setStepId(instructionsBo.getId());
             if (questionnairesStepsBo.getGroupFlag() != null && questionnairesStepsBo.getGroupFlag()) {
-              questionnaireStepBean.setGroupId(this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId()));
+              GroupsBo groupsBo = this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId());
+              if (groupsBo != null) {
+                questionnaireStepBean.setGroupId(groupsBo.getId());
+                questionnaireStepBean.setGroupName(groupsBo.getGroupName());
+              }
             }
             questionnaireStepBean.setDeletionId(questionnairesStepsBo.getStepId());
             questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.INSTRUCTION_STEP);
@@ -2866,7 +2870,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             questionnaireStepBean.setSequenceNo(
                 sequenceNoMap.get(questionsBo.getId() + FdahpStudyDesignerConstants.QUESTION_STEP));
             if (questionnairesStepsBo.getGroupFlag() != null && questionnairesStepsBo.getGroupFlag()) {
-              questionnaireStepBean.setGroupId(this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId()));
+              GroupsBo groupsBo = this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId());
+              if (groupsBo != null) {
+                questionnaireStepBean.setGroupId(groupsBo.getId());
+                questionnaireStepBean.setGroupName(groupsBo.getGroupName());
+              }
             }
             questionnaireStepBean.setTitle(questionsBo.getQuestion());
             questionnaireStepBean.setResponseType(questionsBo.getResponseType());
@@ -2962,7 +2970,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
           fQuestionnaireStepBean.setStepId(formIdList.get(i));
           if (questionnairesStepsBo.getGroupFlag() != null && questionnairesStepsBo.getGroupFlag()) {
-            fQuestionnaireStepBean.setGroupId(this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId()));
+            GroupsBo groupsBo = this.getGroupIdByStepId(session, questionnairesStepsBo.getStepId());
+            if (groupsBo != null) {
+              fQuestionnaireStepBean.setGroupId(groupsBo.getId());
+              fQuestionnaireStepBean.setGroupName(groupsBo.getGroupName());
+            }
           }
           fQuestionnaireStepBean.setDeletionId(questionnairesStepsBo.getStepId());
           fQuestionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
@@ -3017,9 +3029,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     return qTreeMap;
   }
 
-  private Integer getGroupIdByStepId(Session session, Integer stepId) {
+  private GroupsBo getGroupIdByStepId(Session session, Integer stepId) {
     if (stepId != null) {
-      return (Integer) session.createQuery("select grpId from GroupMappingBo where questionnaireStepId=:stepId")
+      return (GroupsBo) session.createQuery("from GroupsBo where id = (select grpId from GroupMappingBo where questionnaireStepId=:stepId)")
               .setParameter("stepId", stepId)
               .uniqueResult();
     }

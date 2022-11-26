@@ -486,7 +486,8 @@ width:142px !important;
                                           <c:choose>
                                           <c:when test="${entry.value.groupFlag eq true}">
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                          <input type="checkbox" data-seq="${entry.key}" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
+                                          <input type="checkbox" data-seq="${entry.key}" data-group-id="${entry.value.groupId}" data-group-name="${entry.value.groupName}"
+                                                 class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
                                           <label for="${entry.value.stepId}"></label></span>
                                           </c:when>
                                            <c:otherwise>
@@ -515,7 +516,8 @@ width:142px !important;
                                                    <c:choose>
 													<c:when test="${entry.value.groupFlag eq true}">
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                                    <input type="checkbox" data-seq="${entry.key}" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
+                                                    <input type="checkbox" data-seq="${entry.key}" data-group-id="${entry.value.groupId}" data-group-name="${entry.value.groupName}"
+                                                           class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
                                                     <label for="${entry.value.stepId}"></label>
                                                     </span>
                                                     </c:when>
@@ -3156,27 +3158,137 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     });
 
     $('#assigndisable').on('click', function() {
-        let firstSeq;
         let isValidSequence = true;
-        $.each($('.step-check:checked'), function(index, ele) {
-            console.log('first seq :' + firstSeq);
-            console.log('index :' + index);
-            console.log('ele :' + $(ele).attr('data-seq'));
-            if (index === 0) {
-                firstSeq = $(ele).attr('data-seq');
+        let message = 'The steps assigned/de-assigned to/from a group should be consecutive.';
+        let allGroups = new Map();
+        <c:forEach items="${groupsList}" var="group">
+        allGroups.set('${group.id}', '${group.groupName}');
+        </c:forEach>
+        console.log(allGroups);
+        // if already assigned steps are available
+        let checkedSteps = $('.step-check:checked');
+        if ($('.step-check1').length > 0) {
+            if (checkedSteps.length === 1) {
+                let currSeq = checkedSteps.attr('data-seq');
+                let nextInput = $('[data-seq="'+(parseInt(currSeq)+1)+'"]');
+                let prevInput = $('[data-seq="'+(parseInt(currSeq)-1)+'"]');
+                let groupIdName = new Map();
+                if (prevInput.is('input') && prevInput.hasClass('step-check1')) {
+                    groupIdName.set(prevInput.attr('data-group-id'), prevInput.attr('data-group-name'));
+                }
+                if (nextInput.is('input') && nextInput.hasClass('step-check1')) {
+                    let id = nextInput.attr('data-group-id');
+                    if (!groupIdName.has(id)) {
+                        groupIdName.set(id, nextInput.attr('data-group-name'));
+                    }
+                }
+
+                if (groupIdName.size > 0) {
+                    let options = '';
+                    groupIdName.forEach((value,key)=>{
+                        options += '<option value='+key+' id='+key+'>'+value+'</option>'
+                    })
+                    isValidSequence=true;
+                    $('#group').val('').empty().append(options).selectpicker('refresh');
+                } else {
+                    message = 'A group should consist of more than one steps. Request you to select multiple steps for assigning to the group.';
+                    isValidSequence=false;
+                }
+
+            } else if (checkedSteps.length > 1) {
+                let firstSeqIndex = '';
+                let firstSeq = '';
+                let firstInput = '';
+                let lastInput = '';
+                let lastSeq = '';
+                $.each(checkedSteps, function(index, ele) {
+                    if (index === 0) {
+                        firstSeqIndex = parseInt($(ele).attr('data-seq'));
+                        firstSeq = parseInt($(ele).attr('data-seq'));
+                        firstInput = $('[data-seq="'+firstSeqIndex+'"]');
+                    } else {
+                        if (firstSeqIndex !== parseInt($(ele).attr('data-seq'))) {
+                            isValidSequence = false;
+                        }
+                    }
+                    if (index === (checkedSteps.length-1)) {
+                        lastSeq = parseInt($(ele).attr('data-seq'));
+                        lastInput = $('[data-seq="'+$(ele).attr('data-seq')+'"]');
+                    }
+                    firstSeqIndex++;
+                });
+
+                if (isValidSequence) {
+                    let groupIdName = new Map();
+                    $('input[data-group-id]').each(function () {
+                        groupIdName.set($(this).attr('data-group-id'), $(this).attr('data-group-name'));
+                    });
+
+                    let nextInput = $('[data-seq="'+(lastSeq+1)+'"]');
+                    let prevInput = $('[data-seq="'+(firstSeq-1)+'"]');
+
+                    if (prevInput.is('input')) {
+                        if (!prevInput.hasClass('step-check1')) {
+                            // delete all groups before previous input
+                            groupIdName.forEach((value,key)=>{
+                                if (firstSeq > $('[data-group-id="'+key+'"]').attr('data-seq')) {
+                                    allGroups.delete(key);
+                                }
+                            })
+                        }
+                    }
+
+                    if (nextInput.is('input')) {
+                        if (!nextInput.hasClass('step-check1')) {
+                            // delete all groups after last input
+                            groupIdName.forEach((value,key)=>{
+                                if (lastSeq < $('[data-group-id="'+key+'"]').attr('data-seq')) {
+                                    allGroups.delete(key);
+                                }
+                            })
+                        }
+                    }
+
+                    if (allGroups.size > 0) {
+                        let options = '';
+                        allGroups.forEach((value,key)=>{
+                            options += '<option value='+key+' id='+key+'>'+value+'</option>'
+                        })
+                        isValidSequence=true;
+                        $('#group').val('').empty().append(options).selectpicker('refresh');
+                    } else {
+                        message = 'The steps assigned/de-assigned to/from a group should be consecutive.';
+                        isValidSequence=false;
+                    }
+                }
             } else {
-                if (parseInt(firstSeq) !== parseInt($(ele).attr('data-seq'))) {
-                    isValidSequence = false;
+                if (allGroups.size > 0) {
+                    let options = '';
+                    allGroups.forEach((value,key)=>{
+                        options += '<option value='+key+' id='+key+'>'+value+'</option>'
+                    })
+                    isValidSequence=true;
+                    $('#group').val('').empty().append(options).selectpicker('refresh');
                 }
             }
-            firstSeq++;
-        })
+        } else { // if already assigned steps are not available
+            let firstSeq;
+            $.each(checkedSteps, function(index, ele) {
+                if (index === 0) {
+                    firstSeq = $(ele).attr('data-seq');
+                } else {
+                    if (parseInt(firstSeq) !== parseInt($(ele).attr('data-seq'))) {
+                        isValidSequence = false;
+                    }
+                }
+                firstSeq++;
+            });
+        }
 
         if (isValidSequence) {
             $('#assignGroup').modal('show');
-        }
-        else{
-        bootbox.alert("Group can be assigned for consecutive steps only.");
+        } else {
+            bootbox.alert(message);
         }
     })
 

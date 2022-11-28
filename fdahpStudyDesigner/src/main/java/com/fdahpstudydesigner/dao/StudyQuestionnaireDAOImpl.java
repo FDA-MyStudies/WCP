@@ -2744,12 +2744,30 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.INSTRUCTION_STEP,
                 questionaireSteps.getSequenceNo());
-            destinationMap.put(
-                    questionaireSteps.getInstructionFormId()
-                    + FdahpStudyDesignerConstants.INSTRUCTION_STEP,
-                questionaireSteps.getDestinationStep());
+            Integer defaultInstructionStep = null;
+            if (questionaireSteps.getDestinationStep() != null) {
+            	defaultInstructionStep = questionaireSteps.getDestinationStep();
+              } else {
+                long count = (long) session.createQuery("select count(*) from QuestionnairesStepsBo where questionnairesId=:queId")
+                        .setParameter("queId", questionaireSteps.getQuestionnairesId())
+                        .uniqueResult();
+                if (count == questionaireSteps.getSequenceNo()) {
+                	defaultInstructionStep = 0;
+                } else {
+                  QuestionnairesStepsBo defaultStepsDto = (QuestionnairesStepsBo) session.createQuery(
+                                  "from QuestionnairesStepsBo where questionnairesId=:queId and sequenceNo=:seqNo")
+                          .setParameter("queId", questionaireSteps.getQuestionnairesId())
+                          .setParameter("seqNo", questionaireSteps.getSequenceNo()+1)
+                          .uniqueResult();
+                  if (defaultStepsDto != null) {
+                	  defaultInstructionStep = defaultStepsDto.getStepId();
+                  }
+                }
+              }
+              destinationMap.put(questionaireSteps.getInstructionFormId() + FdahpStudyDesignerConstants.INSTRUCTION_STEP, defaultInstructionStep);
+
             break;
-          case FdahpStudyDesignerConstants.QUESTION_STEP:
+          	case FdahpStudyDesignerConstants.QUESTION_STEP:
             questionIdList.add(questionaireSteps.getInstructionFormId());
             sequenceNoMap.put(
                     questionaireSteps.getInstructionFormId()
@@ -2778,20 +2796,37 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             destinationMap.put(questionaireSteps.getInstructionFormId() + FdahpStudyDesignerConstants.QUESTION_STEP, defaultStep);
 
             break;
-          case FdahpStudyDesignerConstants.FORM_STEP:
+          	case FdahpStudyDesignerConstants.FORM_STEP:
             formIdList.add(questionaireSteps.getInstructionFormId());
             sequenceNoMap.put(
                     questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.FORM_STEP,
                 questionaireSteps.getSequenceNo());
-            destinationMap.put(
-                    questionaireSteps.getInstructionFormId()
-                    + FdahpStudyDesignerConstants.FORM_STEP,
-                questionaireSteps.getDestinationStep());
+            Integer defaultFormStep = null;
+			if (questionaireSteps.getDestinationStep() != null) {
+				defaultFormStep = questionaireSteps.getDestinationStep();
+			} else {
+				long count = (long) session
+						.createQuery("select count(*) from QuestionnairesStepsBo where questionnairesId=:queId")
+						.setParameter("queId", questionaireSteps.getQuestionnairesId()).uniqueResult();
+				if (count == questionaireSteps.getSequenceNo()) {
+					defaultFormStep = 0;
+				} else {
+					QuestionnairesStepsBo defaultStepsDto = (QuestionnairesStepsBo) session
+							.createQuery(
+									"from QuestionnairesStepsBo where questionnairesId=:queId and sequenceNo=:seqNo")
+							.setParameter("queId", questionaireSteps.getQuestionnairesId())
+							.setParameter("seqNo", questionaireSteps.getSequenceNo() + 1).uniqueResult();
+					if (defaultStepsDto != null) {
+						defaultFormStep = defaultStepsDto.getStepId();
+					}
+				}
+			}
+			destinationMap.put(questionaireSteps.getInstructionFormId() + FdahpStudyDesignerConstants.FORM_STEP, defaultFormStep);            
             formStatusMap.put(
                 questionaireSteps.getInstructionFormId(), questionaireSteps.getStatus());
             break;
-          default:
+          	default:
             break;
         }
       }

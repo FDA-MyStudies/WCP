@@ -3191,7 +3191,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     isValidSequence=true;
                     $('#group').val('').empty().append(options).selectpicker('refresh');
                 } else {
-                    message = 'A group should consist of more than one steps. Request you to select multiple steps for assigning to the group.';
+                    message = 'The steps assigned/de-assigned to/from a group should be consecutive.';
                     isValidSequence=false;
                 }
 

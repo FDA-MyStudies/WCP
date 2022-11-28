@@ -1735,6 +1735,7 @@ defaultVisibility.on('change', function () {
         $('#preLoadSurveyId').prop('required', false);
         addForm.attr('disabled', true);
         $('#skiappableYes').prop('disabled', false);
+        $('#repeatableYes').attr('disabled', false);
     } else {
         if (table1 != null) {
             table1.rowReorder.disable();
@@ -1756,6 +1757,8 @@ defaultVisibility.on('change', function () {
         addForm.attr('disabled', false);
         $('#skiappableYes').prop('checked', false).prop('disabled', true);
         $('#skiappableNo').prop('checked', true);
+        $('#repeatableYes').attr('disabled', true);
+        $('#repeatableNo').attr('checked', true);
     }
 })
 

@@ -9315,7 +9315,7 @@ function refreshSourceKeys(surveyId, type) {
 											.attr("value", option.id)
 											.attr("data-id", option.id)
 											.attr("data-type", 'group')
-											.text("Group " + (index+1) + " : " + option.groupName);
+											.text("Group : " + option.groupName);
 									id.append($option);
 								});
 							}

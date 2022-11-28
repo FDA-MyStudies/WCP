@@ -2741,33 +2741,51 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           case FdahpStudyDesignerConstants.INSTRUCTION_STEP:
             instructionIdList.add(questionaireSteps.getInstructionFormId());
             sequenceNoMap.put(
-                String.valueOf(questionaireSteps.getInstructionFormId())
+                    questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.INSTRUCTION_STEP,
                 questionaireSteps.getSequenceNo());
             destinationMap.put(
-                String.valueOf(questionaireSteps.getInstructionFormId())
+                    questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.INSTRUCTION_STEP,
                 questionaireSteps.getDestinationStep());
             break;
           case FdahpStudyDesignerConstants.QUESTION_STEP:
             questionIdList.add(questionaireSteps.getInstructionFormId());
             sequenceNoMap.put(
-                String.valueOf(questionaireSteps.getInstructionFormId())
+                    questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.QUESTION_STEP,
                 questionaireSteps.getSequenceNo());
-            destinationMap.put(
-                String.valueOf(questionaireSteps.getInstructionFormId())
-                    + FdahpStudyDesignerConstants.QUESTION_STEP,
-                questionaireSteps.getDestinationStep());
+            Integer defaultStep = null;
+            if (questionaireSteps.getDestinationStep() != null) {
+              defaultStep = questionaireSteps.getDestinationStep();
+            } else {
+              long count = (long) session.createQuery("select count(*) from QuestionnairesStepsBo where questionnairesId=:queId")
+                      .setParameter("queId", questionaireSteps.getQuestionnairesId())
+                      .uniqueResult();
+              if (count == questionaireSteps.getSequenceNo()) {
+                defaultStep = 0;
+              } else {
+                QuestionnairesStepsBo defaultStepsDto = (QuestionnairesStepsBo) session.createQuery(
+                                "from QuestionnairesStepsBo where questionnairesId=:queId and sequenceNo=:seqNo")
+                        .setParameter("queId", questionaireSteps.getQuestionnairesId())
+                        .setParameter("seqNo", questionaireSteps.getSequenceNo()+1)
+                        .uniqueResult();
+                if (defaultStepsDto != null) {
+                  defaultStep = defaultStepsDto.getStepId();
+                }
+              }
+            }
+            destinationMap.put(questionaireSteps.getInstructionFormId() + FdahpStudyDesignerConstants.QUESTION_STEP, defaultStep);
+
             break;
           case FdahpStudyDesignerConstants.FORM_STEP:
             formIdList.add(questionaireSteps.getInstructionFormId());
             sequenceNoMap.put(
-                String.valueOf(questionaireSteps.getInstructionFormId())
+                    questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.FORM_STEP,
                 questionaireSteps.getSequenceNo());
             destinationMap.put(
-                String.valueOf(questionaireSteps.getInstructionFormId())
+                    questionaireSteps.getInstructionFormId()
                     + FdahpStudyDesignerConstants.FORM_STEP,
                 questionaireSteps.getDestinationStep());
             formStatusMap.put(
@@ -2834,7 +2852,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 groupName = String.valueOf(query.setParameter("groupId", groupId).uniqueResult());
                 questionnaireStepBean.setDestinationText("Group:" + groupName);
               }
-            }else {
+            } else {
               questionnaireStepBean.setDestinationText(
                       destinationText.get(
                               destinationMap.get(
@@ -2908,7 +2926,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 groupName = String.valueOf(query.setParameter("groupId", groupId).uniqueResult());
                 questionnaireStepBean.setDestinationText("Group:" + groupName);
               }
-            }else {
+            } else {
               questionnaireStepBean.setDestinationText(
                       destinationText.get(
                               destinationMap.get(

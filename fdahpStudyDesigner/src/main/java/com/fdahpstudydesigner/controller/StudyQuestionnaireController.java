@@ -4661,7 +4661,7 @@ public class StudyQuestionnaireController {
           //getting the List<step id's> based on the id from group_mapping table
           List<GroupMappingBo> groupMappingBo = studyQuestionnaireService.getStepId(id,questionnaireId);
           //disabling the flag based on the step id in questionnaires_steps table
-          String msg = studyQuestionnaireService.groupFlagDisable(groupMappingBo,questionnaireId);
+          String msg = studyQuestionnaireService.groupFlagDisable(id,groupMappingBo,questionnaireId);
           // Delete all the steps in mapping table based on group id
           String msgg = studyQuestionnaireService.deleteGroupMaprecords(id);
           //Delete group from the table

@@ -2478,11 +2478,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId) {
+  public String groupFlagDisable(String id,List<GroupMappingBo> groupMappingBo, String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      result = studyQuestionnaireDAO.groupFlagDisable(groupMappingBo, questionnaireId);
+      result = studyQuestionnaireDAO.groupFlagDisable(id,groupMappingBo, questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
     }

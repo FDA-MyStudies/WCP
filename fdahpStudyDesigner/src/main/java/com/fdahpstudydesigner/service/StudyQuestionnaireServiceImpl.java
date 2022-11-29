@@ -2570,6 +2570,11 @@ public String deleteStepMaprecords(String id,String questionnaireId) {
   }
 
   @Override
+  public boolean isLastGroupQuestion(int stepId) {
+    return studyQuestionnaireDAO.isLastGroupQuestion(stepId);
+  }
+
+  @Override
  /* public boolean isGroupDefaultVisibilityEnabled(Integer questionStepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
     boolean isGroupDvEnabled = false;

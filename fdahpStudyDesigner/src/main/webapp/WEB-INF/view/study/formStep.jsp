@@ -863,6 +863,12 @@ var idleTime = 0;
       validateShortTitle('', function (val) {
       });
     });
+
+      if (${isLastStep}) {
+          $('#repeatableYes').attr('disabled', true);
+          $('#repeatableNo').attr('checked', true);
+      }
+
     $('input[name="repeatable"]').on('change', function () {
       var val = $(this).val();
       if (val == 'Yes') {

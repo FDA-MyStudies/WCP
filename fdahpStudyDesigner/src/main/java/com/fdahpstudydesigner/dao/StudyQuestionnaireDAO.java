@@ -228,6 +228,8 @@ public String deleteStepMaprecords(String id,String questionnaireId);
 
   boolean isLastFormQuestion(String formId, String questionId);
 
+  boolean isLastGroupQuestion(int stepId);
+
  GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId);
 
   String getStepType(Integer questionStepId, Integer stepId);

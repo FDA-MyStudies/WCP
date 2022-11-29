@@ -674,7 +674,9 @@ public class StudyQuestionnaireController {
                   questionnaireBo.getShortTitle(),
                   studyBo.getCustomStudyId(),
                   questionnaireBo.getId());
+          boolean isLastStep = false;
           if (questionnairesStepsBo != null) {
+            isLastStep = studyQuestionnaireService.isLastGroupQuestion(questionnairesStepsBo.getStepId());
             List<QuestionnairesStepsBo> destinationStepList = studyQuestionnaireService
                     .getPostLoadDestinationKeys(StringUtils.isNotBlank(questionnaireId) ? Integer.parseInt(questionnaireId) : null,
                             questionnairesStepsBo.getSequenceNo(),
@@ -690,6 +692,7 @@ public class StudyQuestionnaireController {
             }
           }
 
+          map.addAttribute("isLastStep", isLastStep);
           Integer responseType = null;
           int queId = 0;
           if (questionnairesStepsBo != null) {
@@ -4851,8 +4854,6 @@ public class StudyQuestionnaireController {
                 Integer.valueOf(FdahpStudyDesignerUtil.isEmpty(request.getParameter("count"))
                         ? ""
                         : request.getParameter("count"));
-
-        System.out.println(request.getParameter("steparray"));
         String stepArray =FdahpStudyDesignerUtil.isEmpty(request.getParameter("steparray"))
                 ? ""
                 : request.getParameter("steparray");
@@ -4891,7 +4892,7 @@ public class StudyQuestionnaireController {
         if (!String.valueOf(grpId).isEmpty()) {
           groupMappingBo = studyQuestionnaireService.getStepId(String.valueOf(grpId), questionnaireId);
         }
-        if(!groupMappingBo.isEmpty()) {
+        if(groupMappingBo != null && !groupMappingBo.isEmpty()) {
           if (StringUtils.isNotEmpty(studyId)) {
             groupMappingBo =
                     studyQuestionnaireService.assignQuestionSteps(arr, grpId, questionnaireId);

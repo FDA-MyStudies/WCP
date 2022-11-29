@@ -6699,6 +6699,8 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
+      int size = arr.size();
+      int i = 1;
       for(String s : arr) {
         String stepId = s.replaceAll("^\"|\"$", "");
          //get stepId by sending stepId[instruction_formId] from questionnaire_step table
@@ -6717,8 +6719,22 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
         QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
         questionnairesStepsBo.setGroupFlag(true);
+        if (i == size && FdahpStudyDesignerConstants.FORM_STEP.equals(questionnairesStepsBo.getStepType())) {
+          Integer groupId = this.getGroupIdByStep(session, questionnaireStepId);
+          if (groupId != null) {
+            GroupsBo groupsBo = session.get(GroupsBo.class, groupId);
+            if (groupsBo != null
+                    && groupsBo.getDefaultVisibility() != null
+                    && !groupsBo.getDefaultVisibility()
+                    && groupsBo.getDestinationTrueAsGroup() != null) {
+              questionnairesStepsBo.setRepeatable("No");
+              questionnairesStepsBo.setRepeatableText(null);
+            }
+          }
+        }
         session.saveOrUpdate(questionnairesStepsBo);
         listGroupMappingBo.add(groupMappingBo);
+        i++;
       }
       //groupMappingBo = FdahpStudyDesignerConstants.SUCCESS;
       transaction.commit();
@@ -7499,6 +7515,54 @@ public String deleteStepMaprecords(String id,String questionnaireId) {
     }
     logger.info("StudyQuestionnaireDAOImpl - isQuestionMultiSelect() - Ends");
     return isLastFormQuestion;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public boolean isLastGroupQuestion(int stepId) {
+    logger.info("StudyQuestionnaireDAOImpl - isLastGroupQuestion() - Starts");
+    boolean isLastGroupQuestion = false;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      Integer groupId = this.getGroupIdByStep(session, stepId);
+      if (groupId != null) {
+        GroupsBo groupsBo = session.get(GroupsBo.class, groupId);
+        if (groupsBo != null
+                && groupsBo.getDefaultVisibility() != null
+                && !groupsBo.getDefaultVisibility()
+                && groupsBo.getDestinationTrueAsGroup() != null) {
+          int lastStep = (int) session.createQuery("select stepId from QuestionnairesStepsBo where stepId in " +
+                          "(select questionnaireStepId from GroupMappingBo where grpId = :grpId) " +
+                          "order by sequenceNo desc")
+                  .setParameter("grpId", groupId)
+                  .setMaxResults(1)
+                  .uniqueResult();
+          if (lastStep == stepId) {
+            isLastGroupQuestion = true;
+          }
+        }
+      }
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - isLastGroupQuestion() - ERROR ", e);
+    } finally {
+      if (null != session && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyQuestionnaireDAOImpl - isLastGroupQuestion() - Ends");
+    return isLastGroupQuestion;
+  }
+
+  public Integer getGroupIdByStep(Session session, int stepId) {
+    try {
+      return (Integer) session.createQuery("select grpId from GroupMappingBo where questionnaireStepId=:stepId")
+              .setParameter("stepId", stepId)
+              .uniqueResult();
+    } catch (Exception e) {
+      logger.error("Exception : ", e);
+    }
+    return null;
   }
 
   @Override

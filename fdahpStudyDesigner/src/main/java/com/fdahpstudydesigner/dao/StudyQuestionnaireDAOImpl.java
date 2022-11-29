@@ -7609,8 +7609,8 @@ public String deleteStepMaprecords(String id,String questionnaireId) {
  String queryString;
  try{
  session = hibernateTemplate.getSessionFactory().openSession();
- queryString = "select grpId FROM GroupMappingBo GBO WHERE GBO.stepId = "+stepId;
- query = session.createQuery(queryString);
+ queryString = "select grpId FROM GroupMappingBo GBO WHERE GBO.stepId=:stepId";
+ query = session.createQuery(queryString).setParameter("stepId", stepId);
    groupId = (Integer) query.uniqueResult();
  }
 catch(Exception e){

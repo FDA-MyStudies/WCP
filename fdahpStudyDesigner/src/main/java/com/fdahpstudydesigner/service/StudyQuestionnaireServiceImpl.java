@@ -1604,7 +1604,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           this.updateStudyLangSequence(
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
-        if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
+        if (id != null && questionnairesStepsBo.getQuestionsBo() != null
+                && questionnairesStepsBo.getQuestionsBo().getResponseType().equals(6)
+                && (StringUtils.isEmpty(language) || "en".equals(language))) {
+
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
             StringBuilder dispText = new StringBuilder();

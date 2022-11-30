@@ -4744,6 +4744,7 @@ input[type=number] {
 			  if ('${questionnaireBo.branching}' === 'true') {
 				  $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
 			  }
+			  $('#differentSurveyPreLoad').val($('#differentSurveyPreLoad').is(':checked'));
             $("body").addClass("loading");
             var placeholderText = '';
             var stepText = "";

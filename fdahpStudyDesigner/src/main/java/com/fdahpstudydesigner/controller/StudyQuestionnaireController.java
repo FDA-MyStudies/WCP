@@ -5166,11 +5166,17 @@ public class StudyQuestionnaireController {
         List<QuestionnairesStepsBo> sourceKeys = studyQuestionnaireService.getSameSurveySourceKeys(
                 Integer.parseInt(questionnaireId), seqNo, bean.getCaller(), bean.getStepId(),
                 StringUtils.isNotBlank(bean.getPreLoadQuestionnaireId()) ? Integer.parseInt(bean.getPreLoadQuestionnaireId()) : null);
+        if (sourceKeys != null && !sourceKeys.isEmpty()) {
+          jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
+        }
 
-        List<GroupsBo> groupsList = studyQuestionnaireService.getGroupsForPreloadAndPostLoad(
-                bean.getPreLoadQuestionnaireId(), questionnaireId, bean.getInstructionFormId(), true);
-        jsonobject.put("sourceKeys", new JSONArray(new Gson().toJson(sourceKeys)));
-        jsonobject.put("groupList", new JSONArray(new Gson().toJson(groupsList)));
+        if (PRE_LOAD.equals(caller)) {
+          List<GroupsBo> groupsList = studyQuestionnaireService.getGroupsForPreloadAndPostLoad(
+                  bean.getPreLoadQuestionnaireId(), questionnaireId, bean.getInstructionFormId(), true);
+          if (groupsList != null && !groupsList.isEmpty()) {
+            jsonobject.put("groupList", new JSONArray(new Gson().toJson(groupsList)));
+          }
+        }
       }
       msg = FdahpStudyDesignerConstants.SUCCESS;
     } catch (Exception e) {

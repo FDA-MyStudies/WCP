@@ -751,6 +751,7 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
             if(stepType == 'Instruction' || stepType == 'Form' && size == 0){
                   defaultVisibility.prop('checked', true);
                   defaultVisibility.prop('disabled', true);
+                  $('#destinationTrueAsGroup, #preLoadSurveyId, #value0, #operator0').val('').selectpicker('refresh');
             }
 
         <c:if test = "${responseType eq '9' || responseType eq '10' || responseType eq '12' || responseType eq '13' || responseType eq '15'}">

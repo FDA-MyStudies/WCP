@@ -248,4 +248,6 @@ public String deleteStepMaprecords(String id,String questionnaireId);
 
   public String getTextChoiceSelectionStyle(Integer questionStepId);
 
+public String updateGroupDefaultVisibility(Integer groupId);
+
 }

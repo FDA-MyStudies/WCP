@@ -7839,4 +7839,35 @@ logger.info("StudyDAOImpl - getGroupId() - Ends");
          return selectionStyle;
   }
 
+@Override
+public String updateGroupDefaultVisibility(Integer groupId) {
+	logger.info("begin updateGroupDefaultVisibility()");
+	Session session = null;
+	String status = null;
+	try {
+		session = hibernateTemplate.getSessionFactory().openSession();
+		transaction = session.beginTransaction();
+		query = session.createQuery(
+				"update GroupsBo set defaultVisibility=true,destinationTrueAsGroup=1,stepOrGroup=null where id=:groupId");
+		query.setParameter("groupId", groupId);
+		query.executeUpdate();
+
+		query = session.createQuery("delete PreLoadLogicBo where stepGroupId=:groupId and stepOrGroup='group'");
+		query.setParameter("groupId", groupId);
+		query.executeUpdate();
+
+		transaction.commit();
+		status = FdahpStudyDesignerConstants.SUCCESS;
+	} catch (Exception e) {
+		transaction.rollback();
+		logger.error("StudyQuestionnaireDAOImpl - updateGroupDefaultVisibility() - ERROR ", e);
+	} finally {
+		if (session != null) {
+			session.close();
+		}
+	}
+	logger.info("updateGroupDefaultVisibility() - Ends");
+	return status;
+}
+
 }

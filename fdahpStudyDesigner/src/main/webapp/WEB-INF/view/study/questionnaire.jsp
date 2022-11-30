@@ -5325,7 +5325,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
                     rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
-                    rowId.find('td.title span.checkbox').hide();
+                    // rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title span.checkbox').addClass('ml-disabled').prop('disabled', true);
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5353,7 +5354,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
                     rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
-                    rowId.find('td.title span.checkbox').hide();
+                    // rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title span.checkbox').addClass('ml-disabled').prop('disabled', true);
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5399,7 +5401,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                       edit.removeClass('edit-inc');
                     }
                   }
-                    rowId.find('td.title span.checkbox').hide();
+                    // rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title span.checkbox').addClass('ml-disabled').prop('disabled', true);
                     rowId.find('td.title div.dis-ellipsis').each(function (index, value){
                     let divId = value.getAttribute('id').split('_')[1];
                     $('#questionLangBOList option', htmlData).each(function (index, ele) {
@@ -5409,7 +5412,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                         return false;
                       }
                     })
-                    rowId.find('td.title div.form-div').removeClass('ml-xxl').addClass('marL20');
+                    rowId.find('td.title div.form-div').removeClass('ml-xxl').addClass('ml-5');
+                    rowId.find('td.title div.form-div').removeClass('ml-xlg');
                   });
                   return false;
                 }

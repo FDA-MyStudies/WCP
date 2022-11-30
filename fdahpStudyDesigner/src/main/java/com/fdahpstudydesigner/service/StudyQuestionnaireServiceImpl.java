@@ -2723,5 +2723,18 @@ logger.exit("getStepId() - Ends");
         return selectionStyle;
   }
 
+@Override
+public String updateGroupDefaultVisibility(Integer groupId) {
+	logger.info("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - Starts");
+	String status = null;
+	try {
+		status = studyQuestionnaireDAO.updateGroupDefaultVisibility(groupId);
+	} catch (Exception e) {
+		logger.error("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - ERROR ", e);
+	}
+	logger.info("updateGroupDefaultVisibility() - Ends");
+	return status;
+}
+
 
 }

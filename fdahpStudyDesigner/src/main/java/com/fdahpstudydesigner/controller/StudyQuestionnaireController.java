@@ -389,10 +389,11 @@ public class StudyQuestionnaireController {
         List<GroupMappingBo> groupMappingBo = null;
         Integer groupId = studyQuestionnaireService.getGroupId(stepId);
         if(groupId != null) {
+        	String status = studyQuestionnaireService.updateGroupDefaultVisibility(groupId);
           //getting noOfstepsCount by sending groupId
           groupMappingBo = studyQuestionnaireService.getStepId(String.valueOf(groupId), questionnaireId);
         }
-        //writing conditon for checking the count
+        //writing condition for checking the count
         if (!stepId.isEmpty() && !questionnaireId.isEmpty() && !stepType.isEmpty()) {
           if(groupMappingBo == null || groupMappingBo.size() > 2){
           String msgg = studyQuestionnaireService.deleteStepBasedOnStepId(stepId);

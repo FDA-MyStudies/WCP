@@ -877,7 +877,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     for (FormLangBO formLangBO : formLangBOList) {
                       FormLangBO newFormLangBo = SerializationUtils.clone(formLangBO);
                       newFormLangBo.getFormLangPK().setFormId(newFormBo.getFormId());
-                      session.save(newFormBo);
+                      session.save(newFormLangBo);
                     }
                   }
 
@@ -7142,6 +7142,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
                   instructionsLangBO.setStatus(false);
                   session.saveOrUpdate(instructionsLangBO);
                 }
+              }
+              StudySequenceLangBO studySequenceLangBO = session.get(StudySequenceLangBO.class, new StudySequenceLangPK(questionnaireBo.getStudyId(), lang));
+              if (studySequenceLangBO != null) {
+                studySequenceLangBO.setStudyExcQuestionnaries(false);
+                session.saveOrUpdate(studySequenceLangBO);
               }
             }
           }

@@ -666,6 +666,7 @@ public class StudyQuestionnaireController {
           }
           request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
         }
+        boolean isLastStep = false;
         if (formId != null && !formId.isEmpty() && null != studyBo) {
           questionnairesStepsBo =
               studyQuestionnaireService.getQuestionnaireStep(
@@ -674,7 +675,6 @@ public class StudyQuestionnaireController {
                   questionnaireBo.getShortTitle(),
                   studyBo.getCustomStudyId(),
                   questionnaireBo.getId());
-          boolean isLastStep = false;
           if (questionnairesStepsBo != null) {
             isLastStep = studyQuestionnaireService.isLastGroupQuestion(questionnairesStepsBo.getStepId());
             List<QuestionnairesStepsBo> destinationStepList = studyQuestionnaireService
@@ -692,7 +692,6 @@ public class StudyQuestionnaireController {
             }
           }
 
-          map.addAttribute("isLastStep", isLastStep);
           Integer responseType = null;
           int queId = 0;
           if (questionnairesStepsBo != null) {
@@ -777,6 +776,7 @@ public class StudyQuestionnaireController {
           }
         }
 
+          map.addAttribute("isLastStep", isLastStep);
         map.addAttribute(
             FdahpStudyDesignerConstants.QUESTION_STEP,
             request

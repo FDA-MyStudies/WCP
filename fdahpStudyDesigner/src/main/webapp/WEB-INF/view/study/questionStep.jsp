@@ -4661,6 +4661,16 @@ input[type=number] {
         $(".seventhQuestionnaires").addClass('active');
 
         $("#doneId").click(function () {
+			let lang = $('#studyLanguage').val();
+			if (lang !== '' && lang !== 'en' && $('#sourceQuestion').val() !== '' && $('#pipingSnippet').val() === '') {
+				$('#pipingModal').modal('show');
+				$('#pipingSnippet').parent().addClass('has-error has-danger').find(".help-block")
+						.empty()
+						.append($("<ul><li> </li></ul>")
+								.attr("class","list-unstyled")
+								.text("Please fill out this field."));
+				return false;
+			}
           $("#doneId").attr("disabled", true);
           var isValid = true;
           var isImageValid = true;

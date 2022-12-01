@@ -4384,19 +4384,20 @@ public class StudyQuestionnaireController {
             request.getSession().removeAttribute(sessionStudyCount + "actionType");
             actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
           }
-          if ("edit".equals(actionType) || "add".equals(actionType) || !"".equals(id)) {
-            map.addAttribute("actionType", "edit");
-            request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
-          } else {
-            map.addAttribute("actionType", "view");
-            request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
-          }
+          
         }
         if (StringUtils.isNotEmpty(questionnaireId)) {
           List<QuestionnairesStepsBo> stepsBoList = studyQuestionnaireService
                   .getStepsForGroups(Integer.parseInt(questionnaireId), StringUtils.isNotBlank(id) ? Integer.parseInt(id) : 0);
           map.addAttribute("qTreeMap", stepsBoList);
         }
+        if ("edit".equals(actionType) || "add".equals(actionType) || !"".equals(id)) {
+            map.addAttribute("actionType", "edit");
+            request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+          } else {
+            map.addAttribute("actionType", "view");
+            request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+          }
         map.addAttribute("actionPage", actionPage);
         map.addAttribute("studyBo", studyBo);
         map.addAttribute("groupsBo", groupsBo);

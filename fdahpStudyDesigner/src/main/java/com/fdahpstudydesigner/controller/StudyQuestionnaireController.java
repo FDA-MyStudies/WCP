@@ -4614,6 +4614,14 @@ public class StudyQuestionnaireController {
           map.addAttribute("operators",operatorsList);
           map.addAttribute("responseType",responseType);
         }
+        if ("edit".equals(actionType) || !"".equals(id)) {
+          map.addAttribute("actionType", "edit");
+          request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
+        } else {
+          map.addAttribute("actionType", "view");
+          request.getSession().setAttribute(sessionStudyCount + "actionType", "view");
+        }
+
         map.addAttribute("selectionStyle", selectionStyle);
         List<QuestionnairesStepsBo> stepsBoList = studyQuestionnaireService
                 .getStepsForGroups(Integer.parseInt(questionnaireId), StringUtils.isNotBlank(id) ? Integer.parseInt(id) : 0);

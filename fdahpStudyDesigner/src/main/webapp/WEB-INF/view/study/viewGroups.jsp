@@ -77,7 +77,7 @@
 					</span>
                 </div>
             </c:if>
-             <button type="button" class="btn btn-primary blue-btn addOrEditGroups" value="add">+ Add Group</button>
+             <button type="button" class="btn btn-primary blue-btn addGroups" value="add">+ Add Group</button>
           </div>
         </div>
     </div>
@@ -133,17 +133,6 @@
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<form:form
-action="/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}"
-name="groupsInfoForm" id="groupsInfoForm" method="post">
-<input type="hidden" name="groupId" id="groupId" value="${groupId}">
- <input type="hidden" name="language" value="${currLanguage}">
-<input type="hidden" name="actionType" id="actionType" value="${actionType}">
-<input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
-<input type="hidden" name="chkRefreshflag" value="y">
-</form:form>
-
-
 
 <form:form
  action="/fdahpStudyDesigner/adminStudies/addOrEditGroupsDetails.do?_S=${param._S}"
@@ -290,6 +279,11 @@ var idleTime = 0;
 			$('#checkRefreshFlag').val('Y');
 			$('#addgroupsInfoForm').submit();
 	});
+	$('.addGroups').on('click',function(){
+    			$('#actionType').val('add');
+    			$('#addgroupsInfoForm').submit();
+    	});
+
 	
 	function deAssignGroups(id){
     	 var a = document.createElement('a');
@@ -351,6 +345,7 @@ var idleTime = 0;
 		          updateCompletionTicks(htmlData);
 		          $('.tit_wrapper').text($('#mlName', htmlData).val());
 		          $('.addOrEditGroups').attr('disabled', true);
+		          $('.addGroups').attr('disabled', true);
 		          $('.delete,thead').addClass('cursor-none');
 		          let mark=true;
 		          $('#groups_list option', htmlData).each(function (index, value) {
@@ -363,6 +358,7 @@ var idleTime = 0;
 		          updateCompletionTicksForEnglish();
 		          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
 		          $('.addOrEditGroups').attr('disabled', false);
+		          $('.addGroups').attr('disabled', false);
 		          $('.delete, thead').removeClass('cursor-none');
 		          $('#studyProtocolId').prop('disabled', false);
 		          let mark=true;
@@ -380,6 +376,7 @@ var idleTime = 0;
 		  }
       <c:if test="${actionType eq 'view'}">
        $('.addOrEditGroups').attr('disabled', true);
+       $('.addGroups').attr('disabled', true);
        $('.delete,thead').addClass('cursor-none');
       </c:if>
 </script>

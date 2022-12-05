@@ -451,14 +451,14 @@ input[type=number] {
 												Step ${destinationStep.sequenceNo} :
 												${destinationStep.stepShortTitle}</option>
 										</c:forEach>
-										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
-											<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
-											${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
-											Group :  ${group.groupName}&nbsp; </option>
-										</c:forEach>
 										<option value="0" data-type="step"
 											${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>
 											Completion Step</option>
+										<c:forEach items="${groupsListPostLoad}" var="group" varStatus="status">
+											<option value="${group.id}" data-type="group" id="selectGroup${group.id}"
+												${questionnairesStepsBo.destinationStep eq group.id ? 'selected' :''}>
+												Group :  ${group.groupName}&nbsp; </option>
+										</c:forEach>
 									</select>
 									<div class="help-block with-errors red-txt"></div>
 								</div>
@@ -4661,6 +4661,16 @@ input[type=number] {
         $(".seventhQuestionnaires").addClass('active');
 
         $("#doneId").click(function () {
+			let lang = $('#studyLanguage').val();
+			if (lang !== '' && lang !== 'en' && $('#sourceQuestion').val() !== '' && $('#pipingSnippet').val() === '') {
+				$('#pipingModal').modal('show');
+				$('#pipingSnippet').parent().addClass('has-error has-danger').find(".help-block")
+						.empty()
+						.append($("<ul><li> </li></ul>")
+								.attr("class","list-unstyled")
+								.text("Please fill out this field."));
+				return false;
+			}
           $("#doneId").attr("disabled", true);
           var isValid = true;
           var isImageValid = true;
@@ -4734,6 +4744,7 @@ input[type=number] {
 			  if ('${questionnaireBo.branching}' === 'true') {
 				  $('#stepOrGroupPostLoad').val($('#destinationStepId option:selected').attr('data-type'));
 			  }
+			  $('#differentSurveyPreLoad').val($('#differentSurveyPreLoad').is(':checked'));
             $("body").addClass("loading");
             var placeholderText = '';
             var stepText = "";
@@ -6647,7 +6658,7 @@ input[type=number] {
             questionReponseTypeBo.otherIncludeText = $(
                 '[name="questionReponseTypeBo.otherIncludeText"]:checked').val();
             questionReponseTypeBo.otherParticipantFill = $(
-                '[name="questionReponseTypeBo.otherParticipantFill"]').val();
+					'input[name="questionReponseTypeBo.otherParticipantFill"]:checked').val();
           });
           questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
         } else if (resType == "Image Choice") {
@@ -9281,6 +9292,8 @@ function refreshSourceKeys(surveyId, type) {
 				stepId : $('#stepId').val(),
 				isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
 				isDifferentSurveyPiping : $('#differentSurvey').is(':checked'),
+				preLoadQuestionnaireId : $('#questionnairesId').val(),
+				instructionFormId : $('#instructionFormId').val(),
 				"${_csrf.parameterName}":"${_csrf.token}"
 			},
 			success : function(data) {
@@ -9313,7 +9326,7 @@ function refreshSourceKeys(surveyId, type) {
 											.attr("value", option.id)
 											.attr("data-id", option.id)
 											.attr("data-type", 'group')
-											.text("Group " + (index+1) + " : " + option.groupName);
+											.text("Group : " + option.groupName);
 									id.append($option);
 								});
 							}

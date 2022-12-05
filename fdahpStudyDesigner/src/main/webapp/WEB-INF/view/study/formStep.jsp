@@ -863,6 +863,12 @@ var idleTime = 0;
       validateShortTitle('', function (val) {
       });
     });
+
+      if (${isLastStep}) {
+          $('#repeatableYes').attr('disabled', true);
+          $('#repeatableNo').attr('checked', true);
+      }
+
     $('input[name="repeatable"]').on('change', function () {
       var val = $(this).val();
       if (val == 'Yes') {
@@ -1735,6 +1741,7 @@ defaultVisibility.on('change', function () {
         $('#preLoadSurveyId').prop('required', false);
         addForm.attr('disabled', true);
         $('#skiappableYes').prop('disabled', false);
+        $('#repeatableYes').attr('disabled', false);
     } else {
         if (table1 != null) {
             table1.rowReorder.disable();
@@ -1756,6 +1763,8 @@ defaultVisibility.on('change', function () {
         addForm.attr('disabled', false);
         $('#skiappableYes').prop('checked', false).prop('disabled', true);
         $('#skiappableNo').prop('checked', true);
+        $('#repeatableYes').attr('disabled', true);
+        $('#repeatableNo').attr('checked', true);
     }
 })
 
@@ -1874,6 +1883,8 @@ function refreshSourceKeys(surveyId, type) {
                 stepId : $('#stepId').val(),
                 questionnaireId : surveyId,
                 isDifferentSurveyPreload : $('#differentSurveyPreLoad').is(':checked'),
+                preLoadQuestionnaireId : $('#questionnairesId').val(),
+                instructionFormId : $('#instructionFormId').val(),
                 "${_csrf.parameterName}":"${_csrf.token}"
             },
             success : function(data) {

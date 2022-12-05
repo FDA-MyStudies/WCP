@@ -1604,7 +1604,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           this.updateStudyLangSequence(
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
-        if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
+        if (id != null && questionnairesStepsBo.getQuestionsBo() != null
+                && questionnairesStepsBo.getQuestionsBo().getResponseType().equals(6)
+                && (StringUtils.isEmpty(language) || "en".equals(language))) {
+
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
             StringBuilder dispText = new StringBuilder();
@@ -2242,11 +2245,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     logger.info("StudyServiceImpl - updateStudyLangSequence() - Ends");
   }
 
- 
-@Override
-public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
-	logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
-	List<GroupsBo> groups = null;
+  @Override
+  public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
+    List<GroupsBo> groups = null;
     try {
 
       if (isStep && stepId != null) {
@@ -2259,8 +2261,35 @@ public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId,
     }
     logger.info("getGroupsByStudyId() - Ends");
     return groups;
-	
-}
+
+  }
+
+  @Override
+  public List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId, boolean isPreload) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad - Starts");
+    List<GroupsBo> groups = null;
+    try {
+      groups = studyQuestionnaireDAO.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId, isPreload);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad() - ERROR ", e);
+    }
+    logger.info("getGroupsForPreloadAndPostLoad() - Ends");
+    return groups;
+  }
+
+  @Override
+  public List<GroupsBo> getGroupsListForGroupsPage(String questionnaireId, int groupId) {
+    logger.info("StudyQuestionnaireServiceImpl - getGroupsListForGroupsPage - Starts");
+    List<GroupsBo> groups = null;
+    try {
+      groups = studyQuestionnaireDAO.getGroupsListForGroupsPage(questionnaireId, groupId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupsListForGroupsPage() - ERROR ", e);
+    }
+    logger.info("getGroupsListForGroupsPage() - Ends");
+    return groups;
+
+  }
 
   @Override
   public GroupsBo getGroupsDetails(Integer id) {
@@ -2399,8 +2428,18 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId) {
-    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId);
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId, Integer currQuestionnaireId) {
+    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId, currQuestionnaireId);
+  }
+
+  @Override
+  public List<QuestionnairesStepsBo> getStepsForGroups(int queId, int groupId) {
+    return studyQuestionnaireDAO.getStepsForGroups(queId, groupId);
+  }
+
+  @Override
+  public List<QuestionnairesStepsBo> getPostLoadDestinationKeys(Integer currQuestionnaireId, int seq, Integer stepId) {
+    return studyQuestionnaireDAO.getPostLoadDestinationKeys(currQuestionnaireId, seq, stepId);
   }
 
   @Override
@@ -2442,11 +2481,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId) {
+  public String groupFlagDisable(String id,List<GroupMappingBo> groupMappingBo, String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      result = studyQuestionnaireDAO.groupFlagDisable(groupMappingBo, questionnaireId);
+      result = studyQuestionnaireDAO.groupFlagDisable(id,groupMappingBo, questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
     }
@@ -2454,20 +2493,11 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     return result;  }
 
   @Override
-  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans) {
+  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId) {
   	List<GroupMappingStepBean> groupMappingBeanss = null;
-  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId,groupMappingBo, groupMappingBeans);
+  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId);
   	return groupMappingBeanss;
   }
-
-  @Override
-  public List<GroupMappingBo> getAssignSteps(int grpId) {
-      logger.info("StudyQuestionnaireServiceImpl - getAssignSteps - Starts");
-      List<GroupMappingBo> getAssignSteps = studyQuestionnaireDAO.getAssignSteps(grpId);
-
-  	return getAssignSteps;
-  }
-
 
   @Override
   public String deleteGroupMaprecords(String id) {
@@ -2498,13 +2528,13 @@ public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnair
 }
 
 @Override
-public String deleteStepMaprecords(String id) {
+public String deleteStepMaprecords(String id,String questionnaireId) {
 	logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
 
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
-              studyQuestionnaireDAO.deleteStepMaprecords(id);
+              studyQuestionnaireDAO.deleteStepMaprecords(id,questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
     }
@@ -2540,6 +2570,11 @@ public String deleteStepMaprecords(String id) {
   @Override
   public boolean isLastFormQuestion(String formId, String questionId) {
     return studyQuestionnaireDAO.isLastFormQuestion(formId, questionId);
+  }
+
+  @Override
+  public boolean isLastGroupQuestion(int stepId) {
+    return studyQuestionnaireDAO.isLastGroupQuestion(stepId);
   }
 
   @Override
@@ -2674,4 +2709,32 @@ logger.exit("getStepId() - Ends");
     logger.info("getResponseType() - Ends");
     return questionList;
   }
+
+  @Override
+  public String getTextChoiceSelectionStyle(Integer questionStepId) {
+  logger.info("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - Starts");
+    String selectionStyle = null;
+ try {
+      selectionStyle = studyQuestionnaireDAO.getTextChoiceSelectionStyle(questionStepId);
+      } catch (Exception e) {
+     logger.error("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - ERROR ", e);
+     }
+     logger.info("getResponseType() - Ends");
+        return selectionStyle;
+  }
+
+@Override
+public String updateGroupDefaultVisibility(Integer groupId) {
+	logger.info("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - Starts");
+	String status = null;
+	try {
+		status = studyQuestionnaireDAO.updateGroupDefaultVisibility(groupId);
+	} catch (Exception e) {
+		logger.error("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - ERROR ", e);
+	}
+	logger.info("updateGroupDefaultVisibility() - Ends");
+	return status;
+}
+
+
 }

@@ -446,7 +446,7 @@ width:142px !important;
                                        class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>" id="groupsBtn"
                                         onclick="getQuestionnaireStep('Groups');" >Groups
                                </div>
-                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" data-target="#assignGroup" >Assign groups </div>
+                                <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" data-toggle="modal" id="assigndisable" >Assign groups </div>
                               <span class="sprites_v3 info" id="infoIconId"></span>
                               <div class="pull-right mt-xs">
       							<span class="checkbox checkbox-inline">
@@ -486,13 +486,14 @@ width:142px !important;
                                           <c:choose>
                                           <c:when test="${entry.value.groupFlag eq true}">
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                          <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
+                                          <input type="checkbox" data-seq="${entry.key}" data-group-id="${entry.value.groupId}" data-group-name="${entry.value.groupName}"
+                                                 class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked>
                                           <label for="${entry.value.stepId}"></label></span>
                                           </c:when>
                                            <c:otherwise>
                                           <span class="checkbox selectbox_chk checkbox-inline pl-1">
                                         <!--  <c:if test="${actionType ne 'view'}"> </c:if>-->
-                                          <input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
+                                          <input type="checkbox" data-seq="${entry.key}" class= "step-check" id="${entry.value.stepId}" name="" value="" required="">
 
                                           <label for="${entry.value.stepId}"></label></span>
                                            </c:otherwise>
@@ -515,14 +516,15 @@ width:142px !important;
                                                    <c:choose>
 													<c:when test="${entry.value.groupFlag eq true}">
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
-                                                    <input type="checkbox" class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
+                                                    <input type="checkbox" data-seq="${entry.key}" data-group-id="${entry.value.groupId}" data-group-name="${entry.value.groupName}"
+                                                           class= "step-check1" id="${entry.value.stepId}" name="" value="" required="" disabled checked/>
                                                     <label for="${entry.value.stepId}"></label>
                                                     </span>
                                                     </c:when>
                                                     <c:otherwise>
                                                    <span class="checkbox selectbox_chk checkbox-inline pl-1">
                                                   <!-- <c:if test="${actionType ne 'view'}">  </c:if> -->
-													<input type="checkbox" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
+													<input type="checkbox" data-seq="${entry.key}" class= "step-check" id="${entry.value.stepId}" name="" value="" required=""/>
 
 													<label for="${entry.value.stepId}"></label>
 													</span>
@@ -1887,7 +1889,7 @@ width:142px !important;
 </div>
 
 <!-- assignGroup -->
-<div id ="assignGroup"class="modal" tabindex="-1" role="dialog">
+<div id ="assignGroup" class="modal" tabindex="-1" role="dialog">
    <div class="modal-dialog assignGroup" role="document">
       <div class="modal-content">
         <div class="modal-body" style="padding:40px;">
@@ -3128,8 +3130,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
       if ('${allowReorder}' === 'false') {
           table1.rowReorder.disable();
-          $('#branchingId').prop('disabled', true);
+          //$('#branchingId').prop('disabled', true);
       }
+
+      //If defaultVisibility for group is false then disable the branching checkbox
+          <c:forEach items="${groupsList}" var="groupList">
+             <c:if test="${groupList.defaultVisibility eq 'false'}">
+              $('#branchingId').prop('disabled', true);
+              </c:if>
+          </c:forEach>
     // Branching Logic starts here
 
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
@@ -3147,6 +3156,141 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             '#' + $(this).attr('id'));
       }
     });
+
+    $('#assigndisable').on('click', function() {
+        let isValidSequence = true;
+        let message = 'The steps assigned/de-assigned to/from a group should be consecutive.';
+        let allGroups = new Map();
+        <c:forEach items="${groupsList}" var="group">
+        allGroups.set('${group.id}', '${group.groupName}');
+        </c:forEach>
+        console.log(allGroups);
+        // if already assigned steps are available
+        let checkedSteps = $('.step-check:checked');
+        if ($('.step-check1').length > 0) {
+            if (checkedSteps.length === 1) {
+                let currSeq = checkedSteps.attr('data-seq');
+                let nextInput = $('[data-seq="'+(parseInt(currSeq)+1)+'"]');
+                let prevInput = $('[data-seq="'+(parseInt(currSeq)-1)+'"]');
+                let groupIdName = new Map();
+                if (prevInput.is('input') && prevInput.hasClass('step-check1')) {
+                    groupIdName.set(prevInput.attr('data-group-id'), prevInput.attr('data-group-name'));
+                }
+                if (nextInput.is('input') && nextInput.hasClass('step-check1')) {
+                    let id = nextInput.attr('data-group-id');
+                    if (!groupIdName.has(id)) {
+                        groupIdName.set(id, nextInput.attr('data-group-name'));
+                    }
+                }
+
+                if (groupIdName.size > 0) {
+                    let options = '';
+                    groupIdName.forEach((value,key)=>{
+                        options += '<option value='+key+' id='+key+'>'+value+'</option>'
+                    })
+                    isValidSequence=true;
+                    $('#group').val('').empty().append(options).selectpicker('refresh');
+                } else {
+                    message = 'The steps assigned/de-assigned to/from a group should be consecutive.';
+                    isValidSequence=false;
+                }
+
+            } else if (checkedSteps.length > 1) {
+                let firstSeqIndex = '';
+                let firstSeq = '';
+                let firstInput = '';
+                let lastInput = '';
+                let lastSeq = '';
+                $.each(checkedSteps, function(index, ele) {
+                    if (index === 0) {
+                        firstSeqIndex = parseInt($(ele).attr('data-seq'));
+                        firstSeq = parseInt($(ele).attr('data-seq'));
+                        firstInput = $('[data-seq="'+firstSeqIndex+'"]');
+                    } else {
+                        if (firstSeqIndex !== parseInt($(ele).attr('data-seq'))) {
+                            isValidSequence = false;
+                        }
+                    }
+                    if (index === (checkedSteps.length-1)) {
+                        lastSeq = parseInt($(ele).attr('data-seq'));
+                        lastInput = $('[data-seq="'+$(ele).attr('data-seq')+'"]');
+                    }
+                    firstSeqIndex++;
+                });
+
+                if (isValidSequence) {
+                    let groupIdName = new Map();
+                    $('input[data-group-id]').each(function () {
+                        groupIdName.set($(this).attr('data-group-id'), $(this).attr('data-group-name'));
+                    });
+
+                    let nextInput = $('[data-seq="'+(lastSeq+1)+'"]');
+                    let prevInput = $('[data-seq="'+(firstSeq-1)+'"]');
+
+                    if (prevInput.is('input')) {
+                        if (!prevInput.hasClass('step-check1')) {
+                            // delete all groups before previous input
+                            groupIdName.forEach((value,key)=>{
+                                if (firstSeq > $('[data-group-id="'+key+'"]').attr('data-seq')) {
+                                    allGroups.delete(key);
+                                }
+                            })
+                        }
+                    }
+
+                    if (nextInput.is('input')) {
+                        if (!nextInput.hasClass('step-check1')) {
+                            // delete all groups after last input
+                            groupIdName.forEach((value,key)=>{
+                                if (lastSeq < $('[data-group-id="'+key+'"]').attr('data-seq')) {
+                                    allGroups.delete(key);
+                                }
+                            })
+                        }
+                    }
+
+                    if (allGroups.size > 0) {
+                        let options = '';
+                        allGroups.forEach((value,key)=>{
+                            options += '<option value='+key+' id='+key+'>'+value+'</option>'
+                        })
+                        isValidSequence=true;
+                        $('#group').val('').empty().append(options).selectpicker('refresh');
+                    } else {
+                        message = 'The steps assigned/de-assigned to/from a group should be consecutive.';
+                        isValidSequence=false;
+                    }
+                }
+            } else {
+                if (allGroups.size > 0) {
+                    let options = '';
+                    allGroups.forEach((value,key)=>{
+                        options += '<option value='+key+' id='+key+'>'+value+'</option>'
+                    })
+                    isValidSequence=true;
+                    $('#group').val('').empty().append(options).selectpicker('refresh');
+                }
+            }
+        } else { // if already assigned steps are not available
+            let firstSeq;
+            $.each(checkedSteps, function(index, ele) {
+                if (index === 0) {
+                    firstSeq = $(ele).attr('data-seq');
+                } else {
+                    if (parseInt(firstSeq) !== parseInt($(ele).attr('data-seq'))) {
+                        isValidSequence = false;
+                    }
+                }
+                firstSeq++;
+            });
+        }
+
+        if (isValidSequence) {
+            $('#assignGroup').modal('show');
+        } else {
+            bootbox.alert(message);
+        }
+    })
 
     $(document).on('click change dp.change', '.dailyClock, #startDate', function (e) {
       var dt = $('#startDate').val();
@@ -5181,7 +5325,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
                     rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
-                    rowId.find('td.title span.checkbox').hide();
+                    // rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title span.checkbox').addClass('ml-disabled').prop('disabled', true);
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5209,7 +5354,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                 let langId = langEle.getAttribute('id');
                 if (id===langId) {
                     rowId.find('td.title span.ml-lg').text(langEle.getAttribute('value'));
-                    rowId.find('td.title span.checkbox').hide();
+                    // rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title span.checkbox').addClass('ml-disabled').prop('disabled', true);
                   if (langEle.getAttribute('status')==="true") {
                     let edit = $('#row_'+id).find('span.editIcon');
                     if (!edit.hasClass('edit-inc')) {
@@ -5255,7 +5401,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                       edit.removeClass('edit-inc');
                     }
                   }
-                    rowId.find('td.title span.checkbox').hide();
+                    // rowId.find('td.title span.checkbox').hide();
+                    rowId.find('td.title span.checkbox').addClass('ml-disabled').prop('disabled', true);
                     rowId.find('td.title div.dis-ellipsis').each(function (index, value){
                     let divId = value.getAttribute('id').split('_')[1];
                     $('#questionLangBOList option', htmlData).each(function (index, ele) {
@@ -5265,7 +5412,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                         return false;
                       }
                     })
-                    rowId.find('td.title div.form-div').removeClass('ml-xxl').addClass('marL20');
+                    rowId.find('td.title div.form-div').removeClass('ml-xxl').addClass('ml-5');
+                    rowId.find('td.title div.form-div').removeClass('ml-xlg');
                   });
                   return false;
                 }
@@ -5289,6 +5437,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               '#days, #startDateWeekly, #weeks, #months, .calendar, .daysMask, #weeksAnchor,' +
               '.blue-bg, .green-bg, .skyblue-bg, .deleteStepButton, .addBtnDis, .delete, [data-id="anchorDateId"],' +
               ' .signDropDown').removeClass('ml-disabled').attr('disabled', false);
+              $('.checkbox').removeClass('ml-disabled').prop('disabled', false);
             if ($('#isLaunchStudy').prop('checked')) {
                 $('#chooseDate').prop('disabled', true);
                 $('#selectTime1').prop('disabled', true);

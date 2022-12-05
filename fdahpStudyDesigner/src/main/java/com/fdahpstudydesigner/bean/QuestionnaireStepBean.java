@@ -20,6 +20,8 @@ public class QuestionnaireStepBean {
 
   private  Boolean groupFlag;
   private Integer stepId;
+  private Integer groupId;
+  private String groupName;
   private Integer deletionId;
   private String stepType;
 

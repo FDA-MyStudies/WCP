@@ -162,6 +162,10 @@ public interface StudyQuestionnaireDAO {
 
   List<GroupsBo> getGroupsByStudyIdAndStepId(String studyId,String questionnaireId, int stepId);
 
+  List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId, boolean isPreload);
+
+  List<GroupsBo> getGroupsListForGroupsPage(String questionnaireId, int groupId);
+
   public GroupsBo getGroupsDetails(int id);
 
   public String addOrUpdateGroupsDetails(
@@ -188,7 +192,11 @@ public interface StudyQuestionnaireDAO {
 
   List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId);
 
-  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId);
+  List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer currStepId, Integer currQuestionnaireId);
+
+  List<QuestionnairesStepsBo> getStepsForGroups(int queId, int groupId);
+
+  List<QuestionnairesStepsBo> getPostLoadDestinationKeys(Integer currQuestionnaireId, int seq, Integer currStepId);
 
   List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive);
 
@@ -196,11 +204,9 @@ public interface StudyQuestionnaireDAO {
 
   public List<GroupMappingBo> getStepId(String id, String questionnaireId);
 
-  public String groupFlagDisable(List<GroupMappingBo> groupMappingBo, String questionnaireId);
+  public String groupFlagDisable(String id,List<GroupMappingBo> groupMappingBo, String questionnaireId);
 
-  public List<GroupMappingStepBean> getGroupsList(Integer grpId,List<GroupMappingBo> groupMappingBo,List<GroupMappingStepBean> groupMappingBeans);
-
-  public List<GroupMappingBo> getAssignSteps(int grpId);
+  public List<GroupMappingStepBean> getGroupsList(Integer grpId);
 
   public String deleteGroupMaprecords(String id);
 
@@ -208,7 +214,7 @@ public GroupMappingBo getStepDetails(String id, String questionnaireId);
 
 public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId);
 
-public String deleteStepMaprecords(String id);
+public String deleteStepMaprecords(String id,String questionnaireId);
 
   Boolean isPreloadLogicAndPipingEnabled(Integer queId);
 
@@ -221,6 +227,8 @@ public String deleteStepMaprecords(String id);
     Integer getGroupId(String stepId);
 
   boolean isLastFormQuestion(String formId, String questionId);
+
+  boolean isLastGroupQuestion(int stepId);
 
  GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId);
 
@@ -236,7 +244,8 @@ public String deleteStepMaprecords(String id);
 
   List<FormMappingBo> getListOfQuestions(Integer formId);
 
-  // boolean isGroupDefaultVisibilityEnabled(Integer questionStepId);
+  public String getTextChoiceSelectionStyle(Integer questionStepId);
 
+public String updateGroupDefaultVisibility(Integer groupId);
 
 }

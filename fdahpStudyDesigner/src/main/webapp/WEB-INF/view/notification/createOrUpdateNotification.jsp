@@ -197,13 +197,6 @@ left: -3px !important;
 	<input type="hidden" name="notificationId"
 		value="${notificationBO.notificationId}">
 </form:form>
-<form:form
-             action="/fdahpStudyDesigner/sessionOut.do"
-              id="backToLoginPage"
-              name="backToLoginPage"
-              method="post">
-</form:form>
-
 <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
@@ -608,7 +601,9 @@ left: -3px !important;
                                       if (i === 0) {
                                      $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
                                       if ($('#myModal').hasClass('show')) {
-                                      $('#backToLoginPage').submit();
+                                      var a = document.createElement('a');
+                                      a.href = "/fdahpStudyDesigner/sessionOut.do";
+                                      document.body.appendChild(a).click();
                                      }
                                       clearInterval(timeOutInterval);
                                       } else {

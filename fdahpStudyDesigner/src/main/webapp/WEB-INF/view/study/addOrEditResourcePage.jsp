@@ -81,7 +81,6 @@
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
-<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
 	<form:form
 		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
 		data-toggle="validator" id="resourceForm" role="form" method="post"
@@ -1120,7 +1119,9 @@ $(document).ready(function(){
          if (i === 0) {
           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
            if ($('#timeOutModal').hasClass('show')) {
-             $('#backToLoginPage').submit();
+             var a = document.createElement('a');
+             a.href = "/fdahpStudyDesigner/sessionOut.do";
+             document.body.appendChild(a).click();
           }
            clearInterval(timeOutInterval);
              } else {
@@ -1143,7 +1144,9 @@ $(document).ready(function(){
 			if ((i === 15) || (j === 0)) {
                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
 				if ($('#myAutoModal').hasClass('show')) {
-					$('#backToLoginPage').submit();
+					var a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/sessionOut.do";
+                    document.body.appendChild(a).click();
 				}
 				clearInterval(lastSavedInterval);
 			} else {

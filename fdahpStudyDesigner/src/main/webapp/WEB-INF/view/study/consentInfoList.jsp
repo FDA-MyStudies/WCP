@@ -212,12 +212,6 @@
         name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
 </form:form>
-<form:form
-             action="/fdahpStudyDesigner/sessionOut.do"
-              id="backToLoginPage"
-              name="backToLoginPage"
-              method="post">
-</form:form>
 <script type="text/javascript">
 var idleTime = 0;
   $(document).ready(function () {
@@ -347,7 +341,9 @@ var idleTime = 0;
            if (i === 0) {
            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
            if ($('#myModal').hasClass('show')) {
-           $('#backToLoginPage').submit();
+           var a = document.createElement('a');
+           a.href = "/fdahpStudyDesigner/sessionOut.do";
+           document.body.appendChild(a).click();
              }
              clearInterval(timeOutInterval);
               } else {

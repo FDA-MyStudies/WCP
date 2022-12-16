@@ -398,11 +398,6 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/sessionOut.do"
-           id="backToLoginPage" name="backToLoginPage"
-           method="post" data-toggle="validator" role="form">
-</form:form>
-
 <script>
  var idleTime = 0;
  $(document).ready(function () {
@@ -438,7 +433,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                                        if (i === 0) {
                                                        $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
                                                        if ($('#timeOutModal').hasClass('show')) {
-                                                       $('#backToLoginPage').submit();
+                                                       var a = document.createElement('a');
+                                                       a.href = "/fdahpStudyDesigner/sessionOut.do";
+                                                       document.body.appendChild(a).click();
                                                          }
                                                          clearInterval(timeOutInterval);
                                                           } else {
@@ -462,7 +459,9 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
                                        if ((i === 15) || (j === 0)) {
                                             $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
                                            if ($('#myModal').hasClass('show')) {
-                                               $('#backToLoginPage').submit();
+                                               var a = document.createElement('a');
+                                               a.href = "/fdahpStudyDesigner/sessionOut.do";
+                                               document.body.appendChild(a).click();
                                            }
                                            clearInterval(lastSavedInterval);
                                        } else {

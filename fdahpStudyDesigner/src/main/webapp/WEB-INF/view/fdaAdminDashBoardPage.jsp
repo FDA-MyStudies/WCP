@@ -71,12 +71,6 @@ padding-top:20px !important;
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
-	<form:form
-                 action="/fdahpStudyDesigner/sessionOut.do"
-                  id="backToLoginPage"
-                  name="backToLoginPage"
-                  method="post">
-    </form:form>
     <div id="lg-container" class="lg-container">
         
         <!-- Login Left Section-->
@@ -369,8 +363,10 @@ padding-top:20px !important;
                   let timeOutInterval = setInterval(function () {
                   if (i === 0) {
                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                  if ($('#myModal').hasClass('in')) {
-                  $('#backToLoginPage').submit();
+                  if ($('#myModal').hasClass('show')) {
+                 var a = document.createElement('a');
+                 a.href = "/fdahpStudyDesigner/sessionOut.do";
+                 document.body.appendChild(a).click();
                     }
                     clearInterval(timeOutInterval);
                      } else {

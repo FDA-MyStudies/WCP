@@ -116,7 +116,6 @@
 
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
-<form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <!--  Start top tab section-->
     <div class="right-content-head">
         <div class="text-right">
@@ -654,7 +653,9 @@
         if (i === 0) {
          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
           if ($('#timeOutModal').hasClass('show')) {
-            $('#backToLoginPage').submit();
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
          }
           clearInterval(timeOutInterval);
             } else {
@@ -677,7 +678,9 @@
            if ((i === 15) || (j === 0)) {
               $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
               if ($('#myModal').hasClass('show')) {
-                  $('#backToLoginPage').submit();
+                 var a = document.createElement('a');
+                 a.href = "/fdahpStudyDesigner/sessionOut.do";
+                 document.body.appendChild(a).click();
               }
               clearInterval(lastSavedInterval);
           } else {

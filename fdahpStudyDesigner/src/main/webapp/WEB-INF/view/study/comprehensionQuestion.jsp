@@ -76,7 +76,6 @@
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
     <!--  Start top tab section-->
-    <form:form action="/fdahpStudyDesigner/sessionOut.do" id="backToLoginPage" name="backToLoginPage" method="post"></form:form>
     <form:form
             action="/fdahpStudyDesigner/adminStudies/saveOrUpdateComprehensionTestQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}"
             name="comprehensionFormId" id="comprehensionFormId" method="post"
@@ -472,8 +471,10 @@ var idleTime = 0;
                 let timeOutInterval = setInterval(function () {
                 if (i === 0) {
                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    if ($('#timeOutModal').hasClass('in')) {
-                     $('#backToLoginPage').submit();
+                    if ($('#timeOutModal').hasClass('show')) {
+                     var a = document.createElement('a');
+                     a.href = "/fdahpStudyDesigner/sessionOut.do";
+                     document.body.appendChild(a).click();
                        }
                         clearInterval(timeOutInterval);
                         } else {
@@ -663,7 +664,9 @@ var idleTime = 0;
                    if ((i === 15) || (j === 0)) {
                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
                         if ($('#myModal').hasClass('show')) {
-                            $('#backToLoginPage').submit();
+                            var a = document.createElement('a');
+                            a.href = "/fdahpStudyDesigner/sessionOut.do";
+                            document.body.appendChild(a).click();
                         }
                         clearInterval(lastSavedInterval);
                     } else {

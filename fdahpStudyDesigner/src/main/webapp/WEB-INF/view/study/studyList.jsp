@@ -71,12 +71,6 @@ background:#fff ;
 <form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
   <input type="hidden" id="studyId" name="studyId">
 </form:form>
-<form:form
-             action="/fdahpStudyDesigner/sessionOut.do"
-              id="backToLoginPage"
-              name="backToLoginPage"
-              method="post">
-</form:form>
 
 <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
@@ -185,7 +179,9 @@ var idleTime = 0;
                   if (i === 0) {
                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
                   if ($('#myModal').hasClass('show')) {
-                  $('#backToLoginPage').submit();
+                  var a = document.createElement('a');
+                  a.href = "/fdahpStudyDesigner/sessionOut.do";
+                  document.body.appendChild(a).click();
                     }
                     clearInterval(timeOutInterval);
                      } else {

@@ -1003,7 +1003,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
 
         Integer id = questionsBo.getId();
-        if (id != null && (StringUtils.isEmpty(language) || "en".equals(language))) {
+        if (id != null && questionsBo.getResponseType() != null
+                && questionsBo.getResponseType().equals(6)
+                && (StringUtils.isEmpty(language) || "en".equals(language)))  {
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
             StringBuilder dispText = new StringBuilder();
@@ -1605,6 +1607,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
         if (id != null && questionnairesStepsBo.getQuestionsBo() != null
+                && questionnairesStepsBo.getQuestionsBo().getResponseType() != null
                 && questionnairesStepsBo.getQuestionsBo().getResponseType().equals(6)
                 && (StringUtils.isEmpty(language) || "en".equals(language))) {
 

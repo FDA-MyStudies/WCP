@@ -1880,7 +1880,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         for (QuestionnairesStepsBo stepsBo : questionnairesStepsBos) {
           stepsBo.setPipingSurveyId(null);
           stepsBo.setPipingSourceQuestionKey(null);
-          stepsBo.setDifferentSurvey(null);
           stepsBo.setStatus(false);
           session.update(stepsBo);
 

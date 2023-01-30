@@ -4444,6 +4444,7 @@ input[type=number] {
 
 				<div class="gray-xs-f mb-xs">Snippet</div>
 				<div class="mb-xs">
+					<input type="hidden" id="isSaved" value="${questionnairesStepsBo.pipingSnippet}">
 					<input type="text" class="form-control req" placeholder="Enter" id="pipingSnippet" name="pipingSnippet" value="${questionnairesStepsBo.pipingSnippet}"/>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
@@ -4669,6 +4670,35 @@ input[type=number] {
 								.text("Please fill out this field."));
 				return false;
 			}
+
+			if ($('#isSaved').val() !== '') {
+				$('#pipingModal').modal('show');
+				if ($('#pipingSnippet').val() === '') {
+					$('#pipingSnippet').parent().addClass('has-error has-danger').find(".help-block")
+							.empty()
+							.append($("<ul><li> </li></ul>")
+									.attr("class","list-unstyled")
+									.text("Please fill out this field."));
+				}
+
+				if ($('#sourceQuestion').val() === '') {
+					$('#sourceQuestion').closest('div.mb-xs').addClass('has-error has-danger').find(".help-block")
+							.empty()
+							.append($("<ul><li> </li></ul>")
+									.attr("class","list-unstyled")
+									.text("Please fill out this field."));
+				}
+
+				if ($('#differentSurvey').is(':checked') && $('#surveyId').val() === '') {
+					$('#surveyId').closest('div.mb-xs').addClass('has-error has-danger').find(".help-block")
+							.empty()
+							.append($("<ul><li> </li></ul>")
+									.attr("class","list-unstyled")
+									.text("Please fill out this field."));
+				}
+				return false;
+			}
+
           $("#doneId").attr("disabled", true);
           var isValid = true;
           var isImageValid = true;

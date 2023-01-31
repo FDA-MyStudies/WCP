@@ -1028,8 +1028,6 @@ public class StudyQuestionnaireController {
             boolean IsQuestionSkippableFlag = false;
             if (questionLists.size() != 0) {
               lastQuestionStepObject = questionLists.get(questionLists.toArray().length - 1);
-              System.out.println(lastQuestionStepObject.getQuestionId());
-              System.out.println(questionId);
               if (lastQuestionStepObject.getQuestionId().equals(Integer.valueOf(questionId))) {
                 IsQuestionSkippableFlag = true;
               }
@@ -1959,8 +1957,6 @@ public class StudyQuestionnaireController {
         boolean IsSkippableFlag = false;
         if(groupStepLists.size() != 0) {
           lastStepObject = groupStepLists.get(groupStepLists.size() - 1);
-          System.out.println(lastStepObject.getQuestionnaireStepId());
-          System.out.println(questionStepId);
           if(lastStepObject.getQuestionnaireStepId().equals(questionStepId)){
             IsSkippableFlag = true;
           }
@@ -4339,7 +4335,6 @@ public class StudyQuestionnaireController {
           stepId = Integer.valueOf(lastStepObject.getStepId());
           //getting stepType by sending questionStepId
           stepType = studyQuestionnaireService.getStepType(questionStepId, stepId);
-          System.out.println(stepType);
         }
         map.addAttribute("stepType", stepType);
         String selectionStyle = null;
@@ -4355,7 +4350,6 @@ public class StudyQuestionnaireController {
             map.addAttribute("questionIdList", questionIdList);
             if (!questionIdList.isEmpty()) {
               lastQuestinObjectValue = questionIdList.get(0);
-              System.out.println(lastQuestinObjectValue);
               responseType = studyQuestionnaireService.getResponseTypeForFormStep(lastQuestinObjectValue);
               if (responseType.equals(6)) {
                 selectionStyle = studyQuestionnaireService.getTextChoiceSelectionStyle(lastQuestinObjectValue);
@@ -4603,7 +4597,6 @@ public class StudyQuestionnaireController {
             map.addAttribute("questionIdList", questionIdList);
             if(!questionIdList.isEmpty()) {
               lastQuestinObjectValue = questionIdList.get(0);
-              System.out.println(lastQuestinObjectValue);
               responseType = studyQuestionnaireService.getResponseTypeForFormStep(lastQuestinObjectValue);
               if(responseType.equals(6)) {
                 selectionStyle = studyQuestionnaireService.getTextChoiceSelectionStyle(lastQuestinObjectValue);

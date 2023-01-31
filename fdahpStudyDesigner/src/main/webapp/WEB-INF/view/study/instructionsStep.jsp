@@ -401,13 +401,14 @@
         }
 
         if ($('#isSaved').val() !== '') {
-            $('#pipingModal').modal('show');
+            let isValid = true;
             if ($('#pipingSnippet').val() === '') {
                 $('#pipingSnippet').parent().addClass('has-error has-danger').find(".help-block")
                     .empty()
                     .append($("<ul><li> </li></ul>")
                         .attr("class","list-unstyled")
                         .text("Please fill out this field."));
+                isValid = false;
             }
 
             if ($('#sourceQuestion').val() === '') {
@@ -416,6 +417,7 @@
                     .append($("<ul><li> </li></ul>")
                         .attr("class","list-unstyled")
                         .text("Please fill out this field."));
+                isValid = false;
             }
 
             if ($('#differentSurvey').is(':checked') && $('#surveyId').val() === '') {
@@ -424,9 +426,15 @@
                     .append($("<ul><li> </li></ul>")
                         .attr("class","list-unstyled")
                         .text("Please fill out this field."));
+                isValid = false;
             }
-            return false;
+
+            if (!isValid) {
+                $('#pipingModal').modal('show');
+                return false;
+            }
         }
+
       $("#doneId").attr("disabled", true);
       validateShortTitle('', function (val) {
         if (val) {

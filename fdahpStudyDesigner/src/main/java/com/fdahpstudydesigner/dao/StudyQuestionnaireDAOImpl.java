@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import static com.fdahpstudydesigner.util.FdahpStudyDesignerConstants.*;
+
 /** @author BTC */
 @Repository
 public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
@@ -855,7 +857,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 }
               } else if (questionnairesStepsBo
                   .getStepType()
-                  .equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)) {
+                  .equalsIgnoreCase(FORM_STEP)) {
                 // copying the form step
                 FormBo formBo =
                     (FormBo)
@@ -1487,7 +1489,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             activitydetails = "Question step was deleted. (Study ID = " + customStudyId + ")";
           } else if (questionnairesStepsBo
               .getStepType()
-              .equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)) {
+              .equalsIgnoreCase(FORM_STEP)) {
             activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY + " was deleted.";
             activitydetails = "Form step was deleted .(Study ID = " + customStudyId + ")";
           }
@@ -1733,7 +1735,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           query = session.createQuery(deleteSubResponse).setInteger("stepId", stepId);
           query.executeUpdate();
 
-        } else if (stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)) {
+        } else if (stepType.equalsIgnoreCase(FORM_STEP)) {
           String subQuery =
               "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId=:stepId ";
           query = session.createQuery(subQuery).setInteger("stepId", stepId);
@@ -1797,6 +1799,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
    * @return String : SUCCESS or FAILURE
    */
   @Override
+  @SuppressWarnings("unchecked")
   public String deleteQuestuionnaireInfo(
       Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Starts");
@@ -1871,7 +1874,35 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             deleteQuestuionnaireInfo(studyId, questionnaireId, customStudyId, session, transaction);
       }
       if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+        List<QuestionnairesStepsBo> questionnairesStepsBos = session.createQuery("from QuestionnairesStepsBo where pipingSurveyId=:surveyId")
+                .setParameter("surveyId", questionnaireId)
+                .list();
+        for (QuestionnairesStepsBo stepsBo : questionnairesStepsBos) {
+          stepsBo.setPipingSurveyId(null);
+          stepsBo.setPipingSourceQuestionKey(null);
+          stepsBo.setStatus(false);
+          session.update(stepsBo);
 
+          int id = stepsBo.getInstructionFormId();
+          if (QUESTION_STEP.equals(stepsBo.getStepType())) {
+            QuestionsBo questionsBo = session.get(QuestionsBo.class, id);
+            if (questionsBo != null) {
+              questionsBo.setStatus(false);
+              session.update(questionsBo);
+            }
+          } else if (INSTRUCTION_STEP.equals(stepsBo.getStepType())) {
+            InstructionsBo instructionsBo = session.get(InstructionsBo.class, id);
+            if (instructionsBo != null) {
+              instructionsBo.setStatus(false);
+              session.update(instructionsBo);
+            }
+          }
+          QuestionnaireBo existingBo = session.get(QuestionnaireBo.class, stepsBo.getQuestionnairesId());
+          if (existingBo != null) {
+            existingBo.setStatus(false);
+            session.update(existingBo);
+          }
+        }
         /*
          * if (null != questionnaireBo && null != questionnaireBo.getAnchorDateId()) {
          * anchorDateTypeBo = (AnchorDateTypeBo) session.get(AnchorDateTypeBo.class,
@@ -1998,7 +2029,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           session
               .createQuery(subQuery)
               .setInteger("questionnaireId", questionnaireId)
-              .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+              .setString("stepType", FORM_STEP);
       if (query.list() != null && !query.list().isEmpty()) {
 
         String deleteFormResponse =
@@ -2009,7 +2040,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             session
                 .createQuery(deleteFormResponse)
                 .setInteger("questionnaireId", questionnaireId)
-                .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+                .setString("stepType", FORM_STEP);
         query.executeUpdate();
 
         String deleteFormSubResponse =
@@ -2020,7 +2051,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             session
                 .createQuery(deleteFormSubResponse)
                 .setInteger("questionnaireId", questionnaireId)
-                .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+                .setString("stepType", FORM_STEP);
         query.executeUpdate();
 
         String deleteFormQuery = "delete QuestionsBo QBO where QBO.id IN (" + subQuery + ")";
@@ -2028,7 +2059,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             session
                 .createQuery(deleteFormQuery)
                 .setInteger("questionnaireId", questionnaireId)
-                .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+                .setString("stepType", FORM_STEP);
         query.executeUpdate();
       }
 
@@ -2039,7 +2070,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           session
               .createQuery(formMappingDelete)
               .setInteger("questionnaireId", questionnaireId)
-              .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+              .setString("stepType", FORM_STEP);
       query.executeUpdate();
 
       String formDelete =
@@ -2049,7 +2080,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           session
               .createQuery(formDelete)
               .setInteger("questionnaireId", questionnaireId)
-              .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+              .setString("stepType", FORM_STEP);
       query.executeUpdate();
 
       String searchQuery =
@@ -2647,7 +2678,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
         } else if (questionnairesStepsBo
             .getStepType()
-            .equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)) {
+            .equalsIgnoreCase(FORM_STEP)) {
           // get the one from step of an questionnaire
           String fromQuery =
               "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and f.form_id=:stepId "
@@ -2672,7 +2703,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             questionnaireStepBean.setQuestionInstructionId(questionId);
             questionnaireStepBean.setTitle(questionText);
             questionnaireStepBean.setSequenceNo(sequenceNo);
-            questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+            questionnaireStepBean.setStepType(FORM_STEP);
             questionnaireStepBean.setResponseType(responseType);
             questionnaireStepBean.setLineChart(lineChart);
             questionnaireStepBean.setStatData(statData);
@@ -2796,11 +2827,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             destinationMap.put(questionaireSteps.getInstructionFormId() + FdahpStudyDesignerConstants.QUESTION_STEP, defaultStep);
 
             break;
-          	case FdahpStudyDesignerConstants.FORM_STEP:
+          	case FORM_STEP:
             formIdList.add(questionaireSteps.getInstructionFormId());
             sequenceNoMap.put(
                     questionaireSteps.getInstructionFormId()
-                    + FdahpStudyDesignerConstants.FORM_STEP,
+                    + FORM_STEP,
                 questionaireSteps.getSequenceNo());
             Integer defaultFormStep = null;
 			if (questionaireSteps.getDestinationStep() != null) {
@@ -2822,7 +2853,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 					}
 				}
 			}
-			destinationMap.put(questionaireSteps.getInstructionFormId() + FdahpStudyDesignerConstants.FORM_STEP, defaultFormStep);            
+			destinationMap.put(questionaireSteps.getInstructionFormId() + FORM_STEP, defaultFormStep);
             formStatusMap.put(
                 questionaireSteps.getInstructionFormId(), questionaireSteps.getStatus());
             break;
@@ -3004,7 +3035,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               questionnaireStepBean.setQuestionInstructionId(questionId);
               questionnaireStepBean.setTitle(questionText);
               questionnaireStepBean.setSequenceNo(sequenceNo);
-              questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+              questionnaireStepBean.setStepType(FORM_STEP);
               questionnaireStepBean.setResponseType(responseType);
               questionnaireStepBean.setLineChart(lineChart);
               questionnaireStepBean.setStatData(statData);
@@ -3030,28 +3061,28 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             }
           }
           fQuestionnaireStepBean.setDeletionId(questionnairesStepsBo.getStepId());
-          fQuestionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+          fQuestionnaireStepBean.setStepType(FORM_STEP);
           fQuestionnaireStepBean.setSequenceNo(
-              sequenceNoMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP));
+              sequenceNoMap.get(formIdList.get(i) + FORM_STEP));
           fQuestionnaireStepBean.setFromMap(formQuestionMap);
           fQuestionnaireStepBean.setStatus(formStatusMap.get(formIdList.get(i)));
           fQuestionnaireStepBean.setGroupFlag(questionnairesStepsBo.getGroupFlag());
           fQuestionnaireStepBean.setQuestionInstructionId(formIdList.get(i));
           fQuestionnaireStepBean.setDestinationStep(
-              destinationMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP));
+              destinationMap.get(formIdList.get(i) + FORM_STEP));
           String stepOrGroup = questionnairesStepsBo.getStepOrGroupPostLoad();
           if(stepOrGroup != null) {
             //setting destinationText if the selected destination step is STEP
             if (FdahpStudyDesignerConstants.STEP.equalsIgnoreCase(stepOrGroup)) {
               fQuestionnaireStepBean.setDestinationText(
                       destinationText.get(
-                              destinationMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP)));
+                              destinationMap.get(formIdList.get(i) + FORM_STEP)));
             }
             //setting destinationText if the selected destinationstep is GROUP
             else {
               //getting groupautogeneratedId that is stored in destinationStep in order to get the groupName in the groupsBo table
               Integer groupId = destinationMap.get(
-                      formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP);
+                      formIdList.get(i) + FORM_STEP);
               //get the groupname by passing above id
               String groupName = null;
               query =
@@ -3063,11 +3094,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           }else {
             fQuestionnaireStepBean.setDestinationText(
                     destinationText.get(
-                            destinationMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP)));
+                            destinationMap.get(formIdList.get(i) + FORM_STEP)));
           }
           fQuestionnaireStepBean.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
           qTreeMap.put(
-              sequenceNoMap.get(formIdList.get(i) + FdahpStudyDesignerConstants.FORM_STEP),
+              sequenceNoMap.get(formIdList.get(i) + FORM_STEP),
               fQuestionnaireStepBean);
         }
       }
@@ -4161,7 +4192,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(
               addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
           addOrUpdateQuestionnairesStepsBo.setInstructionFormId(formBo.getFormId());
-          addOrUpdateQuestionnairesStepsBo.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+          addOrUpdateQuestionnairesStepsBo.setStepType(FORM_STEP);
           QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
           query =
               session
@@ -4542,13 +4573,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                             + " and QSBO.active=1 and QSBO.questionnairesId=:questionnairesId ")
                     .setInteger("fromId", questionsBo.getFromId())
                     .setInteger("questionnairesId", questionsBo.getQuestionnaireId())
-                    .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+                    .setString("stepType", FORM_STEP);
           } else {
             query =
                 session
                     .getNamedQuery("getQuestionnaireStep")
                     .setInteger("instructionFormId", questionsBo.getFromId())
-                    .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+                    .setString("stepType", FORM_STEP);
           }
 
           QuestionnairesStepsBo questionnairesStepsBo =
@@ -4794,7 +4825,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             session
                 .createSQLQuery(updateFromQuery)
                 .setInteger("questionnaireId", questionnaireBo.getId())
-                .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+                .setString("stepType", FORM_STEP);
         query.executeUpdate();
 
         String updateQuestionSteps =
@@ -5482,7 +5513,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             (BigInteger)
                 session
                     .createSQLQuery(searchSubQuery)
-                    .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP)
+                    .setString("stepType", FORM_STEP)
                     .setInteger("questionnaireId", questionnaireId)
                     .setParameterList("timeRange", Arrays.asList(timeRange))
                     .uniqueResult();
@@ -5739,7 +5770,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   .setInteger("questionnaireId", questionnaireId)
                   .list();
           if (aIds != null && aIds.size() > 0) anchorIds.addAll(aIds);
-        } else if (stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)) {
+        } else if (stepType.equalsIgnoreCase(FORM_STEP)) {
           String subQuery =
               "select q.anchor_date_id from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
                   + "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and qq.id=:questionnaireId "
@@ -6754,7 +6785,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
 
         QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
         questionnairesStepsBo.setGroupFlag(true);
-        if (i == size && FdahpStudyDesignerConstants.FORM_STEP.equals(questionnairesStepsBo.getStepType())) {
+        if (i == size && FORM_STEP.equals(questionnairesStepsBo.getStepType())) {
           Integer groupId = this.getGroupIdByStep(session, questionnaireStepId);
           if (groupId != null) {
             GroupsBo groupsBo = session.get(GroupsBo.class, groupId);
@@ -7277,7 +7308,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     	      }
     	    groupMappingStepBean1.setStepId(stepsBo.getInstructionFormId());
     	    groupMappingStepBean1.setDescription(question);
-    	    groupMappingStepBean1.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+    	    groupMappingStepBean1.setStepType(FORM_STEP);
     	    groupMappingBeanss.add(groupMappingStepBean1);
     	  }
     	}

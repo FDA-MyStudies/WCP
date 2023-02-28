@@ -3341,7 +3341,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
                     timeOutFunction();
                 </c:if>
         }
-    }, 226000); // 5 minutes
+    }, 226020); // 5 minutes
 
     $(this).mousemove(function (e) {
         idleTime = 0;

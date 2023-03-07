@@ -109,8 +109,8 @@ display:flex;
 <form action="${logoutUrl}" method="post" id="logoutForm">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="logoutCsrf"/>
 </form>
-<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
-</form:form>
+<%--<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">--%>
+<%--</form:form>--%>
 <form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do" id="myAccountForm" name="myAccountForm" method="post">
@@ -124,7 +124,7 @@ display:flex;
  	var a = document.createElement('a');
  	$('#usersSection').on('click',function(){
 //  		$('#userListForm').submit();
-		a.href = "/fdahpStudyDesigner/adminUsersView/getUserList.do";
+		a.href = "/fdahpStudyDesigner/adminUsersView/getUserList.do?${_csrf.parameterName}=${_csrf.token}";
 		document.body.appendChild(a).click();
  	});
 

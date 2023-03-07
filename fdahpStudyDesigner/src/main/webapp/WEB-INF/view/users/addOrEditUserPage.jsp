@@ -79,7 +79,7 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
 		<div class="white-bg box-space">
 			<c:if
-				test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword && not userBO.emailChanged}">f
+				test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword && not userBO.emailChanged}">
 				<c:if
 					test="${fn:contains(sessionObject.userPermissions,'ROLE_SUPERADMIN')}">
 					<div class="gray-xs-f text-weight-semibold pull-right">
@@ -395,7 +395,8 @@
 </form:form>
 
 <form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do"
-	id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+	id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="get">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form:form>
 
 <div class="modal fade" id="myModal" role="dialog">

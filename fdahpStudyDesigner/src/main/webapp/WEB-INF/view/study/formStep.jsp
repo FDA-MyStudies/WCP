@@ -993,7 +993,7 @@ var idleTime = 0;
                         timeOutFunction();
                     </c:if>
             }
-        }, 226020); // 5 minutes
+        }, 224850); // 5 minutes
 
         $(this).mousemove(function (e) {
             idleTime = 0;

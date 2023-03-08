@@ -1031,7 +1031,7 @@
                                     timeOutFunction();
                                 </c:if>
                         }
-                    }, 224850); // 5 minutes
+                    }, 224400); // 5 minutes
 
                     $(this).mousemove(function (e) {
                         idleTime = 0;

@@ -65,7 +65,8 @@ padding-top:20px !important;
 </style>
 <body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
-     <form:form action="" name="studyListForm" id="studyListForm" method="post">
+     <form:form action="" name="studyListForm" id="studyListForm" method="get">
+         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
      </form:form>
      <c:url value="/j_spring_security_logout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">

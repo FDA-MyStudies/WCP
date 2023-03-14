@@ -15,7 +15,7 @@ import java.io.IOException;
 public class CSPFilter implements Filter {
 
   public static final String POLICY = "default-src 'self';frame-ancestors 'self';form-action 'self'; "
-      + "script-src 'self' https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js http://www.google-analytics.com/analytics.js 'unsafe-inline' 'unsafe-eval';"
+      + "script-src 'self' https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js http://www.google-analytics.com/analytics.js 'unsafe-inline';"
       + "connect-src 'self' https://www.google-analytics.com/j/collect;"
       + "img-src 'self' blob: data:;"
       + "style-src 'self' https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css  http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css  https://fonts.googleapis.com 'unsafe-inline'; "

@@ -230,7 +230,7 @@ var idleTime = 0;
                                     if (idleTime > 3) { // 5 minutes
                                     timeOutFunction();
                                      }
-                                     }, 226000);
+                                     }, 226020);
 
                                      $(this).mousemove(function (e) {
                                        idleTime = 0;

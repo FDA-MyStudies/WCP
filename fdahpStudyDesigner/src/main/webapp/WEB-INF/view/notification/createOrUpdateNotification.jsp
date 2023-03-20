@@ -572,27 +572,28 @@ left: -3px !important;
 									var dt = $('#datetimepicker').val();
 									if (dt != ''
 											&& dt != moment(serverDate())
-													.format("MM/DD/YYYY")) {
+											.format("MM/DD/YYYY")) {
 										$('.timepicker').data("DateTimePicker")
-												.minDate(false);
+										.minDate(false);
 									} else {
 										$('.timepicker').data("DateTimePicker")
-												.minDate(serverDateTime());
+										.minDate(serverDateTime());
 									}
 								});
-                                     setInterval(function () {
-                                        idleTime += 1;
-                                        if (idleTime > 3) { // 5 minutes
-                                                timeOutFunction();
-                                            }
-                                    }, 226000);
+						let timeOutInterval = setInterval(function () {
+							idleTime += 1;
+							if (idleTime > 3) { // 5 minutes
+								clearInterval(timeOutInterval);
+								timeOutFunction();
+							}
+						}, 226000);
 
-                                    $(this).mousemove(function (e) {
-                                            idleTime = 0;
-                                        });
-                                        $(this).keypress(function (e) {
-                                            idleTime = 0;
-                                        });
+						$(this).mousemove(function (e) {
+							idleTime = 0;
+						});
+						$(this).keypress(function (e) {
+							idleTime = 0;
+						});
 
                                      function timeOutFunction() {
                                      $('#myModal').modal('show');

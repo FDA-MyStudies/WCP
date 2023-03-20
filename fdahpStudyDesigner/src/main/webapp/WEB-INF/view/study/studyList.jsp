@@ -148,23 +148,24 @@ var idleTime = 0;
                 { "bSortable": true },
                 { "bSortable": true },
                 { "bSortable": true },
-                { "bSortable": false }
-               ],
-               "columnDefs": [ { orderable: false, targets: [8] } ],
-               "order": [[ 0, "desc" ]],
-             "info" : false, 
-             "lengthChange": false, 
-             "searching": false, 
-             "pageLength": 10 
-         } );
+               {"bSortable": false}
+             ],
+           "columnDefs": [{orderable: false, targets: [8]}],
+           "order": [[0, "desc"]],
+           "info": false,
+           "lengthChange": false,
+           "searching": false,
+           "pageLength": 10
+         });
 
-        setInterval(function () {
-              idleTime += 1;
-              console.log('Inside first interval, idleTime : ' + idleTime);
-               if (idleTime > 3) { // 5 minutes
-                 timeOutFunction();
-               }
-        }, 226000);
+         let timeOutInterval = setInterval(function () {
+           idleTime += 1;
+           console.log('Inside first interval, idleTime : ' + idleTime);
+           if (idleTime > 3) { // 5 minutes
+             clearInterval(timeOutInterval);
+             timeOutFunction();
+           }
+         }, 226000);
 
          $(this).mousemove(function (e) {
            idleTime = 0;

@@ -319,23 +319,24 @@
                         .attr(
                             'data-original-title',
                             'Please ensure individual list items are marked Done, before marking the section as Complete');
-                    $('[data-toggle="tooltip"]').tooltip();
+                  $('[data-toggle="tooltip"]').tooltip();
                 }
-                initActions();
-                $('.submitEle').click(
-                    function (e) {
-                        e.preventDefault();
-                        saveStudyEligibilityPage('manual', $(this).attr('actType'));
-                    });
-                setInterval(function () {
-                    idleTime += 1;
-                    if (idleTime > 3) {
-                        <c:if test="${permission ne 'view'}">
+              initActions();
+              $('.submitEle').click(
+                  function (e) {
+                    e.preventDefault();
+                    saveStudyEligibilityPage('manual', $(this).attr('actType'));
+                  });
+              let timeOutInterval = setInterval(function () {
+                idleTime += 1;
+                if (idleTime > 3) {
+                  <c:if test="${permission ne 'view'}">
                         saveStudyEligibilityPage('auto', 'save');
                          </c:if>
                         <c:if test="${permission eq 'view'}">
-                            timeOutFunction();
-                        </c:if>
+                  clearInterval(timeOutInterval);
+                  timeOutFunction();
+                  </c:if>
                     }
                 }, 226000); // 5 minutes
 

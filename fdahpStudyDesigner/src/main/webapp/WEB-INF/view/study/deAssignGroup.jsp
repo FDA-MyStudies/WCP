@@ -215,29 +215,28 @@ var idleTime = 0;
                  $("#buttonText").val('save');
                  $("#isAutoSaved").val('true');
                  $('#addGroupFormId').submit();
-                 }
-                 else
-                 {
-                 $("#alertMsg").removeClass('s-box').addClass('e-box').text(
-                      "Please fill out this all the mandatory fields");
-                  $('#alertMsg').show();
-                 }
-                 setTimeout(hideDisplayMessage, 4000);
-               });
+         } else {
+           $("#alertMsg").removeClass('s-box').addClass('e-box').text(
+               "Please fill out this all the mandatory fields");
+           $('#alertMsg').show();
+         }
+       setTimeout(hideDisplayMessage, 4000);
+     });
 
-                                  setInterval(function () {
-                                   idleTime += 1;
-                                    if (idleTime > 3) { // 5 minutes
-                                    timeOutFunction();
-                                     }
-                                     }, 226020);
+   let timeOutInterval = setInterval(function () {
+     idleTime += 1;
+     if (idleTime > 3) { // 5 minutes
+       clearInterval(timeOutInterval);
+       timeOutFunction();
+     }
+   }, 226020);
 
-                                     $(this).mousemove(function (e) {
-                                       idleTime = 0;
-                                     });
-                                     $(this).keypress(function (e) {
-                                      idleTime = 0;
-                                      });
+   $(this).mousemove(function (e) {
+     idleTime = 0;
+   });
+   $(this).keypress(function (e) {
+     idleTime = 0;
+   });
 
                                       function timeOutFunction() {
                                       $('#myModal').modal('show');

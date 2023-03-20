@@ -334,29 +334,30 @@ padding-top:20px !important;
       		document.studyListForm.action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
       		document.studyListForm.submit();
       	 });
-      	 if('${sessionScope.sessionObject}' != ''){
-	   	  	setTimeout(function(){
-		 		 window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
-		 	}, 1000 * 60 * 31);
-   	  	 }
-      	 
-      	var year = new Date().getFullYear();
-    	var copyRightText= 'Copyright © '+year+' FDA';
-    	document.getElementById("copyright").innerHTML = copyRightText;
+      	 if('${sessionScope.sessionObject}' != '') {
+           setTimeout(function () {
+             window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
+           }, 1000 * 60 * 31);
+         }
 
-    	setInterval(function () {
-              idleTime += 1;
-               if (idleTime > 3) { // 5 minutes
-               timeOutFunction();
-                }
-                }, 226000);
+      var year = new Date().getFullYear();
+      var copyRightText = 'Copyright © ' + year + ' FDA';
+      document.getElementById("copyright").innerHTML = copyRightText;
 
-                $(this).mousemove(function (e) {
-                  idleTime = 0;
-                });
-                $(this).keypress(function (e) {
-                 idleTime = 0;
-                 });
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          clearInterval(timeOutInterval);
+          timeOutFunction();
+        }
+      }, 226000);
+
+      $(this).mousemove(function (e) {
+        idleTime = 0;
+      });
+      $(this).keypress(function (e) {
+        idleTime = 0;
+      });
 
                  function timeOutFunction() {
                  $('#myModal').modal('show');

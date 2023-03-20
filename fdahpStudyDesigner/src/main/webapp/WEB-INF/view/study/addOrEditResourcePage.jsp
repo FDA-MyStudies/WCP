@@ -1076,25 +1076,28 @@ $(document).ready(function(){
 				$('#xSign').children('option').remove();
 				$('#xSign').append("<option value='0' selected>+</option>");
 				$('#ySign').children('option').remove();
-			    $('#ySign').append("<option value='0' selected>+</option>");
-			} else{
+				$('#ySign').append("<option value='0' selected>+</option>");
+			} else {
 				$('#xSign').children('option').remove();
-				$('#xSign').append("<option value='0' selected>+</option><option value='1' selected>-</option>");
+				$('#xSign').append(
+						"<option value='0' selected>+</option><option value='1' selected>-</option>");
 				$('#ySign').children('option').remove();
-			    $('#ySign').append("<option value='0' selected>+</option><option value='1' selected>-</option>");
+				$('#ySign').append(
+						"<option value='0' selected>+</option><option value='1' selected>-</option>");
 			}
-			$('.selectpicker').selectpicker('refresh');
-	}); 
-	 
-	    setInterval(function () {
-	        idleTime += 1;
-	        if (idleTime > 3) { // 5 minutes
-	                <c:if test="${actionOn ne 'view'}">
+		 $('.selectpicker').selectpicker('refresh');
+	 });
+
+	let timeOutInterval = setInterval(function () {
+		idleTime += 1;
+		if (idleTime > 3) { // 5 minutes
+			<c:if test="${actionOn ne 'view'}">
 	                autoSaveResourcePage('auto');
                      </c:if>
                     <c:if test="${actionOn eq 'view'}">
-                        timeOutFunction();
-                    </c:if>
+			clearInterval(timeOutInterval);
+			timeOutFunction();
+			</c:if>
 
 	        }
 	    }, 226000); // 5 minutes

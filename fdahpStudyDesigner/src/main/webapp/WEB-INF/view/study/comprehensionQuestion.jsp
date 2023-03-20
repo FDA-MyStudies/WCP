@@ -439,20 +439,21 @@ var idleTime = 0;
         $("#saveId").on(
             "click",
             function () {
-             autoSaveComprehensionQuestionPage('manual');
+              autoSaveComprehensionQuestionPage('manual');
             });
         if ($('.ans-opts').length > 2) {
           $(".remBtnDis").removeClass("hide");
         } else {
           $(".remBtnDis").addClass("hide");
         }
-        setInterval(function () {
-        idleTime += 1;
-        if (idleTime > 3) {
-           <c:if test="${actionPage ne 'view'}">
+        let timeOutInterval = setInterval(function () {
+          idleTime += 1;
+          if (idleTime > 3) {
+            <c:if test="${actionPage ne 'view'}">
            autoSaveComprehensionQuestionPage('auto');
            </c:if>
            <c:if test="${actionPage eq 'view'}">
+            clearInterval(timeOutInterval);
             timeOutFunction();
             </c:if>
          }

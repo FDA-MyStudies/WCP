@@ -241,10 +241,10 @@ var idleTime = 0;
 		$('.tenth').removeClass('cursor-none');
 
 		var studyMode = "${studyMode}";
-		if(studyMode == "liveMode"){
+		if (studyMode == "liveMode") {
 			$("#livemode").prop("checked", true);
 			$("#testmode").attr('disabled', true);
-		}else{
+		} else {
 			$("#testmode").prop("checked", true);
 		}
 
@@ -253,41 +253,47 @@ var idleTime = 0;
 			refreshAndFetchLanguageData(currLang);
 		}
 
-		setInterval(function () {
-              idleTime += 1;
-               if (idleTime > 3) { // 5 minutes
-               timeOutFunction();
-                }
-                }, 226000);
+		let timeOutInterval = setInterval(function () {
+			idleTime += 1;
+			if (idleTime > 3) { // 5 minutes
+				clearInterval(timeOutInterval);
+				timeOutFunction();
+			}
+		}, 226000);
 
-                $(this).mousemove(function (e) {
-                  idleTime = 0;
-                });
-                $(this).keypress(function (e) {
-                 idleTime = 0;
-                 });
+		$(this).mousemove(function (e) {
+			idleTime = 0;
+		});
+		$(this).keypress(function (e) {
+			idleTime = 0;
+		});
 
-                 function timeOutFunction() {
-                 $('#myModal').modal('show');
-                  let i = 14;
-                  let timeOutInterval = setInterval(function () {
-                  if (i === 0) {
-                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                  if ($('#myModal').hasClass('show')) {
-                  var a = document.createElement('a');
-                  a.href = "/fdahpStudyDesigner/sessionOut.do";
-                  document.body.appendChild(a).click();
-                    }
-                    clearInterval(timeOutInterval);
-                     } else {
-                     if (i === 1) {
-                    $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                      } else {
-                      $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                        }
-                        idleTime = 0;
-                        i-=1;
-                         }
+		function timeOutFunction() {
+			$('#myModal').modal('show');
+			let i = 14;
+			let timeOutInterval = setInterval(function () {
+				if (i === 0) {
+					$('#timeOutMessage').html(
+							'<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+							+ i + ' minutes');
+					if ($('#myModal').hasClass('show')) {
+						var a = document.createElement('a');
+						a.href = "/fdahpStudyDesigner/sessionOut.do";
+						document.body.appendChild(a).click();
+					}
+					clearInterval(timeOutInterval);
+				} else {
+					if (i === 1) {
+						$('#timeOutMessage').html(
+								'<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+					} else {
+						$('#timeOutMessage').html(
+								'<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+								+ i + ' minutes');
+					}
+					idleTime = 0;
+					i -= 1;
+				}
                        }, 60000);
                      }
 	});

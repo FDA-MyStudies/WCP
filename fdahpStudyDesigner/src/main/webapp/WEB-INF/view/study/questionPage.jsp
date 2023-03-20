@@ -4147,15 +4147,16 @@ input[type=number] {
         && typeof valicationCharacterValue != 'undefined') {
       addRegEx(valicationCharacterValue);
     }
-    setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) {
-                    <c:if test="${actionTypeForFormStep ne 'view'}">
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${actionTypeForFormStep ne 'view'}">
                     autoSaveFormQuestionPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForFormStep eq 'view'}">
-                        timeOutFunction();
-                    </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
             }
         }, 224400); // 5 minutes
 

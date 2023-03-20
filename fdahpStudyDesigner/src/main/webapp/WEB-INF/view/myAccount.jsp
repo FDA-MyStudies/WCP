@@ -351,29 +351,30 @@ var idleTime = 0;
 							$(".changepwd .emptyField").val("");
 						},
 					});
-  	  		}else{
-  	  		showErrMsg('New password should not be same as old Password.');
-					$(window).scrollTop(0);
-					$(".changepwd .emptyField").val("");
-					$("#updateBtn").prop('disabled', false);
-				}
-  	  	}else{
-				}
-		});
-
-		setInterval(function () {
-              idleTime += 1;
-               if (idleTime > 3) { // 5 minutes
-               timeOutFunction();
+                } else {
+                  showErrMsg('New password should not be same as old Password.');
+                  $(window).scrollTop(0);
+                  $(".changepwd .emptyField").val("");
+                  $("#updateBtn").prop('disabled', false);
                 }
-                }, 226000);
+            } else {
+            }
+        });
 
-                $(this).mousemove(function (e) {
-                  idleTime = 0;
-                });
-                $(this).keypress(function (e) {
-                 idleTime = 0;
-                 });
+        let timeOutInterval = setInterval(function () {
+          idleTime += 1;
+          if (idleTime > 3) { // 5 minutes
+            clearInterval(timeOutInterval);
+            timeOutFunction();
+          }
+        }, 226000);
+
+        $(this).mousemove(function (e) {
+          idleTime = 0;
+        });
+        $(this).keypress(function (e) {
+          idleTime = 0;
+        });
 
                  function timeOutFunction() {
                  $('#myModal').modal('show');

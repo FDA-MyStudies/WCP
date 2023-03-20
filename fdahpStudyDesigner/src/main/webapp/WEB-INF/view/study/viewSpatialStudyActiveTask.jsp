@@ -1775,15 +1775,16 @@ var idleTime = 0;
             'A max of x runs will be displayed in each view of the chart.');
       }
     }
-              setInterval(function () {
-                  idleTime += 1;
-                  if (idleTime > 3) {
-                          <c:if test="${actionPage ne 'view'}">
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${actionPage ne 'view'}">
                           autoSaveSpatialStudyActivityPage('auto');
                            </c:if>
                           <c:if test="${actionPage eq 'view'}">
-                              timeOutFunction();
-                          </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
                   }
               }, 226020); // 5 minutes
 

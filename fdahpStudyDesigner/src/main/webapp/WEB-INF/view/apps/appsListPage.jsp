@@ -150,29 +150,30 @@ var idleTime = 0;
 
         $('#filterRole').on('change', function () {
             var selected = $(this).find("option:selected").val();
-            table.column(2).search(selected).draw();
+          table.column(2).search(selected).draw();
         });
 
-        $('.update').on('click', function () {
-            $('#alertMsg').hide();
-            let id = $(this).attr('id');
-            let rowData = $('#app_list').DataTable().row(id).data();
-            forceUpgradeApp(rowData, id);
-        });
+      $('.update').on('click', function () {
+        $('#alertMsg').hide();
+        let id = $(this).attr('id');
+        let rowData = $('#app_list').DataTable().row(id).data();
+        forceUpgradeApp(rowData, id);
+      });
 
-        setInterval(function () {
-                      idleTime += 1;
-                       if (idleTime > 3) { // 5 minutes
-                       timeOutFunction();
-                        }
-                        }, 226000);
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          clearInterval(timeOutInterval);
+          timeOutFunction();
+        }
+      }, 226000);
 
-                        $(this).mousemove(function (e) {
-                          idleTime = 0;
-                        });
-                        $(this).keypress(function (e) {
-                         idleTime = 0;
-                         });
+      $(this).mousemove(function (e) {
+        idleTime = 0;
+      });
+      $(this).keypress(function (e) {
+        idleTime = 0;
+      });
 
                          function timeOutFunction() {
                          $('#myModal').modal('show');

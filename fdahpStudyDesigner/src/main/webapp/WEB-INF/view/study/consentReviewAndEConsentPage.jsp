@@ -1361,15 +1361,17 @@ var idleTime = 0;
            }
            } */
      }
-        setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) {
-          <c:if test="${permission ne 'view'}">
+
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${permission ne 'view'}">
                 autoSaveConsentReviewPage('auto','saveId');
                  </c:if>
           <c:if test="${permission eq 'view'}">
-                    timeOutFunction();
-                </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
             }
         }, 226000); // 5 minutes
 

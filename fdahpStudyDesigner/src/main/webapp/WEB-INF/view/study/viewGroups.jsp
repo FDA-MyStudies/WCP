@@ -185,23 +185,24 @@ var idleTime = 0;
       "searching": false,
       "pageLength": 10,
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-       // $('td:eq(0)', nRow).addClass("dis-none");
+        // $('td:eq(0)', nRow).addClass("dis-none");
       }
     });
 
-    setInterval(function () {
-                  idleTime += 1;
-                   if (idleTime > 3) { // 5 minutes
-                   timeOutFunction();
-                    }
-                    }, 226020);
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) { // 5 minutes
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+      }
+    }, 226020);
 
-                    $(this).mousemove(function (e) {
-                      idleTime = 0;
-                    });
-                    $(this).keypress(function (e) {
-                     idleTime = 0;
-                     });
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
 
                      function timeOutFunction() {
                      $('#myModal').modal('show');

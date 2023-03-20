@@ -231,29 +231,30 @@ $(document).ready(function(){
         "lengthChange": false, 
         "pageLength": 15 
     });
-  
-    $('.c__search').on('keyup',function(){
-	      table.search($(this).val().replace(/(["])/g, "\ $1")).draw() ;
-	}); 
- 
-     $('#filterRole').on('change',function(){
+
+	$('.c__search').on('keyup', function () {
+		table.search($(this).val().replace(/(["])/g, "\ $1")).draw();
+	});
+
+	$('#filterRole').on('change', function () {
 		var selected = $(this).find("option:selected").val();
 		table.column(2).search(selected).draw();
-     });
+	});
 
-     setInterval(function () {
-           idleTime += 1;
-            if (idleTime > 3) { // 5 minutes
-            timeOutFunction();
-             }
-             }, 226000);
+	let timeOutInterval = setInterval(function () {
+		idleTime += 1;
+		if (idleTime > 3) { // 5 minutes
+			clearInterval(timeOutInterval);
+			timeOutFunction();
+		}
+	}, 226000);
 
-             $(this).mousemove(function (e) {
-               idleTime = 0;
-             });
-             $(this).keypress(function (e) {
-              idleTime = 0;
-              });
+	$(this).mousemove(function (e) {
+		idleTime = 0;
+	});
+	$(this).keypress(function (e) {
+		idleTime = 0;
+	});
 
               function timeOutFunction() {
               $('#myModal').modal('show');

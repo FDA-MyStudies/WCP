@@ -740,30 +740,31 @@
 		            	input.type= 'hidden';
 		        		input.name= '${_csrf.parameterName}';
 		        		input.value= '${_csrf.token}';
-		        		form.appendChild(input);
-		        		
-		            	form.action= '/fdahpStudyDesigner/adminUsersEdit/enforcePasswordChange.do';
-		            	document.body.appendChild(form);
-		            	form.submit();
-			             }	
-			        }
-		}) 
-    	
-     });
-     
-setInterval(function () {
-      idleTime += 1;
-       if (idleTime > 3) { // 5 minutes
-       timeOutFunction();
-        }
-        }, 226000);
+						form.appendChild(input);
 
-        $(this).mousemove(function (e) {
-          idleTime = 0;
-        });
-        $(this).keypress(function (e) {
-         idleTime = 0;
-         });
+						form.action = '/fdahpStudyDesigner/adminUsersEdit/enforcePasswordChange.do';
+						document.body.appendChild(form);
+						form.submit();
+					}
+				}
+		})
+
+	 });
+
+		let timeOutInterval = setInterval(function () {
+			idleTime += 1;
+			if (idleTime > 3) { // 5 minutes
+				clearInterval(timeOutInterval);
+				timeOutFunction();
+			}
+		}, 226000);
+
+		$(this).mousemove(function (e) {
+			idleTime = 0;
+		});
+		$(this).keypress(function (e) {
+			idleTime = 0;
+		});
 
          function timeOutFunction() {
          $('#myModal').modal('show');

@@ -974,24 +974,25 @@ var idleTime = 0;
         });
       }
     });
-      if (table1 != null && $('#groupDefaultVisibility').is(':checked')) {
-          table1.rowReorder.enable();
-      } else {
-          table1.rowReorder.disable();
-      }
+    if (table1 != null && $('#groupDefaultVisibility').is(':checked')) {
+      table1.rowReorder.enable();
+    } else {
+      table1.rowReorder.disable();
+    }
     if (document.getElementById("doneId") != null && document.getElementById("doneId").disabled) {
       $('[data-toggle="tooltip"]').tooltip();
     }
     $('[data-toggle="tooltip"]').tooltip();
-      setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) {
-                    <c:if test="${actionTypeForQuestionPage ne 'view'}">
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${actionTypeForQuestionPage ne 'view'}">
                     autoSaveFormStep('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">
-                        timeOutFunction();
-                    </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
             }
         }, 226020); // 5 minutes
 

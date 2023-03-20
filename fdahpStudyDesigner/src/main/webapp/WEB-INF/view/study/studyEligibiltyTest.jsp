@@ -291,17 +291,18 @@
             });
         $("#saveId")
         .click(function () {
-             saveEligibilityTestPage('manual');
-            });
-        setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) {
-                	<c:if test="${actionTypeForQuestionPage ne 'view'}">
+          saveEligibilityTestPage('manual');
+        });
+        let timeOutInterval = setInterval(function () {
+          idleTime += 1;
+          if (idleTime > 3) {
+            <c:if test="${actionTypeForQuestionPage ne 'view'}">
                 	saveEligibilityTestPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">
-                        timeOutFunction();
-                    </c:if>
+            clearInterval(timeOutInterval);
+            timeOutFunction();
+            </c:if>
             }
         }, 226000); // 5 minutes
 

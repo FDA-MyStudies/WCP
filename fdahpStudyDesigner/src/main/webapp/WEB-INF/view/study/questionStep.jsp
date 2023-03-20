@@ -5903,19 +5903,20 @@ input[type=number] {
           addRegEx(value);
         });
         var valicationCharacterValue = "${questionnairesStepsBo.questionReponseTypeBo.validationCharacters}";
-        if (valicationCharacterValue != '' && valicationCharacterValue != null
-            && typeof valicationCharacterValue != 'undefined') {
-          addRegEx(valicationCharacterValue);
-        }
-          setInterval(function () {
-                  idleTime += 1;
-                  if (idleTime > 3) { // 5 minutes
-                          <c:if test="${actionTypeForQuestionPage ne 'view'}">
+		  if (valicationCharacterValue != '' && valicationCharacterValue != null
+				  && typeof valicationCharacterValue != 'undefined') {
+			  addRegEx(valicationCharacterValue);
+		  }
+		  let timeOutInterval = setInterval(function () {
+			  idleTime += 1;
+			  if (idleTime > 3) { // 5 minutes
+				  <c:if test="${actionTypeForQuestionPage ne 'view'}">
                           autoSaveQuestionStep('auto');
                            </c:if>
                           <c:if test="${actionTypeForQuestionPage eq 'view'}">
-                              timeOutFunction();
-                          </c:if>
+				  clearInterval(timeOutInterval);
+				  timeOutFunction();
+				  </c:if>
                   }
               }, 226020); // 5 minutes
 

@@ -568,17 +568,18 @@
 	      		    }
 	      	    });
        			</c:if>
-      	});
-             setInterval(function () {
-                 idleTime += 1;
-                 if (idleTime > 3) {
-                    if($('#notificationText').val() !== ''){
-                         <c:if test="${notificationBO.actionPage ne 'view'}">
+		 });
+		 let timeOutInterval = setInterval(function () {
+			 idleTime += 1;
+			 if (idleTime > 3) {
+				 if ($('#notificationText').val() !== '') {
+					 <c:if test="${notificationBO.actionPage ne 'view'}">
                          autoSaveNotificationPage('auto');
                           </c:if>
                          <c:if test="${notificationBO.actionPage eq 'view'}">
-                             timeOutFunction();
-                         </c:if>
+					 clearInterval(timeOutInterval);
+					 timeOutFunction();
+					 </c:if>
                   }
                  }
              }, 226000); // 5 minutes

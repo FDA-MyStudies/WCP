@@ -399,23 +399,24 @@ name="addGroupFormId" id="addGroupFormId" method="post" >
 </form:form>
 
 <script>
- var idleTime = 0;
- $(document).ready(function () {
-     $(".menuNav li.active").removeClass('active');
-     $(".seventhQuestionnaires").addClass('active');
+  var idleTime = 0;
+  $(document).ready(function () {
+    $(".menuNav li.active").removeClass('active');
+    $(".seventhQuestionnaires").addClass('active');
 
-       $("#saveId").click(function () {
-        saveAddGroupsPage('manual');
-               });
-                    setInterval(function () {
-                           idleTime += 1;
-                           if (idleTime > 3) { // 5 minutes
-                           <c:if test="${actionType ne 'view'}">
+    $("#saveId").click(function () {
+      saveAddGroupsPage('manual');
+    });
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) { // 5 minutes
+        <c:if test="${actionType ne 'view'}">
                                saveAddGroupsPage('auto');
                                </c:if>
                                <c:if test="${actionType eq 'view'}">
-                               timeOutFunction();
-                               </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
                            }
                        }, 226020); // 5 minutes
 

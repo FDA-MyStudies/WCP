@@ -789,16 +789,17 @@ var idleTime = 0;
     $("#infoIconId").hover(function () {
       $('#myModal').modal('show');
     });
-    
-    setInterval(function () {
-        idleTime += 1;
-        if (idleTime > 3) {
-                <c:if test="${permission ne 'view'}">
+
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${permission ne 'view'}">
                 saveSettingAndAdminsPage('auto');
                  </c:if>
                 <c:if test="${permission eq 'view'}">
-                    timeOutFunction();
-                </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
         }
     }, 226000); // 5 minutes
 

@@ -199,19 +199,20 @@ var idleTime = 0;
       $('[data-toggle="tooltip"]').tooltip();
     }
 
-         setInterval(function () {
-               idleTime += 1;
-                if (idleTime > 3) { // 5 minutes
-                timeOutFunction();
-                 }
-                 }, 226020);
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) { // 5 minutes
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+      }
+    }, 226020);
 
-                 $(this).mousemove(function (e) {
-                   idleTime = 0;
-                 });
-                 $(this).keypress(function (e) {
-                  idleTime = 0;
-                  });
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
 
                   function timeOutFunction() {
                   $('#myModal').modal('show');

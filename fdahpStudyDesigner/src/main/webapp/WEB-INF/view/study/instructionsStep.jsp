@@ -455,15 +455,16 @@
         }
       });
     });
-    setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) {
-                    <c:if test="${actionTypeForQuestionPage ne 'view'}">
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${actionTypeForQuestionPage ne 'view'}">
                     autoSaveInstructionStepPage('auto');
                      </c:if>
                     <c:if test="${actionTypeForQuestionPage eq 'view'}">
-                        timeOutFunction();
-                    </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
             }
         }, 226020); // 5 minutes
 

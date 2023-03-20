@@ -449,15 +449,16 @@ var idleTime = 0;
         $("#comprehensionTestMinimumScore").parent().find(".help-block").empty();
       }
     });
-   setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) { // 5 minutes
-          <c:if test="${permission ne 'view'}">
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) { // 5 minutes
+        <c:if test="${permission ne 'view'}">
                     autoSaveComprehensionList('auto');
                      </c:if>
           <c:if test="${permission eq 'view'}">
-                        timeOutFunction();
-                    </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
             }
         }, 226000); // 5 minutes
 

@@ -681,16 +681,17 @@
       });
     });
 
-     setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) { // 5 minutes
-                if ($('#customStudyId').val() !== '' && $('#customStudyName').val() !== '') {
-                      <c:if test="${permission ne 'view'}">
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) { // 5 minutes
+        if ($('#customStudyId').val() !== '' && $('#customStudyName').val() !== '') {
+          <c:if test="${permission ne 'view'}">
                        saveBasicInfoPage('auto');
                        </c:if>
                         <c:if test="${permission eq 'view'}">
-                        timeOutFunction();
-                        </c:if>
+          clearInterval(timeOutInterval);
+          timeOutFunction();
+          </c:if>
                 }
             }
         }, 226000); // 5 minutes

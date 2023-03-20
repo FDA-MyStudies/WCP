@@ -142,30 +142,31 @@
 			$('#actionTypeToView').val($(this).attr('actionType'));
 			$('#getNotificationViewPage').submit();
 		});
-		
-		$('#app_Wide_Notification_list').DataTable( {
-		    "paging":   true,
-		    "order": [],
-		    "columnDefs": [ { orderable: false, orderable: false, targets: [0] } ],
-		    "info" : false, 
-		    "lengthChange": false, 
-		    "searching": false, 
-		    "pageLength": 15,
-		});
 
-		setInterval(function () {
-              idleTime += 1;
-               if (idleTime > 3) { // 5 minutes
-               timeOutFunction();
-                }
-                }, 226000);
+      $('#app_Wide_Notification_list').DataTable({
+        "paging": true,
+        "order": [],
+        "columnDefs": [{orderable: false, orderable: false, targets: [0]}],
+        "info": false,
+        "lengthChange": false,
+        "searching": false,
+        "pageLength": 15,
+      });
 
-                $(this).mousemove(function (e) {
-                  idleTime = 0;
-                });
-                $(this).keypress(function (e) {
-                 idleTime = 0;
-                 });
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          clearInterval(timeOutInterval);
+          timeOutFunction();
+        }
+      }, 226000);
+
+      $(this).mousemove(function (e) {
+        idleTime = 0;
+      });
+      $(this).keypress(function (e) {
+        idleTime = 0;
+      });
 
                  function timeOutFunction() {
                  $('#myModal').modal('show');

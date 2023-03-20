@@ -889,15 +889,16 @@
                 }
               }
             });
-                setInterval(function () {
-                    idleTime += 1;
-                    if (idleTime > 3) { // 5 minutes
-                            <c:if test="${actionPage ne 'view'}">
+            let timeOutInterval = setInterval(function () {
+              idleTime += 1;
+              if (idleTime > 3) { // 5 minutes
+                <c:if test="${actionPage ne 'view'}">
                             autoSaveTowerStudyActivity('auto');
                              </c:if>
                             <c:if test="${actionPage eq 'view'}">
-                                timeOutFunction();
-                            </c:if>
+                clearInterval(timeOutInterval);
+                timeOutFunction();
+                </c:if>
                     }
                 }, 226020); // 5 minutes
 

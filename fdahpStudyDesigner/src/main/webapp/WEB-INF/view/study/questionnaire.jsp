@@ -3330,16 +3330,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       var element = $(this).find('option:selected').text();
       setAnchorDropdown(frequency_text, element);
     });
-    
-    setInterval(function () {
-        idleTime += 1;
-        if (idleTime > 3) {
-                <c:if test="${actionType ne 'view'}">
+
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) {
+        <c:if test="${actionType ne 'view'}">
                 autoSaveQuestionnaire('auto');
                  </c:if>
                 <c:if test="${actionType eq 'view'}">
-                    timeOutFunction();
-                </c:if>
+        clearInterval(timeOutInterval);
+        timeOutFunction();
+        </c:if>
         }
     }, 226020); // 5 minutes
 

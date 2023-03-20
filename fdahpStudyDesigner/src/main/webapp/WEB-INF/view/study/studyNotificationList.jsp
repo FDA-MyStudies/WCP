@@ -32,31 +32,31 @@
 
       -->
 
-      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-            position:relative !important;
-            right:-14px !important;
-            margin-top:6% !important;
-            }
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-            .flr_modal{
-            float:right !important;
-            }
+      .flr_modal {
+        float: right !important;
+      }
 
-            .blue_text{
-            color:#007CBA !important;
-            font-size:15px;
-            font-weight:500;
-            }
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
+      }
 
-            .timerPos{
-            position:relative;
-            top:-2px;
-            right:2px !important;
-            }
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
 
-            #timeOutMessage{
-            width:257px;
-            }
+      #timeOutMessage {
+        width: 257px;
+      }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -122,7 +122,8 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${notificationList}" var="studyNotification">
-                    <tr id="${studyNotification.notificationId}" status="${studyNotification.notificationAction}">
+                    <tr id="${studyNotification.notificationId}"
+                        status="${studyNotification.notificationAction}">
                         <td width="60%" class="title">
                             <div class="dis-ellipsis"
                                  title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div>
@@ -160,14 +161,17 @@
     </div>
     <!--  End body tab section -->
     <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog modal-sm flr_modal">
-                <!-- Modal content-->
-                <div class="modal-content">
-                        <div class="modal-body">
-                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                        </div>
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 <!-- End right Content here -->
@@ -184,7 +188,8 @@
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <select id="notificationLangBOList" style="display: none">
         <c:forEach items="${notificationLangBOList}" var="notificationLang">
-            <option id='${notificationLang.notificationLangPK.notificationId}' status="${notificationLang.notificationAction}"
+            <option id='${notificationLang.notificationLangPK.notificationId}'
+                    status="${notificationLang.notificationAction}"
                     value="${notificationLang.notificationText}">${notificationLang.notificationText}</option>
         </c:forEach>
     </select>
@@ -201,7 +206,7 @@
 </form:form>
 
 <script>
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li").removeClass('active');
@@ -254,28 +259,33 @@ var idleTime = 0;
       idleTime = 0;
     });
 
-              function timeOutFunction() {
-              $('#myModal').modal('show');
-               let i = 14;
-               let timeOutInterval = setInterval(function () {
-               if (i === 0) {
-               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-               if ($('#myModal').hasClass('show')) {
-              var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/sessionOut.do";
-              document.body.appendChild(a).click();
-                 }
-                 clearInterval(timeOutInterval);
-                  } else {
-                  if (i === 1) {
-                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                   } else {
-                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                     }
-                     i-=1;
-                      }
-                    }, 60000);
-                  }
+    function timeOutFunction() {
+      $('#myModal').modal('show');
+      let i = 14;
+      let timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          i -= 1;
+        }
+      }, 60000);
+    }
   });
 
   function markAsCompleted() {
@@ -305,11 +315,11 @@ var idleTime = 0;
           $('#addBtn').attr('disabled', true);
           $('.copy').addClass('cursor-none');
           $('.sorting, .sorting_asc, .sorting_desc').css('pointer-events', 'none');
-          let mark=true;
+          let mark = true;
           $('#notificationLangBOList option', htmlData).each(function (index, value) {
-            let id = '#'+value.getAttribute('id');
+            let id = '#' + value.getAttribute('id');
             $(id).find('td.title').text(value.getAttribute('value'));
-            if (value.getAttribute('status')==="true") {
+            if (value.getAttribute('status') === "true") {
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc')) {
                 edit.addClass('edit-inc');
@@ -317,10 +327,9 @@ var idleTime = 0;
               if (edit.hasClass('edit-inc-draft')) {
                 edit.removeClass('edit-inc-draft');
               }
-            }
-            else {
-              if ($(id).find('span.editIcon').length>0) {
-                mark=false;
+            } else {
+              if ($(id).find('span.editIcon').length > 0) {
+                mark = false;
               }
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
@@ -337,7 +346,8 @@ var idleTime = 0;
             if (!markComplete.hasClass('linkDis')) {
               markComplete.addClass('linkDis')
             }
-            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+            $('#helpNote').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
           } else {
             let markComplete = $('.markCompleted');
             markComplete.prop('disabled', false);
@@ -352,11 +362,11 @@ var idleTime = 0;
           $('#addBtn').attr('disabled', false);
           $('.copy').removeClass('cursor-none');
           $('.sorting, .sorting_asc, .sorting_desc').removeAttr('style');
-          let mark=true;
+          let mark = true;
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = '#'+value.getAttribute('id');
+            let id = '#' + value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-            if (value.getAttribute('status')==="true") {
+            if (value.getAttribute('status') === "true") {
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc')) {
                 edit.addClass('edit-inc');
@@ -364,10 +374,9 @@ var idleTime = 0;
               if (edit.hasClass('edit-inc-draft')) {
                 edit.removeClass('edit-inc-draft');
               }
-            }
-            else {
-              if ($(id).find('span.editIcon').length>0) {
-                mark=false;
+            } else {
+              if ($(id).find('span.editIcon').length > 0) {
+                mark = false;
               }
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
@@ -384,7 +393,8 @@ var idleTime = 0;
             if (!markComplete.hasClass('linkDis')) {
               markComplete.addClass('linkDis')
             }
-            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+            $('#helpNote').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
           } else {
             let markComplete = $('.markCompleted');
             markComplete.prop('disabled', false);

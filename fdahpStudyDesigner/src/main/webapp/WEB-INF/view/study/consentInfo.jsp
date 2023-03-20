@@ -7,11 +7,11 @@
     <meta charset="UTF-8">
 </head>
 <style>
-  .langSpecific{
+  .langSpecific {
     position: relative;
   }
 
-  .langSpecific > button::before{
+  .langSpecific > button::before {
     content: '';
     display: block;
     background-image: url("../images/global_icon.png");
@@ -23,51 +23,53 @@
     background-repeat: no-repeat;
   }
 
-  .langSpecific > button{
+  .langSpecific > button {
     padding-left: 30px;
   }
 
-  #autoSavedMessage{
-      width:257px;
-      }
-
-    #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-         position:relative !important;
-         right:-14px !important;
-         margin-top:6% !important;
-    }
-  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
-      position: relative !important;
-      right: -14px !important;
-      margin-top: 6% !important;
+  #autoSavedMessage {
+    width: 257px;
   }
-      .flr_modal{
-      float:right !important;
-      }
 
-      .grey_txt{
-      color:grey;
-      font-size:15px;
-      font-weight:500;
-      }
+  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: -14px !important;
+    margin-top: 6% !important;
+  }
 
-      .blue_text{
-      color:#007CBA !important;
-      font-size:15px;
-      font-weight:500 !important;
-      }
+  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: -14px !important;
+    margin-top: 6% !important;
+  }
 
-       .timerPos{
-      position:relative;
-      top:-2px;
-      right:2px !important;
-      }
+  .flr_modal {
+    float: right !important;
+  }
 
-     .bold_txt{
-      font-weight:900 !important;
-      color:#007cba !important;
-        font-size:15px;
-      }
+  .grey_txt {
+    color: grey;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .blue_text {
+    color: #007CBA !important;
+    font-size: 15px;
+    font-weight: 500 !important;
+  }
+
+  .timerPos {
+    position: relative;
+    top: -2px;
+    right: 2px !important;
+  }
+
+  .bold_txt {
+    font-weight: 900 !important;
+    color: #007cba !important;
+    font-size: 15px;
+  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -93,7 +95,8 @@
         <input type="hidden" id="type" name="type" value="complete"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="briefSummaryLang" value="${consentInfoLangBO.briefSummary}">
-        <textarea style="display: none" id="elaboratedLang">${consentInfoLangBO.elaborated}</textarea>
+        <textarea style="display: none"
+                  id="elaboratedLang">${consentInfoLangBO.elaborated}</textarea>
         <input type="hidden" id="displayTitleLang" value="${consentInfoLangBO.displayTitle}">
         <div class="right-content-head" style="z-index: 999;">
             <div class="text-right">
@@ -277,31 +280,36 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    <div id="autoSavedMessage" class="text-right">
+                        <div class="blue_text">Last saved now</div>
+                        <div class="grey_txt"><span class="timerPos"><img
+                                src="../images/timer2.png"/></span>Your session expires in <span
+                                class="bold_txt">15 minutes</span></div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        	<div class="modal fade" id="timeOutModal" role="dialog">
-                    <div class="modal-dialog modal-sm flr_modal">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                                <div class="modal-body">
-                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
 
 
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(function () {
     // Fancy Scroll Bar
 
@@ -312,9 +320,9 @@ var idleTime = 0;
     }
 
     $('#loader').hide();
-      $('.commonCls').on('click', function () {
-          $('#loader').show();
-      })
+    $('.commonCls').on('click', function () {
+      $('#loader').show();
+    })
     <c:if test="${actionPage eq 'view'}">
     $('#consentInfoFormId input,textarea').prop('disabled', true);
     $('#consentInfoFormId .elaborateClass').addClass('linkDis');
@@ -413,52 +421,56 @@ var idleTime = 0;
       idleTime += 1;
       if (idleTime > 3) {
         <c:if test="${actionPage ne 'view'}">
-              autoSaveConsentInfo('auto', '#saveId');
-              </c:if>
-              <c:if test="${actionPage eq 'view'}">
+        autoSaveConsentInfo('auto', '#saveId');
+        </c:if>
+        <c:if test="${actionPage eq 'view'}">
         clearInterval(timeOutInterval);
         timeOutFunction();
         </c:if>
-              }
-          }, 226000); // 5 minutes
+      }
+    }, 226000); // 5 minutes
 
-          $(this).mousemove(function (e) {
-              idleTime = 0;
-          });
-          $(this).keypress(function (e) {
-              idleTime = 0;
-          });
-      tinymce.get('elaboratedRTE').on('keydown', function () {
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+    tinymce.get('elaboratedRTE').on('keydown', function () {
+      idleTime = 0;
+    });
+    tinymce.get('elaboratedRTE').on('mousemove', function () {
+      idleTime = 0;
+    });
+
+    function timeOutFunction() {
+      $('#timeOutModal').modal('show');
+      let i = 14;
+      let timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#timeOutModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
           idleTime = 0;
-      });
-      tinymce.get('elaboratedRTE').on('mousemove', function () {
-          idleTime = 0;
-      });
-
-                       function timeOutFunction() {
-                       $('#timeOutModal').modal('show');
-                        let i = 14;
-                        let timeOutInterval = setInterval(function () {
-                        if (i === 0) {
-                        $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                        if ($('#timeOutModal').hasClass('show')) {
-                        var a = document.createElement('a');
-                        a.href = "/fdahpStudyDesigner/sessionOut.do";
-                        document.body.appendChild(a).click();
-                          }
-                          clearInterval(timeOutInterval);
-                           } else {
-                           if (i === 1) {
-                          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                            } else {
-                            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                              }
-                              idleTime = 0;
-                              i-=1;
-                               }
-                             }, 60000);
-                           }
-
+          i -= 1;
+        }
+      }, 60000);
+    }
 
   });
 
@@ -466,145 +478,150 @@ var idleTime = 0;
     autoSaveConsentInfo('manual', item);
   }
 
-   function autoSaveConsentInfo(mode,item){
-   var consentInfo = new Object();
-       var consentInfoId = $("#id").val();
-       var study_id = $("#studyId").val();
-       var consentType = $('input[name="consentItemType"]:checked').val();
-       var consentitemtitleid = $("#consentItemTitleId").val();
-       var displayTitleText = $("#displayTitle").val();
-       displayTitleText = replaceSpecialCharacters(displayTitleText);
-       var briefSummaryText = $("#briefSummary").val();
-       briefSummaryText = replaceSpecialCharacters(briefSummaryText);
-       var elaboratedText = tinymce.get('elaboratedRTE').getContent({format: 'raw'});
-       elaboratedText = replaceSpecialCharacters(elaboratedText);
+  function autoSaveConsentInfo(mode, item) {
+    var consentInfo = {};
+    var consentInfoId = $("#id").val();
+    var study_id = $("#studyId").val();
+    var consentType = $('input[name="consentItemType"]:checked').val();
+    var consentitemtitleid = $("#consentItemTitleId").val();
+    var displayTitleText = $("#displayTitle").val();
+    displayTitleText = replaceSpecialCharacters(displayTitleText);
+    var briefSummaryText = $("#briefSummary").val();
+    briefSummaryText = replaceSpecialCharacters(briefSummaryText);
+    var elaboratedText = tinymce.get('elaboratedRTE').getContent({format: 'raw'});
+    elaboratedText = replaceSpecialCharacters(elaboratedText);
 
-       var visual_step = $('input[name="visualStep"]:checked').val();
+    var visual_step = $('input[name="visualStep"]:checked').val();
 
-       var valid = maxLenValEditor();
+    var valid = maxLenValEditor();
 
-       if (valid && (study_id != null && study_id != '' && typeof study_id != 'undefined')
-           && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText
-               != 'undefined')) {
-         $(item).prop('disabled', true);
-         if (null != consentInfoId) {
-           consentInfo.id = consentInfoId;
-         }
-         consentInfo.studyId = study_id;
-         if (null != consentType) {
-           consentInfo.consentItemType = consentType;
-         }
-         if (null != consentitemtitleid) {
-           consentInfo.consentItemTitleId = consentitemtitleid;
-         }
-         if (null != briefSummaryText) {
-           consentInfo.briefSummary = briefSummaryText;
-         }
-         if (null != elaboratedText) {
-           consentInfo.elaborated = elaboratedText;
-         }
-         if (null != visual_step) {
-           consentInfo.visualStep = visual_step;
-         }
-         if (null != displayTitleText) {
-           consentInfo.displayTitle = displayTitleText;
-         }
-         consentInfo.type = "save";
-         $('#loader').show();
-         let sourceCode = $('textarea.tox-textarea').val();
-         if (mode === 'auto') {
-             $("#isAutoSaved").val('true');
-             if (sourceCode !== undefined) {
-                 $('button[title="Save"]').trigger('click');
-                 consentInfo.elaborated = sourceCode;
-             }
-         }
-         else{
-             $("#isAutoSaved").val('false');
-         }
-         var data = JSON.stringify(consentInfo);
-         $.ajax({
-           url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
-           type: "POST",
-           datatype: "json",
-           data: {
-               consentInfo: data,
-               language: $('#currentLanguage').val(),
-               isAutoSaved : $("#isAutoSaved").val()
-           },
-           beforeSend: function (xhr, settings) {
-             xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-           },
-           success: function (data) {
-             var message = data.message;
-             if (message == "SUCCESS") {
-               $('.fifthConsent').find('span').remove();
-               var consentInfoId = data.consentInfoId;
-               $("#id").val(consentInfoId);
-               $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
-               $(item).prop('disabled', false);
-               $('#alertMsg').show();
-               // pop message after 15 minutes
-                var isAutoSaved = data.isAutoSaved;
-                 if (isAutoSaved === 'true') {
-                     $('#myModal').modal('show');
-                     let i = 1;
-                     let j = 14;
-                     let lastSavedInterval = setInterval(function () {
-                         if ((i === 15) || (j === 0)) {
-                         $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                             if ($('#myModal').hasClass('show')) {
-                                var a = document.createElement('a');
-                                a.href = "/fdahpStudyDesigner/sessionOut.do";
-                                document.body.appendChild(a).click();
-                             }
-                             clearInterval(lastSavedInterval);
-                         } else {
-                             if ((i === 1) || (j === 14)) {
-                                $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                             }
-                             else if ((i === 14) || (j === 1)) {
-                             $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>');
-                             }
-                             else {
-                             $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                             }
-                             idleTime = 0;
-                             i += 1;
-                             j-=1;
-                         }
-                     }, 60000);
-                     $("#isAutoSaved").val('false');
-                 }
-             } else {
-               $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
-               $('#alertMsg').show();
-             }
-             setTimeout(hideDisplayMessage, 4000);
-             $('#loader').hide();
-           },
-           error: function (xhr, status, error) {
-             $(item).prop('disabled', false);
-             $('#alertMsg').show();
-             $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
-             setTimeout(hideDisplayMessage, 4000);
-             $('#loader').hide();
-           }
-         });
-       } else {
-         $(item).prop('disabled', false);
-         if (valid) {
-           $(".consentTitle").parent().addClass('has-error has-danger');
-           $(".consentTitle").parent().find(".help-block").empty().append(
-               $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                   "This is a required field."));
-           setTimeout(hideDisplayMessage, 4000);
-         }
+    if (valid && (study_id != null && study_id != '' && typeof study_id != 'undefined')
+        && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText
+            != 'undefined')) {
+      $(item).prop('disabled', true);
+      if (null != consentInfoId) {
+        consentInfo.id = consentInfoId;
+      }
+      consentInfo.studyId = study_id;
+      if (null != consentType) {
+        consentInfo.consentItemType = consentType;
+      }
+      if (null != consentitemtitleid) {
+        consentInfo.consentItemTitleId = consentitemtitleid;
+      }
+      if (null != briefSummaryText) {
+        consentInfo.briefSummary = briefSummaryText;
+      }
+      if (null != elaboratedText) {
+        consentInfo.elaborated = elaboratedText;
+      }
+      if (null != visual_step) {
+        consentInfo.visualStep = visual_step;
+      }
+      if (null != displayTitleText) {
+        consentInfo.displayTitle = displayTitleText;
+      }
+      consentInfo.type = "save";
+      $('#loader').show();
+      let sourceCode = $('textarea.tox-textarea').val();
+      if (mode === 'auto') {
+        $("#isAutoSaved").val('true');
+        if (sourceCode !== undefined) {
+          $('button[title="Save"]').trigger('click');
+          consentInfo.elaborated = sourceCode;
+        }
+      } else {
+        $("#isAutoSaved").val('false');
+      }
+      var data = JSON.stringify(consentInfo);
+      $.ajax({
+        url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
+        type: "POST",
+        datatype: "json",
+        data: {
+          consentInfo: data,
+          language: $('#currentLanguage').val(),
+          isAutoSaved: $("#isAutoSaved").val()
+        },
+        beforeSend: function (xhr, settings) {
+          xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+        },
+        success: function (data) {
+          var message = data.message;
+          if (message == "SUCCESS") {
+            $('.fifthConsent').find('span').remove();
+            var consentInfoId = data.consentInfoId;
+            $("#id").val(consentInfoId);
+            $("#alertMsg").removeClass('e-box').addClass('s-box').text("Content saved as draft.");
+            $(item).prop('disabled', false);
+            $('#alertMsg').show();
+            // pop message after 15 minutes
+            var isAutoSaved = data.isAutoSaved;
+            if (isAutoSaved === 'true') {
+              $('#myModal').modal('show');
+              let i = 1;
+              let j = 14;
+              let lastSavedInterval = setInterval(function () {
+                if ((i === 15) || (j === 0)) {
+                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                      + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                      + j + ' minutes</span></div>').css("fontSize", "15px");
+                  if ($('#myModal').hasClass('show')) {
+                    var a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/sessionOut.do";
+                    document.body.appendChild(a).click();
+                  }
+                  clearInterval(lastSavedInterval);
+                } else {
+                  if ((i === 1) || (j === 14)) {
+                    $('#autoSavedMessage').html(
+                        '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+                        "fontSize", "15px");
+                  } else if ((i === 14) || (j === 1)) {
+                    $('#autoSavedMessage').html(
+                        '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>');
+                  } else {
+                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                        + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                        + j + ' minutes</span></div>').css("fontSize", "15px");
+                  }
+                  idleTime = 0;
+                  i += 1;
+                  j -= 1;
+                }
+              }, 60000);
+              $("#isAutoSaved").val('false');
+            }
+          } else {
+            $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+            $('#alertMsg').show();
+          }
+          setTimeout(hideDisplayMessage, 4000);
+          $('#loader').hide();
+        },
+        error: function (xhr, status, error) {
+          $(item).prop('disabled', false);
+          $('#alertMsg').show();
+          $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+          setTimeout(hideDisplayMessage, 4000);
+          $('#loader').hide();
+        }
+      });
+    } else {
+      $(item).prop('disabled', false);
+      if (valid) {
+        $(".consentTitle").parent().addClass('has-error has-danger');
+        $(".consentTitle").parent().find(".help-block").empty().append(
+            $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                "This is a required field."));
+        setTimeout(hideDisplayMessage, 4000);
+      }
 
-       }
-   }
+    }
+  }
+
   function goToBackPage(item) {
-    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+    let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     <c:if test="${actionPage ne 'view'}">
     $(item).prop('disabled', true);
     bootbox.confirm({
@@ -705,9 +722,9 @@ var idleTime = 0;
       skin: "custom-grey",
       height: 300,
       min_height: 100,
-      branding : false,
+      branding: false,
       plugins: [
-          "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
+        "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
       ],
       toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect | fontselect",
       toolbar_items_size: 'small',
@@ -761,36 +778,36 @@ var idleTime = 0;
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-            try {
-                updateCompletionTicks(data);
-                $('.tit_wrapper').text($('#mlName', htmlData).val());
-                $('#inlineRadio1').attr('disabled', true);
-                $('#inlineRadio2').attr('disabled', true);
-                $('#inlineRadio3').attr('disabled', true);
-                $('#inlineRadio4').attr('disabled', true);
-                $('.visualStepDiv').attr('disabled', true);
-                $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
-                $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
-                $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-                if ($('#inlineRadio1').prop('checked') === true) {
-                    let title = $('[data-id="consentItemTitleId"]');
-                    title.attr('disabled', true);
-                    title.css('background-color', '#eee');
-                    title.css('opacity', '1');
-                } else {
-                    $('#displayTitle').val($('#displayTitleLang', htmlData).val());
-                }
-                if (tinymce !== null && tinymce !== undefined) {
-                    let editor = tinymce.activeEditor;
-                    if (editor !== undefined) {
-                        editor.setContent($('#elaboratedLang', htmlData).val());
-                    }
-                }
-                $('#loader').hide();
-            } catch (e) {
-                console.log("Error occurred : "+e);
-                $('#loader').hide();
+          try {
+            updateCompletionTicks(data);
+            $('.tit_wrapper').text($('#mlName', htmlData).val());
+            $('#inlineRadio1').attr('disabled', true);
+            $('#inlineRadio2').attr('disabled', true);
+            $('#inlineRadio3').attr('disabled', true);
+            $('#inlineRadio4').attr('disabled', true);
+            $('.visualStepDiv').attr('disabled', true);
+            $('#briefSummary').val($('#briefSummaryLang', htmlData).val());
+            $('#elaboratedRTE').val($('#elaboratedLang', htmlData).val());
+            $('#displayTitle').val($('#displayTitleLang', htmlData).val());
+            if ($('#inlineRadio1').prop('checked') === true) {
+              let title = $('[data-id="consentItemTitleId"]');
+              title.attr('disabled', true);
+              title.css('background-color', '#eee');
+              title.css('opacity', '1');
+            } else {
+              $('#displayTitle').val($('#displayTitleLang', htmlData).val());
             }
+            if (tinymce !== null && tinymce !== undefined) {
+              let editor = tinymce.activeEditor;
+              if (editor !== undefined) {
+                editor.setContent($('#elaboratedLang', htmlData).val());
+              }
+            }
+            $('#loader').hide();
+          } catch (e) {
+            console.log("Error occurred : " + e);
+            $('#loader').hide();
+          }
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
@@ -807,12 +824,12 @@ var idleTime = 0;
           $('#elaboratedRTE').val($('#elaboratedRTE', htmlData).val());
           $('#displayTitle').val($('#displayTitle', htmlData).val());
           if (tinymce !== null && tinymce !== undefined) {
-              let editor = tinymce.activeEditor;
-              if (editor !== undefined) {
-                  editor.setContent($('#elaboratedRTE', htmlData).val());
-              }
+            let editor = tinymce.activeEditor;
+            if (editor !== undefined) {
+              editor.setContent($('#elaboratedRTE', htmlData).val());
+            }
           }
-          
+
           <c:if test="${actionPage eq 'view'}">
           $('#consentInfoFormId input,textarea').prop('disabled', true);
           </c:if>

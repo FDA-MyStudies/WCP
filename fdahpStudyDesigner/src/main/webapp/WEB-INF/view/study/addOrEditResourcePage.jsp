@@ -1,91 +1,92 @@
-<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 </head>
 <style>
-  .ml-disabled {
-    background-color: #eee !important;
-    opacity: 1;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
+	.ml-disabled {
+		background-color: #eee !important;
+		opacity: 1;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
 
-  .langSpecific{
-	  position: relative;
-  }
+	.langSpecific {
+		position: relative;
+	}
 
-  .langSpecific > button::before{
-	  content: '';
-	  display: block;
-	  background-image: url("../images/global_icon.png");
-	  width: 16px;
-	  height: 14px;
-	  position: absolute;
-	  top: 9px;
-	  left: 9px;
-	  background-repeat: no-repeat;
-  }
+	.langSpecific > button::before {
+		content: '';
+		display: block;
+		background-image: url("../images/global_icon.png");
+		width: 16px;
+		height: 14px;
+		position: absolute;
+		top: 9px;
+		left: 9px;
+		background-repeat: no-repeat;
+	}
 
-  .langSpecific > button{
-	  padding-left: 30px;
-  }
-  #autoSavedMessage{
-  width:257px;
-  }
+	.langSpecific > button {
+		padding-left: 30px;
+	}
 
-  #myAutoModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-  position:relative !important;
-  right:-14px !important;
-  margin-top:6% !important;
-  }
+	#autoSavedMessage {
+		width: 257px;
+	}
 
-   #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-     position:relative !important;
-     right:-14px !important;
-     margin-top:6% !important;
-     }
+	#myAutoModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+		position: relative !important;
+		right: -14px !important;
+		margin-top: 6% !important;
+	}
 
-  .flr_modal{
-  float:right !important;
-  }
+	#timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+		position: relative !important;
+		right: -14px !important;
+		margin-top: 6% !important;
+	}
 
-  .grey_txt{
-  color:grey;
-  font-size:15px;
-  font-weight:500;
-  }
+	.flr_modal {
+		float: right !important;
+	}
 
-  .blue_text{
-  color:#007CBA !important;
-  font-size:15px;
-  font-weight:500;
-  }
+	.grey_txt {
+		color: grey;
+		font-size: 15px;
+		font-weight: 500;
+	}
 
-  .timerPos{
-  position:relative;
-  top:-2px;
-  right:2px !important;
-  }
+	.blue_text {
+		color: #007CBA !important;
+		font-size: 15px;
+		font-weight: 500;
+	}
 
-  .bold_txt{
-  font-weight:900 !important;
-  color:#007cba !important;
-  font-size:15px;
-   }
+	.timerPos {
+		position: relative;
+		top: -2px;
+		right: 2px !important;
+	}
+
+	.bold_txt {
+		font-weight: 900 !important;
+		color: #007cba !important;
+		font-size: 15px;
+	}
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="col-sm-10 col-rc white-bg p-none">
 	<form:form
-		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
-		data-toggle="validator" id="resourceForm" role="form" method="post"
-		autocomplete="off" enctype="multipart/form-data">
-		<!--  Start top tab section-->
+			action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
+			data-toggle="validator" id="resourceForm" role="form" method="post"
+			autocomplete="off" enctype="multipart/form-data">
+		<!-- Start top tab section-->
 		<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 		<input type="hidden" id="mlTitle" value="${resourceLangBO.title}">
 		<textarea style="display: none;" id="mlRichText">${resourceLangBO.richText}</textarea>
@@ -95,19 +96,22 @@
 		<input type="hidden" id="mlTextOrPdf" value="${resourceLangBO.textOrPdf}">
 		<input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
 		<input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
-		 <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+		<input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
 
 		<div class="right-content-head">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">
 					<span class="pr-xs"><a href="javascript:void(0)"
-						class="goToResourceListForm" id="goToResourceListForm"><img
-							src="/fdahpStudyDesigner/images/icons/back-b.png" /></a></span>
+										   class="goToResourceListForm"
+										   id="goToResourceListForm"><img
+							src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
 					<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 						<c:if test="${actionOn eq 'add'}">Add Resource</c:if>
 						<c:if test="${actionOn eq 'edit'}">Edit Resource</c:if>
-						<c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource <c:set
-								var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+						<c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource
+							<c:set
+									var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}
+						</c:if>
 					</c:if>
 					<c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
 						<c:if test="${actionOn eq 'add'}">Add Study Protocol</c:if>
@@ -146,31 +150,34 @@
 
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button"
-						class="btn btn-default gray-btn goToResourceListForm"
-						id="goToStudyListPage">Cancel</button>
+							class="btn btn-default gray-btn goToResourceListForm"
+							id="goToStudyListPage">Cancel
+					</button>
 				</div>
 
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn viewAct"
-						id="saveResourceId">Save</button>
+							id="saveResourceId">Save
+					</button>
 				</div>
 
 				<div class="dis-line form-group mb-none">
 					<button type="button" class="btn btn-primary blue-btn viewAct"
-						id="doneResourceId">Done</button>
+							id="doneResourceId">Done
+					</button>
 				</div>
 			</div>
 		</div>
-		<!--  End  top tab section-->
-		<input type="hidden" name="id" value="${resourceBO.id}" />
+		<!-- End top tab section-->
+		<input type="hidden" name="id" value="${resourceBO.id}"/>
 		<input type="hidden" id="buttonText" name="buttonText">
 		<input type="hidden" id="actionOn" name="actionOn">
 		<c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
-			<input type="hidden" name="isstudyProtocol" value="isstudyProtocol" />
+			<input type="hidden" name="isstudyProtocol" value="isstudyProtocol"/>
 		</c:if>
 
 
-		<!--  Start body tab section -->
+		<!-- Start body tab section -->
 		<div class="right-content-body">
 
 			<div class="mt-none">
@@ -179,15 +186,15 @@
 					<div class="gray-xs-f mb-xs">
 						Title
 						<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small
-								class="viewAct">(50 characters max)</small>
+							class="viewAct">(50 characters max)</small>
 						</c:if>
 						<span class="requiredStar"> *</span>
 					</div>
 					<div class="form-group">
 						<input autofocus="autofocus" type="text" class="form-control"
-							id="resourceTitle" name="title"
-							value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required
-							<c:if test="${isstudyProtocol eq 'isstudyProtocol'}">readonly</c:if> />
+							   id="resourceTitle" name="title"
+							   value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required
+							   <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">readonly</c:if> />
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
@@ -200,13 +207,16 @@
 					Content Type<span class="requiredStar"> *</span>
 				</div>
 				<span class="radio radio-info radio-inline p-45 pl-1"> <input
-					type="radio" class="addResource" id="inlineRadio1"
-					name="textOrPdfParam" value="0"
-					<c:if test="${not resourceBO.textOrPdf}">checked</c:if>> <label
-					for="inlineRadio1">Rich Text editor</label>
+						type="radio" class="addResource" id="inlineRadio1"
+						name="textOrPdfParam" value="0"
+						<c:if test="${not resourceBO.textOrPdf}">checked</c:if>> <label
+						for="inlineRadio1">Rich Text editor</label>
 				</span> <span class="radio radio-inline"> <input type="radio"
-					id="inlineRadio2" class="addResource" name="textOrPdfParam"
-					value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
+																 id="inlineRadio2"
+																 class="addResource"
+																 name="textOrPdfParam"
+																 value="1"
+																 <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
 					<label for="inlineRadio2">Upload PDF</label>
 				</span>
 			</div>
@@ -214,27 +224,30 @@
 			<div class="clearfix"></div>
 
 			<div id="richEditor"
-				class="mt-lg form-group resetContentType <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
+				 class="mt-lg form-group resetContentType <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
 				<textarea class="remReqOnSave" id="richText" name="richText"
-					required>${resourceBO.richText}</textarea>
+						  required>${resourceBO.richText}</textarea>
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 
 
 			<div id="pdf_file"
-				class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
+				 class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
 				<button id="uploadPdf" type="button"
-					class="btn btn-default gray-btn uploadPdf viewAct">Upload
-					PDF</button>
+						class="btn btn-default gray-btn uploadPdf viewAct">Upload
+					PDF
+				</button>
 				<input id="uploadImg" class="dis-none remReqOnSave" type="file"
-					name="pdfFile" accept=".pdf" data-error="Please select a pdf file"
-					required> <input type="hidden" class="remReqOnSave"
-					value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
+					   name="pdfFile" accept=".pdf" data-error="Please select a pdf file"
+					   required> <input type="hidden" class="remReqOnSave"
+										value="${resourceBO.pdfUrl}" required id="pdfUrl"
+										name="pdfUrl">
 				<input type="hidden" value="${resourceBO.pdfName}" id="pdfName"
-					name="pdfName"> <span class="alert customalert pdfDiv">
-					<a href="javascript:void(0)" id="pdf_name" class="pdfClass">${resourceBO.pdfName}</a>
+					   name="pdfName"> <span class="alert customalert pdfDiv">
+					<a href="javascript:void(0)" id="pdf_name"
+					   class="pdfClass">${resourceBO.pdfName}</a>
 					<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a
-						href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove
+							href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove
 							PDF</a></span>
 				</span>
 				<div class="help-block with-errors red-txt"></div>
@@ -247,18 +260,20 @@
 					<div class="gray-xs-f mb-sm">
 						Set a Period of Visibility for this resource? <span
 							class="requiredStar">*</span> <span data-toggle="tooltip"
-							data-placement="top"
-							title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study."
-							class="filled-tooltip"></span>
+																data-placement="top"
+																title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study."
+																class="filled-tooltip"></span>
 					</div>
 					<span class="radio radio-info radio-inline p-45 pl-1"> <input
-						type="radio" id="inlineRadio3" name="resourceVisibilityParam"
-						value="0"
-						<c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
+							type="radio" id="inlineRadio3" name="resourceVisibilityParam"
+							value="0"
+							<c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
 						<label for="inlineRadio3">Yes</label>
 					</span> <span class="radio radio-inline"> <input type="radio"
-						id="inlineRadio4" name="resourceVisibilityParam" value="1"
-						<c:if test="${resourceBO.resourceVisibility  || empty resourceBO}">checked</c:if>>
+																	 id="inlineRadio4"
+																	 name="resourceVisibilityParam"
+																	 value="1"
+																	 <c:if test="${resourceBO.resourceVisibility  || empty resourceBO}">checked</c:if>>
 						<label for="inlineRadio4">No</label>
 					</span>
 					<div class="help-block with-errors red-txt"></div>
@@ -272,27 +287,27 @@
 					</div>
 					<div id="selectTime">
 						<span class="radio radio-info radio-inline pr-md pl-1"> <input
-							type="radio" id="inlineRadio5" class="disRadBtn1" value="1"
-							name="resourceTypeParm"> <label for="inlineRadio5">Anchor
-								Date-based Period</label><br />
+								type="radio" id="inlineRadio5" class="disRadBtn1" value="1"
+								name="resourceTypeParm"> <label for="inlineRadio5">Anchor
+								Date-based Period</label><br/>
 						</span>
-						<%-- <c:if test="${fn:length(anchorTypeList) gt 0}">
-                	<div>
-	            	  <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
-	                  <div class="col-md-3 col-lg-3 p-none">
-		                  <div class="form-group">
-		                     <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
-		                      <option value='' >Select</option>
-		                      <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
-		                      	<option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
-		                      </c:forEach>
-		                     </select>
-		                     <div class="help-block with-errors red-txt"></div>
-		                  </div>
-	                  </div>
-	                  <div class="clearfix"></div>
-	                 </div>
-                </c:if> --%>
+							<%-- <c:if test="${fn:length(anchorTypeList) gt 0}">
+                        <div>
+                          <div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">Select Anchor Date Type<span class="requiredStar">*</span></div>
+                          <div class="col-md-3 col-lg-3 p-none">
+                              <div class="form-group">
+                                 <select id="anchorDateId" class="selectpicker disRadBtn1 disBtn1" required name="anchorDateId">
+                                  <option value='' >Select</option>
+                                  <c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
+                                      <option value="${anchorTypeInfo.id}" ${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
+                                  </c:forEach>
+                                 </select>
+                                 <div class="help-block with-errors red-txt"></div>
+                              </div>
+                          </div>
+                          <div class="clearfix"></div>
+                         </div>
+                    </c:if> --%>
 						<div>
 							<div class="gray-xs-f col-md-3 col-lg-3 p-none mt-sm">
 								Select Anchor Date Type<span class="requiredStar">*</span>
@@ -300,11 +315,11 @@
 							<div class="col-md-3 col-lg-3 p-none">
 								<div class="form-group">
 									<select id="anchorDateId" class="selectpicker disBtn1" required
-										name="anchorDateId">
+											name="anchorDateId">
 										<option value=''>Select</option>
 										<c:forEach items="${anchorTypeList}" var="anchorTypeInfo">
 											<option data-id="${anchorTypeInfo.participantProperty}"
-												value="${anchorTypeInfo.id}"
+													value="${anchorTypeInfo.id}"
 												${resourceBO.anchorDateId eq anchorTypeInfo.id ? 'selected' : ''}>${anchorTypeInfo.name}</option>
 										</c:forEach>
 									</select>
@@ -314,9 +329,9 @@
 							<div class="clearfix"></div>
 						</div>
 						<span class="mb-sm pr-md"> <span
-							class="light-txt opacity06">Anchor Date </span>
+								class="light-txt opacity06">Anchor Date </span>
 						</span> <span> <select class="signDropDown selectpicker sign-box"
-							title="Select" name="xDaysSign" id="xSign">
+											   title="Select" name="xDaysSign" id="xSign">
 								<option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
 								<option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
 						</select>
@@ -325,31 +340,31 @@
 						<span class="form-group m-none dis-inline vertical-align-middle">
 
 							<input id="xdays" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  resetAncDate"
-							placeholder="X" name="timePeriodFromDays"
-							value="${resourceBO.timePeriodFromDays}"
-							oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3"
-							required pattern="[0-9]+"
-							data-pattern-error="Please enter valid number." /> <span
-							class="help-block with-errors red-txt"></span>
+								   class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  resetAncDate"
+								   placeholder="X" name="timePeriodFromDays"
+								   value="${resourceBO.timePeriodFromDays}"
+								   oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3"
+								   required pattern="[0-9]+"
+								   data-pattern-error="Please enter valid number."/> <span
+								class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06"> days <span
-								style="padding-right: 5px; padding-left: 5px">to </span> Anchor
+							style="padding-right: 5px; padding-left: 5px">to </span> Anchor
 								Date
 						</span>
 						</span> <span> <select class="signDropDown selectpicker sign-box"
-							title="Select" name="yDaysSign" id="ySign">
+											   title="Select" name="yDaysSign" id="ySign">
 								<option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
 								<option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
 						</select>
 						</span> <span class="form-group m-none dis-inline vertical-align-middle">
 
 							<input id="ydays" type="text"
-							class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  resetAncDate"
-							placeholder="Y" name="timePeriodToDays"
-							value="${resourceBO.timePeriodToDays}"
-							oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3"
-							required /> <span class="help-block with-errors red-txt"></span>
+								   class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask  resetAncDate"
+								   placeholder="Y" name="timePeriodToDays"
+								   value="${resourceBO.timePeriodToDays}"
+								   oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3"
+								   required/> <span class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
 							class="light-txt opacity06 disBtn1"> days </span>
 						</span>
@@ -359,27 +374,27 @@
 				<div class="mt-lg resetDate">
 					<div class="mb-none">
 						<span class="radio radio-info radio-inline pr-md pl-1"> <input
-							type="radio" class="disRadBtn1" id="inlineRadio6" value="0"
-							name="resourceTypeParm"> <label for="inlineRadio6">Custom
+								type="radio" class="disRadBtn1" id="inlineRadio6" value="0"
+								name="resourceTypeParm"> <label for="inlineRadio6">Custom
 								Date Range</label>
 						</span>
 					</div>
 					<div>
 						<span
-							class="form-group m-none dis-inline vertical-align-middle pr-md">
+								class="form-group m-none dis-inline vertical-align-middle pr-md">
 							<input id="StartDate" type="text"
-							class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md"
-							placeholder="Start Date" name="startDate"
-							value="${resourceBO.startDate}"
-							oldStartDateVal="${resourceBO.startDate}" required /> <span
-							class="help-block with-errors red-txt"></span>
+								   class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md"
+								   placeholder="Start Date" name="startDate"
+								   value="${resourceBO.startDate}"
+								   oldStartDateVal="${resourceBO.startDate}" required/> <span
+								class="help-block with-errors red-txt"></span>
 						</span> <span class="gray-xs-f mb-sm pr-md"> to </span> <span
 							class="form-group m-none dis-inline vertical-align-middle">
 							<input id="EndDate" type="text"
-							class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md"
-							placeholder="End Date" name="endDate"
-							value="${resourceBO.endDate}"
-							oldEndDateVal="${resourceBO.endDate}" required /> <span
+								   class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md"
+								   placeholder="End Date" name="endDate"
+								   value="${resourceBO.endDate}"
+								   oldEndDateVal="${resourceBO.endDate}" required/> <span
 							class="help-block with-errors red-txt"></span>
 						</span>
 						<div class="help-block with-errors red-txt"></div>
@@ -397,9 +412,9 @@
 
 					<div class="form-group">
 						<textarea class="form-control remReqOnSave" rows="4" id="comment"
-							name="resourceText"
-							data-error="Please enter plain text of up to 250 characters max."
-							maxlength="250" required>${resourceBO.resourceText}</textarea>
+								  name="resourceText"
+								  data-error="Please enter plain text of up to 250 characters max."
+								  maxlength="250" required>${resourceBO.resourceText}</textarea>
 						<div class="help-block with-errors red-txt"></div>
 					</div>
 				</div>
@@ -407,7 +422,7 @@
 
 
 		</div>
-		<!--  End body tab section -->
+		<!-- End body tab section -->
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" role="dialog">
 			<div class="modal-dialog modal-lg" style="width: 98%;">
@@ -418,661 +433,693 @@
 					</div>
 					<div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
 						<embed id="embedPdfId"
-							src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"
-							oncontextmenu="return false;" onkeydown="return false;"
-							onmousedown="return false;" width="100%" height="500px" />
+							   src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"
+							   oncontextmenu="return false;" onkeydown="return false;"
+							   onmousedown="return false;" width="100%" height="500px"/>
 					</div>
 				</div>
 			</div>
 		</div>
 	</form:form>
-    <div class="modal fade dominate" id="myAutoModal" role="dialog">
-        <div class="modal-dialog modal-sm flr_modal">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
+	<div class="modal fade dominate" id="myAutoModal" role="dialog">
+		<div class="modal-dialog modal-sm flr_modal">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="autoSavedMessage" class="text-right">
+						<div class="blue_text">Last saved now</div>
+						<div class="grey_txt"><span class="timerPos"><img
+								src="../images/timer2.png"/></span>Your session expires in <span
+								class="bold_txt">15 minutes</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-                <div class="modal fade" id="timeOutModal" role="dialog">
-                                    <div class="modal-dialog modal-sm flr_modal">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                                <div class="modal-body">
-                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                            </div>
+	<div class="modal fade" id="timeOutModal" role="dialog">
+		<div class="modal-dialog modal-sm flr_modal">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="timeOutMessage" class="text-right blue_text"><span
+							class="timerPos"><img src="../images/timer2.png"/></span>Your session
+						expires in 15 minutes
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- End right Content here -->
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}"
-	name="resourceListForm" id="resourceListForm" method="post">
+		action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}"
+		name="resourceListForm" id="resourceListForm" method="post">
 	<input type="hidden" name="language" value="${currLanguage}">
 </form:form>
 <form:form action="/fdahpStudyDesigner/downloadPdf.do?_S=${param._S}"
-	id="pdfDownloadFormId" method="post" target="_blank">
-	<input type="hidden" value="studyResources" name="fileFolder" />
-	<input type="hidden" value="${resourceBO.pdfUrl}" name="fileName" />
+		   id="pdfDownloadFormId" method="post" target="_blank">
+	<input type="hidden" value="studyResources" name="fileFolder"/>
+	<input type="hidden" value="${resourceBO.pdfUrl}" name="fileName"/>
 </form:form>
 <script type="text/javascript">
-var idleTime = 0;
-$(document).ready(function(){
-	
-	//$('[data-id="anchorDateId"]').prop('disabled', true);
-	$('#loader').hide();
-	$('.commonCls').on('click', function () {
-		$('#loader').show();
-	})
-	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
+	var idleTime = 0;
+	$(document).ready(function () {
+
+		//$('[data-id="anchorDateId"]').prop('disabled', true);
+		$('#loader').hide();
+		$('.commonCls').on('click', function () {
+			$('#loader').show();
+		})
+		<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
-	</c:if>
-	
-	$('#embedPdfId').bind('contextmenu', function(e) {
-		alert("Right click has been disabled.");
-	    return false;
-	});
+		</c:if>
 
-	if ($('#inlineRadio4').prop('checked')===true) {
-		$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').addClass('cursor-none');
-	}
-	
-	    $('.daysMask').mask('000');
-	
-	    $(".menuNav li").removeClass('active');
-	    $(".eighthResources").addClass('active'); 
+		$('#embedPdfId').bind('contextmenu', function (e) {
+			alert("Right click has been disabled.");
+			return false;
+		});
+
+		if ($('#inlineRadio4').prop('checked') === true) {
+			$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').addClass(
+					'cursor-none');
+		}
+
+		$('.daysMask').mask('000');
+
+		$(".menuNav li").removeClass('active');
+		$(".eighthResources").addClass('active');
 		$("#createStudyId").show();
-        
-	 $("#doneResourceId").on('click', function(){
-		 var isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id'); 
-			if(isParticipantProp !='true'){
-				isParticipantProp=false;
-			}
-		 $('#doneResourceId').prop('disabled',true);
-          if( chkDaysValid(true) && isFromValid('#resourceForm')){
-			  if ($('#inlineRadio2').prop('checked')===true && $('.pdfDiv').is(':hidden')) {
-				  $("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
-						  $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file")).focus();
-				  $('#doneResourceId').prop('disabled',false);
-				  return false;
-			  }
-        	  if( $('#inlineRadio5').is(':checked') && isParticipantProp){
-        		  var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Anchor Date is scheduled appropriately in the third party system.";
-              	  bootbox.confirm({
-              		closeButton: false,
-              		message: text,
-              		buttons: {
-      			        'cancel': {
-      			            label: 'Cancel',
-      			        },
-      			        'confirm': {
-      			            label: 'OK',
-      			        },
-      			    },
-      			    callback: function(valid) {
-      			    	if (valid) {
-      			    		$('#buttonText').val('done');
-      			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
-                         	var escaped = $('#richText').text(richText).html();
-                         	tinymce.get('richText').setContent(escaped);
-							$('#loader').show();
-      	   		   		    $('#resourceForm').submit(); 
-      			    	}else{
-      			    		$('#doneResourceId').prop('disabled',false);
-      			    	}
-      			      }
-              	   });
-        	  }else if($('#inlineRadio5').is(':checked')){
-        		  var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Source Questionnaire providing the Anchor Date response is scheduled appropriately.";
-              	  bootbox.confirm({
-              		closeButton: false,
-              		message: text,
-              		buttons: {
-      			        'cancel': {
-      			            label: 'Cancel',
-      			        },
-      			        'confirm': {
-      			            label: 'OK',
-      			        },
-      			    },
-      			    callback: function(valid) {
-      			    	if (valid) {
-      			    		$('#buttonText').val('done');
-      			    		var richText=tinymce.get('richText').getContent({ format: 'raw' });
-                         	var escaped = $('#richText').text(richText).html();
-                         	tinymce.get('richText').setContent(escaped);
-							$('#loader').show();
-      	   		   		    $('#resourceForm').submit(); 
-      			    	}else{
-      			    		$('#doneResourceId').prop('disabled',false);
-      			    	}
-      			      }
-              	   });
-        	  }else{
-        		  $('#buttonText').val('done');
-        		  var richText=tinymce.get('richText').getContent({ format: 'raw' });
-               	  var escaped = $('#richText').text(richText).html();
-               	  tinymce.get('richText').setContent(escaped);
-				  $('#loader').show();
-   		   		  $('#resourceForm').submit(); 
-        	  }
- 		   }else{
- 			  $('#doneResourceId').prop('disabled',false);
- 		   }
-	    });
-	 
-	 if($('#inlineRadio1').prop('checked')){
-		 $('#uploadImg').removeAttr('required');
-		 $('#pdfUrl').removeAttr('required');
-		 $('#richText').attr('required','required');
-		 resetValidation('#resourceForm');
-	 }else{
-		 $('#richText').removeAttr('required');
-		  var file = $('#uploadImg').val();
-          var pdfId = $('#pdfUrl').val();
-          $('#richText').removeAttr('required');
-		  if(pdfId){
-			  $('#pdfUrl').attr('required','required');
-			  $('#uploadImg').removeAttr('required');
-		  }else{
-			  $('#uploadImg').attr('required','required');
-			  $('#pdfUrl').removeAttr('required');
-		  }
-		  resetValidation('#resourceForm');
-	 }
-	 
-	 $('#inlineRadio1','#inlineRadio2').on('change',function(){
-		 if($('#inlineRadio1').prop('checked')){
-			 $('#uploadImg').removeAttr('required');
-			 $('#pdfUrl').removeAttr('required');
-		 }else{
-			 $('#richText').removeAttr('required');
-			  var file = $('#uploadImg').val();
-	          var pdfId = $('#pdfUrl').val();
-	          $('#richText').removeAttr('required');
-			  if(pdfId){
-				  $('#pdfUrl').attr('required','required');
-			  }else{
-				  $('#uploadImg').attr('required','required');
-			  }
-		 }
-		  resetValidation('#resourceForm');
-	 });
-	  
-	$('#saveResourceId').click(function(e) {
-	     autoSaveResourcePage('manual');
-	});
-	
-	 pdfUrlName = $('#pdfUrl').val();
-     if(pdfUrlName != ""){
-       $("#uploadPdf").text("Change PDF");
-       $("#delete").removeClass("dis-none");
-     }else{
-    	 $('.pdfDiv').hide();
-     }
-     
-     
- 	$('.goToResourceListForm').on('click',function(){
-        <c:if test="${actionOn ne 'view'}">
- 		bootbox.confirm({
-			closeButton: false,
-			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
-		    buttons: {
-		        'cancel': {
-		            label: 'Cancel',
-		        },
-		        'confirm': {
-		            label: 'OK',
-		        },
-		    },
-		    callback: function(result) {
-		        if (result) {
-					$('#loader').show();
-		        	$('#resourceListForm').submit();
-		        }
-		    }
-	    });
- 		</c:if>
- 		<c:if test="${actionOn eq 'view'}">
- 			$('#resourceListForm').submit();
- 		</c:if>
-	});
-	
-	 // File Upload    
-    $(".uploadPdf,.changePdf").click(function(){               
-       $("#uploadImg").click();
-    });
-	 
-    if($("#richText").length > 0){
-    tinymce.init({
-        selector: "#richText",
-		theme: "silver",
-		skin: "custom-grey",
-		height: 300,
-		min_height: 100,
-		branding : false,
-		plugins: [
-			"advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
-		],
-		toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect | fontselect",
-		toolbar_items_size: 'small',
-        content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
-        setup : function(ed) {
-            ed.on('keypress change', function(ed) {
-            	resetValidation('.resetContentType');
-            	resetValidation($('#'+ed.target.id).val(tinymce.get(ed.target.id).getContent()).parents('form #richText'));
-            });
-     	  },
-     	 <c:if test="${actionOn eq 'view'}">readonly:1</c:if>
-    });
-	}
 
-	let currLang = $('#studyLanguage').val();
-	if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
-		$('[name="language"]').val(currLang);
-		refreshAndFetchLanguageData(currLang);
-	}
-  
-    //Toggling Rich richText and Upload Button    
-    $(".addResource").click(function(){
-        var a = $(this).val();
-        if(a == '0'){
-            $("#richEditor").removeClass("dis-none");
-            $("#pdf_file").addClass("dis-none");
-            $('#richText').attr('required','required');
-  		  	$('#uploadImg').removeAttr('required');
-  		  	$('#pdfUrl').removeAttr('required');
-        }else if(a == '1'){
-            $("#richEditor").addClass("dis-none");
-            $("#pdf_file").removeClass("dis-none");
-            $('#richText').removeAttr('required');
-            $('#uploadImg').attr('required','required');
-            $('#pdfUrl').attr('required','required');
-        }
-        resetValidation($(this).parents('form'));
-    });
-    
-    
-  //Changing & Displaying upload button text & file name
-  
-    $('#uploadImg').on('change',function (){
-    
-    	var fileExtension = ['pdf'];
-		var file, reader;
-		var thisAttr = this;
-		var thisId = $(this).attr("data-imageId");
-		if ((file = this.files[0])) {
-			reader = new FileReader();
-			reader.onload = function() {
-		        if ($.inArray($(thisAttr).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-		        	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
-		            		$("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file"));
-		        	$("#delete").click();
-		        }else if($('input[type=file]').val()){
-		        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
-		        	$('.pdfDiv').show();
-			        var filename = $(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i)[$(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i).length - 1];
-			        $("#pdf_name").prop('title',filename).text(filename);
-			        
-			        var a = $("#uploadPdf").text();
-			        if(a == "Upload PDF"){
-			          $("#uploadPdf").text("Change PDF");
-			        }
-		       		$("#delete").removeClass("dis-none");
-		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").empty();
-		       		$('.pdfClass').off( "click");
-		    	}
-    		};
-    		reader.onerror = function() {
-    			$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").empty().append(
-    	        		  $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a pdf file"));
-		        $("#delete").click();
-    		}
-    		reader.readAsDataURL(file)
-    	}
-        resetValidation($("#uploadImg").parents('form'));
-   });
-  
-  //Deleting Uploaded pdf
-    $("#delete").click(function(){
-       $("#uploadPdf").text("Upload PDF");
-       $("#pdf_name").prop('title','').empty();
-       $(this).addClass("dis-none");
-       $('input[type=file]').val('');
-       $('#pdfUrl').val('');
-       $('#pdfName').val('');
-       $("#uploadImg").attr('required','required');
-       $('.pdfDiv').hide();
-       resetValidation($("#uploadImg").parents('form'));
-    });
-	
-	<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
-	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
-		$('.disBtn1').attr('required','required');
+		$("#doneResourceId").on('click', function () {
+			var isParticipantProp = $('#anchorDateId').find('option:selected').attr('data-id');
+			if (isParticipantProp != 'true') {
+				isParticipantProp = false;
+			}
+			$('#doneResourceId').prop('disabled', true);
+			if (chkDaysValid(true) && isFromValid('#resourceForm')) {
+				if ($('#inlineRadio2').prop('checked') === true && $('.pdfDiv').is(':hidden')) {
+					$("#uploadImg").parent().addClass('has-error has-danger').find(
+							".help-block").empty().append(
+							$("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+									"Please select a pdf file")).focus();
+					$('#doneResourceId').prop('disabled', false);
+					return false;
+				}
+				if ($('#inlineRadio5').is(':checked') && isParticipantProp) {
+					var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Anchor Date is scheduled appropriately in the third party system.";
+					bootbox.confirm({
+						closeButton: false,
+						message: text,
+						buttons: {
+							'cancel': {
+								label: 'Cancel',
+							},
+							'confirm': {
+								label: 'OK',
+							},
+						},
+						callback: function (valid) {
+							if (valid) {
+								$('#buttonText').val('done');
+								var richText = tinymce.get('richText').getContent({format: 'raw'});
+								var escaped = $('#richText').text(richText).html();
+								tinymce.get('richText').setContent(escaped);
+								$('#loader').show();
+								$('#resourceForm').submit();
+							} else {
+								$('#doneResourceId').prop('disabled', false);
+							}
+						}
+					});
+				} else if ($('#inlineRadio5').is(':checked')) {
+					var text = "You have chosen to use a period of visibility based on an Anchor Date. Please ensure that the Source Questionnaire providing the Anchor Date response is scheduled appropriately.";
+					bootbox.confirm({
+						closeButton: false,
+						message: text,
+						buttons: {
+							'cancel': {
+								label: 'Cancel',
+							},
+							'confirm': {
+								label: 'OK',
+							},
+						},
+						callback: function (valid) {
+							if (valid) {
+								$('#buttonText').val('done');
+								var richText = tinymce.get('richText').getContent({format: 'raw'});
+								var escaped = $('#richText').text(richText).html();
+								tinymce.get('richText').setContent(escaped);
+								$('#loader').show();
+								$('#resourceForm').submit();
+							} else {
+								$('#doneResourceId').prop('disabled', false);
+							}
+						}
+					});
+				} else {
+					$('#buttonText').val('done');
+					var richText = tinymce.get('richText').getContent({format: 'raw'});
+					var escaped = $('#richText').text(richText).html();
+					tinymce.get('richText').setContent(escaped);
+					$('#loader').show();
+					$('#resourceForm').submit();
+				}
+			} else {
+				$('#doneResourceId').prop('disabled', false);
+			}
+		});
+
+		if ($('#inlineRadio1').prop('checked')) {
+			$('#uploadImg').removeAttr('required');
+			$('#pdfUrl').removeAttr('required');
+			$('#richText').attr('required', 'required');
+			resetValidation('#resourceForm');
+		} else {
+			$('#richText').removeAttr('required');
+			var file = $('#uploadImg').val();
+			var pdfId = $('#pdfUrl').val();
+			$('#richText').removeAttr('required');
+			if (pdfId) {
+				$('#pdfUrl').attr('required', 'required');
+				$('#uploadImg').removeAttr('required');
+			} else {
+				$('#uploadImg').attr('required', 'required');
+				$('#pdfUrl').removeAttr('required');
+			}
+			resetValidation('#resourceForm');
+		}
+
+		$('#inlineRadio1', '#inlineRadio2').on('change', function () {
+			if ($('#inlineRadio1').prop('checked')) {
+				$('#uploadImg').removeAttr('required');
+				$('#pdfUrl').removeAttr('required');
+			} else {
+				$('#richText').removeAttr('required');
+				var file = $('#uploadImg').val();
+				var pdfId = $('#pdfUrl').val();
+				$('#richText').removeAttr('required');
+				if (pdfId) {
+					$('#pdfUrl').attr('required', 'required');
+				} else {
+					$('#uploadImg').attr('required', 'required');
+				}
+			}
+			resetValidation('#resourceForm');
+		});
+
+		$('#saveResourceId').click(function (e) {
+			autoSaveResourcePage('manual');
+		});
+
+		pdfUrlName = $('#pdfUrl').val();
+		if (pdfUrlName != "") {
+			$("#uploadPdf").text("Change PDF");
+			$("#delete").removeClass("dis-none");
+		} else {
+			$('.pdfDiv').hide();
+		}
+
+		$('.goToResourceListForm').on('click', function () {
+			<c:if test="${actionOn ne 'view'}">
+			bootbox.confirm({
+				closeButton: false,
+				message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+				buttons: {
+					'cancel': {
+						label: 'Cancel',
+					},
+					'confirm': {
+						label: 'OK',
+					},
+				},
+				callback: function (result) {
+					if (result) {
+						$('#loader').show();
+						$('#resourceListForm').submit();
+					}
+				}
+			});
+			</c:if>
+			<c:if test="${actionOn eq 'view'}">
+			$('#resourceListForm').submit();
+			</c:if>
+		});
+
+		// File Upload
+		$(".uploadPdf,.changePdf").click(function () {
+			$("#uploadImg").click();
+		});
+
+		if ($("#richText").length > 0) {
+			tinymce.init({
+				selector: "#richText",
+				theme: "silver",
+				skin: "custom-grey",
+				height: 300,
+				min_height: 100,
+				branding: false,
+				plugins: [
+					"advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
+				],
+				toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect | fontselect",
+				toolbar_items_size: 'small',
+				content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+				setup: function (ed) {
+					ed.on('keypress change', function (ed) {
+						resetValidation('.resetContentType');
+						resetValidation(
+								$('#' + ed.target.id).val(
+										tinymce.get(ed.target.id).getContent()).parents(
+										'form #richText'));
+					});
+				},
+				<c:if test="${actionOn eq 'view'}">readonly: 1</c:if>
+			});
+		}
+
+		let currLang = $('#studyLanguage').val();
+		if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
+			$('[name="language"]').val(currLang);
+			refreshAndFetchLanguageData(currLang);
+		}
+
+		//Toggling Rich richText and Upload Button
+		$(".addResource").click(function () {
+			var a = $(this).val();
+			if (a == '0') {
+				$("#richEditor").removeClass("dis-none");
+				$("#pdf_file").addClass("dis-none");
+				$('#richText').attr('required', 'required');
+				$('#uploadImg').removeAttr('required');
+				$('#pdfUrl').removeAttr('required');
+			} else if (a == '1') {
+				$("#richEditor").addClass("dis-none");
+				$("#pdf_file").removeClass("dis-none");
+				$('#richText').removeAttr('required');
+				$('#uploadImg').attr('required', 'required');
+				$('#pdfUrl').attr('required', 'required');
+			}
+			resetValidation($(this).parents('form'));
+		});
+
+		//Changing & Displaying upload button text & file name
+
+		$('#uploadImg').on('change', function () {
+
+			var fileExtension = ['pdf'];
+			var file, reader;
+			var thisAttr = this;
+			var thisId = $(this).attr("data-imageId");
+			if ((file = this.files[0])) {
+				reader = new FileReader();
+				reader.onload = function () {
+					if ($.inArray($(thisAttr).val().split('.').pop().toLowerCase(), fileExtension)
+							== -1) {
+						$("#uploadImg").parent().addClass('has-error has-danger').find(
+								".help-block").empty().append(
+								$("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+										"Please select a pdf file"));
+						$("#delete").click();
+					} else if ($('input[type=file]').val()) {
+						$('#pdfClk').attr('href', 'javascript:void(0)').css('cursor', 'default');
+						$('.pdfDiv').show();
+						var filename = $(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(
+								/\\/i)[$(
+								thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i).length
+						- 1];
+						$("#pdf_name").prop('title', filename).text(filename);
+
+						var a = $("#uploadPdf").text();
+						if (a == "Upload PDF") {
+							$("#uploadPdf").text("Change PDF");
+						}
+						$("#delete").removeClass("dis-none");
+						$("#uploadImg").parent().removeClass('has-error has-danger').find(
+								".help-block").empty();
+						$('.pdfClass').off("click");
+					}
+				};
+				reader.onerror = function () {
+					$("#uploadImg").parent().addClass('has-error has-danger').find(
+							".help-block").empty().append(
+							$("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+									"Please select a pdf file"));
+					$("#delete").click();
+				}
+				reader.readAsDataURL(file)
+			}
+			resetValidation($("#uploadImg").parents('form'));
+		});
+
+		//Deleting Uploaded pdf
+		$("#delete").click(function () {
+			$("#uploadPdf").text("Upload PDF");
+			$("#pdf_name").prop('title', '').empty();
+			$(this).addClass("dis-none");
+			$('input[type=file]').val('');
+			$('#pdfUrl').val('');
+			$('#pdfName').val('');
+			$("#uploadImg").attr('required', 'required');
+			$('.pdfDiv').hide();
+			resetValidation($("#uploadImg").parents('form'));
+		});
+
+		<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
+		<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
+		$('.disBtn1').attr('required', 'required');
 		$('.disBtn2').removeAttr('required');
-		$('.disBtn2').prop('disabled',true);
-		$('#inlineRadio5').prop('checked',true);
-		$('#inlineRadio6').prop('checked',false);
-		resetValidation($(this).parents('form'));
-	</c:if>
-		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
-		$('.disBtn2').attr('required','required');
-		$('.disBtn1').removeAttr('required');
-		$('.disBtn1').prop('disabled',true);
-		$('#inlineRadio6').prop('checked',true);
-		$('#inlineRadio5').prop('checked',false);
+		$('.disBtn2').prop('disabled', true);
+		$('#inlineRadio5').prop('checked', true);
+		$('#inlineRadio6').prop('checked', false);
 		resetValidation($(this).parents('form'));
 		</c:if>
-	
+		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
+		$('.disBtn2').attr('required', 'required');
+		$('.disBtn1').removeAttr('required');
+		$('.disBtn1').prop('disabled', true);
+		$('#inlineRadio6').prop('checked', true);
+		$('#inlineRadio5').prop('checked', false);
+		resetValidation($(this).parents('form'));
+		</c:if>
 
-
-		$("#xdays, #ydays").on('blur',function(){
+		$("#xdays, #ydays").on('blur', function () {
 			chkDaysValid(false);
 		});
-	 $('#StartDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        ignoreReadonly: true,
-        useCurrent :false,
-     });
-    $('#EndDate').datetimepicker({
-         format: 'MM/DD/YYYY',
-         ignoreReadonly: true,
-         useCurrent: false,
-     }); 
-     
-     $(".datepicker").on("click", function (e) {
-         $('#StartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
-         var startDate = $("#StartDate").data("DateTimePicker").date();
-         if(startDate != null && startDate != '' && typeof startDate != 'undefined'){
-        	 if(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()) > startDate){
-        		 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate())); 
-        	 }else{
-        		 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
-        	 }
-         }else{
-        	 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
-         }
-     });
-     
-     $("#StartDate").on("dp.change", function (e) {
-			if($("#EndDate").data("DateTimePicker").date() < $(this).data("DateTimePicker").date()) {
+		$('#StartDate').datetimepicker({
+			format: 'MM/DD/YYYY',
+			ignoreReadonly: true,
+			useCurrent: false,
+		});
+		$('#EndDate').datetimepicker({
+			format: 'MM/DD/YYYY',
+			ignoreReadonly: true,
+			useCurrent: false,
+		});
+
+		$(".datepicker").on("click", function (e) {
+			$('#StartDate').data("DateTimePicker").minDate(
+					new Date(new Date().getFullYear(), new Date().getMonth(),
+							new Date().getDate()));
+			var startDate = $("#StartDate").data("DateTimePicker").date();
+			if (startDate != null && startDate != '' && typeof startDate != 'undefined') {
+				if (new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+						> startDate) {
+					$('#EndDate').data("DateTimePicker").minDate(
+							new Date(new Date().getFullYear(), new Date().getMonth(),
+									new Date().getDate()));
+				} else {
+					$('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+				}
+			} else {
+				$('#EndDate').data("DateTimePicker").minDate(
+						new Date(new Date().getFullYear(), new Date().getMonth(),
+								new Date().getDate()));
+			}
+		});
+
+		$("#StartDate").on("dp.change", function (e) {
+			if ($("#EndDate").data("DateTimePicker").date() < $(this).data(
+					"DateTimePicker").date()) {
 				$("#EndDate").val('');
 			}
-        	$("#EndDate").data("DateTimePicker").minDate(new Date(e.date._d));
-     });
-        
-		$('#inlineRadio5').on('click',function(){
-			if($('#inlineRadio5').prop('checked') == true){
-			$('.disBtn1').prop('disabled',false);
-			$('.disRadBtn1').prop('disabled',false);
-			$('.disBtn1').selectpicker('refresh');
-			$('.disBtn2').prop('disabled',true);
-			$('.disBtn2').val('');
-			$('.disBtn1').attr('required','required');
-			$('.disBtn2').removeAttr('required');
-			//$('[data-id="anchorDateId"]').prop('disabled', false);
-			if($('#xdays').attr('oldxDaysVal') != ''){
-				$('#inlineRadio5').prop('checked',true);
-				//$('#xdays').val($('#xdays').attr('oldxDaysVal'));
-				$('.disBtn1').prop('disabled',false);
-				$('.disBtn2').prop('disabled',true);
+			$("#EndDate").data("DateTimePicker").minDate(new Date(e.date._d));
+		});
+
+		$('#inlineRadio5').on('click', function () {
+			if ($('#inlineRadio5').prop('checked') == true) {
+				$('.disBtn1').prop('disabled', false);
+				$('.disRadBtn1').prop('disabled', false);
 				$('.disBtn1').selectpicker('refresh');
-			}
-			if($('#ydays').attr('oldyDaysVal') != ''){
-				$('#inlineRadio5').prop('checked',true);
-				//$('#ydays').val($('#ydays').attr('oldyDaysVal'));
-				$('.disBtn1').prop('disabled',false);
-				$('.disBtn2').prop('disabled',true);
-				$('.disBtn1').selectpicker('refresh');
-			}
-			$('[data-id="anchorDateId"]').removeClass('cursor-none').prop('disabled', false);
-			resetValidation('.resetDate');
+				$('.disBtn2').prop('disabled', true);
+				$('.disBtn2').val('');
+				$('.disBtn1').attr('required', 'required');
+				$('.disBtn2').removeAttr('required');
+				//$('[data-id="anchorDateId"]').prop('disabled', false);
+				if ($('#xdays').attr('oldxDaysVal') != '') {
+					$('#inlineRadio5').prop('checked', true);
+					//$('#xdays').val($('#xdays').attr('oldxDaysVal'));
+					$('.disBtn1').prop('disabled', false);
+					$('.disBtn2').prop('disabled', true);
+					$('.disBtn1').selectpicker('refresh');
+				}
+				if ($('#ydays').attr('oldyDaysVal') != '') {
+					$('#inlineRadio5').prop('checked', true);
+					//$('#ydays').val($('#ydays').attr('oldyDaysVal'));
+					$('.disBtn1').prop('disabled', false);
+					$('.disBtn2').prop('disabled', true);
+					$('.disBtn1').selectpicker('refresh');
+				}
+				$('[data-id="anchorDateId"]').removeClass('cursor-none').prop('disabled', false);
+				resetValidation('.resetDate');
 			}
 		});
-		
-		$('#inlineRadio6').on('click',function(){
-			if($('#inlineRadio6').prop('checked') == true){
-			$('.disBtn2').prop('disabled',false);
-			$('.disBtn1').prop('disabled',true);
-			$('.disBtn1').val('');
-			$('.disBtn2').attr('required','required');
-			$('.disBtn1').removeAttr('required');
-			$('.disBtn1').selectpicker('refresh');
-			//$('[data-id="anchorDateId"]').prop('disabled', true);
-			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").empty();
-			if($('#StartDate').attr('oldStartDateVal') != ''){
-				$('#inlineRadio6').prop('checked',true);
-				$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
-				$('.disBtn1').prop('disabled',true);
-				$('.disBtn2').prop('disabled',false);
-			}
-			if($('#EndDate').attr('oldEndDateVal') != ''){
-				$('#inlineRadio6').prop('checked',true);
-				$('#EndDate').val($('#EndDate').attr('oldEndDateVal'));
-				$('.disBtn1').prop('disabled',true);
-				$('.disBtn2').prop('disabled',false);
-			}
-			resetValidation('.resetDate');
+
+		$('#inlineRadio6').on('click', function () {
+			if ($('#inlineRadio6').prop('checked') == true) {
+				$('.disBtn2').prop('disabled', false);
+				$('.disBtn1').prop('disabled', true);
+				$('.disBtn1').val('');
+				$('.disBtn2').attr('required', 'required');
+				$('.disBtn1').removeAttr('required');
+				$('.disBtn1').selectpicker('refresh');
+				//$('[data-id="anchorDateId"]').prop('disabled', true);
+				$('#ydays').parent().removeClass('has-error has-danger').find(
+						".help-block").empty();
+				if ($('#StartDate').attr('oldStartDateVal') != '') {
+					$('#inlineRadio6').prop('checked', true);
+					$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn2').prop('disabled', false);
+				}
+				if ($('#EndDate').attr('oldEndDateVal') != '') {
+					$('#inlineRadio6').prop('checked', true);
+					$('#EndDate').val($('#EndDate').attr('oldEndDateVal'));
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn2').prop('disabled', false);
+				}
+				resetValidation('.resetDate');
 			}
 		});
-		
-	
-		if($('#inlineRadio3').prop('checked') == false){
-			$('#inlineRadio5').prop('checked',false);
-			$('#inlineRadio6').prop('checked',false);
-			$('.disRadBtn1').prop('disabled',true);
+
+		if ($('#inlineRadio3').prop('checked') == false) {
+			$('#inlineRadio5').prop('checked', false);
+			$('#inlineRadio6').prop('checked', false);
+			$('.disRadBtn1').prop('disabled', true);
 			$('.disBtn1').removeAttr('required');
 			$('.disBtn2').removeAttr('required');
 			resetValidation($(this).parents('form'));
 		}
-		
-		
-		
-		$('#inlineRadio3').on('click',function(){
-			if($('#inlineRadio3').prop('checked') == true){
-				
-			var anchorTypeList = "${anchorTypeList}";
-			var length = anchorTypeList.length;
-				 if(length < 3){
-					 $('#inlineRadio5').prop('disabled',true);
-						$('.disRadBtn1').prop('disabled',true);	
-						$('.disRadBtn1').prop('checked',false);
-						$('.disRadBtn1').val('');	
+
+		$('#inlineRadio3').on('click', function () {
+			if ($('#inlineRadio3').prop('checked') == true) {
+
+				var anchorTypeList = "${anchorTypeList}";
+				var length = anchorTypeList.length;
+				if (length < 3) {
+					$('#inlineRadio5').prop('disabled', true);
+					$('.disRadBtn1').prop('disabled', true);
+					$('.disRadBtn1').prop('checked', false);
+					$('.disRadBtn1').val('');
+					$('.disBtn1').removeAttr('required');
+					$('.disBtn1').val('');
+
+				}
+				$('.disBtn2').prop('disabled', true);
+				$('#inlineRadio6').prop('disabled', false);
+				$('.disBtn2').val('');
+				if ($('#xdays').attr('oldxDaysVal') != '') {
+					$('#inlineRadio5').prop('checked', true);
+					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
+					$('.disBtn1').prop('disabled', false);
+					$('.disBtn2').prop('disabled', true);
+					$('.disBtn1').attr('required', 'required');
+					$('.disBtn2').removeAttr('required');
+					$('#inlineRadio5').prop('disabled', false);
+					$('#inlineRadio5').val('');
+					//$('.disRadBtn1').prop('checked',true);
+					$('.disBtn1').val('');
+					$('.disBtn1').selectpicker('refresh');
+					resetValidation($('.resetDate'));
+				}
+				if ($('#ydays').attr('oldyDaysVal') != '') {
+					$('#inlineRadio5').prop('checked', true);
+					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
+					$('.disBtn1').prop('disabled', false);
+					$('.disBtn2').prop('disabled', true);
+					$('.disBtn1').attr('required', 'required');
+					$('.disBtn2').removeAttr('required');
+					$('.disBtn1').val('');
+					$('#inlineRadio5').prop('disabled', false);
+					$('#inlineRadio5').val('');
+					//$('.disRadBtn1').prop('checked',true);
+					$('.disBtn1').selectpicker('refresh');
+					resetValidation($('.resetDate'));
+				}
+				if ($('#StartDate').attr('oldStartDateVal') != '') {
+					$('#inlineRadio6').prop('checked', true);
+					$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn2').prop('disabled', false);
+					$('.disBtn2').attr('required', 'required');
+					$('.disBtn1').removeAttr('required');
+					$('.disRadBtn1').prop('checked', false);
+					if (length < 3) {
+						$('#inlineRadio5').prop('disabled', true);
+						$('.disRadBtn1').prop('disabled', true);
+						$('.disRadBtn1').prop('checked', false);
+						$('.disRadBtn1').val('');
 						$('.disBtn1').removeAttr('required');
 						$('.disBtn1').val('');
-						
-				 }
-			$('.disBtn2').prop('disabled',true);
-			$('#inlineRadio6').prop('disabled',false);
-			$('.disBtn2').val('');
-				if($('#xdays').attr('oldxDaysVal') != ''){
-					$('#inlineRadio5').prop('checked',true);
-					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
-					$('.disBtn1').prop('disabled',false);
-					$('.disBtn2').prop('disabled',true);
-					$('.disBtn1').attr('required','required');
-					$('.disBtn2').removeAttr('required');
-					$('#inlineRadio5').prop('disabled',false);	
-					$('#inlineRadio5').val('');	
-					//$('.disRadBtn1').prop('checked',true);
-					$('.disBtn1').val('');
-					$('.disBtn1').selectpicker('refresh');
+
+					} else {
+						$('#inlineRadio5').prop('disabled', false);
+					}
 					resetValidation($('.resetDate'));
 				}
-				if($('#ydays').attr('oldyDaysVal') != ''){
-					$('#inlineRadio5').prop('checked',true);
-					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
-					$('.disBtn1').prop('disabled',false);
-					$('.disBtn2').prop('disabled',true);
-					$('.disBtn1').attr('required','required');
-					$('.disBtn2').removeAttr('required');
-					$('.disBtn1').val('');
-					$('#inlineRadio5').prop('disabled',false);	
-					$('#inlineRadio5').val('');	
-					//$('.disRadBtn1').prop('checked',true);
-					$('.disBtn1').selectpicker('refresh');
-					resetValidation($('.resetDate'));
-				}
-				if($('#StartDate').attr('oldStartDateVal') != ''){
-					$('#inlineRadio6').prop('checked',true);
-					$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
-					$('.disBtn1').prop('disabled',true);
-					$('.disBtn2').prop('disabled',false);
-					$('.disBtn2').attr('required','required');
-					$('.disBtn1').removeAttr('required');
-					$('.disRadBtn1').prop('checked',false);
-					 if(length < 3){
-						 $('#inlineRadio5').prop('disabled',true);
-							$('.disRadBtn1').prop('disabled',true);	
-							$('.disRadBtn1').prop('checked',false);
-							$('.disRadBtn1').val('');	
-							$('.disBtn1').removeAttr('required');
-							$('.disBtn1').val('');
-							
-					 }else{
-						 $('#inlineRadio5').prop('disabled',false);
-					 }
-					resetValidation($('.resetDate'));
-				}
-				if($('#EndDate').attr('oldEndDateVal') != ''){
-					$('#inlineRadio6').prop('checked',true);
+				if ($('#EndDate').attr('oldEndDateVal') != '') {
+					$('#inlineRadio6').prop('checked', true);
 					$('#EndDate').val($('#EndDate').attr('oldEndDateVal'));
-					$('.disBtn1').prop('disabled',true);
-					$('.disBtn2').prop('disabled',false);
-					$('.disBtn2').attr('required','required');
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn2').prop('disabled', false);
+					$('.disBtn2').attr('required', 'required');
 					$('.disBtn1').removeAttr('required');
 					$('.disBtn1').selectpicker('refresh');
-					 if(length < 3){
-						 $('#inlineRadio5').prop('disabled',true);
-							$('.disRadBtn1').prop('disabled',true);	
-							$('.disRadBtn1').prop('checked',false);
-							$('.disRadBtn1').val('');	
-							$('.disBtn1').removeAttr('required');
-							$('.disBtn1').val('');
-							
-					 }else{
-						 $('#inlineRadio5').prop('disabled',false);
-					 }
+					if (length < 3) {
+						$('#inlineRadio5').prop('disabled', true);
+						$('.disRadBtn1').prop('disabled', true);
+						$('.disRadBtn1').prop('checked', false);
+						$('.disRadBtn1').val('');
+						$('.disBtn1').removeAttr('required');
+						$('.disBtn1').val('');
+
+					} else {
+						$('#inlineRadio5').prop('disabled', false);
+					}
 					resetValidation($('.resetDate'));
 				}
-				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
-					 $('#inlineRadio6').prop('checked',true);
-					$('.disBtn2').prop('disabled',false);
-					$('.disBtn1').prop('disabled',true);
-					$('.disBtn2').attr('required','required');
+				if ($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == ''
+						&& $(
+								'#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr(
+								'oldEndDateVal')
+						== '') {
+					$('#inlineRadio6').prop('checked', true);
+					$('.disBtn2').prop('disabled', false);
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn2').attr('required', 'required');
 					$('.disBtn1').removeAttr('required');
-					
+
 					//added by sweta
-				 	 if(length > 3 || $('#ydays').attr('oldyDaysVal') != '' || $('#ydays').attr('oldyDaysVal') != ''){
-				 		 $('#inlineRadio5').prop('disabled',false);
-				 		 //added by sweta
-				 		resetValidation($('.resetDate'));
-					 } 
-					
+					if (length > 3 || $('#ydays').attr('oldyDaysVal') != '' || $('#ydays').attr(
+									'oldyDaysVal')
+							!= '') {
+						$('#inlineRadio5').prop('disabled', false);
+						//added by sweta
+						resetValidation($('.resetDate'));
+					}
+
 				}
 			}
-			 var a = $("#inlineRadio3").val();
-			if(a ==0){
-			   $(".light-txt").removeClass("opacity06");
-			}else{
-			  $(".light-txt").addClass("opacity06");
-			} 
+			var a = $("#inlineRadio3").val();
+			if (a == 0) {
+				$(".light-txt").removeClass("opacity06");
+			} else {
+				$(".light-txt").addClass("opacity06");
+			}
 			resetValidation($('.resetDate'));
 		});
-		
-		if($('#inlineRadio3').prop('checked') == true){
+
+		if ($('#inlineRadio3').prop('checked') == true) {
 			var anchorTypeList = "${anchorTypeList}";
 			var length = anchorTypeList.length;
-				
-		if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
-			$('#inlineRadio6').prop('checked',true);
-			$('.disBtn2').prop('disabled',false);
-			$('.disBtn1').prop('disabled',true);
-			$('.disBtn2').attr('required','required');
-			$('.disBtn1').removeAttr('required');
-			 if(length < 3){
-				 $('#inlineRadio5').prop('checked',false);
-				 $('.disBtn1').prop('disabled',true);
-				 $('.disBtn1').prop('disabled',true);
-				 $('#inlineRadio5').prop('disabled',true);
-			 }
-		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
-			$('#inlineRadio5').prop('checked',true);
-			$('.disBtn1').prop('disabled',false);
-			$('.disBtn2').prop('disabled',true);
-			$('.disBtn1').attr('required','required');
-			$('.disBtn2').removeAttr('required');
-		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
-			$('#inlineRadio6').prop('checked',true);
-			$('.disBtn2').prop('disabled',false);
-			$('.disBtn1').prop('disabled',true);
-			$('.disBtn2').attr('required','required');
-			$('.disBtn1').removeAttr('required');
-			 if(length < 3){
-				 $('#inlineRadio5').prop('checked',false);
-				 $('.disBtn1').prop('disabled',true);
-				 $('.disBtn1').prop('disabled',true);
-				 $('#inlineRadio5').prop('disabled',true);
-			 }
-		}
-		var a = $("#inlineRadio3").val();
-		if(a ==0){
-		   $(".light-txt").removeClass("opacity06");
-		}else{
-		  $(".light-txt").addClass("opacity06");
-		}
-		resetValidation($(this).parents('form'));
-		}
-		
-		$('#inlineRadio4').on('click',function(){
-			if($('#inlineRadio4').prop('checked') == true){
-			$('.disRadBtn1').prop('disabled',true);	
-			$('.disRadBtn1').val('');	
-			$('.disRadBtn1').prop('checked',false);
-			$('.disBtn1').prop('disabled',true);	
-			$('.disBtn1').val('');
-			$('.disBtn1').removeAttr('required');
-			$('.disBtn2').removeAttr('required');
-			$('.disBtn1').selectpicker('refresh');
-			//$('[data-id="anchorDateId"]').prop('disabled', true);
-			resetValidation($('.resetDate'));
+
+			if ($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $(
+							'#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr(
+							'oldEndDateVal')
+					== '') {
+				$('#inlineRadio6').prop('checked', true);
+				$('.disBtn2').prop('disabled', false);
+				$('.disBtn1').prop('disabled', true);
+				$('.disBtn2').attr('required', 'required');
+				$('.disBtn1').removeAttr('required');
+				if (length < 3) {
+					$('#inlineRadio5').prop('checked', false);
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn1').prop('disabled', true);
+					$('#inlineRadio5').prop('disabled', true);
+				}
+			} else if ($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')) {
+				$('#inlineRadio5').prop('checked', true);
+				$('.disBtn1').prop('disabled', false);
+				$('.disBtn2').prop('disabled', true);
+				$('.disBtn1').attr('required', 'required');
+				$('.disBtn2').removeAttr('required');
+			} else if ($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr(
+					'oldEndDateVal')) {
+				$('#inlineRadio6').prop('checked', true);
+				$('.disBtn2').prop('disabled', false);
+				$('.disBtn1').prop('disabled', true);
+				$('.disBtn2').attr('required', 'required');
+				$('.disBtn1').removeAttr('required');
+				if (length < 3) {
+					$('#inlineRadio5').prop('checked', false);
+					$('.disBtn1').prop('disabled', true);
+					$('.disBtn1').prop('disabled', true);
+					$('#inlineRadio5').prop('disabled', true);
+				}
 			}
-			
+			var a = $("#inlineRadio3").val();
+			if (a == 0) {
+				$(".light-txt").removeClass("opacity06");
+			} else {
+				$(".light-txt").addClass("opacity06");
+			}
+			resetValidation($(this).parents('form'));
+		}
+
+		$('#inlineRadio4').on('click', function () {
+			if ($('#inlineRadio4').prop('checked') == true) {
+				$('.disRadBtn1').prop('disabled', true);
+				$('.disRadBtn1').val('');
+				$('.disRadBtn1').prop('checked', false);
+				$('.disBtn1').prop('disabled', true);
+				$('.disBtn1').val('');
+				$('.disBtn1').removeAttr('required');
+				$('.disBtn2').removeAttr('required');
+				$('.disBtn1').selectpicker('refresh');
+				//$('[data-id="anchorDateId"]').prop('disabled', true);
+				resetValidation($('.resetDate'));
+			}
+
 			var a = $("#inlineRadio4").val();
-			if(a ==1){
-			   $(".light-txt").addClass("opacity06");
-			}else{
-			  $(".light-txt").removeClass("opacity06");
+			if (a == 1) {
+				$(".light-txt").addClass("opacity06");
+			} else {
+				$(".light-txt").removeClass("opacity06");
 			}
 		});
-		
-	</c:if>
-	
-	<c:if test="${actionOn eq 'view'}">
-	 	$('#resourceForm input,textarea,select').prop('disabled', true);
-	 	$('#studyLanguage').prop('disabled', false);
-    	$('.viewAct').hide();
-	</c:if>
-	
-	$('.signDropDown').on('change',function(){
-		chkDaysValid(false);
-	});
-	
-	 $('.pdfClass').on('click',function(){
-		$('#pdfDownloadFormId').submit();
-		$("body").removeClass("loading");
- 	});
-	 
-	 $('#anchorDateId').change(function(){ 
-			var element = $(this).find('option:selected').text(); 
-			if(element == 'Enrollment Date'){
+
+		</c:if>
+
+		<c:if test="${actionOn eq 'view'}">
+		$('#resourceForm input,textarea,select').prop('disabled', true);
+		$('#studyLanguage').prop('disabled', false);
+		$('.viewAct').hide();
+		</c:if>
+
+		$('.signDropDown').on('change', function () {
+			chkDaysValid(false);
+		});
+
+		$('.pdfClass').on('click', function () {
+			$('#pdfDownloadFormId').submit();
+			$("body").removeClass("loading");
+		});
+
+		$('#anchorDateId').change(function () {
+			var element = $(this).find('option:selected').text();
+			if (element == 'Enrollment Date') {
 				$('#xSign').children('option').remove();
 				$('#xSign').append("<option value='0' selected>+</option>");
 				$('#ySign').children('option').remove();
@@ -1085,308 +1132,343 @@ $(document).ready(function(){
 				$('#ySign').append(
 						"<option value='0' selected>+</option><option value='1' selected>-</option>");
 			}
-		 $('.selectpicker').selectpicker('refresh');
-	 });
+			$('.selectpicker').selectpicker('refresh');
+		});
 
-	let timeOutInterval = setInterval(function () {
-		idleTime += 1;
-		if (idleTime > 3) { // 5 minutes
-			<c:if test="${actionOn ne 'view'}">
-	                autoSaveResourcePage('auto');
-                     </c:if>
-                    <c:if test="${actionOn eq 'view'}">
-			clearInterval(timeOutInterval);
-			timeOutFunction();
-			</c:if>
+		let timeOutInterval = setInterval(function () {
+			idleTime += 1;
+			if (idleTime > 3) { // 5 minutes
+				<c:if test="${actionOn ne 'view'}">
+				autoSaveResourcePage('auto');
+				</c:if>
+				<c:if test="${actionOn eq 'view'}">
+				clearInterval(timeOutInterval);
+				timeOutFunction();
+				</c:if>
 
-	        }
-	    }, 226000); // 5 minutes
-
-	    $(this).mousemove(function (e) {
-	        idleTime = 0;
-	    });
-	    $(this).keypress(function (e) {
-	        idleTime = 0;
-	    });
-	tinymce.get('richText').on('keydown', function () {
-		idleTime = 0;
-	});
-	tinymce.get('richText').on('mousemove', function () {
-		idleTime = 0;
-	});
-
-      function timeOutFunction() {
-       $('#timeOutModal').modal('show');
-        let i = 14;
-        let timeOutInterval = setInterval(function () {
-         if (i === 0) {
-          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-           if ($('#timeOutModal').hasClass('show')) {
-             var a = document.createElement('a');
-             a.href = "/fdahpStudyDesigner/sessionOut.do";
-             document.body.appendChild(a).click();
-          }
-           clearInterval(timeOutInterval);
-             } else {
-               if (i === 1) {
-             $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-               } else {
-               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              }
-               idleTime = 0;
-               i-=1;
-                }
-                }, 60000);
-                }
-	// pop message after 15 minutes
-	if ($('#isAutoSaved').val() === 'true') {
-		$('#myAutoModal').modal('show');
-		let i = 1;
-		let j = 14;
-		let lastSavedInterval = setInterval(function () {
-			if ((i === 15) || (j === 0)) {
-                 $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-				if ($('#myAutoModal').hasClass('show')) {
-					var a = document.createElement('a');
-                    a.href = "/fdahpStudyDesigner/sessionOut.do";
-                    document.body.appendChild(a).click();
-				}
-				clearInterval(lastSavedInterval);
-			} else {
-				if ((i === 1) || (j === 14)){
-                 $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-				}
-				else if ((i === 14) || (j === 1)) {
-                $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                }
-				else {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-				}
-				idleTime = 0;
-				i+=1;
-				j-=1;
 			}
-		}, 60000);
-	}
-});
+		}, 226000); // 5 minutes
 
-function  autoSaveResourcePage(mode){
-	 $('#saveResourceId').prop('disabled',true);
-	   	$("#resourceTitle").parent().find(".help-block").empty();
+		$(this).mousemove(function (e) {
+			idleTime = 0;
+		});
+		$(this).keypress(function (e) {
+			idleTime = 0;
+		});
+		tinymce.get('richText').on('keydown', function () {
+			idleTime = 0;
+		});
+		tinymce.get('richText').on('mousemove', function () {
+			idleTime = 0;
+		});
+
+		function timeOutFunction() {
+			$('#timeOutModal').modal('show');
+			let i = 14;
+			let timeOutInterval = setInterval(function () {
+				if (i === 0) {
+					$('#timeOutMessage').html(
+							'<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+							+ i + ' minutes');
+					if ($('#timeOutModal').hasClass('show')) {
+						var a = document.createElement('a');
+						a.href = "/fdahpStudyDesigner/sessionOut.do";
+						document.body.appendChild(a).click();
+					}
+					clearInterval(timeOutInterval);
+				} else {
+					if (i === 1) {
+						$('#timeOutMessage').html(
+								'<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+					} else {
+						$('#timeOutMessage').html(
+								'<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+								+ i + ' minutes');
+					}
+					idleTime = 0;
+					i -= 1;
+				}
+			}, 60000);
+		}
+
+		// pop message after 15 minutes
+		if ($('#isAutoSaved').val() === 'true') {
+			$('#myAutoModal').modal('show');
+			let i = 1;
+			let j = 14;
+			let lastSavedInterval = setInterval(function () {
+				if ((i === 15) || (j === 0)) {
+					$('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+							+ ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+							+ j + ' minutes</span></div>').css("fontSize", "15px");
+					if ($('#myAutoModal').hasClass('show')) {
+						var a = document.createElement('a');
+						a.href = "/fdahpStudyDesigner/sessionOut.do";
+						document.body.appendChild(a).click();
+					}
+					clearInterval(lastSavedInterval);
+				} else {
+					if ((i === 1) || (j === 14)) {
+						$('#autoSavedMessage').html(
+								'<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+								"fontSize", "15px");
+					} else if ((i === 14) || (j === 1)) {
+						$('#autoSavedMessage').html(
+								'<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+					} else {
+						$('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+								+ ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+								+ j + ' minutes</span></div>').css("fontSize", "15px");
+					}
+					idleTime = 0;
+					i += 1;
+					j -= 1;
+				}
+			}, 60000);
+		}
+	});
+
+	function autoSaveResourcePage(mode) {
+		$('#saveResourceId').prop('disabled', true);
+		$("#resourceTitle").parent().find(".help-block").empty();
 		$('#resourceForm').validator('destroy').validator();
 		var isValid = true;
 		var anchorList = "${anchorTypeList}";
-		 var length = anchorList.length;
-if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
-	   isValid = chkDaysValid(false);
-}
-if(!$('#resourceTitle')[0].checkValidity()){
-	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
-		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please fill out this field."));
-	}
-	$('#saveResourceId').prop('disabled',false);
-	return false;
-}else if(isValid){
-	   	var actionOn = '${fn:escapeXml(actionOn)}';
-    	$('#resourceForm').validator('destroy');
-    	$("#actionOn").val(actionOn);
-    	$("#buttonText").val('save');
-	    let sourceCode = $('textarea.tox-textarea').val();
-	    if (mode === 'auto') {
-	    	$("#isAutoSaved").val('true');
-	    	if (sourceCode !== undefined) {
-	    		$('button[title="Save"]').trigger('click');
-	    	}
-	    }
-	    else{
-	    	$("#isAutoSaved").val('false');
-	    }
-    	var richText=tinymce.get('richText').getContent({ format: 'raw' });
-    	if (null != richText && richText != '' && typeof richText != 'undefined' && richText != '<p><br data-mce-bogus="1"></p>'){
-    		var escaped = $('#richText').text(richText).html();
-      	tinymce.get('richText').setContent(escaped);
-      }
-	   $('#loader').show();
-	   $('#resourceForm').submit();
-}
-$('#saveResourceId').prop('disabled',false);
-}
-function chkDaysValid(clickDone){
-	var x = $("#xdays").val();
-	var y = $("#ydays").val();
-	var xSign = $('#xSign').val();
-	var ySign = $('#ySign').val();
-	if(xSign === '0'){
-		x = "+"+x;
-	}else if(xSign === '1'){
-		x = "-"+x;
-	}
-	if(ySign === '0'){
-		y = "+"+y;
-	}else if(ySign === '1'){
-		y = "-"+y;
-	}
-	var valid = true;
-	if(y && x){
-		if(parseInt(x) > parseInt(y)){
-			if(clickDone && isFromValid($('#ydays').parents('form')))
-				$('#ydays').focus();
-			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y days should be greater than X days."));
-			valid = false;
-		}else{
-			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").empty();
-			resetValidation($('#ydays').parents('form'));
+		var length = anchorList.length;
+		if ($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
+			isValid = chkDaysValid(false);
 		}
-	}
-	return valid;
-}
-<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
-function toJSDate( dateTime ) {
-    var dateTime = dateTime.split(" ");
-    var date = dateTime[0].split("/");
-    return new Date(date[2], (date[0]-1), date[1]);
-}
-</c:if>
-
-$('#studyLanguage').on('change', function () {
-  let currLang = $('#studyLanguage').val();
-  $('[name="language"]').val(currLang);
-  refreshAndFetchLanguageData($('#studyLanguage').val());
-})
-
-function refreshAndFetchLanguageData(language) {
-	let action = '${actionOn}';
-	let textOrPdfEn = '${resourceBO.textOrPdf}';
-	let isStudyProtocol = '${isstudyProtocol}';
-	$('#loader').show();
-  $.ajax({
-    url: '/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}',
-    type: "GET",
-    data: {
-		language: language,
-		resourceInfoId:$('[name="id"]').val(),
-		actionOn : action
-    },
-    success: function (data) {
-      let htmlData = document.createElement('html');
-      htmlData.innerHTML = data;
-        if (language !== 'en') {
-			try {
-				updateCompletionTicks(htmlData);
-				$('.tit_wrapper').text($('#mlName', htmlData).val());
-				$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr('disabled', true).addClass('cursor-none');
-				$('[name="textOrPdfParam"]').prop('disabled', true);
-				let param = $('[name="resourceVisibilityParam"]');
-				param.attr('disabled', true);
-				if (param.prop('checked') === true) {
-					$('#inlineRadio5, #inlineRadio6').attr('disabled', true);
-					if ($('#inlineRadio5').prop('checked') === true) {
-						$('[data-id="anchorDateId"]').addClass('ml-disabled').prop('disabled', true);
-						$('#xdays, #ydays, #inlineRadio6').attr('disabled', true);
-					} else if ($('#inlineRadio6').prop('checked') === true) {
-						$('#StartDate, #EndDate').attr('disabled', true);
-					}
-				}
-				// setting data
-				if (isStudyProtocol !== 'isstudyProtocol') {
-					$('#resourceTitle').val($('#mlTitle', htmlData).val());
-				}
-				$('#comment').val($('#mlResourceText', htmlData).val());
-				if ($('#inlineRadio1').prop('checked') === true) {
-					$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
-					$('.pdfDiv').hide();
-					$('#richEditor').removeClass('dis-none');
-					$('#inlineRadio1').prop('checked', true);
-				} else if ($('#inlineRadio2').prop('checked') === true) {
-					$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
-					$('.pdfDiv').show();
-					$('#richEditor').addClass('dis-none');
-					$('#inlineRadio2').prop('checked', true);
-					let pdfName = $('#mlPdfName', htmlData).val();
-					$('#pdf_name').text(pdfName);
-					$('#pdfName').val(pdfName);
-					if (pdfName === '') {
-						$('.pdfDiv').hide();
-						$('#uploadPdf').text('Upload PDF');
-					} else {
-						$('.pdfDiv').show();
-						$('#uploadPdf').text('Change PDF');
-					}
-					$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
-					$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
-				}
-				let richText = $('#mlRichText', htmlData).val();
-				if (typeof richText === "undefined") {
-					richText = '';
-				}
-				$('#richText').val(richText);
-				console.log(richText);
-				if ("undefined" != typeof richText && "undefined"!=typeof tinymce.get('richText') && tinymce.get('richText') !== null) {
-					console.log(tinymce.get('richText'));
-					tinymce.get('richText').setContent(richText);
-				}
-				$('#loader').hide();
-			} catch (e) {
-				console.log('Error occurred : '+e);
-				$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr('disabled', true).addClass('cursor-none');
-				$('#loader').hide();
+		if (!$('#resourceTitle')[0].checkValidity()) {
+			if ($("#resourceTitle").parent().addClass('has-error has-danger').find(
+							".help-block").text()
+					== '') {
+				$("#resourceTitle").parent().addClass('has-error has-danger').find(
+						".help-block").empty().append(
+						$("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+								"Please fill out this field."));
 			}
-        } else {
-          updateCompletionTicksForEnglish();
-          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          let param = $('[name="resourceVisibilityParam"]');
-			$('[data-id="xSign"], [data-id="ySign"]').prop('disabled', false).removeClass('cursor-none');
-			$('[name="textOrPdfParam"]').prop('disabled', false);
-
-			if ($('#inlineRadio4').prop('checked')===true) {
-				$('[data-id="anchorDateId"]').addClass('cursor-none').prop('disabled', true);
+			$('#saveResourceId').prop('disabled', false);
+			return false;
+		} else if (isValid) {
+			var actionOn = '${fn:escapeXml(actionOn)}';
+			$('#resourceForm').validator('destroy');
+			$("#actionOn").val(actionOn);
+			$("#buttonText").val('save');
+			let sourceCode = $('textarea.tox-textarea').val();
+			if (mode === 'auto') {
+				$("#isAutoSaved").val('true');
+				if (sourceCode !== undefined) {
+					$('button[title="Save"]').trigger('click');
+				}
 			} else {
-				$('[data-id="anchorDateId"]').removeClass('cursor-none').prop('disabled', false);
+				$("#isAutoSaved").val('false');
 			}
+			var richText = tinymce.get('richText').getContent({format: 'raw'});
+			if (null != richText && richText != '' && typeof richText != 'undefined' && richText
+					!= '<p><br data-mce-bogus="1"></p>') {
+				var escaped = $('#richText').text(richText).html();
+				tinymce.get('richText').setContent(escaped);
+			}
+			$('#loader').show();
+			$('#resourceForm').submit();
+		}
+		$('#saveResourceId').prop('disabled', false);
+	}
 
-          param.attr('disabled', false);
-          if (param.prop('checked')===true) {
-            $('#inlineRadio5, #inlineRadio6').attr('disabled', false);
-            if($('#inlineRadio5').prop('checked')===true) {
-              $('[data-id="anchorDateId"]').removeClass('ml-disabled').attr('disabled', false);
-              $('#xdays, #ydays, #inlineRadio6').attr('disabled', false);
-            }
-            else if($('#inlineRadio6').prop('checked')===true) {
-              $('#StartDate, #EndDate').attr('disabled', false);
-            }
-          }
-			// setting data
-			if (isStudyProtocol !== 'isstudyProtocol') {
-				$('#resourceTitle').val($('#resourceTitle', htmlData).val());
+	function chkDaysValid(clickDone) {
+		var x = $("#xdays").val();
+		var y = $("#ydays").val();
+		var xSign = $('#xSign').val();
+		var ySign = $('#ySign').val();
+		if (xSign === '0') {
+			x = "+" + x;
+		} else if (xSign === '1') {
+			x = "-" + x;
+		}
+		if (ySign === '0') {
+			y = "+" + y;
+		} else if (ySign === '1') {
+			y = "-" + y;
+		}
+		var valid = true;
+		if (y && x) {
+			if (parseInt(x) > parseInt(y)) {
+				if (clickDone && isFromValid($('#ydays').parents('form')))
+					$('#ydays').focus();
+				$('#ydays').parent().addClass('has-error has-danger').find(
+						".help-block").empty().append(
+						$("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+								"Y days should be greater than X days."));
+				valid = false;
+			} else {
+				$('#ydays').parent().removeClass('has-error has-danger').find(
+						".help-block").empty();
+				resetValidation($('#ydays').parents('form'));
 			}
-			$('#comment').val($('#comment', htmlData).val());
-			let richText = $('#richText', htmlData).val();
-			if (richText===undefined) {richText = '';}
-			$('#richText').val(richText);
-			if (tinymce.get('richText')!==null) {
-				tinymce.get('richText').setContent(richText);
+		}
+		return valid;
+	}
+
+	<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
+
+	function toJSDate(dateTime) {
+		var dateTime = dateTime.split(" ");
+		var date = dateTime[0].split("/");
+		return new Date(date[2], (date[0] - 1), date[1]);
+	}
+
+	</c:if>
+
+	$('#studyLanguage').on('change', function () {
+		let currLang = $('#studyLanguage').val();
+		$('[name="language"]').val(currLang);
+		refreshAndFetchLanguageData($('#studyLanguage').val());
+	})
+
+	function refreshAndFetchLanguageData(language) {
+		let action = '${actionOn}';
+		let textOrPdfEn = '${resourceBO.textOrPdf}';
+		let isStudyProtocol = '${isstudyProtocol}';
+		$('#loader').show();
+		$.ajax({
+			url: '/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}',
+			type: "GET",
+			data: {
+				language: language,
+				resourceInfoId: $('[name="id"]').val(),
+				actionOn: action
+			},
+			success: function (data) {
+				let htmlData = document.createElement('html');
+				htmlData.innerHTML = data;
+				if (language !== 'en') {
+					try {
+						updateCompletionTicks(htmlData);
+						$('.tit_wrapper').text($('#mlName', htmlData).val());
+						$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr(
+								'disabled',
+								true).addClass('cursor-none');
+						$('[name="textOrPdfParam"]').prop('disabled', true);
+						let param = $('[name="resourceVisibilityParam"]');
+						param.attr('disabled', true);
+						if (param.prop('checked') === true) {
+							$('#inlineRadio5, #inlineRadio6').attr('disabled', true);
+							if ($('#inlineRadio5').prop('checked') === true) {
+								$('[data-id="anchorDateId"]').addClass('ml-disabled').prop(
+										'disabled', true);
+								$('#xdays, #ydays, #inlineRadio6').attr('disabled', true);
+							} else if ($('#inlineRadio6').prop('checked') === true) {
+								$('#StartDate, #EndDate').attr('disabled', true);
+							}
+						}
+						// setting data
+						if (isStudyProtocol !== 'isstudyProtocol') {
+							$('#resourceTitle').val($('#mlTitle', htmlData).val());
+						}
+						$('#comment').val($('#mlResourceText', htmlData).val());
+						if ($('#inlineRadio1').prop('checked') === true) {
+							$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
+							$('.pdfDiv').hide();
+							$('#richEditor').removeClass('dis-none');
+							$('#inlineRadio1').prop('checked', true);
+						} else if ($('#inlineRadio2').prop('checked') === true) {
+							$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
+							$('.pdfDiv').show();
+							$('#richEditor').addClass('dis-none');
+							$('#inlineRadio2').prop('checked', true);
+							let pdfName = $('#mlPdfName', htmlData).val();
+							$('#pdf_name').text(pdfName);
+							$('#pdfName').val(pdfName);
+							if (pdfName === '') {
+								$('.pdfDiv').hide();
+								$('#uploadPdf').text('Upload PDF');
+							} else {
+								$('.pdfDiv').show();
+								$('#uploadPdf').text('Change PDF');
+							}
+							$('#pdfUrl').val($('#mlPdfUrl', htmlData).val());
+							$('[name="fileName"]').val($('#mlPdfUrl', htmlData).val());
+						}
+						let richText = $('#mlRichText', htmlData).val();
+						if (typeof richText === "undefined") {
+							richText = '';
+						}
+						$('#richText').val(richText);
+						console.log(richText);
+						if ("undefined" != typeof richText && "undefined" != typeof tinymce.get(
+										'richText')
+								&& tinymce.get('richText') !== null) {
+							console.log(tinymce.get('richText'));
+							tinymce.get('richText').setContent(richText);
+						}
+						$('#loader').hide();
+					} catch (e) {
+						console.log('Error occurred : ' + e);
+						$('[data-id="xSign"],[data-id="ySign"],[data-id="anchorDateId"]').attr(
+								'disabled',
+								true).addClass('cursor-none');
+						$('#loader').hide();
+					}
+				} else {
+					updateCompletionTicksForEnglish();
+					$('.tit_wrapper').text($('#customStudyName', htmlData).val());
+					let param = $('[name="resourceVisibilityParam"]');
+					$('[data-id="xSign"], [data-id="ySign"]').prop('disabled', false).removeClass(
+							'cursor-none');
+					$('[name="textOrPdfParam"]').prop('disabled', false);
+
+					if ($('#inlineRadio4').prop('checked') === true) {
+						$('[data-id="anchorDateId"]').addClass('cursor-none').prop('disabled',
+								true);
+					} else {
+						$('[data-id="anchorDateId"]').removeClass('cursor-none').prop('disabled',
+								false);
+					}
+
+					param.attr('disabled', false);
+					if (param.prop('checked') === true) {
+						$('#inlineRadio5, #inlineRadio6').attr('disabled', false);
+						if ($('#inlineRadio5').prop('checked') === true) {
+							$('[data-id="anchorDateId"]').removeClass('ml-disabled').attr(
+									'disabled', false);
+							$('#xdays, #ydays, #inlineRadio6').attr('disabled', false);
+						} else if ($('#inlineRadio6').prop('checked') === true) {
+							$('#StartDate, #EndDate').attr('disabled', false);
+						}
+					}
+					// setting data
+					if (isStudyProtocol !== 'isstudyProtocol') {
+						$('#resourceTitle').val($('#resourceTitle', htmlData).val());
+					}
+					$('#comment').val($('#comment', htmlData).val());
+					let richText = $('#richText', htmlData).val();
+					if (richText === undefined) {
+						richText = '';
+					}
+					$('#richText').val(richText);
+					if (tinymce.get('richText') !== null) {
+						tinymce.get('richText').setContent(richText);
+					}
+					if (textOrPdfEn === 'false') {
+						$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
+						$('.pdfDiv').hide();
+						$('#richEditor').removeClass('dis-none');
+						$('#inlineRadio1').prop('checked', true);
+					} else if (textOrPdfEn === 'true') {
+						$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
+						$('.pdfDiv').show();
+						$('#richEditor').addClass('dis-none');
+						$('#inlineRadio2').prop('checked', true);
+						$('#pdf_name').text($('#pdf_name', htmlData).text());
+						$('#pdfUrl').val($('#pdfUrl', htmlData).val());
+						$('[name="fileName"]').val($('#pdfUrl', htmlData).val());
+					}
+					<c:if test="${actionOn eq 'view'}">
+					$('#resourceForm input,textarea').prop('disabled', true);
+					</c:if>
+					$('#loader').hide();
+				}
 			}
-			if (textOrPdfEn==='false') {
-				$('#pdf_file, #uploadImg, #delete').addClass('dis-none');
-				$('.pdfDiv').hide();
-				$('#richEditor').removeClass('dis-none');
-				$('#inlineRadio1').prop('checked', true);
-			}
-			else if (textOrPdfEn==='true') {
-				$('#pdf_file, #uploadImg, #delete').removeClass('dis-none');
-				$('.pdfDiv').show();
-				$('#richEditor').addClass('dis-none');
-				$('#inlineRadio2').prop('checked', true);
-				$('#pdf_name').text($('#pdf_name', htmlData).text());
-				$('#pdfUrl').val($('#pdfUrl', htmlData).val());
-				$('[name="fileName"]').val($('#pdfUrl', htmlData).val());
-			}
-			<c:if test="${actionOn eq 'view'}">
-		 	$('#resourceForm input,textarea').prop('disabled', true);
-			</c:if>
-			$('#loader').hide();
-        }
-    }
-  });
-}
+		});
+	}
 </script>

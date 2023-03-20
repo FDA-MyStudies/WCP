@@ -15,52 +15,52 @@
         border: none !important;
         margin: 0px !important;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
 
-  	  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-            position:relative !important;
-            right:-14px !important;
-            margin-top:6% !important;
-            }
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-            .flr_modal{
-            float:right !important;
-            }
+      .flr_modal {
+        float: right !important;
+      }
 
-            .blue_text{
-            color:#007CBA !important;
-            font-size:15px;
-            font-weight:500;
-            }
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
+      }
 
-            .timerPos{
-            position:relative;
-            top:-2px;
-            right:2px !important;
-            }
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
 
-            #timeOutMessage{
-            width:257px;
-            }
+      #timeOutMessage {
+        width: 257px;
+      }
     </style>
 </head>
 
@@ -113,7 +113,8 @@
     <div class="right-content-body">
         <div class="table-responsive">
             <table id="participantProperties_list"
-                   class="display bor-none dragtbl dataTable no-footer" style="width:100% !important">
+                   class="display bor-none dragtbl dataTable no-footer"
+                   style="width:100% !important">
                 <thead>
                 <tr>
                     <th>SHORT TITLE</th>
@@ -150,16 +151,19 @@
         </div>
     </div>
     <!--  End body tab section -->
-  <div class="modal fade" id="myModal" role="dialog">
-          <div class="modal-dialog modal-sm flr_modal">
-              <!-- Modal content-->
-              <div class="modal-content">
-                      <div class="modal-body">
-                      <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 
@@ -187,7 +191,7 @@
 </form:form>
 
 <script>
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -265,29 +269,34 @@ var idleTime = 0;
       idleTime = 0;
     });
 
-             function timeOutFunction() {
-             $('#myModal').modal('show');
-              let i = 14;
-              let timeOutInterval = setInterval(function () {
-              if (i === 0) {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              if ($('#myModal').hasClass('show')) {
-              var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/sessionOut.do";
-              document.body.appendChild(a).click();
-                }
-                clearInterval(timeOutInterval);
-                 } else {
-                 if (i === 1) {
-                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                  } else {
-                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    }
-                    idleTime = 0;
-                    i-=1;
-                     }
-                   }, 60000);
-                 }
+    function timeOutFunction() {
+      $('#myModal').modal('show');
+      let i = 14;
+      let timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
   });
 
   function addParticipantProperties() {

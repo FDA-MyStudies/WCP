@@ -6,55 +6,57 @@
     <meta charset="UTF-8">
 
     <style>
-    #autoSavedMessage{
-    width:257px;
-    }
-    .help-block ul {
-            width: 160px !important;
-            }
-            .form-control{
-            margin-bottom:5px !important;
-            }
-
-    #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-    position:relative !important;
-    right:-14px !important;
-    margin-top:6% !important;
-    }
-
-    #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-      position:relative !important;
-      right:-14px !important;
-      margin-top:6% !important;
+      #autoSavedMessage {
+        width: 257px;
       }
 
-    .flr_modal{
-    float:right !important;
-    }
+      .help-block ul {
+        width: 160px !important;
+      }
 
-    .grey_txt{
-    color:grey;
-    font-size:15px;
-    font-weight:500;
-    }
+      .form-control {
+        margin-bottom: 5px !important;
+      }
 
-    .blue_text{
-    color:#007CBA !important;
-    font-size:15px;
-    font-weight:500;
-    }
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-    .timerPos{
-    position:relative;
-    top:-2px;
-    right:2px !important;
-    }
+      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-    .bold_txt{
-    font-weight:900 !important;
-    color:#007cba !important;
-    font-size:15px;
-     }
+      .flr_modal {
+        float: right !important;
+      }
+
+      .grey_txt {
+        color: grey;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
+
+      .bold_txt {
+        font-weight: 900 !important;
+        color: #007cba !important;
+        font-size: 15px;
+      }
     </style>
 </head>
 <div class="changeContent">
@@ -110,9 +112,9 @@
             </div>
         </div>
         <div class="mt-lg blue-md-f text-uppercase">Configurable parameters</div>
-          <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span
+        <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span
                 class="requiredStar"> *</span></div>
-           <div class="form-group">
+        <div class="form-group">
             <textarea class="form-control" rows="5" id="comment" name="instruction" maxlength="150"
                       required>${activeTaskBo.instruction}</textarea>
             <div class="help-block with-errors red-txt"></div>
@@ -120,9 +122,9 @@
 
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
-        
+
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-                  <div class="row">  
+                    <div class="row">
                     <div class="col-md-3 col-lg-3 p-none mr-lg ">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
                                 class="requiredStar"> *</span><span
@@ -211,7 +213,7 @@
 
                 </c:if>
 
-                
+
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 5}">
                     <div class="col-md-3 col-lg-3 p-none mr-lg ml-lg">
                         <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
@@ -289,7 +291,7 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                  </div>
+                    </div>
                 </c:if>
                 <div class="clearfix"></div>
                 <c:if test="${taskMasterAttributeBo.orderByTaskType eq 7}">
@@ -901,7 +903,7 @@
                     </div>
                     <div class="clearfix"></div>
                 </c:if>
-               
+
             </c:forEach>
         </c:if>
         <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) gt 0}">
@@ -909,7 +911,7 @@
             <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var="taskMasterAttributeBo">
                 <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var="taskValueAttributeBo">
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-                      <div class="row">  
+                        <div class="row">
                         <div class="col-md-3 col-lg-3 p-none mr-lg">
                             <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span
                                     class="requiredStar"> *</span><span
@@ -1100,7 +1102,7 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                      </div>
+                        </div>
                     </c:if>
                     <div class="clearfix"></div>
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 8 && count == 0}">
@@ -1257,7 +1259,9 @@
                                                     class="requiredStar"> *</span></div>
                                         <div class="add_notify_option">
                                             <div class="form-group">
-                                                <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat4"
+                                                <input type="text"
+                                                       class="form-control lang-specific requireClass"
+                                                       id="displayUnitStat4"
                                                        name="taskAttributeValueBos[7].displayUnitStat"
                                                        maxlength="15"
                                                        value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
@@ -1461,7 +1465,9 @@
                                     </div>
                                     <div class="add_notify_option">
                                         <div class="form-group">
-                                            <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat5"
+                                            <input type="text"
+                                                   class="form-control lang-specific requireClass"
+                                                   id="displayUnitStat5"
                                                    name="taskAttributeValueBos[8].displayUnitStat"
                                                    maxlength="15"
                                                    value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
@@ -1663,7 +1669,9 @@
                                     </div>
                                     <div class="add_notify_option">
                                         <div class="form-group">
-                                            <input type="text" class="form-control lang-specific requireClass" id="displayUnitStat6"
+                                            <input type="text"
+                                                   class="form-control lang-specific requireClass"
+                                                   id="displayUnitStat6"
                                                    name="taskAttributeValueBos[9].displayUnitStat"
                                                    maxlength="15"
                                                    value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
@@ -1741,28 +1749,33 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    <div id="autoSavedMessage" class="text-right">
+                        <div class="blue_text">Last saved now</div>
+                        <div class="grey_txt"><span class="timerPos"><img
+                                src="../images/timer2.png"/></span>Your session expires in <span
+                                class="bold_txt">15 minutes</span></div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
+    </div>
 
-                <div class="modal fade" id="timeOutModal" role="dialog">
-                                    <div class="modal-dialog modal-sm flr_modal">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                                <div class="modal-body">
-                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                                </div>
-                                            </div>
-                                   </div>
-                            </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(function () {
     var taskId = $('#taskContentId').val();
     if (taskId) {
@@ -1779,75 +1792,86 @@ var idleTime = 0;
       idleTime += 1;
       if (idleTime > 3) {
         <c:if test="${actionPage ne 'view'}">
-                          autoSaveSpatialStudyActivityPage('auto');
-                           </c:if>
-                          <c:if test="${actionPage eq 'view'}">
+        autoSaveSpatialStudyActivityPage('auto');
+        </c:if>
+        <c:if test="${actionPage eq 'view'}">
         clearInterval(timeOutInterval);
         timeOutFunction();
         </c:if>
-                  }
-              }, 226020); // 5 minutes
-
-              $(this).mousemove(function (e) {
-                  idleTime = 0;
-              });
-              $(this).keypress(function (e) {
-                  idleTime = 0;
-              });
-
-       function timeOutFunction() {
-        $('#timeOutModal').modal('show');
-         let i = 14;
-         let timeOutInterval = setInterval(function () {
-          if (i === 0) {
-           $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-            if ($('#timeOutModal').hasClass('show')) {
-              var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/sessionOut.do";
-              document.body.appendChild(a).click();
-           }
-            clearInterval(timeOutInterval);
-              } else {
-                if (i === 1) {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                } else {
-                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-               }
-                idleTime = 0;
-                i-=1;
-                 }
-                 }, 60000);
-                 }
-      // pop message after 15 minutes
-      if ($('#isAutoSaved').val() === 'true') {
-          $('#myModal').modal('show');
-          let i = 1;
-          let  j = 14;
-          let lastSavedInterval = setInterval(function () {
-              if ((i === 15) || (j === 0)){
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  if ($('#myModal').hasClass('show')) {
-                      var a = document.createElement('a');
-                      a.href = "/fdahpStudyDesigner/sessionOut.do";
-                      document.body.appendChild(a).click();
-                  }
-                  clearInterval(lastSavedInterval);
-              } else {
-                  if ((i === 1) || (j === 14)) {
-                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                  }
-                  else if ((i === 14) || (j === 1)) {
-                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                  }
-                  else {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  }
-                  idleTime = 0;
-                  i+=1;
-                  j-=1;
-              }
-          }, 60000);
       }
+    }, 226020); // 5 minutes
+
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+
+    function timeOutFunction() {
+      $('#timeOutModal').modal('show');
+      let i = 14;
+      let timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#timeOutModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    // pop message after 15 minutes
+    if ($('#isAutoSaved').val() === 'true') {
+      $('#myModal').modal('show');
+      let i = 1;
+      let j = 14;
+      let lastSavedInterval = setInterval(function () {
+        if ((i === 15) || (j === 0)) {
+          $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+              + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+              + j + ' minutes</span></div>').css("fontSize", "15px");
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(lastSavedInterval);
+        } else {
+          if ((i === 1) || (j === 14)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+                "fontSize", "15px");
+          } else if ((i === 14) || (j === 1)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+          } else {
+            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                + j + ' minutes</span></div>').css("fontSize", "15px");
+          }
+          idleTime = 0;
+          i += 1;
+          j -= 1;
+        }
+      }, 60000);
+    }
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
         !== 'en') {
@@ -2246,9 +2270,9 @@ var idleTime = 0;
                   statShortVal3 = $('#static3').val();
                 }
               }
-              var jsonArray = new Array();
+              var jsonArray = [];
               if (scoreStat) {
-                var statObj = new Object();
+                var statObj = {};
                 statObj.id = statShortId1;
                 statObj.dbVal = dbShortVal1;
                 statObj.idVal = statShortVal1;
@@ -2257,7 +2281,7 @@ var idleTime = 0;
                 jsonArray.push(statObj);
               }
               if (gameStat) {
-                var statObj = new Object();
+                var statObj = {};
                 statObj.id = statShortId2;
                 statObj.dbVal = dbShortVal2;
                 statObj.idVal = statShortVal2;
@@ -2266,7 +2290,7 @@ var idleTime = 0;
                 jsonArray.push(statObj);
               }
               if (failureStat) {
-                var statObj = new Object();
+                var statObj = {};
                 statObj.id = statShortId3;
                 statObj.dbVal = dbShortVal3;
                 statObj.idVal = statShortVal3;
@@ -2326,159 +2350,160 @@ var idleTime = 0;
     });
 
     $('#saveId').click(function (e) {
-     $('#isAutoSavedParent').val('false');
-     autoSaveSpatialStudyActivityPage('manual');
+      $('#isAutoSavedParent').val('false');
+      autoSaveSpatialStudyActivityPage('manual');
     });
 
-     function autoSaveSpatialStudyActivityPage(mode){
-         $("body").addClass('loading');
-         $("#saveId").attr("disabled", true);
-         var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-         if (shortTitleCount >= 1) {
-           showErrMsg("Please fill in all mandatory fields.");
-           $('.contentClass a').tab('show');
-           $("body").removeClass('loading');
-           $("#saveId").attr("disabled", false);
-           return false;
-         } else if (!$('#shortTitleId')[0].checkValidity()) {
-           $("#shortTitleId").parent().addClass('has-error has-danger').find(
-               ".help-block").empty().append(
-               $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                   "This is a required field."));
-           showErrMsg("Please fill in all mandatory fields.");
-           $('.contentClass a').tab('show');
-           $("body").removeClass('loading');
-           $("#saveId").attr("disabled", false);
-           return false;
-         } else {
-           validateShortTitleId('', function (st) {
-             if (st) {
-               var scoreStat = $('#Score_spatial_stat_id').is(":checked");
-               var gameStat = $('#Number_of_Games_spatial_stat_id').is(":checked");
-               var failureStat = $('#Number_of_Failures_spatial_stat_id').is(":checked");
-               var dbStatExist = true;
-               var statShortVal1 = '', statShortVal2 = '', statShortVal3 = '';
-               var statShortId1 = '', statShortId2 = '', statShortId3 = '';
-               var dbShortVal1 = '', dbShortVal2 = '', dbShortVal3 = '';
-               var dbShortId1 = '', dbShortId2 = '', dbShortId3 = '';
-               var statisticsData = $('.shortTitleStatCls').attr('id');
-               if (statisticsData) {
-                 var count = statisticsData.indexOf('identifier');
-                 if (count == -1) {
-                   dbStatExist = false;
-                 }
-               }
-               if (dbStatExist) {
-                 if (scoreStat) {
-                   statShortId1 = "identifierId1";
-                   dbShortVal1 = $('#dbidentifierId1').val();
-                   dbShortId1 = $('#dbidentifierId1').attr("title");
-                   statShortVal1 = $('#identifierId1').val();
-                 }
-                 if (gameStat) {
-                   statShortId2 = "identifierId2";
-                   dbShortVal2 = $('#dbidentifierId2').val();
-                   dbShortId2 = $('#dbidentifierId2').attr("title");
-                   statShortVal2 = $('#identifierId2').val();
-                 }
-                 if (failureStat) {
-                   statShortId3 = "identifierId3";
-                   dbShortVal3 = $('#dbidentifierId3').val();
-                   dbShortId3 = $('#dbidentifierId3').attr("title");
-                   //alert("dbShortId3"+dbShortId3);
-                   statShortVal3 = $('#identifierId3').val();
-                 }
-               } else {
-                 if (scoreStat) {
-                   statShortId1 = "static1";
-                   statShortVal1 = $('#static1').val();
-                 }
-                 if (gameStat) {
-                   statShortId2 = "static2";
-                   statShortVal2 = $('#static2').val();
-                 }
-                 if (failureStat) {
-                   //alert("1");
-                   statShortId3 = "static3";
-                   statShortVal3 = $('#static3').val();
-                 }
-               }
-               var jsonArray = new Array();
-               if (scoreStat) {
-                 var statObj = new Object();
-                 statObj.id = statShortId1;
-                 statObj.dbVal = dbShortVal1;
-                 statObj.idVal = statShortVal1;
-                 if (dbShortId1)
-                   statObj.idname = dbShortId1;
-                 jsonArray.push(statObj);
-               }
-               if (gameStat) {
-                 var statObj = new Object();
-                 statObj.id = statShortId2;
-                 statObj.dbVal = dbShortVal2;
-                 statObj.idVal = statShortVal2;
-                 if (dbShortId2)
-                   statObj.idname = dbShortId2;
-                 jsonArray.push(statObj);
-               }
-               if (failureStat) {
-                 var statObj = new Object();
-                 statObj.id = statShortId3;
-                 statObj.dbVal = dbShortVal3;
-                 statObj.idVal = statShortVal3;
-                 if (dbShortId3)
-                   statObj.idname = dbShortId3;
-                 jsonArray.push(statObj);
-               }
-               if (jsonArray.length > 0) {
-                 saveValidateStatisticsIds(jsonArray, function (val) {
-                   if (val) {
-                     $("#saveId").attr("disabled", false);
-                     $("body").removeClass('loading');
-                     doneActiveTask(this, 'save', function (val) {
-                       if (val) {
-                         $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
-                         $("#buttonText").val('save');
-                         if (mode === 'auto') {
-                             $("#isAutoSaved").val('true');
-                         } else {
-                             $('#isAutoSaved').val('false');
-                         }
-                         document.activeContentFormId.submit();
-                       }
-                     })
-                   } else {
-                     // alert("Not");
-                     $("#saveId").attr("disabled", false);
-                     $("body").removeClass('loading');
-                     showErrMsg("Please fill in all mandatory fields.");
-                     $('.contentClass a').tab('show');
-                   }
-                 });
-               } else {
-                 $("#saveId").attr("disabled", false);
-                 $("body").removeClass('loading');
-                 doneActiveTask(this, 'save', function (val) {
-                   if (val) {
-                     $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
-                     $("#buttonText").val('save');
-                     if (mode === 'auto') {
-                         $("#isAutoSaved").val('true');
-                     } else {
-                         $("#isAutoSaved").val('false');
-                     }
-                     document.activeContentFormId.submit();
-                   }
-                 })
-               }
-             } else {
-               $("body").removeClass('loading');
-               $("#saveId").attr("disabled", false);
-             }
-           });
-         }
-     }
+    function autoSaveSpatialStudyActivityPage(mode) {
+      $("body").addClass('loading');
+      $("#saveId").attr("disabled", true);
+      var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+      if (shortTitleCount >= 1) {
+        showErrMsg("Please fill in all mandatory fields.");
+        $('.contentClass a').tab('show');
+        $("body").removeClass('loading');
+        $("#saveId").attr("disabled", false);
+        return false;
+      } else if (!$('#shortTitleId')[0].checkValidity()) {
+        $("#shortTitleId").parent().addClass('has-error has-danger').find(
+            ".help-block").empty().append(
+            $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                "This is a required field."));
+        showErrMsg("Please fill in all mandatory fields.");
+        $('.contentClass a').tab('show');
+        $("body").removeClass('loading');
+        $("#saveId").attr("disabled", false);
+        return false;
+      } else {
+        validateShortTitleId('', function (st) {
+          if (st) {
+            var scoreStat = $('#Score_spatial_stat_id').is(":checked");
+            var gameStat = $('#Number_of_Games_spatial_stat_id').is(":checked");
+            var failureStat = $('#Number_of_Failures_spatial_stat_id').is(":checked");
+            var dbStatExist = true;
+            var statShortVal1 = '', statShortVal2 = '', statShortVal3 = '';
+            var statShortId1 = '', statShortId2 = '', statShortId3 = '';
+            var dbShortVal1 = '', dbShortVal2 = '', dbShortVal3 = '';
+            var dbShortId1 = '', dbShortId2 = '', dbShortId3 = '';
+            var statisticsData = $('.shortTitleStatCls').attr('id');
+            if (statisticsData) {
+              var count = statisticsData.indexOf('identifier');
+              if (count == -1) {
+                dbStatExist = false;
+              }
+            }
+            if (dbStatExist) {
+              if (scoreStat) {
+                statShortId1 = "identifierId1";
+                dbShortVal1 = $('#dbidentifierId1').val();
+                dbShortId1 = $('#dbidentifierId1').attr("title");
+                statShortVal1 = $('#identifierId1').val();
+              }
+              if (gameStat) {
+                statShortId2 = "identifierId2";
+                dbShortVal2 = $('#dbidentifierId2').val();
+                dbShortId2 = $('#dbidentifierId2').attr("title");
+                statShortVal2 = $('#identifierId2').val();
+              }
+              if (failureStat) {
+                statShortId3 = "identifierId3";
+                dbShortVal3 = $('#dbidentifierId3').val();
+                dbShortId3 = $('#dbidentifierId3').attr("title");
+                //alert("dbShortId3"+dbShortId3);
+                statShortVal3 = $('#identifierId3').val();
+              }
+            } else {
+              if (scoreStat) {
+                statShortId1 = "static1";
+                statShortVal1 = $('#static1').val();
+              }
+              if (gameStat) {
+                statShortId2 = "static2";
+                statShortVal2 = $('#static2').val();
+              }
+              if (failureStat) {
+                //alert("1");
+                statShortId3 = "static3";
+                statShortVal3 = $('#static3').val();
+              }
+            }
+            var jsonArray = [];
+            if (scoreStat) {
+              var statObj = {};
+              statObj.id = statShortId1;
+              statObj.dbVal = dbShortVal1;
+              statObj.idVal = statShortVal1;
+              if (dbShortId1)
+                statObj.idname = dbShortId1;
+              jsonArray.push(statObj);
+            }
+            if (gameStat) {
+              var statObj = {};
+              statObj.id = statShortId2;
+              statObj.dbVal = dbShortVal2;
+              statObj.idVal = statShortVal2;
+              if (dbShortId2)
+                statObj.idname = dbShortId2;
+              jsonArray.push(statObj);
+            }
+            if (failureStat) {
+              var statObj = {};
+              statObj.id = statShortId3;
+              statObj.dbVal = dbShortVal3;
+              statObj.idVal = statShortVal3;
+              if (dbShortId3)
+                statObj.idname = dbShortId3;
+              jsonArray.push(statObj);
+            }
+            if (jsonArray.length > 0) {
+              saveValidateStatisticsIds(jsonArray, function (val) {
+                if (val) {
+                  $("#saveId").attr("disabled", false);
+                  $("body").removeClass('loading');
+                  doneActiveTask(this, 'save', function (val) {
+                    if (val) {
+                      $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+                      $("#buttonText").val('save');
+                      if (mode === 'auto') {
+                        $("#isAutoSaved").val('true');
+                      } else {
+                        $('#isAutoSaved').val('false');
+                      }
+                      document.activeContentFormId.submit();
+                    }
+                  })
+                } else {
+                  // alert("Not");
+                  $("#saveId").attr("disabled", false);
+                  $("body").removeClass('loading');
+                  showErrMsg("Please fill in all mandatory fields.");
+                  $('.contentClass a').tab('show');
+                }
+              });
+            } else {
+              $("#saveId").attr("disabled", false);
+              $("body").removeClass('loading');
+              doneActiveTask(this, 'save', function (val) {
+                if (val) {
+                  $('.shortTitleCls,.shortTitleStatCls').prop('disabled', false);
+                  $("#buttonText").val('save');
+                  if (mode === 'auto') {
+                    $("#isAutoSaved").val('true');
+                  } else {
+                    $("#isAutoSaved").val('false');
+                  }
+                  document.activeContentFormId.submit();
+                }
+              })
+            }
+          } else {
+            $("body").removeClass('loading');
+            $("#saveId").attr("disabled", false);
+          }
+        });
+      }
+    }
+
     $('.selectpicker').selectpicker('refresh');
     $('[data-toggle="tooltip"]').tooltip();
     $('input').on('drop', function () {
@@ -2488,9 +2513,9 @@ var idleTime = 0;
       var evt = (e) ? e : window.event;
       var charCode = (evt.which) ? evt.which
           : evt.keyCode;
-      var flag=false;
-      if (charCode == 8 || charCode == 127){
-        flag=true;
+      var flag = false;
+      if (charCode == 8 || charCode == 127) {
+        flag = true;
       }
       var userinput = $(this).val();
       var pattern = /[A-Za-z0-9-zñáéíóúü¿¡A-ZÑÁÉÍÓÚÜ_~\-!@*\[\]\;:'"\,.?<>\$%\&\(\)\s]+$/;
@@ -2903,11 +2928,11 @@ var idleTime = 0;
       }
       callback(false);
     } else {
-      var jsonArray = new Array();
+      var jsonArray = [];
       for (var j = 0; j < arrayLength; j++) {
         var statVal = jsonDatas[j].idVal;
         if (statVal) {
-          var statObj = new Object();
+          var statObj = {};
           statObj.id = jsonDatas[j].id;
           statObj.dbVal = jsonDatas[j].dbVal;
           statObj.idVal = jsonDatas[j].idVal;

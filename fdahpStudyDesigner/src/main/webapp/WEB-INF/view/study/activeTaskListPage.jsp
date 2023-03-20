@@ -6,9 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <style>
-    .help-block ul {
-            width: 160px !important;
-            }
+      .help-block ul {
+        width: 160px !important;
+      }
+
       .cursonMove {
         cursor: move !important;
       }
@@ -20,26 +21,26 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
     </style>
 </head>
 
@@ -143,14 +144,17 @@
     </div>
     <!--  End body tab section -->
     <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog modal-sm flr_modal">
-                <!-- Modal content-->
-                <div class="modal-content">
-                        <div class="modal-body">
-                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                        </div>
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 <!-- End right Content here -->
@@ -223,28 +227,33 @@
       idleTime = 0;
     });
 
-             function timeOutFunction() {
-             $('#myModal').modal('show');
-              let i = 14;
-              let timeOutInterval = setInterval(function () {
-              if (i === 0) {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              if ($('#myModal').hasClass('show')) {
-              var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/sessionOut.do";
-              document.body.appendChild(a).click();
-                }
-                clearInterval(timeOutInterval);
-                 } else {
-                 if (i === 1) {
-                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                  } else {
-                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    }
-                    i-=1;
-                     }
-                   }, 60000);
-                 }
+    function timeOutFunction() {
+      $('#myModal').modal('show');
+      let i = 14;
+      let timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          i -= 1;
+        }
+      }, 60000);
+    }
   });
 
   function addActiveTaskPage() {
@@ -343,10 +352,11 @@
   }
 
   function markAsCompleted() {
-        let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
-          $('#completeInfoForm').append(input);
-          $("#completeInfoForm").submit();
+    let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
+    $('#completeInfoForm').append(input);
+    $("#completeInfoForm").submit();
   }
+
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
     $('#currentLanguage').val(currLang);
@@ -366,11 +376,11 @@
         if (language !== 'en') {
           updateCompletionTicks(htmlData);
           $('.tit_wrapper').text($('#mlName', htmlData).val());
-          let mark=true;
+          let mark = true;
           $('#activeTaskLangItems option', htmlData).each(function (index, value) {
             let id = '#row' + value.getAttribute('id');
             $(id).find('td.title').text(value.getAttribute('value'));
-            if (value.getAttribute('status')==="true") {
+            if (value.getAttribute('status') === "true") {
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc')) {
                 edit.addClass('edit-inc');
@@ -378,9 +388,8 @@
               if (edit.hasClass('edit-inc-draft')) {
                 edit.removeClass('edit-inc-draft');
               }
-            }
-            else {
-              mark=false;
+            } else {
+              mark = false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -392,7 +401,8 @@
           });
           if (!mark) {
             $('#markAsComp').addClass('cursor-none').prop('disabled', true);
-            $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+            $('#spancomId').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
           } else {
             $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
             $('#spancomId').removeAttr('data-original-title');
@@ -403,11 +413,11 @@
         } else {
           updateCompletionTicksForEnglish();
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-          let mark=true;
+          let mark = true;
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = '#'+value.getAttribute('id');
+            let id = '#' + value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-            if (value.getAttribute('status')==="true") {
+            if (value.getAttribute('status') === "true") {
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc')) {
                 edit.addClass('edit-inc');
@@ -415,9 +425,8 @@
               if (edit.hasClass('edit-inc-draft')) {
                 edit.removeClass('edit-inc-draft');
               }
-            }
-            else {
-              mark=false;
+            } else {
+              mark = false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -429,7 +438,8 @@
           });
           if (!mark) {
             $('#markAsComp').addClass('cursor-none').prop('disabled', true);
-            $('#spancomId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+            $('#spancomId').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
           } else {
             $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
             $('#spancomId').removeAttr('data-original-title');
@@ -437,7 +447,7 @@
           $('#addBtn').attr('disabled', false);
           $('.sorting').removeAttr('style');
           $('.delete').removeClass('cursor-none');
-          
+
           <c:if test="${not empty permission}">
           $('#delTask').addClass('cursor-none');
           </c:if>

@@ -8,11 +8,11 @@
     <meta charset="UTF-8">
 </head>
 <style>
-  .langSpecific{
+  .langSpecific {
     position: relative;
   }
 
-  .studyLanguage > button::before{
+  .studyLanguage > button::before {
     content: '';
     display: block;
     background-image: url("../images/global_icon.png");
@@ -24,13 +24,14 @@
     background-repeat: no-repeat;
   }
 
-  .studyLanguage > button{
+  .studyLanguage > button {
     padding-left: 30px;
   }
-  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-  position:relative !important;
-  right:-14px !important;
-  margin-top:6% !important;
+
+  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: -14px !important;
+    margin-top: 6% !important;
   }
 </style>
 
@@ -69,7 +70,9 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn cancelBut" id="cancel">Cancel</button>
+                    <button type="button" class="btn btn-default gray-btn cancelBut" id="cancel">
+                        Cancel
+                    </button>
                 </div>
                 <c:if test="${empty permission}">
                     <div class="dis-line form-group mb-none mr-sm">
@@ -95,7 +98,8 @@
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="mlFullName" value="${studyLanguageBO.fullName}"/>
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
-        <textarea style="display: none;" id="mlDescription">${studyLanguageBO.description}</textarea>
+        <textarea style="display: none;"
+                  id="mlDescription">${studyLanguageBO.description}</textarea>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
@@ -240,33 +244,37 @@
                             class="requiredStar"> *</span>
                     </div>
                     <div class="display-flex">
-                    <div class="form-group col-md-4 p-none mr-md mb-none">
-                        <input type="text" class="form-control" name="tentativeDuration" style="height:auto;"
-                               value="${studyBo.tentativeDuration}" maxlength="3" required
-                               pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
-                               data-pattern-error="Please enter valid number."/>
-                        <div class="help-block with-errors red-txt"></div>
-                    </div>
-                    <div class="form-group col-md-4 p-none mb-none">
-                        <select class="selectpicker elaborateClass" required
-                                title="Select" name="tentativeDurationWeekmonth"
-                                id="tentativeDurationWeekmonth">
-                            <option value="Days"
-                                ${studyBo.tentativeDurationWeekmonth eq 'Days'?'selected':''}>Days
-                            </option>
-                            <option value="Weeks"
-                                ${studyBo.tentativeDurationWeekmonth eq 'Weeks'?'selected':''}>Weeks
-                            </option>
-                            <option value="Months"
-                                ${studyBo.tentativeDurationWeekmonth eq 'Months'?'selected':''}>
-                                Months
-                            </option>
-                            <option value="Years"
-                                ${studyBo.tentativeDurationWeekmonth eq 'Years'?'selected':''}>Years
-                            </option>
-                        </select>
-                        <div class="help-block with-errors red-txt"></div>
-                    </div>
+                        <div class="form-group col-md-4 p-none mr-md mb-none">
+                            <input type="text" class="form-control" name="tentativeDuration"
+                                   style="height:auto;"
+                                   value="${studyBo.tentativeDuration}" maxlength="3" required
+                                   pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
+                                   data-pattern-error="Please enter valid number."/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="form-group col-md-4 p-none mb-none">
+                            <select class="selectpicker elaborateClass" required
+                                    title="Select" name="tentativeDurationWeekmonth"
+                                    id="tentativeDurationWeekmonth">
+                                <option value="Days"
+                                    ${studyBo.tentativeDurationWeekmonth eq 'Days'?'selected':''}>
+                                    Days
+                                </option>
+                                <option value="Weeks"
+                                    ${studyBo.tentativeDurationWeekmonth eq 'Weeks'?'selected':''}>
+                                    Weeks
+                                </option>
+                                <option value="Months"
+                                    ${studyBo.tentativeDurationWeekmonth eq 'Months'?'selected':''}>
+                                    Months
+                                </option>
+                                <option value="Years"
+                                    ${studyBo.tentativeDurationWeekmonth eq 'Years'?'selected':''}>
+                                    Years
+                                </option>
+                            </select>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -401,24 +409,29 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    <div id="autoSavedMessage" class="text-right">
+                        <div class="blue_text">Last saved now</div>
+                        <div class="grey_txt"><span class="timerPos"><img
+                                src="../images/timer2.png"/></span>Your session expires in <span
+                                class="bold_txt">15 minutes</span></div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="timeOutModal" role="dialog">
-                            <div class="modal-dialog modal-sm flr_modal">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                        <div class="modal-body">
-                                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                        </div>
-                                    </div>
-                                </div>
+    </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 
@@ -427,9 +440,9 @@
   $(document).ready(function () {
     $('#loader').hide();
     // unwanted code added here so its caused loader issue
-/* $('.commonCls').on('click', function () {
-        $('#loader').show();
-    }) */
+    /* $('.commonCls').on('click', function () {
+            $('#loader').show();
+        }) */
     $('#removeUrl').css("visibility", "hidden");
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();
@@ -475,7 +488,7 @@
         skin: "custom-grey",
         height: 300,
         min_height: 100,
-        branding : false,
+        branding: false,
         plugins: [
           "advlist autolink code link image lists charmap hr anchor pagebreak save directionality paste"
         ],
@@ -491,34 +504,34 @@
       });
     }
 
-    $('#cancel').on('click',function(){
-        <c:if test="${permission ne 'view' }">
-        bootbox.confirm({
-            closeButton: false,
-            message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
-            buttons: {
-                'cancel': {
-                    label: 'Cancel',
-                },
-                'confirm': {
-                    label: 'OK',
-                },
-            },
-            callback: function(result) {
-                if (result) {
-                    $('#loader').show();
-                    let a = document.createElement('a');
-                    a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-                    document.body.appendChild(a).click();
-                }
-            }
-        });
-        </c:if>
-        <c:if test="${permission eq 'view' }">
-        let a = document.createElement('a');
-        a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-        document.body.appendChild(a).click();
-        </c:if>
+    $('#cancel').on('click', function () {
+      <c:if test="${permission ne 'view' }">
+      bootbox.confirm({
+        closeButton: false,
+        message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
+        buttons: {
+          'cancel': {
+            label: 'Cancel',
+          },
+          'confirm': {
+            label: 'OK',
+          },
+        },
+        callback: function (result) {
+          if (result) {
+            $('#loader').show();
+            let a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+            document.body.appendChild(a).click();
+          }
+        }
+      });
+      </c:if>
+      <c:if test="${permission eq 'view' }">
+      let a = document.createElement('a');
+      a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+      document.body.appendChild(a).click();
+      </c:if>
     });
     // File Upload
     $("#uploadImgbtn").click(function () {
@@ -666,7 +679,7 @@
       }
     });
     $('#saveId').click(function (e) {
-        saveBasicInfoPage('manual');
+      saveBasicInfoPage('manual');
     });
     $(".studyIdCls").blur(function () {
       validateStudyId('', function (val) {
@@ -686,187 +699,194 @@
       if (idleTime > 3) { // 5 minutes
         if ($('#customStudyId').val() !== '' && $('#customStudyName').val() !== '') {
           <c:if test="${permission ne 'view'}">
-                       saveBasicInfoPage('auto');
-                       </c:if>
-                        <c:if test="${permission eq 'view'}">
+          saveBasicInfoPage('auto');
+          </c:if>
+          <c:if test="${permission eq 'view'}">
           clearInterval(timeOutInterval);
           timeOutFunction();
           </c:if>
-                }
-            }
-        }, 226000); // 5 minutes
-
-        $(this).mousemove(function (e) {
-            idleTime = 0;
-        });
-        $(this).keypress(function (e) {
-            idleTime = 0;
-        });
-        tinymce.get('editor').on('keydown', function () {
-            idleTime = 0;
-        });
-        tinymce.get('editor').on('mousemove', function () {
-            idleTime = 0;
-        });
-                      function timeOutFunction() {
-                                $('#timeOutModal').modal('show');
-                                 let i = 14;
-                                 let timeOutInterval = setInterval(function () {
-                                 if (i === 0) {
-                                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                                 if ($('#timeOutModal').hasClass('show')) {
-                                 var a = document.createElement('a');
-                                 a.href = "/fdahpStudyDesigner/sessionOut.do";
-                                 document.body.appendChild(a).click();
-                                   }
-                                   clearInterval(timeOutInterval);
-                                    } else {
-                                    if (i === 1) {
-                                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                                     } else {
-                                     $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                                       }
-                                       idleTime = 0;
-                                       i-=1;
-                                        }
-                                      }, 60000);
-                                    }
-
-        // pop message after 15 minutes
-        if ($('#isAutoSaved').val() === 'true') {
-            $('#myModal').modal('show');
-            let i = 1;
-            let j = 14;
-            let lastSavedInterval = setInterval(function () {
-                if ((i === 15) || (j === 0)) {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
-                    if ($('#myModal').hasClass('show')) {
-                    var a = document.createElement('a');
-                    a.href = "/fdahpStudyDesigner/sessionOut.do";
-                    document.body.appendChild(a).click();
-                    }
-                    clearInterval(lastSavedInterval);
-                } else {
-                    if ((i === 1) || (j === 14)) {
-                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
-                    }
-                    else if ((i === 14) || (j === 1)) {
-                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>');
-                    }
-                    else {
-                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
-                    }
-                    idleTime = 0;
-                    i+=1;
-                    j-=1;
-                }
-            }, 60000);
         }
+      }
+    }, 226000); // 5 minutes
+
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+    tinymce.get('editor').on('keydown', function () {
+      idleTime = 0;
+    });
+    tinymce.get('editor').on('mousemove', function () {
+      idleTime = 0;
+    });
+
+    function timeOutFunction() {
+      $('#timeOutModal').modal('show');
+      let i = 14;
+      let timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#timeOutModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    // pop message after 15 minutes
+    if ($('#isAutoSaved').val() === 'true') {
+      $('#myModal').modal('show');
+      let i = 1;
+      let j = 14;
+      let lastSavedInterval = setInterval(function () {
+        if ((i === 15) || (j === 0)) {
+          $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+              + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+              + j + ' minutes</span></div>');
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(lastSavedInterval);
+        } else {
+          if ((i === 1) || (j === 14)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
+          } else if ((i === 14) || (j === 1)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>');
+          } else {
+            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                + j + ' minutes</span></div>');
+          }
+          idleTime = 0;
+          i += 1;
+          j -= 1;
+        }
+      }, 60000);
+    }
   });
 
   function saveBasicInfoPage(mode) {
-      $('#basicInfoFormId').validator('destroy').validator();
-      validateStudyId('', function (st) {
-          if (st) {
-              var studyCount = $('.customStudyClass').find('.help-block').children().length;
-              if (parseInt(studyCount) >= 1) {
-                  return false;
-              } else if (!$('#customStudyName')[0].checkValidity()) {
-                  $("#customStudyName").parent().addClass('has-error has-danger').find(
-                      ".help-block").empty().append(
-                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                          "This is a required field."));
-                  return false;
-              } else {
-                  let sourceCode = $('textarea.tox-textarea').val();
-                  var appId = $('#appId').val();
-                  if (null != appId && appId != '' && typeof appId != 'undefined') {
-                      validateAppId('', function (valid) {
-                          if (valid) {
-                              $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
-                                  'disabled', false);
-                              $('#basicInfoFormId').validator('destroy');
-                              $("#buttonText").val('save');
-                              if (mode === 'auto') {
-                                  $("#isAutoSaved").val('true');
-                                  if (sourceCode !== undefined) {
-                                      $('button[title="Save"]').trigger('click');
-                                  }
-                              }
-                              else{
-                                  $("#isAutoSaved").val('false');
-                              }
-                              var richText = tinymce.get('editor').getContent({format: 'raw'});
-                              if (null != richText && richText != '' && typeof richText != 'undefined'
-                                  && richText != '<p><br data-mce-bogus="1"></p>') {
-                                  var escaped = $('#editor').text(richText).html();
-                                  tinymce.get('editor').setContent(escaped);
-                              }
-                              $('#loader').show();
-                              $('#basicInfoFormId').submit();
-                          } else {
-                              $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
-                                  'disabled', false);
-                              $('#basicInfoFormId').validator('destroy');
-                              $("#buttonText").val('save');
-
-                              if (mode === 'auto') {
-                                  $("#isAutoSaved").val('true');
-                                  if (sourceCode !== undefined) {
-                                      $('button[title="Save"]').trigger('click');
-                                  }
-                              }
-                              else{
-                                  $("#isAutoSaved").val('false');
-                              }
-                              var richText = tinymce.get('editor').getContent({format: 'raw'});
-                              if (null != richText && richText != '' && typeof richText != 'undefined'
-                                  && richText != '<p><br data-mce-bogus="1"></p>') {
-                                  var escaped = $('#editor').text(richText).html();
-                                  tinymce.get('editor').setContent(escaped);
-                              }
-                              $('#loader').show();
-                              $('#basicInfoFormId').submit();
-                          }
-                      });
-                  } else {
-                      $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled',
-                          false);
-                      $('#basicInfoFormId').validator('destroy');
-                      $("#buttonText").val('save');
-
-                      var richText = tinymce.get('editor').getContent({format: 'raw'});
-                      if (null != richText && richText != '' && typeof richText != 'undefined' && richText
-                          != '<p><br data-mce-bogus="1"></p>') {
-                          var escaped = $('#editor').text(richText).html();
-                          tinymce.get('editor').setContent(escaped);
-                      }
-                      $('#loader').show();
-                      if (mode === 'auto') {
-                          $("#isAutoSaved").val('true');
-                      }
-                       else{
-                       $("#isAutoSaved").val('false');
-                       }
-                      $('#basicInfoFormId').submit();
+    $('#basicInfoFormId').validator('destroy').validator();
+    validateStudyId('', function (st) {
+      if (st) {
+        var studyCount = $('.customStudyClass').find('.help-block').children().length;
+        if (parseInt(studyCount) >= 1) {
+          return false;
+        } else if (!$('#customStudyName')[0].checkValidity()) {
+          $("#customStudyName").parent().addClass('has-error has-danger').find(
+              ".help-block").empty().append(
+              $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                  "This is a required field."));
+          return false;
+        } else {
+          let sourceCode = $('textarea.tox-textarea').val();
+          var appId = $('#appId').val();
+          if (null != appId && appId != '' && typeof appId != 'undefined') {
+            validateAppId('', function (valid) {
+              if (valid) {
+                $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
+                    'disabled', false);
+                $('#basicInfoFormId').validator('destroy');
+                $("#buttonText").val('save');
+                if (mode === 'auto') {
+                  $("#isAutoSaved").val('true');
+                  if (sourceCode !== undefined) {
+                    $('button[title="Save"]').trigger('click');
                   }
+                } else {
+                  $("#isAutoSaved").val('false');
+                }
+                var richText = tinymce.get('editor').getContent({format: 'raw'});
+                if (null != richText && richText != '' && typeof richText != 'undefined'
+                    && richText != '<p><br data-mce-bogus="1"></p>') {
+                  var escaped = $('#editor').text(richText).html();
+                  tinymce.get('editor').setContent(escaped);
+                }
+                $('#loader').show();
+                $('#basicInfoFormId').submit();
+              } else {
+                $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop(
+                    'disabled', false);
+                $('#basicInfoFormId').validator('destroy');
+                $("#buttonText").val('save');
+
+                if (mode === 'auto') {
+                  $("#isAutoSaved").val('true');
+                  if (sourceCode !== undefined) {
+                    $('button[title="Save"]').trigger('click');
+                  }
+                } else {
+                  $("#isAutoSaved").val('false');
+                }
+                var richText = tinymce.get('editor').getContent({format: 'raw'});
+                if (null != richText && richText != '' && typeof richText != 'undefined'
+                    && richText != '<p><br data-mce-bogus="1"></p>') {
+                  var escaped = $('#editor').text(richText).html();
+                  tinymce.get('editor').setContent(escaped);
+                }
+                $('#loader').show();
+                $('#basicInfoFormId').submit();
               }
+            });
           } else {
-              var studyCount = $('.customStudyClass').find('.help-block').children().length;
-              if (parseInt(studyCount) >= 1) {
-                  return false;
-              } else {
-                  $('#basicInfoFormId').validator('destroy').validator();
-                  if (!$('#customStudyId')[0].checkValidity()) {
-                      $("#customStudyId").parent().addClass('has-error has-danger').find(
-                          ".help-block").empty().append(
-                          $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                              "This is a required field."));
-                      return false;
-                  }
-              }
+            $('.studyTypeClass,.studyIdCls,.appIdCls,.orgIdCls,.studyLanguage').prop('disabled',
+                false);
+            $('#basicInfoFormId').validator('destroy');
+            $("#buttonText").val('save');
+
+            var richText = tinymce.get('editor').getContent({format: 'raw'});
+            if (null != richText && richText != '' && typeof richText != 'undefined' && richText
+                != '<p><br data-mce-bogus="1"></p>') {
+              var escaped = $('#editor').text(richText).html();
+              tinymce.get('editor').setContent(escaped);
+            }
+            $('#loader').show();
+            if (mode === 'auto') {
+              $("#isAutoSaved").val('true');
+            } else {
+              $("#isAutoSaved").val('false');
+            }
+            $('#basicInfoFormId').submit();
           }
-      });
+        }
+      } else {
+        var studyCount = $('.customStudyClass').find('.help-block').children().length;
+        if (parseInt(studyCount) >= 1) {
+          return false;
+        } else {
+          $('#basicInfoFormId').validator('destroy').validator();
+          if (!$('#customStudyId')[0].checkValidity()) {
+            $("#customStudyId").parent().addClass('has-error has-danger').find(
+                ".help-block").empty().append(
+                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                    "This is a required field."));
+            return false;
+          }
+        }
+      }
+    });
   }
 
   // Displaying images from file upload
@@ -1072,39 +1092,39 @@
         let htmlData = document.createElement('html');
         htmlData.innerHTML = data;
         if (language !== 'en') {
-            try {
-                $('.tit_wrapper').text($('#mlName', htmlData).val());
-                updateCompletionTicks(htmlData);
-                $('select, input[type!=hidden]').each(function () {
-                    if (!$(this).hasClass('langSpecific')) {
-                        $(this).addClass('ml-disabled').attr('disabled', true);
-                        if (this.nodeName.toLowerCase() === 'select') {
-                            let id = this.id;
-                            if (id !== undefined && id !== '') {
-                                $('[data-id=' + id + ']').addClass('cursor-none');
-                            }
-                        }
-                    }
-                });
-                $('#customStudyName').val($('input#mlName', htmlData).val());
-                $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
-                $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
-                $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
-                $('#removeUrl').addClass('cursor-none');
-                $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
-                    'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
-                $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
-                    'cursor-none');
-                $('#editor').val($('#mlDescription', htmlData).val());
-                let tinyMce = tinymce.activeEditor;
-                if (tinyMce !== undefined) {
-                    tinyMce.setContent($('#mlDescription', htmlData).val());
+          try {
+            $('.tit_wrapper').text($('#mlName', htmlData).val());
+            updateCompletionTicks(htmlData);
+            $('select, input[type!=hidden]').each(function () {
+              if (!$(this).hasClass('langSpecific')) {
+                $(this).addClass('ml-disabled').attr('disabled', true);
+                if (this.nodeName.toLowerCase() === 'select') {
+                  let id = this.id;
+                  if (id !== undefined && id !== '') {
+                    $('[data-id=' + id + ']').addClass('cursor-none');
+                  }
                 }
-                $('#loader').hide();
-            } catch (e) {
-                console.log("Error occurred : "+e);
-                $('#loader').hide();
+              }
+            });
+            $('#customStudyName').val($('input#mlName', htmlData).val());
+            $('input[name="fullName"]').val($('input#mlFullName', htmlData).val());
+            $('input[name="studyTagLine"]').val($('input#mlStudyTagline', htmlData).val());
+            $('#researchSponsor').val($('input#mlResearchSponsor', htmlData).val());
+            $('#removeUrl').addClass('cursor-none');
+            $('[data-id="tentativeDurationWeekmonth"], [data-id="dataPartnerId"]').css(
+                'background-color', '#eee').css('opacity', '1').addClass('cursor-none');
+            $('#uploadImgbtn').css('background-color', '#eee').css('opacity', '1').addClass(
+                'cursor-none');
+            $('#editor').val($('#mlDescription', htmlData).val());
+            let tinyMce = tinymce.activeEditor;
+            if (tinyMce !== undefined) {
+              tinyMce.setContent($('#mlDescription', htmlData).val());
             }
+            $('#loader').hide();
+          } catch (e) {
+            console.log("Error occurred : " + e);
+            $('#loader').hide();
+          }
         } else {
           $('.tit_wrapper').text($('#customStudyName', htmlData).val());
           updateCompletionTicksForEnglish();
@@ -1130,10 +1150,10 @@
               'style').removeClass('cursor-none');
           $('#uploadImgbtn').removeAttr('style').removeClass('cursor-none');
 
-            <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
-            $('#customStudyId, #appId, input[name="type"]').prop('disabled', true);
-            </c:if>
-          
+          <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated' || studyBo.status == 'Pre-launch(Published)') }">
+          $('#customStudyId, #appId, input[name="type"]').prop('disabled', true);
+          </c:if>
+
           <c:if test="${permission == 'view' }">
           $('#basicInfoFormId input,textarea').prop('disabled', true);
           $('#removeUrl').addClass('cursor-none');

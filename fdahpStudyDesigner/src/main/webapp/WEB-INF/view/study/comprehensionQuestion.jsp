@@ -6,11 +6,11 @@
     <meta charset="UTF-8">
 </head>
 <style>
-  .langSpecific{
+  .langSpecific {
     position: relative;
   }
 
-  .langSpecific > button::before{
+  .langSpecific > button::before {
     content: '';
     display: block;
     background-image: url("../images/global_icon.png");
@@ -22,53 +22,53 @@
     background-repeat: no-repeat;
   }
 
-  .langSpecific > button{
+  .langSpecific > button {
     padding-left: 30px;
   }
 
-  #autoSavedMessage{
-  width:257px;
+  #autoSavedMessage {
+    width: 257px;
   }
 
-  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-  position:relative !important;
-  right:-14px !important;
-  margin-top:6% !important;
+  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: -14px !important;
+    margin-top: 6% !important;
   }
 
-   #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-     position:relative !important;
-     right:-14px !important;
-     margin-top:6% !important;
-     }
-
-  .flr_modal{
-  float:right !important;
+  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: -14px !important;
+    margin-top: 6% !important;
   }
 
-  .grey_txt{
-  color:grey;
-  font-size:15px;
-  font-weight:500;
+  .flr_modal {
+    float: right !important;
   }
 
-  .blue_text{
-  color:#007CBA !important;
-  font-size:15px;
-  font-weight:500;
+  .grey_txt {
+    color: grey;
+    font-size: 15px;
+    font-weight: 500;
   }
 
-  .timerPos{
-  position:relative;
-  top:-2px;
-  right:2px !important;
+  .blue_text {
+    color: #007CBA !important;
+    font-size: 15px;
+    font-weight: 500;
   }
 
-  .bold_txt{
-  font-weight:900 !important;
-  color:#007cba !important;
-  font-size:15px;
-   }
+  .timerPos {
+    position: relative;
+    top: -2px;
+    right: 2px !important;
+  }
+
+  .bold_txt {
+    font-weight: 900 !important;
+    color: #007cba !important;
+    font-size: 15px;
+  }
 
 </style>
 <!-- ============================================================== -->
@@ -160,7 +160,7 @@
 
             <input type="hidden" id="currentLanguage" name="currentLanguage"
                    value="${currLanguage}">
-                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+            <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
             <c:if test="${not empty comprehensionQuestionBo.id}">
                 <input type="hidden" id="studyId" name="studyId"
                        value="${comprehensionQuestionBo.studyId}">
@@ -376,37 +376,42 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    <div id="autoSavedMessage" class="text-right">
+                        <div class="blue_text">Last saved now</div>
+                        <div class="grey_txt"><span class="timerPos"><img
+                                src="../images/timer2.png"/></span>Your session expires in <span
+                                class="bold_txt">15 minutes</span></div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
+    </div>
 
-                <div class="modal fade" id="timeOutModal" role="dialog">
-                                    <div class="modal-dialog modal-sm flr_modal">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                                <div class="modal-body">
-                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                            </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(
       function () {
-    	  $(".menuNav li").removeClass('active');
-    	  $(".fifthComre").addClass('active');
-    	  $("#createStudyId").show();
-    	    
+        $(".menuNav li").removeClass('active');
+        $(".fifthComre").addClass('active');
+        $("#createStudyId").show();
+
         <c:if test="${actionPage eq 'view'}">
         $('#comprehensionFormId input,textarea,select').prop(
             'disabled', true);
@@ -450,60 +455,64 @@ var idleTime = 0;
           idleTime += 1;
           if (idleTime > 3) {
             <c:if test="${actionPage ne 'view'}">
-           autoSaveComprehensionQuestionPage('auto');
-           </c:if>
-           <c:if test="${actionPage eq 'view'}">
+            autoSaveComprehensionQuestionPage('auto');
+            </c:if>
+            <c:if test="${actionPage eq 'view'}">
             clearInterval(timeOutInterval);
             timeOutFunction();
             </c:if>
-         }
-         }, 226000); // 5 minutes
+          }
+        }, 226000); // 5 minutes
 
-          $(this).mousemove(function (e) {
+        $(this).mousemove(function (e) {
           idleTime = 0;
-          });
-          $(this).keypress(function (e) {
-           idleTime = 0;
-            });
+        });
+        $(this).keypress(function (e) {
+          idleTime = 0;
+        });
 
-            function timeOutFunction() {
-               $('#timeOutModal').modal('show');
-                let i = 14;
-                let timeOutInterval = setInterval(function () {
-                if (i === 0) {
-                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    if ($('#timeOutModal').hasClass('show')) {
-                     var a = document.createElement('a');
-                     a.href = "/fdahpStudyDesigner/sessionOut.do";
-                     document.body.appendChild(a).click();
-                       }
-                        clearInterval(timeOutInterval);
-                        } else {
-                         if (i === 1) {
-                          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                          } else {
-                          $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                          }
-                          idleTime = 0;
-                          i-=1;
-                          }
-                       }, 60000);
-                     }
+        function timeOutFunction() {
+          $('#timeOutModal').modal('show');
+          let i = 14;
+          let timeOutInterval = setInterval(function () {
+            if (i === 0) {
+              $('#timeOutMessage').html(
+                  '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                  + i + ' minutes');
+              if ($('#timeOutModal').hasClass('show')) {
+                var a = document.createElement('a');
+                a.href = "/fdahpStudyDesigner/sessionOut.do";
+                document.body.appendChild(a).click();
+              }
+              clearInterval(timeOutInterval);
+            } else {
+              if (i === 1) {
+                $('#timeOutMessage').html(
+                    '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+              } else {
+                $('#timeOutMessage').html(
+                    '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                    + i + ' minutes');
+              }
+              idleTime = 0;
+              i -= 1;
+            }
+          }, 60000);
+        }
       });
-      function autoSaveComprehensionQuestionPage(mode) {
-          $(".right-content-body").parents("form").validator(
-              "destroy");
-          $(".right-content-body").parents("form")
-              .validator();
-          if (mode === 'auto') {
-              $("#isAutoSaved").val('true');
-          }
-          else{
-          $("#isAutoSaved").val('false');
-          }
-          saveComrehensionTestQuestion(mode);
-      }
 
+  function autoSaveComprehensionQuestionPage(mode) {
+    $(".right-content-body").parents("form").validator(
+        "destroy");
+    $(".right-content-body").parents("form")
+    .validator();
+    if (mode === 'auto') {
+      $("#isAutoSaved").val('true');
+    } else {
+      $("#isAutoSaved").val('false');
+    }
+    saveComrehensionTestQuestion(mode);
+  }
 
   var ansCount = $(".ans-opts").length - 1;
 
@@ -582,7 +591,7 @@ var idleTime = 0;
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
           a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}&language="
               + lang;
           document.body.appendChild(a).click();
@@ -600,15 +609,15 @@ var idleTime = 0;
   }
 
   function saveComrehensionTestQuestion(mode) {
-    var comprehensionTestQuestion = new Object();
+    var comprehensionTestQuestion = {};
     var testQuestionId = $("#id").val();
     var studyId = $("#studyId").val();
     var questiontext = $("#questionText").val();
     var structureOfCorrectTxt = $(
         'input[name="structureOfCorrectAns"]:checked').val();
-    var questionResponseArray = new Array();
+    var questionResponseArray = [];
     $('.ans-opts').each(function () {
-      var testQuestionResponse = new Object();
+      var testQuestionResponse = {};
       var id = $(this).attr("id");
       let responseId = $("#responseId" + id).val();
       var responseOption = $("#responseOptionId" + id).val();
@@ -631,7 +640,7 @@ var idleTime = 0;
         && typeof questiontext != 'undefined') {
       formData.append("language", $('#currentLanguage').val());
       if (mode === 'auto') {
-          $("#isAutoSaved").val('true');
+        $("#isAutoSaved").val('true');
       }
       formData.append("comprehenstionQuestionInfo", JSON
       .stringify(comprehensionTestQuestion));
@@ -658,34 +667,38 @@ var idleTime = 0;
             $('#alertMsg').show();
             // pop message after 15 minutes
             if (data.isAutoSaved === 'true') {
-                $('#myModal').modal('show');
-                let i = 1;
-                let j =14;
-                let lastSavedInterval = setInterval(function () {
-                   if ((i === 15) || (j === 0)) {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
-                        if ($('#myModal').hasClass('show')) {
-                            var a = document.createElement('a');
-                            a.href = "/fdahpStudyDesigner/sessionOut.do";
-                            document.body.appendChild(a).click();
-                        }
-                        clearInterval(lastSavedInterval);
-                    } else {
-                    if ((i === 1) || (j === 14)) {
-                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
-                        }
-                    else if ((i === 14) || (j === 1)) {
-                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                    }
-                     else {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>');
-                        }
-                        idleTime = 0;
-                        i += 1;
-                        j-=1;
-                    }
-                }, 60000);
-                $("#isAutoSaved").val('false');
+              $('#myModal').modal('show');
+              let i = 1;
+              let j = 14;
+              let lastSavedInterval = setInterval(function () {
+                if ((i === 15) || (j === 0)) {
+                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                      + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                      + j + ' minutes</span></div>');
+                  if ($('#myModal').hasClass('show')) {
+                    var a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/sessionOut.do";
+                    document.body.appendChild(a).click();
+                  }
+                  clearInterval(lastSavedInterval);
+                } else {
+                  if ((i === 1) || (j === 14)) {
+                    $('#autoSavedMessage').html(
+                        '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>');
+                  } else if ((i === 14) || (j === 1)) {
+                    $('#autoSavedMessage').html(
+                        '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+                  } else {
+                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                        + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                        + j + ' minutes</span></div>');
+                  }
+                  idleTime = 0;
+                  i += 1;
+                  j -= 1;
+                }
+              }, 60000);
+              $("#isAutoSaved").val('false');
             }
           } else {
             var errMsg = data.errMsg;
@@ -723,7 +736,7 @@ var idleTime = 0;
   }
 
   function validateCorrectAnswers() {
-    var questionResponseArray = new Array();
+    var questionResponseArray = [];
     $('.ans-opts').each(function () {
       var id = $(this).attr("id");
       var correctAnswer = $("#correctAnswerId" + id).val();
@@ -742,7 +755,7 @@ var idleTime = 0;
 
   function validateForUniqueValue(item, callback) {
     var isValid = true;
-    var valueArray = new Array();
+    var valueArray = [];
     $('.ans-opts')
     .each(
         function () {
@@ -835,7 +848,7 @@ var idleTime = 0;
             $('#' + responseOptionId).val($('#' + responseOptionId, htmlData).val());
           });
           $('#questionText').val($('#questionText', htmlData).val());
-          
+
           <c:if test="${actionPage eq 'view'}">
           $('#comprehensionFormId input,textarea').prop('disabled', true);
           $('.remBtnDis').addClass('cursor-none');

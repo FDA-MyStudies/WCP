@@ -5,53 +5,56 @@
 <head>
     <meta charset="UTF-8">
     <style>
-     #autoSavedMessage{
-     width:257px;
-     }
-.help-block ul {
+      #autoSavedMessage {
+        width: 257px;
+      }
+
+      .help-block ul {
         width: 160px !important;
-        }
-        .form-control{
-        margin-bottom:5px !important;
-        }
-     #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-     position:relative !important;
-     right:-14px !important;
-     margin-top:6% !important;
-     }
+      }
 
-     #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-       position:relative !important;
-       right:-14px !important;
-       margin-top:6% !important;
-       }
+      .form-control {
+        margin-bottom: 5px !important;
+      }
 
-     .flr_modal{
-     float:right !important;
-     }
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-     .grey_txt{
-     color:grey;
-     font-size:15px;
-     font-weight:500;
-     }
+      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-     .blue_text{
-     color:#007CBA !important;
-     font-size:15px;
-     font-weight:500;
-     }
+      .flr_modal {
+        float: right !important;
+      }
 
-     .timerPos{
-     position:relative;
-     top:-2px;
-     right:2px !important;
-     }
+      .grey_txt {
+        color: grey;
+        font-size: 15px;
+        font-weight: 500;
+      }
 
-     .bold_txt{
-     font-weight:900 !important;
-     color:#007cba !important;
-     font-size:15px;
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
+
+      .bold_txt {
+        font-weight: 900 !important;
+        color: #007cba !important;
+        font-size: 15px;
       }
     </style>
 </head>
@@ -378,17 +381,17 @@
         </c:if>
         </c:if>
         <c:if test="${taskMasterAttributeBo.orderByTaskType eq 3 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
-            <input type="hidden" name="taskAttributeValueBos[2].attributeValueId"
-                   value="${taskValueAttributeBo.attributeValueId}">
-            <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId"
-                   value="${taskMasterAttributeBo.masterId}">
-            <input type="hidden" name="taskAttributeValueBos[2].addToDashboard"
-                   value="${taskMasterAttributeBo.addToDashboard}">
-            <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
+        <input type="hidden" name="taskAttributeValueBos[2].attributeValueId"
+               value="${taskValueAttributeBo.attributeValueId}">
+        <input type="hidden" name="taskAttributeValueBos[2].activeTaskMasterAttrId"
+               value="${taskMasterAttributeBo.masterId}">
+        <input type="hidden" name="taskAttributeValueBos[2].addToDashboard"
+               value="${taskMasterAttributeBo.addToDashboard}">
+        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
 
-            <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
-                <div class="chartSection" style="display:none">
-                    <div class="mb-lg">
+        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
+            <div class="chartSection" style="display:none">
+                <div class="mb-lg">
 	                            <span class="checkbox checkbox-inline">
 	                                <input type="checkbox"
                                            id="${taskMasterAttributeBo.attributeName}_chart_id"
@@ -397,72 +400,72 @@
                                            value="${taskValueAttributeBo.addToLineChart}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_chart_id">Add to line chart</label>
 	                            </span>
-                    </div>
+                </div>
 
-                    <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}"
-                         style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">
-                        <div class="pb-lg">
-                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span
-                                    class="requiredStar"> *</span> <span
-                                    class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                    title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span>
-                            </div>
-                            <div class="add_notify_option form-group mb-none">
-                                <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList requireClass"
-                                        id="chartId" name="taskAttributeValueBos[2].timeRangeChart"
-                                        title="Select">
-                                    <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-                                        <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
-                                    </c:forEach>
-                                </select>
-                                <div class="mt-sm black-xs-f italic-txt activeaddToChartText"
-                                     style="display: none;"></div>
-                                <div class="help-block with-errors red-txt"></div>
-                            </div>
-
+                <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}"
+                     style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">
+                    <div class="pb-lg">
+                        <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span
+                                class="requiredStar"> *</span> <span
+                                class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span>
+                        </div>
+                        <div class="add_notify_option form-group mb-none">
+                            <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList requireClass"
+                                    id="chartId" name="taskAttributeValueBos[2].timeRangeChart"
+                                    title="Select">
+                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+                                    <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="mt-sm black-xs-f italic-txt activeaddToChartText"
+                                 style="display: none;"></div>
+                            <div class="help-block with-errors red-txt"></div>
                         </div>
 
+                    </div>
 
-                        <div class="pb-lg">
-                            <div class="gray-xs-f mb-sm">Allow rollback of chart?
-                                <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
-                                      title="If you select Yes, the chart will be allowed for rollback until the date of enrollment into the study."></span>
-                            </div>
-                            <div class="form-group">
+
+                    <div class="pb-lg">
+                        <div class="gray-xs-f mb-sm">Allow rollback of chart?
+                            <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip"
+                                  title="If you select Yes, the chart will be allowed for rollback until the date of enrollment into the study."></span>
+                        </div>
+                        <div class="form-group">
 	                                <span class="radio radio-info radio-inline p-45">
 	                                    <input class="" type="radio" id="inlineRadio1" value="Yes"
                                                name="taskAttributeValueBos[2].rollbackChat" ${taskValueAttributeBo.rollbackChat eq 'Yes'?'checked':""}>
 	                                    <label for="inlineRadio1">Yes</label>
 	                                </span>
-                                <span class="radio radio-inline">
+                            <span class="radio radio-inline">
 	                                    <input class="rollbackRadioClass" type="radio"
                                                id="inlineRadio2" value="No"
                                                name="taskAttributeValueBos[2].rollbackChat"
                                                <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if> ${taskValueAttributeBo.rollbackChat eq 'No'?'checked':""}>
 	                                    <label for="inlineRadio2">No</label>
 	                                </span>
-                                <div class="help-block with-errors red-txt"></div>
-                            </div>
+                            <div class="help-block with-errors red-txt"></div>
                         </div>
+                    </div>
 
-                        <div class="bor-b-dash">
-                            <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters
-                                max)</small><span class="requiredStar"> *</span>
-                            </div>
-                            <div class="add_notify_option">
-                                <div class="form-group">
-                                    <input type="text"
-                                           class="form-control requireClass lang-specific"
-                                           id="lineChartId"
-                                           name="taskAttributeValueBos[2].titleChat" maxlength="30"
-                                           value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>
-                                    <div class="help-block with-errors red-txt"></div>
-                                </div>
+                    <div class="bor-b-dash">
+                        <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters
+                            max)</small><span class="requiredStar"> *</span>
+                        </div>
+                        <div class="add_notify_option">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control requireClass lang-specific"
+                                       id="lineChartId"
+                                       name="taskAttributeValueBos[2].titleChat" maxlength="30"
+                                       value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>
+                                <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="pt-lg mt-xs pb-lg">
+            </div>
+            <div class="pt-lg mt-xs pb-lg">
 	                            <span class="checkbox checkbox-inline">
 	                                <input type="checkbox"
                                            id="${taskMasterAttributeBo.attributeName}_stat_id"
@@ -471,942 +474,967 @@
                                            value="${taskValueAttributeBo.useForStatistic}">
 	                                <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use for Statistic</label>
 	                            </span>
-                </div>
-                <div class="addLineStaticBlock_${taskMasterAttributeBo.attributeName}"
-                     style="${taskValueAttributeBo.useForStatistic==true?'':'display:none'}">
-                    <div>
-                        <div class="gray-xs-f mb-sm">Short name <small>(20 characters
-                            max)</small><span class="requiredStar"> *</span></div>
-                        <div class="add_notify_option">
-                            <div class="form-group statShortTitleClass">
-                                <input type="hidden" id="dbIdentifierId"
-                                       value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
-                                <input autofocus="autofocus" type="text"
-                                       class="form-control requireClass shortTitleStatCls"
-                                       custAttType="cust" id="identifierId"
-                                       name="taskAttributeValueBos[2].identifierNameStat"
-                                       maxlength="20"
-                                       value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}"
-                                        <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
-                                <div class="help-block with-errors red-txt"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of
-                            Activity Over 6 Months) <small> (50 characters max)</small><span
-                                    class="requiredStar"> *</span></div>
-                        <div class="form-group">
-                            <input type="text" class="form-control requireClass lang-specific"
-                                   id="displayStat" name="taskAttributeValueBos[2].displayNameStat"
-                                   maxlength="50"
-                                   value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>
+            </div>
+            <div class="addLineStaticBlock_${taskMasterAttributeBo.attributeName}"
+                 style="${taskValueAttributeBo.useForStatistic==true?'':'display:none'}">
+                <div>
+                    <div class="gray-xs-f mb-sm">Short name <small>(20 characters
+                        max)</small><span class="requiredStar"> *</span></div>
+                    <div class="add_notify_option">
+                        <div class="form-group statShortTitleClass">
+                            <input type="hidden" id="dbIdentifierId"
+                                   value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
+                            <input autofocus="autofocus" type="text"
+                                   class="form-control requireClass shortTitleStatCls"
+                                   custAttType="cust" id="identifierId"
+                                   name="taskAttributeValueBos[2].identifierNameStat"
+                                   maxlength="20"
+                                   value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}"
+                                    <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of
+                        Activity Over 6 Months) <small> (50 characters max)</small><span
+                                class="requiredStar"> *</span></div>
+                    <div class="form-group">
+                        <input type="text" class="form-control requireClass lang-specific"
+                               id="displayStat" name="taskAttributeValueBos[2].displayNameStat"
+                               maxlength="50"
+                               value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                </div>
 
 
-                    <div>
-                        <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15
-                            characters max)</small><span class="requiredStar"> *</span></div>
-                        <div class="add_notify_option">
-                            <div class="form-group">
-                                <input type="text" class="form-control requireClass lang-specific"
-                                       id="displayUnitStat" name="taskAttributeValueBos[2].displayUnitStat"
-                                       maxlength="15"
-                                       value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
-                                <div class="help-block with-errors red-txt"></div>
-                            </div>
+                <div>
+                    <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15
+                        characters max)</small><span class="requiredStar"> *</span></div>
+                    <div class="add_notify_option">
+                        <div class="form-group">
+                            <input type="text" class="form-control requireClass lang-specific"
+                                   id="displayUnitStat"
+                                   name="taskAttributeValueBos[2].displayUnitStat"
+                                   maxlength="15"
+                                   value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>
+                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
+                </div>
+
+                <div>
+
 
                     <div>
-
-
-                        <div>
-                            <div class="gray-xs-f mb-sm">Stat Type for image display<span
-                                    class="requiredStar"> *</span></div>
-                            <div class="add_notify_option form-group">
-                                <select class="selectpicker  aq-select aq-select-form elaborateClass requireClass"
-                                        id="statType" title="Select"
-                                        name="taskAttributeValueBos[2].uploadTypeStat">
-                                    <c:forEach items="${statisticImageList}" var="statisticImage">
-                                        <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
-                                    </c:forEach>
-                                </select>
-                                <div class="help-block with-errors red-txt"></div>
-                            </div>
+                        <div class="gray-xs-f mb-sm">Stat Type for image display<span
+                                class="requiredStar"> *</span></div>
+                        <div class="add_notify_option form-group">
+                            <select class="selectpicker  aq-select aq-select-form elaborateClass requireClass"
+                                    id="statType" title="Select"
+                                    name="taskAttributeValueBos[2].uploadTypeStat">
+                                <c:forEach items="${statisticImageList}" var="statisticImage">
+                                    <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="gray-xs-f mb-sm">Formula for to be applied<span
+                                class="requiredStar"> *</span></div>
+                        <div class="form-group">
+                            <select class="selectpicker aq-select aq-select-form elaborateClass requireClass"
+                                    id="formulaAppliedStat" title="Select"
+                                    name="taskAttributeValueBos[2].formulaAppliedStat">
+                                <c:forEach items="${activetaskFormulaList}"
+                                           var="activetaskFormula">
+                                    <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
+                                </c:forEach>
+                            </select>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="gray-xs-f mb-sm">Time ranges options available to the mobile
+                            app user
                         </div>
                         <div>
-                            <div class="gray-xs-f mb-sm">Formula for to be applied<span
-                                    class="requiredStar"> *</span></div>
-                            <div class="form-group">
-                                <select class="selectpicker aq-select aq-select-form elaborateClass requireClass"
-                                        id="formulaAppliedStat" title="Select"
-                                        name="taskAttributeValueBos[2].formulaAppliedStat">
-                                    <c:forEach items="${activetaskFormulaList}"
-                                               var="activetaskFormula">
-                                        <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
-                                    </c:forEach>
-                                </select>
-                                <div class="help-block with-errors red-txt"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="gray-xs-f mb-sm">Time ranges options available to the mobile
-                                app user
-                            </div>
-                            <div>
                                 <span class="mr-lg"><span class="mr-sm"><img
                                         src="../images/icons/tick.png"/></span><span>Current Day</span></span>
-                                <span class="mr-lg"><span class="mr-sm"><img
-                                        src="../images/icons/tick.png"/></span><span>Current Week</span></span>
-                                <span class="mr-lg"><span class="mr-sm"><img
-                                        src="../images/icons/tick.png"/></span><span>Current Month</span></span>
-                                <span class="txt-gray">(Rollback option provided for these three options)</span>
-                            </div>
+                            <span class="mr-lg"><span class="mr-sm"><img
+                                    src="../images/icons/tick.png"/></span><span>Current Week</span></span>
+                            <span class="mr-lg"><span class="mr-sm"><img
+                                    src="../images/icons/tick.png"/></span><span>Current Month</span></span>
+                            <span class="txt-gray">(Rollback option provided for these three options)</span>
                         </div>
                     </div>
-
                 </div>
+
             </div>
+        </div>
         </c:if>
         </c:forEach>
         </c:forEach>
         </c:if>
         </form:form>
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-sm flr_modal">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm flr_modal">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div id="autoSavedMessage" class="text-right">
+                            <div class="blue_text">Last saved now</div>
+                            <div class="grey_txt"><span class="timerPos"><img
+                                    src="../images/timer2.png"/></span>Your session expires in <span
+                                    class="bold_txt">15 minutes</span></div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
 
-                <div class="modal fade" id="timeOutModal" role="dialog">
-                                    <div class="modal-dialog modal-sm flr_modal">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                                <div class="modal-body">
-                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                                </div>
-                                        </div>
-                                    </div>
-                            </div>
-    <script>
-    var idleTime = 0;
-      var shortTitleFlag = true;
-      var shortTitleStatFlag = true;
-      var durationFlag = true;
-      $(document).ready(function () {
-        $('#fetalKickId').mask("99");
-        $('#fetalKickId').keyup(function (event) {
-          var fetalKick = $(this).val();
-          console.log(fetalKick);
-          if (fetalKick) {
-            if (fetalKick == 0) {
-              console.log("inside 0");
-              $('#fetalKickId').val('');
-              $('.timeDurationClass').find('.help-block').empty().append(
-                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                      "Number of kicks should be greater than zero."));
-            } else {
-              $('.timeDurationClass').find('.help-block').empty();
+        <div class="modal fade" id="timeOutModal" role="dialog">
+            <div class="modal-dialog modal-sm flr_modal">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div id="timeOutMessage" class="text-right blue_text"><span
+                                class="timerPos"><img src="../images/timer2.png"/></span>Your
+                            session expires in 15 minutes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+          var idleTime = 0;
+          var shortTitleFlag = true;
+          var shortTitleStatFlag = true;
+          var durationFlag = true;
+          $(document).ready(function () {
+            $('#fetalKickId').mask("99");
+            $('#fetalKickId').keyup(function (event) {
+              var fetalKick = $(this).val();
+              console.log(fetalKick);
+              if (fetalKick) {
+                if (fetalKick == 0) {
+                  console.log("inside 0");
+                  $('#fetalKickId').val('');
+                  $('.timeDurationClass').find('.help-block').empty().append(
+                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                          "Number of kicks should be greater than zero."));
+                } else {
+                  $('.timeDurationClass').find('.help-block').empty();
+                }
+              }
+            });
+            var taskId = $('#taskContentId').val();
+            if (taskId) {
+              var frequencyType = '${activeTaskBo.frequency}';
+              if (frequencyType && frequencyType != 'One time')
+                $('.chartSection').show();
+              if (frequencyType && frequencyType == 'Manually Schedule') {
+                $('.activeaddToChartText').show();
+                $('.activeaddToChartText').text(
+                    'A max of x runs will be displayed in each view of the chart.');
+              }
             }
-          }
-        });
-        var taskId = $('#taskContentId').val();
-        if (taskId) {
-          var frequencyType = '${activeTaskBo.frequency}';
-          if (frequencyType && frequencyType != 'One time')
-            $('.chartSection').show();
-          if (frequencyType && frequencyType == 'Manually Schedule') {
-            $('.activeaddToChartText').show();
-            $('.activeaddToChartText').text(
-                'A max of x runs will be displayed in each view of the chart.');
-          }
-        }
-        var dt = new Date();
-        $('#inputClockId').datetimepicker({
-          format: 'HH:mm',
-          minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
-          maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-        }).on("dp.change", function (e) {
-          var durationTime = $('#inputClockId').val();
-          if (durationTime && durationTime == '00:00') {
-            durationFlag = false;
-            $('#inputClockId').parent().addClass('has-error has-danger').find(
-                ".help-block").empty().append(
-                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                    "Please select a non-zero Duration value."));
-          } else {
-            durationFlag = true;
-            $('#inputClockId').parent().find(".help-block").empty();
             var dt = new Date();
             $('#inputClockId').datetimepicker({
               format: 'HH:mm',
               minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
               maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-            });
-            $('.timeDurationClass').removeClass('has-error has-danger');
-          }
-        });
-        setLineChatStatCheckedVal();
-        $('#number_of_kicks_recorded_fetal_chart_id').on('click', function () {
-          if ($(this).is(":checked")) {
-            $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "");
-            $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-                'required', true);
-            $('#number_of_kicks_recorded_fetal_chart_id').val(true);
-            $('.selectpicker').selectpicker('refresh');
-          } else {
-            $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "none");
-            $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-                'required', false);
-            $('#number_of_kicks_recorded_fetal_chart_id').val(false);
-          }
-          resetValidation($(this).parents('form'));
-        });
-        $('#number_of_kicks_recorded_fetal_stat_id').on('click', function () {
-          if ($(this).is(":checked")) {
-            $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "");
-            $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-                'required', true);
-            $('#number_of_kicks_recorded_fetal_stat_id').val(true);
-            $('.selectpicker').selectpicker('refresh');
-          } else {
-            $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "none");
-            $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-                'required', false);
-            $('#number_of_kicks_recorded_fetal_stat_id').val(false);
-          }
-        });
-
-        let currLang = $('#studyLanguage').val();
-        if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
-            !== 'en') {
-          $('#currentLanguage').val(currLang);
-          setTimeout(function () {
-            refreshAndFetchLanguageData(currLang);
-          }, 600);
-        } else {
-          $('#currentLanguage').val('en');
-        }
-
-        function validateTime() {
-          var durationTime = $('#inputClockId').val();
-          if (!durationTime) {
-            durationFlag = false;
-          } else if (durationTime && durationTime == '00:00')
-            durationFlag = false;
-          return durationFlag;
-        }
-
-        function validateShortTitle() {
-          var shortFlag = true;
-          var shortTitle = $('#shortTitleId').val();
-          var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-          if (parseInt(shortTitleCount) >= 1) {
-            shortFlag = false;
-          } else {
-            if (shortTitle) {
-              validateShortTitleId('', function (st) {
-                if (!st) {
-                  shortFlag = false;
-                }
-              });
-            } else {
-              shortFlag = false;
-            }
-          }
-          return shortFlag;
-        }
-
-        function validateStatShortTitle() {
-          var statFlag = true;
-          var statShort = '';
-          var statShortVal = '';
-          var staticShortStat = $('#static').val();
-          var dynaminShortStat = $('#identifierId').val();
-          if (staticShortStat) {
-            statShort = '#static';
-            statShortVal = staticShortStat;
-          }
-          if (dynaminShortStat) {
-            statShort = '#identifierId';
-            statShortVal = dynaminShortStat;
-          }
-          var statShortTitleCount = $('.statShortTitleClass').find('.help-block').children().length;
-          if (parseInt(statShortTitleCount) >= 1) {
-            statFlag = false;
-          } else {
-            if (statShort && statShortVal) {
-              validateShortTitleStatId('', statShort, function (st) {
-                if (!st) {
-                  statFlag = false;
-                }
-              });
-            } else {
-              var statId = $('.shortTitleStatCls').attr('id');
-              if (statId && statId == 'identifierId') {
-                $("#identifierId").parent().addClass('has-error has-danger').find(
-                    ".help-block").empty().append(
-                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                        "This is a required field."));
-                $('#identifierId').focus();
-              } else {
-                $("#static").parent().addClass('has-error has-danger').find(
-                    ".help-block").empty().append(
-                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                        "This is a required field."));
-                $('#static').focus();
-              }
-              statFlag = false;
-            }
-          }
-          return statFlag;
-        }
-
-        $(document).on('click', '#doneId', function (e) {
-
-          var res = localStorage.getItem('IsActiveAnchorDateSelected');
-          if (res === 'true') {
-            $("#startDateWeekly").removeAttr("required");
-            $("#startDateWeekly").parent().parent().removeClass("has-error has-danger");
-            $("#startDateWeekly").next().children().remove();
-
-            $("#weeks").removeAttr("required");
-            $("#weeks").parent().parent().removeClass("has-error has-danger");
-            $("#weeks").next().children().remove();
-
-            $("#monthlyDateId").hide();
-            $("#monthlyDateId").removeAttr('required');
-
-            $("#activeMonthlyRegular").hide();
-            $("#months").removeAttr('required');
-
-          } else {
-            $('.remove_required').prop('required', false);
-            $("#startDateWeekly").attr("required");
-            $("#weeks").attr("required");
-
-            $("#monthlyDateId").show();
-            $("#monthlyDateId").attr('required');
-
-            $("#activeMonthlyRegular").show();
-            $("#months").attr('required');
-          }
-
-          console.log("done method");
-          $("body").addClass('loading');
-          $("#doneId").attr("disabled", true);
-          if ($('#pickStartDate').val() == '') {
-            $('#pickStartDate').attr("readonly", false);
-          }
-          if ($('#startWeeklyDate').val() == '') {
-            $('#startWeeklyDate').attr("readonly", false);
-          }
-          var shortFlag = true;
-          var statFlag = true;
-          if (isFromValid("#activeContentFormId")) {
-            if (!durationFlag) {
-              var clock = $('#inputClockId').val();
-              if (clock)
+            }).on("dp.change", function (e) {
+              var durationTime = $('#inputClockId').val();
+              if (durationTime && durationTime == '00:00') {
+                durationFlag = false;
                 $('#inputClockId').parent().addClass('has-error has-danger').find(
                     ".help-block").empty().append(
                     $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
                         "Please select a non-zero Duration value."));
+              } else {
+                durationFlag = true;
+                $('#inputClockId').parent().find(".help-block").empty();
+                var dt = new Date();
+                $('#inputClockId').datetimepicker({
+                  format: 'HH:mm',
+                  minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+                  maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+                });
+                $('.timeDurationClass').removeClass('has-error has-danger');
+              }
+            });
+            setLineChatStatCheckedVal();
+            $('#number_of_kicks_recorded_fetal_chart_id').on('click', function () {
+              if ($(this).is(":checked")) {
+                $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "");
+                $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                    'required', true);
+                $('#number_of_kicks_recorded_fetal_chart_id').val(true);
+                $('.selectpicker').selectpicker('refresh');
+              } else {
+                $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "none");
+                $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                    'required', false);
+                $('#number_of_kicks_recorded_fetal_chart_id').val(false);
+              }
+              resetValidation($(this).parents('form'));
+            });
+            $('#number_of_kicks_recorded_fetal_stat_id').on('click', function () {
+              if ($(this).is(":checked")) {
+                $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "");
+                $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                    'required', true);
+                $('#number_of_kicks_recorded_fetal_stat_id').val(true);
+                $('.selectpicker').selectpicker('refresh');
+              } else {
+                $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "none");
+                $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                    'required', false);
+                $('#number_of_kicks_recorded_fetal_stat_id').val(false);
+              }
+            });
+
+            let currLang = $('#studyLanguage').val();
+            if (currLang !== undefined && currLang !== null && currLang !== '' && currLang
+                !== 'en') {
+              $('#currentLanguage').val(currLang);
+              setTimeout(function () {
+                refreshAndFetchLanguageData(currLang);
+              }, 600);
             } else {
-              $('#inputClockId').parent().find(".help-block").empty();
-              var dt = new Date();
-              $('#inputClockId').datetimepicker({
-                format: 'HH:mm',
-                minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
-                maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-              });
+              $('#currentLanguage').val('en');
             }
-            $('.scheduleTaskClass').removeAttr('disabled');
-            $('.scheduleTaskClass').removeClass('linkDis');
-            //alert("statFlag"+ statFlag);
-            var shortTitle = $('#shortTitleId').val();
-            var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-            if (shortTitle) {
-              validateShortTitleId('', function (st) {
-                if (st) {
-                  var durationTime = $('#inputClockId').val();
-                  if (durationTime) {
-                    if (durationTime != '00:00') {
-                      if ($('#number_of_kicks_recorded_fetal_stat_id').is(":checked")) {
-                        var statShort = '';
-                        var statShortVal = '';
-                        var staticShortStat = $('#static').val();
-                        var dynaminShortStat = $('#identifierId').val();
-                        if (staticShortStat) {
-                          statShort = '#static';
-                          statShortVal = staticShortStat;
-                        }
-                        if (dynaminShortStat) {
-                          statShort = '#identifierId';
-                          statShortVal = dynaminShortStat;
-                        }
-                        if (statShort && statShortVal) {
-                          validateShortTitleStatId('', statShort, function (st) {
-                            if (st) {
-                              $("#doneId").attr("disabled", false);
-                              $("body").removeClass('loading');
-                              doneActiveTask(this, 'done', function (val) {
-                                if (val) {
-                                  $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-                                  $("#buttonText").val('completed');
-                                  //$('#shortTitleId').val(shortTitle);
-                                  $('.typeofschedule').prop('disabled', false);
-                                  document.activeContentFormId.submit();
+
+            function validateTime() {
+              var durationTime = $('#inputClockId').val();
+              if (!durationTime) {
+                durationFlag = false;
+              } else if (durationTime && durationTime == '00:00')
+                durationFlag = false;
+              return durationFlag;
+            }
+
+            function validateShortTitle() {
+              var shortFlag = true;
+              var shortTitle = $('#shortTitleId').val();
+              var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+              if (parseInt(shortTitleCount) >= 1) {
+                shortFlag = false;
+              } else {
+                if (shortTitle) {
+                  validateShortTitleId('', function (st) {
+                    if (!st) {
+                      shortFlag = false;
+                    }
+                  });
+                } else {
+                  shortFlag = false;
+                }
+              }
+              return shortFlag;
+            }
+
+            function validateStatShortTitle() {
+              var statFlag = true;
+              var statShort = '';
+              var statShortVal = '';
+              var staticShortStat = $('#static').val();
+              var dynaminShortStat = $('#identifierId').val();
+              if (staticShortStat) {
+                statShort = '#static';
+                statShortVal = staticShortStat;
+              }
+              if (dynaminShortStat) {
+                statShort = '#identifierId';
+                statShortVal = dynaminShortStat;
+              }
+              var statShortTitleCount = $('.statShortTitleClass').find(
+                  '.help-block').children().length;
+              if (parseInt(statShortTitleCount) >= 1) {
+                statFlag = false;
+              } else {
+                if (statShort && statShortVal) {
+                  validateShortTitleStatId('', statShort, function (st) {
+                    if (!st) {
+                      statFlag = false;
+                    }
+                  });
+                } else {
+                  var statId = $('.shortTitleStatCls').attr('id');
+                  if (statId && statId == 'identifierId') {
+                    $("#identifierId").parent().addClass('has-error has-danger').find(
+                        ".help-block").empty().append(
+                        $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                            "This is a required field."));
+                    $('#identifierId').focus();
+                  } else {
+                    $("#static").parent().addClass('has-error has-danger').find(
+                        ".help-block").empty().append(
+                        $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                            "This is a required field."));
+                    $('#static').focus();
+                  }
+                  statFlag = false;
+                }
+              }
+              return statFlag;
+            }
+
+            $(document).on('click', '#doneId', function (e) {
+
+              var res = localStorage.getItem('IsActiveAnchorDateSelected');
+              if (res === 'true') {
+                $("#startDateWeekly").removeAttr("required");
+                $("#startDateWeekly").parent().parent().removeClass("has-error has-danger");
+                $("#startDateWeekly").next().children().remove();
+
+                $("#weeks").removeAttr("required");
+                $("#weeks").parent().parent().removeClass("has-error has-danger");
+                $("#weeks").next().children().remove();
+
+                $("#monthlyDateId").hide();
+                $("#monthlyDateId").removeAttr('required');
+
+                $("#activeMonthlyRegular").hide();
+                $("#months").removeAttr('required');
+
+              } else {
+                $('.remove_required').prop('required', false);
+                $("#startDateWeekly").attr("required");
+                $("#weeks").attr("required");
+
+                $("#monthlyDateId").show();
+                $("#monthlyDateId").attr('required');
+
+                $("#activeMonthlyRegular").show();
+                $("#months").attr('required');
+              }
+
+              console.log("done method");
+              $("body").addClass('loading');
+              $("#doneId").attr("disabled", true);
+              if ($('#pickStartDate').val() == '') {
+                $('#pickStartDate').attr("readonly", false);
+              }
+              if ($('#startWeeklyDate').val() == '') {
+                $('#startWeeklyDate').attr("readonly", false);
+              }
+              var shortFlag = true;
+              var statFlag = true;
+              if (isFromValid("#activeContentFormId")) {
+                if (!durationFlag) {
+                  var clock = $('#inputClockId').val();
+                  if (clock)
+                    $('#inputClockId').parent().addClass('has-error has-danger').find(
+                        ".help-block").empty().append(
+                        $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                            "Please select a non-zero Duration value."));
+                } else {
+                  $('#inputClockId').parent().find(".help-block").empty();
+                  var dt = new Date();
+                  $('#inputClockId').datetimepicker({
+                    format: 'HH:mm',
+                    minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+                    maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+                  });
+                }
+                $('.scheduleTaskClass').removeAttr('disabled');
+                $('.scheduleTaskClass').removeClass('linkDis');
+                //alert("statFlag"+ statFlag);
+                var shortTitle = $('#shortTitleId').val();
+                var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+                if (shortTitle) {
+                  validateShortTitleId('', function (st) {
+                    if (st) {
+                      var durationTime = $('#inputClockId').val();
+                      if (durationTime) {
+                        if (durationTime != '00:00') {
+                          if ($('#number_of_kicks_recorded_fetal_stat_id').is(":checked")) {
+                            var statShort = '';
+                            var statShortVal = '';
+                            var staticShortStat = $('#static').val();
+                            var dynaminShortStat = $('#identifierId').val();
+                            if (staticShortStat) {
+                              statShort = '#static';
+                              statShortVal = staticShortStat;
+                            }
+                            if (dynaminShortStat) {
+                              statShort = '#identifierId';
+                              statShortVal = dynaminShortStat;
+                            }
+                            if (statShort && statShortVal) {
+                              validateShortTitleStatId('', statShort, function (st) {
+                                if (st) {
+                                  $("#doneId").attr("disabled", false);
+                                  $("body").removeClass('loading');
+                                  doneActiveTask(this, 'done', function (val) {
+                                    if (val) {
+                                      $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled',
+                                          false);
+                                      $("#buttonText").val('completed');
+                                      //$('#shortTitleId').val(shortTitle);
+                                      $('.typeofschedule').prop('disabled', false);
+                                      document.activeContentFormId.submit();
+                                    }
+                                  })
+                                } else {
+                                  $("#doneId").attr("disabled", false);
+                                  $("body").removeClass('loading');
                                 }
-                              })
+                              });
                             } else {
+                              var statId = $('.shortTitleStatCls').attr('id');
+                              if (statId && statId == 'identifierId') {
+                                $("#identifierId").parent().addClass('has-error has-danger').find(
+                                    ".help-block").empty().append(
+                                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                                        "This is a required field."));
+                                //$('#identifierId').focus();
+                              } else {
+                                $("#static").parent().addClass('has-error has-danger').find(
+                                    ".help-block").empty().append(
+                                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                                        "This is a required field."));
+                                //$('#static').focus();
+                              }
                               $("#doneId").attr("disabled", false);
                               $("body").removeClass('loading');
                             }
-                          });
-                        } else {
-                          var statId = $('.shortTitleStatCls').attr('id');
-                          if (statId && statId == 'identifierId') {
-                            $("#identifierId").parent().addClass('has-error has-danger').find(
-                                ".help-block").empty().append(
-                                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                                    "This is a required field."));
-                            //$('#identifierId').focus();
                           } else {
-                            $("#static").parent().addClass('has-error has-danger').find(
-                                ".help-block").empty().append(
-                                $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                                    "This is a required field."));
-                            //$('#static').focus();
+                            $("#doneId").attr("disabled", false);
+                            $("body").removeClass('loading');
+                            doneActiveTask(this, 'done', function (val) {
+                              if (val) {
+
+                                $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+                                $("#buttonText").val('completed');
+                                document.activeContentFormId.submit();
+                              }
+                            })
                           }
+                        } else {
+                          $('#inputClockId').parent().addClass('has-error has-danger').find(
+                              ".help-block").empty().append(
+                              $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                                  "Please select a non-zero Duration value."));
                           $("#doneId").attr("disabled", false);
                           $("body").removeClass('loading');
                         }
                       } else {
                         $("#doneId").attr("disabled", false);
                         $("body").removeClass('loading');
-                        doneActiveTask(this, 'done', function (val) {
-                          if (val) {
-
-                            $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-                            $("#buttonText").val('completed');
-                            document.activeContentFormId.submit();
-                          }
-                        })
                       }
                     } else {
-                      $('#inputClockId').parent().addClass('has-error has-danger').find(
-                          ".help-block").empty().append(
-                          $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                              "Please select a non-zero Duration value."));
                       $("#doneId").attr("disabled", false);
                       $("body").removeClass('loading');
                     }
-                  } else {
-                    $("#doneId").attr("disabled", false);
-                    $("body").removeClass('loading');
-                  }
+                  });
                 } else {
                   $("#doneId").attr("disabled", false);
                   $("body").removeClass('loading');
                 }
+              } else {
+                console.log("else of Done");
+                $("body").removeClass('loading');
+                $("#doneId").attr("disabled", false);
+                if (!durationFlag) {
+                  var clock = $('#inputClockId').val();
+                  if (clock)
+                    $('#inputClockId').parent().addClass('has-error has-danger').find(
+                        ".help-block").empty().append(
+                        $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                            "Please select a non-zero Duration value."));
+                }
+                showErrMsg("Please fill in all mandatory fields.");
+                $('.contentClass a').tab('show');
+              }
+            });
+
+            $('#saveId').click(function (e) {
+              $('#isAutoSavedParent').val('false');
+              autoSaveFetalStudyActiveTaskPage('manual');
+            });
+            $("#shortTitleId").blur(function () {
+              validateShortTitleId('', function (val) {
               });
-            } else {
-              $("#doneId").attr("disabled", false);
-              $("body").removeClass('loading');
-            }
-          } else {
-            console.log("else of Done");
-            $("body").removeClass('loading');
-            $("#doneId").attr("disabled", false);
-            if (!durationFlag) {
-              var clock = $('#inputClockId').val();
-              if (clock)
-                $('#inputClockId').parent().addClass('has-error has-danger').find(
-                    ".help-block").empty().append(
-                    $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                        "Please select a non-zero Duration value."));
-            }
-            showErrMsg("Please fill in all mandatory fields.");
-            $('.contentClass a').tab('show');
-            }
-        });
+            })
+            $('#static').blur(function () {
+              validateShortTitleStatId('', this, function (val) {
+              });
+            })
+            $('#identifierId').blur(function () {
+              validateShortTitleStatId('', this, function (val) {
+              });
+            })
 
-        $('#saveId').click(function (e) {
-         $('#isAutoSavedParent').val('false');
-         autoSaveFetalStudyActiveTaskPage('manual');
-        });
-        $("#shortTitleId").blur(function () {
-          validateShortTitleId('', function (val) {
-          });
-        })
-        $('#static').blur(function () {
-          validateShortTitleStatId('', this, function (val) {
-          });
-        })
-        $('#identifierId').blur(function () {
-          validateShortTitleStatId('', this, function (val) {
-          });
-        })
+            $('#shortTitleId').on('keyup', function () {
+              $(this).parent().find(".help-block").empty();
+              $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+            });
+            $('#static').on('keyup', function () {
+              $(this).parent().find(".help-block").empty();
+              $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+            });
+            $('#identifierId').on('keyup', function () {
+              $(this).parent().find(".help-block").empty();
+              $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+            });
+            $('.selectpicker').selectpicker('refresh');
+            $('[data-toggle="tooltip"]').tooltip();
+            $('input').on('drop', function () {
+              return false;
+            });
+            $(document).find('input[type = text][custAttType != cust]').keyup(function (e) {
+              var evt = (e) ? e : window.event;
+              var charCode = (evt.which) ? evt.which
+                  : evt.keyCode;
+              var flag = false;
+              if (charCode == 8 || charCode == 127) {
+                flag = true;
+              }
+              var userinput = $(this).val();
+              var pattern = /[A-Za-z0-9-zñáéíóúü¿¡A-ZÑÁÉÍÓÚÜ_~\-!@*\[\]\;:'"\,.?<>\$%\&\(\)\s]+$/;
+              if (!pattern.test(userinput) && !flag) {
+                var v = userinput.substr(0, userinput.length - 1);
+                $(this).val(v);
+                $(this).parent().addClass(
+                    "has-danger has-error");
+                $(this)
+                .parent()
+                .find(".help-block")
+                .empty()
+                .append($("<ul><li> </li></ul>")
+                .attr("class", "list-unstyled")
+                .text("Special characters such as #^}{ are not allowed."));
+              } else {
+                $(this).val(userinput)
+              }
+            });
+            $(document).find('input[type = text][custAttType = cust]').keyup(function (e) {
+              var evt = (e) ? e : window.event;
+              var charCode = (evt.which) ? evt.which : evt.keyCode;
+              if (charCode == 16)
+                isShift = false;
+              if (!isShift && $(this).val()) {
+                var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
+                if (!regularExpression.test($(this).val())) {
+                  var newVal = $(this).val().replace(/[^A-Za-z0-9\*\(\)_+|:.\-]/g, '');
+                  e.preventDefault();
+                  $(this).val(newVal);
+                  $(this).parent().addClass("has-danger has-error");
+                  $(this).parent().find(".help-block").empty().append(
+                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                          "The characters like (< >) are not allowed."));
+                }
+              }
+            });
+            let timeOutInterval = setInterval(function () {
+              idleTime += 1;
+              if (idleTime > 3) { // 5 minutes
+                <c:if test="${actionPage ne 'view'}">
+                autoSaveFetalStudyActiveTaskPage('auto');
+                </c:if>
+                <c:if test="${actionPage eq 'view'}">
+                clearInterval(timeOutInterval);
+                timeOutFunction();
+                </c:if>
+              }
+            }, 226020); // 5 minutes
 
-        $('#shortTitleId').on('keyup', function () {
-          $(this).parent().find(".help-block").empty();
-          $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-        });
-        $('#static').on('keyup', function () {
-          $(this).parent().find(".help-block").empty();
-          $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-        });
-        $('#identifierId').on('keyup', function () {
-          $(this).parent().find(".help-block").empty();
-          $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-        });
-        $('.selectpicker').selectpicker('refresh');
-        $('[data-toggle="tooltip"]').tooltip();
-        $('input').on('drop', function () {
-          return false;
-        });
-        $(document).find('input[type = text][custAttType != cust]').keyup(function (e) {
-          var evt = (e) ? e : window.event;
-          var charCode = (evt.which) ? evt.which
-              : evt.keyCode;
-          var flag=false;
-          if (charCode == 8 || charCode == 127){
-            flag=true;
-          }
-          var userinput = $(this).val();
-          var pattern = /[A-Za-z0-9-zñáéíóúü¿¡A-ZÑÁÉÍÓÚÜ_~\-!@*\[\]\;:'"\,.?<>\$%\&\(\)\s]+$/;
-          if (!pattern.test(userinput) && !flag) {
-            var v = userinput.substr(0, userinput.length - 1);
-            $(this).val(v);
-            $(this).parent().addClass(
-                "has-danger has-error");
-            $(this)
-            .parent()
-            .find(".help-block")
-            .empty()
-            .append($("<ul><li> </li></ul>")
-            .attr("class", "list-unstyled")
-            .text("Special characters such as #^}{ are not allowed."));
-          } else {
-            $(this).val(userinput)
-          }
-        });
-        $(document).find('input[type = text][custAttType = cust]').keyup(function (e) {
-          var evt = (e) ? e : window.event;
-          var charCode = (evt.which) ? evt.which : evt.keyCode;
-          if (charCode == 16)
-            isShift = false;
-          if (!isShift && $(this).val()) {
-            var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
-            if (!regularExpression.test($(this).val())) {
-              var newVal = $(this).val().replace(/[^A-Za-z0-9\*\(\)_+|:.\-]/g, '');
-              e.preventDefault();
-              $(this).val(newVal);
-              $(this).parent().addClass("has-danger has-error");
-              $(this).parent().find(".help-block").empty().append(
-                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                      "The characters like (< >) are not allowed."));
-            }
-          }
-        });
-        let timeOutInterval = setInterval(function () {
-          idleTime += 1;
-          if (idleTime > 3) { // 5 minutes
-            <c:if test="${actionPage ne 'view'}">
-                                autoSaveFetalStudyActiveTaskPage('auto');
-                                 </c:if>
-                                <c:if test="${actionPage eq 'view'}">
-            clearInterval(timeOutInterval);
-            timeOutFunction();
-            </c:if>
-                        }
-                    }, 226020); // 5 minutes
-
-                    $(this).mousemove(function (e) {
-                        idleTime = 0;
-                    });
-                    $(this).keypress(function (e) {
-                        idleTime = 0;
-                    });
+            $(this).mousemove(function (e) {
+              idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+              idleTime = 0;
+            });
 
             function timeOutFunction() {
-             $('#timeOutModal').modal('show');
+              $('#timeOutModal').modal('show');
               let i = 14;
               let timeOutInterval = setInterval(function () {
-               if (i === 0) {
-                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                 if ($('#timeOutModal').hasClass('show')) {
-                   var a = document.createElement('a');
-                   a.href = "/fdahpStudyDesigner/sessionOut.do";
-                   document.body.appendChild(a).click();
+                if (i === 0) {
+                  $('#timeOutMessage').html(
+                      '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                      + i + ' minutes');
+                  if ($('#timeOutModal').hasClass('show')) {
+                    var a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/sessionOut.do";
+                    document.body.appendChild(a).click();
+                  }
+                  clearInterval(timeOutInterval);
+                } else {
+                  if (i === 1) {
+                    $('#timeOutMessage').html(
+                        '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+                  } else {
+                    $('#timeOutMessage').html(
+                        '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                        + i + ' minutes');
+                  }
+                  idleTime = 0;
+                  i -= 1;
                 }
-                 clearInterval(timeOutInterval);
-                   } else {
-                     if (i === 1) {
-                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                     } else {
-                     $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    }
-                     idleTime = 0;
-                     i-=1;
-                      }
-                      }, 60000);
-                      }
-          // pop message after 15 minutes
-          if ($('#isAutoSaved').val() === 'true') {
+              }, 60000);
+            }
+
+            // pop message after 15 minutes
+            if ($('#isAutoSaved').val() === 'true') {
               $('#myModal').modal('show');
               let i = 1;
               let j = 14;
               let lastSavedInterval = setInterval(function () {
-                  if ((i === 15) || (j === 0)) {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                      if ($('#myModal').hasClass('show')) {
-                          var a = document.createElement('a');
-                          a.href = "/fdahpStudyDesigner/sessionOut.do";
-                          document.body.appendChild(a).click();
-                      }
-                      clearInterval(lastSavedInterval);
-                  } else {
-                       if ((i === 1) || (j === 14)){
-                           $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                      }
-                      else if ((i === 14) || (j === 1)) {
-                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                      }
-                      else {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                      }
-                      idleTime = 0;
-                      i+=1;
-                      j-=1;
+                if ((i === 15) || (j === 0)) {
+                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                      + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                      + j + ' minutes</span></div>').css("fontSize", "15px");
+                  if ($('#myModal').hasClass('show')) {
+                    var a = document.createElement('a');
+                    a.href = "/fdahpStudyDesigner/sessionOut.do";
+                    document.body.appendChild(a).click();
                   }
-              }, 60000);
-          }
-      });
-   function autoSaveFetalStudyActiveTaskPage(mode){
-             $("body").addClass('loading');
-             var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
-             if (shortTitleCount >= 1) {
-               showErrMsg("Please fill in all mandatory fields.");
-               $('.contentClass a').tab('show');
-               $("body").removeClass('loading');
-               return false;
-             } else if (!$('#shortTitleId')[0].checkValidity()) {
-               $("#shortTitleId").parent().addClass('has-error has-danger').find(
-                   ".help-block").empty().append(
-                   $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                       "This is a required field."));
-               showErrMsg("Please fill in all mandatory fields.");
-               $('.contentClass a').tab('show');
-               $("body").removeClass('loading');
-               return false;
-             } else {
-               validateShortTitleId('', function (st) {
-                 if (st) {
-                   if (!durationFlag) {
-                     $('#inputClockId').parent().addClass('has-error has-danger').find(
-                         ".help-block").empty().append(
-                         $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                             "Please select a non-zero Duration value."));
-                     $('#inputClockId').focus();
-                     showErrMsg("Please fill in all mandatory fields.");
-                     $('.contentClass a').tab('show');
-                     $("body").removeClass('loading');
-                     return false;
-                   } else {
-                     //Please fill out this field.
-                     var statShortTitleCount = $('.statShortTitleClass').find(
-                         '.help-block').children().length;
-                     var errorstatShortTitle = $('.statShortTitleClass').find(
-                         '.help-block').children().text();
-                     if (statShortTitleCount >= 1 && errorstatShortTitle
-                         != "Please fill out this field.") {
-                       var statId = $('.shortTitleStatCls').attr('id');
-                       if (statId && statId == 'identifierId')
-                         $('#identifierId').focus();
-                       else
-                         $('#static').focus();
-
-                       showErrMsg("Please fill in all mandatory fields.");
-                       $('.contentClass a').tab('show');
-                       $("body").removeClass('loading');
-                       return false;
-                     } else {
-                       var statShort = '';
-                       var staticShortStat = $('#static').val();
-                       var dynaminShortStat = $('#identifierId').val();
-                       if (staticShortStat)
-                         statShort = '#static';
-                       if (dynaminShortStat)
-                         statShort = '#identifierId';
-                       if (statShort) {
-                         validateShortTitleStatId('', statShort, function (st) {
-                           if (st) {
-                             $('#inputClockId').parent().find(".help-block").empty();
-                             var dt = new Date();
-                             $('#inputClockId').datetimepicker({
-                               format: 'HH:mm',
-                               minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00,
-                                   00),
-                               maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-                             });
-                             doneActiveTask(this, 'save', function (val) {
-                               if (val) {
-                                 $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-                                 $('#activeContentFormId').validator('destroy');
-                                 $("#buttonText").val('save');
-                                 if (mode === 'auto') {
-                                     $("#isAutoSaved").val('true');
-                                 } else {
-                                     $("#isAutoSaved").val('false');
-                                 }
-                                 document.activeContentFormId.submit();
-                               }
-                             });
-                           } else {
-                             $("body").removeClass('loading');
-                           }
-                         });
-                       } else {
-                         $("body").removeClass('loading');
-                         $('#inputClockId').parent().find(".help-block").empty();
-                         var dt = new Date();
-                         $('#inputClockId').datetimepicker({
-                           format: 'HH:mm',
-                           minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
-                           maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-                         });
-                         doneActiveTask(this, 'save', function (val) {
-                           if (val) {
-                             $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
-                             $('#activeContentFormId').validator('destroy');
-                             $("#buttonText").val('save');
-                             if (mode === 'auto') {
-                                 $("#isAutoSaved").val('true');
-                             } else {
-                                 $("#isAutoSaved").val('false');
-                             }
-                             document.activeContentFormId.submit();
-                           } else {
-                             $("body").removeClass('loading');
-                           }
-                         });
-                       }
-                     }
-                   }
-                 } else {
-                   $("body").removeClass('loading');
-                 }
-               });
-             }
-   }
-      function validateShortTitleId(item, callback) {
-        console.log("validateShortTitleId");
-        var shortTitle = $("#shortTitleId").val();
-        var thisAttr = $("#shortTitleId");
-        var existedKey = '${activeTaskBo.shortTitle}';
-        var activeTaskAttName = 'shortTitle';
-        var activeTaskAttIdVal = shortTitle;
-        var activeTaskAttIdName = "not";
-        if (shortTitle != null && shortTitle != '' && typeof shortTitle != 'undefined') {
-          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-          $(thisAttr).parent().find(".help-block").empty();
-          $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-          $('.shortTitleClass').parent().find(".help-block").empty();
-          if (existedKey != shortTitle) {
-            $.ajax({
-              url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
-              type: "POST",
-              datatype: "json",
-              data: {
-                activeTaskAttName: activeTaskAttName,
-                activeTaskAttIdVal: activeTaskAttIdVal,
-                activeTaskAttIdName: activeTaskAttIdName,
-                "${_csrf.parameterName}": "${_csrf.token}",
-              },
-              success: function getResponse(data) {
-                var message = data.message;
-                console.log(message);
-                if ('SUCCESS' != message) {
-                  $(thisAttr).validator('validate');
-                  $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-                  $('.shortTitleClass').parent().find(".help-block").empty();
-                  callback(true);
+                  clearInterval(lastSavedInterval);
                 } else {
-                  $(thisAttr).val('');
-                  $('.shortTitleClass').parent().addClass("has-danger").addClass("has-error");
-                  $('.shortTitleClass').parent().find(".help-block").empty();
-                  $(thisAttr).parent().find(".help-block").append(
-                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                          shortTitle
-                          + " has already been used in the past."));
-                  // $('#shortTitleId').focus();
-                  callback(false);
-                }
-              },
-              global: false
-            });
-          } else {
-            callback(true);
-            $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-            $('.shortTitleClass').parent().find(".help-block").empty();
-          }
-        } else {
-          callback(false);
-        }
-      }
-
-      function validateShortTitleStatId(event, thisAttr, callback) {
-        //alert("validate");
-        var activeTaskAttName = 'identifierNameStat';
-        var activeTaskAttIdVal = $(thisAttr).val();
-        var activeTaskAttIdName = $(thisAttr).attr('id');
-        if (activeTaskAttIdVal && activeTaskAttIdName) {
-          $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-          $('.statShortTitleClass').parent().find(".help-block").empty();
-          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-          $(thisAttr).parent().find(".help-block").empty();
-          if (activeTaskAttIdName != 'static') {
-            activeTaskAttIdName = 'static';
-            var dbIdentifierVal = $('#dbIdentifierId').val();
-            //alert("dbIdentifierVal"+dbIdentifierVal);
-            if (dbIdentifierVal != activeTaskAttIdVal) {
-              $.ajax({
-                url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
-                type: "POST",
-                datatype: "json",
-                data: {
-                  activeTaskAttName: activeTaskAttName,
-                  activeTaskAttIdVal: activeTaskAttIdVal,
-                  activeTaskAttIdName: activeTaskAttIdName,
-                  "${_csrf.parameterName}": "${_csrf.token}",
-                },
-                success: function emailValid(data, status) {
-                  var message = data.message;
-                  if ('SUCCESS' != message) {
-                    // $(thisAttr).validator('validate');
-                    // $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
-                    // $('.statShortTitleClass').parent().find(".help-block").empty();
-                    $("#identifierId").validator('validate');
-                    $("#identifierId").parent().removeClass("has-danger").removeClass("has-error");
-                    $("#identifierId").parent().find(".help-block").empty();
-                    shortTitleStatFlag = true;
-                    //$("#doneId").attr("disabled",false);
-                    callback(true);
+                  if ((i === 1) || (j === 14)) {
+                    $('#autoSavedMessage').html(
+                        '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+                        "fontSize", "15px");
+                  } else if ((i === 14) || (j === 1)) {
+                    $('#autoSavedMessage').html(
+                        '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
                   } else {
-                    $(thisAttr).val('');
-                    $('#identifierId').parent().addClass("has-danger").addClass("has-error");
-                    $('#identifierId').parent().find(".help-block").empty();
-                    $('#identifierId').parent().find(".help-block").append(
+                    $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                        + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                        + j + ' minutes</span></div>').css("fontSize", "15px");
+                  }
+                  idleTime = 0;
+                  i += 1;
+                  j -= 1;
+                }
+              }, 60000);
+            }
+          });
+
+          function autoSaveFetalStudyActiveTaskPage(mode) {
+            $("body").addClass('loading');
+            var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
+            if (shortTitleCount >= 1) {
+              showErrMsg("Please fill in all mandatory fields.");
+              $('.contentClass a').tab('show');
+              $("body").removeClass('loading');
+              return false;
+            } else if (!$('#shortTitleId')[0].checkValidity()) {
+              $("#shortTitleId").parent().addClass('has-error has-danger').find(
+                  ".help-block").empty().append(
+                  $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                      "This is a required field."));
+              showErrMsg("Please fill in all mandatory fields.");
+              $('.contentClass a').tab('show');
+              $("body").removeClass('loading');
+              return false;
+            } else {
+              validateShortTitleId('', function (st) {
+                if (st) {
+                  if (!durationFlag) {
+                    $('#inputClockId').parent().addClass('has-error has-danger').find(
+                        ".help-block").empty().append(
                         $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                            activeTaskAttIdVal
-                            + " has already been used in the past."));
-                    $('#identifierId').focus();
+                            "Please select a non-zero Duration value."));
+                    $('#inputClockId').focus();
                     showErrMsg("Please fill in all mandatory fields.");
                     $('.contentClass a').tab('show');
-                    shortTitleStatFlag = false;
-                    //$("#doneId").attr("disabled",true);
-                    callback(false);
+                    $("body").removeClass('loading');
+                    return false;
+                  } else {
+                    //Please fill out this field.
+                    var statShortTitleCount = $('.statShortTitleClass').find(
+                        '.help-block').children().length;
+                    var errorstatShortTitle = $('.statShortTitleClass').find(
+                        '.help-block').children().text();
+                    if (statShortTitleCount >= 1 && errorstatShortTitle
+                        != "Please fill out this field.") {
+                      var statId = $('.shortTitleStatCls').attr('id');
+                      if (statId && statId == 'identifierId')
+                        $('#identifierId').focus();
+                      else
+                        $('#static').focus();
 
+                      showErrMsg("Please fill in all mandatory fields.");
+                      $('.contentClass a').tab('show');
+                      $("body").removeClass('loading');
+                      return false;
+                    } else {
+                      var statShort = '';
+                      var staticShortStat = $('#static').val();
+                      var dynaminShortStat = $('#identifierId').val();
+                      if (staticShortStat)
+                        statShort = '#static';
+                      if (dynaminShortStat)
+                        statShort = '#identifierId';
+                      if (statShort) {
+                        validateShortTitleStatId('', statShort, function (st) {
+                          if (st) {
+                            $('#inputClockId').parent().find(".help-block").empty();
+                            var dt = new Date();
+                            $('#inputClockId').datetimepicker({
+                              format: 'HH:mm',
+                              minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00,
+                                  00),
+                              maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23,
+                                  59)
+                            });
+                            doneActiveTask(this, 'save', function (val) {
+                              if (val) {
+                                $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+                                $('#activeContentFormId').validator('destroy');
+                                $("#buttonText").val('save');
+                                if (mode === 'auto') {
+                                  $("#isAutoSaved").val('true');
+                                } else {
+                                  $("#isAutoSaved").val('false');
+                                }
+                                document.activeContentFormId.submit();
+                              }
+                            });
+                          } else {
+                            $("body").removeClass('loading');
+                          }
+                        });
+                      } else {
+                        $("body").removeClass('loading');
+                        $('#inputClockId').parent().find(".help-block").empty();
+                        var dt = new Date();
+                        $('#inputClockId').datetimepicker({
+                          format: 'HH:mm',
+                          minDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+                          maxDate: new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+                        });
+                        doneActiveTask(this, 'save', function (val) {
+                          if (val) {
+                            $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
+                            $('#activeContentFormId').validator('destroy');
+                            $("#buttonText").val('save');
+                            if (mode === 'auto') {
+                              $("#isAutoSaved").val('true');
+                            } else {
+                              $("#isAutoSaved").val('false');
+                            }
+                            document.activeContentFormId.submit();
+                          } else {
+                            $("body").removeClass('loading');
+                          }
+                        });
+                      }
+                    }
                   }
-                },
-                error: function status(data, status) {
-                  callback(false);
-                },
-                global: false
+                } else {
+                  $("body").removeClass('loading');
+                }
               });
-            } else {
-              callback(true);
+            }
+          }
+
+          function validateShortTitleId(item, callback) {
+            console.log("validateShortTitleId");
+            var shortTitle = $("#shortTitleId").val();
+            var thisAttr = $("#shortTitleId");
+            var existedKey = '${activeTaskBo.shortTitle}';
+            var activeTaskAttName = 'shortTitle';
+            var activeTaskAttIdVal = shortTitle;
+            var activeTaskAttIdName = "not";
+            if (shortTitle != null && shortTitle != '' && typeof shortTitle != 'undefined') {
+              $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+              $(thisAttr).parent().find(".help-block").empty();
               $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
               $('.shortTitleClass').parent().find(".help-block").empty();
+              if (existedKey != shortTitle) {
+                $.ajax({
+                  url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
+                  type: "POST",
+                  datatype: "json",
+                  data: {
+                    activeTaskAttName: activeTaskAttName,
+                    activeTaskAttIdVal: activeTaskAttIdVal,
+                    activeTaskAttIdName: activeTaskAttIdName,
+                    "${_csrf.parameterName}": "${_csrf.token}",
+                  },
+                  success: function getResponse(data) {
+                    var message = data.message;
+                    console.log(message);
+                    if ('SUCCESS' != message) {
+                      $(thisAttr).validator('validate');
+                      $('.shortTitleClass').parent().removeClass("has-danger").removeClass(
+                          "has-error");
+                      $('.shortTitleClass').parent().find(".help-block").empty();
+                      callback(true);
+                    } else {
+                      $(thisAttr).val('');
+                      $('.shortTitleClass').parent().addClass("has-danger").addClass("has-error");
+                      $('.shortTitleClass').parent().find(".help-block").empty();
+                      $(thisAttr).parent().find(".help-block").append(
+                          $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                              shortTitle
+                              + " has already been used in the past."));
+                      // $('#shortTitleId').focus();
+                      callback(false);
+                    }
+                  },
+                  global: false
+                });
+              } else {
+                callback(true);
+                $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+                $('.shortTitleClass').parent().find(".help-block").empty();
+              }
+            } else {
+              callback(false);
             }
-          } else {
-            $.ajax({
-              url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
-              type: "POST",
-              datatype: "json",
-              data: {
-                activeTaskAttName: activeTaskAttName,
-                activeTaskAttIdVal: activeTaskAttIdVal,
-                activeTaskAttIdName: activeTaskAttIdName,
-                "${_csrf.parameterName}": "${_csrf.token}",
-              },
-              success: function emailValid(data, status) {
-                var message = data.message;
-                if ('SUCCESS' != message) {
-                  $(thisAttr).validator('validate');
-                  $('.statShortTitleClass').parent().removeClass("has-danger").removeClass(
-                      "has-error");
-                  $('.statShortTitleClass').parent().find(".help-block").empty();
-                  if (callback)
-                    callback(true);
-                } else {
-                  $(thisAttr).val('');
-                  $('.statShortTitleClass').parent().addClass("has-danger").addClass("has-error");
-                  $('.statShortTitleClass').parent().find(".help-block").empty();
-                  $(thisAttr).parent().find(".help-block").append(
-                      $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
-                          activeTaskAttIdVal
-                          + " has already been used in the past."));
-                  if (callback)
-                    callback(false);
-
-                }
-              },
-              error: function status(data, status) {
-                callback(false);
-              },
-              global: false
-            });
           }
-        } else {
-          if (callback)
-            callback(true);
-        }
-      }
 
-      function setLineChatStatCheckedVal() {
-        if ($('#number_of_kicks_recorded_fetal_chart_id').is(":checked")) {
-          $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "");
-          $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-              'required', true);
-          $('#number_of_kicks_recorded_fetal_chart_id').val(true);
-          $('.selectpicker').selectpicker('refresh');
-        } else {
-          $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "none");
-          $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-              'required', false);
-          $('#number_of_kicks_recorded_fetal_chart_id').val(false);
-        }
-        if ($('#number_of_kicks_recorded_fetal_stat_id').is(":checked")) {
-          $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "");
-          $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-              'required', true);
-          $('#number_of_kicks_recorded_fetal_stat_id').val(true);
-          $('.selectpicker').selectpicker('refresh');
-        } else {
-          $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "none");
-          $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
-              'required', false);
-          $('#number_of_kicks_recorded_fetal_stat_id').val(false);
-        }
-      }
+          function validateShortTitleStatId(event, thisAttr, callback) {
+            //alert("validate");
+            var activeTaskAttName = 'identifierNameStat';
+            var activeTaskAttIdVal = $(thisAttr).val();
+            var activeTaskAttIdName = $(thisAttr).attr('id');
+            if (activeTaskAttIdVal && activeTaskAttIdName) {
+              $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+              $('.statShortTitleClass').parent().find(".help-block").empty();
+              $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+              $(thisAttr).parent().find(".help-block").empty();
+              if (activeTaskAttIdName != 'static') {
+                activeTaskAttIdName = 'static';
+                var dbIdentifierVal = $('#dbIdentifierId').val();
+                //alert("dbIdentifierVal"+dbIdentifierVal);
+                if (dbIdentifierVal != activeTaskAttIdVal) {
+                  $.ajax({
+                    url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                      activeTaskAttName: activeTaskAttName,
+                      activeTaskAttIdVal: activeTaskAttIdVal,
+                      activeTaskAttIdName: activeTaskAttIdName,
+                      "${_csrf.parameterName}": "${_csrf.token}",
+                    },
+                    success: function emailValid(data, status) {
+                      var message = data.message;
+                      if ('SUCCESS' != message) {
+                        // $(thisAttr).validator('validate');
+                        // $('.statShortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+                        // $('.statShortTitleClass').parent().find(".help-block").empty();
+                        $("#identifierId").validator('validate');
+                        $("#identifierId").parent().removeClass("has-danger").removeClass(
+                            "has-error");
+                        $("#identifierId").parent().find(".help-block").empty();
+                        shortTitleStatFlag = true;
+                        //$("#doneId").attr("disabled",false);
+                        callback(true);
+                      } else {
+                        $(thisAttr).val('');
+                        $('#identifierId').parent().addClass("has-danger").addClass("has-error");
+                        $('#identifierId').parent().find(".help-block").empty();
+                        $('#identifierId').parent().find(".help-block").append(
+                            $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                                activeTaskAttIdVal
+                                + " has already been used in the past."));
+                        $('#identifierId').focus();
+                        showErrMsg("Please fill in all mandatory fields.");
+                        $('.contentClass a').tab('show');
+                        shortTitleStatFlag = false;
+                        //$("#doneId").attr("disabled",true);
+                        callback(false);
 
-      var updateLogoutCsrf = function () {
-        $('#logoutCsrf').val('${_csrf.token}');
-        $('#logoutCsrf').prop('name', '${_csrf.parameterName}');
-      }
-      //# sourceURL=filename1.js
-    </script>
+                      }
+                    },
+                    error: function status(data, status) {
+                      callback(false);
+                    },
+                    global: false
+                  });
+                } else {
+                  callback(true);
+                  $('.shortTitleClass').parent().removeClass("has-danger").removeClass("has-error");
+                  $('.shortTitleClass').parent().find(".help-block").empty();
+                }
+              } else {
+                $.ajax({
+                  url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
+                  type: "POST",
+                  datatype: "json",
+                  data: {
+                    activeTaskAttName: activeTaskAttName,
+                    activeTaskAttIdVal: activeTaskAttIdVal,
+                    activeTaskAttIdName: activeTaskAttIdName,
+                    "${_csrf.parameterName}": "${_csrf.token}",
+                  },
+                  success: function emailValid(data, status) {
+                    var message = data.message;
+                    if ('SUCCESS' != message) {
+                      $(thisAttr).validator('validate');
+                      $('.statShortTitleClass').parent().removeClass("has-danger").removeClass(
+                          "has-error");
+                      $('.statShortTitleClass').parent().find(".help-block").empty();
+                      if (callback)
+                        callback(true);
+                    } else {
+                      $(thisAttr).val('');
+                      $('.statShortTitleClass').parent().addClass("has-danger").addClass(
+                          "has-error");
+                      $('.statShortTitleClass').parent().find(".help-block").empty();
+                      $(thisAttr).parent().find(".help-block").append(
+                          $("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
+                              activeTaskAttIdVal
+                              + " has already been used in the past."));
+                      if (callback)
+                        callback(false);
+
+                    }
+                  },
+                  error: function status(data, status) {
+                    callback(false);
+                  },
+                  global: false
+                });
+              }
+            } else {
+              if (callback)
+                callback(true);
+            }
+          }
+
+          function setLineChatStatCheckedVal() {
+            if ($('#number_of_kicks_recorded_fetal_chart_id').is(":checked")) {
+              $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "");
+              $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                  'required', true);
+              $('#number_of_kicks_recorded_fetal_chart_id').val(true);
+              $('.selectpicker').selectpicker('refresh');
+            } else {
+              $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display", "none");
+              $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                  'required', false);
+              $('#number_of_kicks_recorded_fetal_chart_id').val(false);
+            }
+            if ($('#number_of_kicks_recorded_fetal_stat_id').is(":checked")) {
+              $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "");
+              $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                  'required', true);
+              $('#number_of_kicks_recorded_fetal_stat_id').val(true);
+              $('.selectpicker').selectpicker('refresh');
+            } else {
+              $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display", "none");
+              $('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr(
+                  'required', false);
+              $('#number_of_kicks_recorded_fetal_stat_id').val(false);
+            }
+          }
+
+          var updateLogoutCsrf = function () {
+            $('#logoutCsrf').val('${_csrf.token}');
+            $('#logoutCsrf').prop('name', '${_csrf.parameterName}');
+          }
+          //# sourceURL=filename1.js
+        </script>

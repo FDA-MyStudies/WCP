@@ -683,6 +683,7 @@ $(document)
 																		.submit();
 																var a = document
 																		.createElement('a');
+																console.log('login called from common.js...');
 																a.href = "/fdahpStudyDesigner/adminDashboard/viewDashBoard.do?action=landing";
 																document.body
 																		.appendChild(

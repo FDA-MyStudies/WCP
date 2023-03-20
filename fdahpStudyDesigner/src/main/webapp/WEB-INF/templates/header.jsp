@@ -117,8 +117,8 @@ display:flex;
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="adminStudyDashForm" name="adminStudyDashForm" method="post">
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminDashboard/viewDashBoard.do" id="landingPageForm" name="landingPageForm" method="post">
-</form:form>
+<%--<form:form action="/fdahpStudyDesigner/adminDashboard/viewDashBoard.do" id="landingPageForm" name="landingPageForm" method="post">--%>
+<%--</form:form>--%>
  <script type="text/javascript">
  $(document).ready(function(){
  	var a = document.createElement('a');
@@ -153,6 +153,7 @@ display:flex;
  	
  	$('#landingScreen').on('click',function(){
 //  		$('#landingPageForm').submit();
+      console.log('login called from header.jsp...');
 		a.href = "/fdahpStudyDesigner/adminDashboard/viewDashBoard.do";
 		document.body.appendChild(a).click();
  	});

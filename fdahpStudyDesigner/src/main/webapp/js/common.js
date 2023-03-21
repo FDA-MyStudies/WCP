@@ -722,3 +722,9 @@ $(document)
 										}
 									});
 				});
+
+function keepAlive() {
+	$.get(window.location.pathname, function (data) {
+		// console.log(data);
+	});
+}

@@ -802,18 +802,23 @@
       $('#myModal').modal('show');
     });
 
-    let timeOutInterval = setInterval(function () {
-      idleTime += 1;
-      if (idleTime > 3) {
-        <c:if test="${permission ne 'view'}">
+    parentInterval();
+
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) {
+          <c:if test="${permission ne 'view'}">
         saveSettingAndAdminsPage('auto');
         </c:if>
         <c:if test="${permission eq 'view'}">
-        clearInterval(timeOutInterval);
-        timeOutFunction();
+          clearInterval(timeOutInterval);
+          keepAlive();
+          timeOutFunction();
         </c:if>
       }
-    }, 226000); // 5 minutes
+      }, 226000); // 5 minutes
+    }
 
     $(this).mousemove(function (e) {
       idleTime = 0;
@@ -822,10 +827,12 @@
       idleTime = 0;
     });
 
+    var timeOutInterval;
+
     function timeOutFunction() {
       $('#timeOutModal').modal('show');
       let i = 14;
-      let timeOutInterval = setInterval(function () {
+      timeOutInterval = setInterval(function () {
         if (i === 0) {
           $('#timeOutMessage').html(
               '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
@@ -850,6 +857,15 @@
         }
       }, 60000);
     }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#timeOutModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
 
     // pop message after 15 minutes
     if ($('#isAutoSaved').val() === 'true') {

@@ -3511,19 +3511,6 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       setAnchorDropdown(frequency_text, element);
     });
 
-    let timeOutInterval = setInterval(function () {
-      idleTime += 1;
-      if (idleTime > 3) {
-        <c:if test="${actionType ne 'view'}">
-        autoSaveQuestionnaire('auto');
-        </c:if>
-        <c:if test="${actionType eq 'view'}">
-        clearInterval(timeOutInterval);
-        timeOutFunction();
-        </c:if>
-      }
-    }, 226020); // 5 minutes
-
     $(this).mousemove(function (e) {
       idleTime = 0;
     });
@@ -3531,10 +3518,30 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       idleTime = 0;
     });
 
+    parentInterval();
+
+    function parentInterval() {
+      let autoSaveInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) {
+          <c:if test="${actionType ne 'view'}">
+          autoSaveQuestionnaire('auto');
+          </c:if>
+          <c:if test="${actionType eq 'view'}">
+          clearInterval(autoSaveInterval);
+          keepAlive();
+          timeOutFunction();
+          </c:if>
+        }
+      }, 226000); // 5 minutes
+    }
+
+    var timeOutInterval;
+
     function timeOutFunction() {
       $('#timeOutModal').modal('show');
       let i = 14;
-      let timeOutInterval = setInterval(function () {
+      timeOutInterval = setInterval(function () {
         if (i === 0) {
           $('#timeOutMessage').html(
               '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
@@ -3559,6 +3566,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         }
       }, 60000);
     }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#timeOutModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
   });
 
   function autoSaveQuestionnaire(mode) {

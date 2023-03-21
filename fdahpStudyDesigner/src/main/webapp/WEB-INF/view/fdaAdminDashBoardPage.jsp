@@ -367,13 +367,18 @@
     var copyRightText = 'Copyright © ' + year + ' FDA';
     document.getElementById("copyright").innerHTML = copyRightText;
 
-    let timeOutInterval = setInterval(function () {
-      idleTime += 1;
-      if (idleTime > 3) { // 5 minutes
-        clearInterval(timeOutInterval);
-        timeOutFunction();
-      }
-    }, 226000);
+    parentInterval();
+
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          clearInterval(timeOutInterval);
+          keepAlive();
+          timeOutFunction();
+        }
+      }, 226000);
+    }
 
     $(this).mousemove(function (e) {
       idleTime = 0;
@@ -382,10 +387,12 @@
       idleTime = 0;
     });
 
+    var timeOutInterval;
+
     function timeOutFunction() {
       $('#myModal').modal('show');
       let i = 14;
-      let timeOutInterval = setInterval(function () {
+      timeOutInterval = setInterval(function () {
         if (i === 0) {
           $('#timeOutMessage').html(
               '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
@@ -410,6 +417,15 @@
         }
       }, 60000);
     }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#myModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
   });
   <c:if test="${param.action eq 'landing'}">
   /* function noBack() {

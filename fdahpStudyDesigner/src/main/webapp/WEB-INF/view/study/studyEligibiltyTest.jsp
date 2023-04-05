@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
   .langSpecific {
     position: relative;
   }
@@ -44,7 +44,7 @@
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f text-uppercase dis-line pull-left line34">
-					<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
+					<span class="mr-xs cur-pointer back-page"><img
                             src="../images/icons/back-b.png"/></span>
                     <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Eligibility Question</c:if>
                     <c:if test="${actionTypeForQuestionPage == 'view'}">View Eligibility Question
@@ -57,7 +57,7 @@
                        name="actionTypeForQuestionPage" id="actionTypeForQuestionPage">
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -73,7 +73,7 @@
                 </c:if>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -86,8 +86,7 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="goToBackPage(this);">Cancel
+                    <button type="button" class="btn btn-default gray-btn back-page">Cancel
                     </button>
                 </div>
                 <c:if test="${actionTypeForQuestionPage ne 'view'}">
@@ -232,7 +231,7 @@
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   var isValid = false;
   var oldShortTitle = "${fn:escapeXml(eligibilityTest.shortTitle)}";
@@ -523,8 +522,8 @@
     }
   }
 
-  function goToBackPage(item) {
-    $(item).prop('disabled', true);
+  $(".back-page").on('click', function () {
+    $(this).prop('disabled', true);
     <c:if test="${actionTypeForQuestionPage ne 'view'}">
     bootbox
     .confirm({
@@ -546,7 +545,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -556,7 +555,7 @@
     a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
   var chkValidChoosedOption = function () {
     let resYesOptVal = $('#resYesOptId').val();

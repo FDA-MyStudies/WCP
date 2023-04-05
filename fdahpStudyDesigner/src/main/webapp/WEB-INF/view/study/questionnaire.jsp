@@ -7,7 +7,7 @@
 <c:set var="tz" value="America/Los_Angeles"/>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
 
       .cursonMove {
         cursor: move !important;
@@ -233,11 +233,27 @@
       .display_show {
         display: block;
       }
+      
+      #pd-40{
+      	padding:40px;
+      }
+      
+      .br-cl{
+      	border-color: #ffffff;
+      }
+      
+      .mrgb-0{
+      	margin-bottom: 0px
+      }
+      
+      #mt-20{
+      	margin-top: -20px;
+      }
     </style>
 </head>
 
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   function isNumber(evt, thisAttr) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -259,7 +275,7 @@
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
+				<span class="mr-xs cur-pointer back-page"><img
                         src="../images/icons/back-b.png"/></span>
                 <c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
                 <c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
@@ -269,7 +285,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -285,7 +301,7 @@
             </c:if>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -298,8 +314,7 @@
             </c:if>
 
             <div class="dis-line form-group mb-none mr-sm">
-                <button type="button" class="btn btn-default gray-btn"
-                        onclick="goToBackPage(this);">Cancel
+                <button type="button" class="btn btn-default gray-btn back-page">Cancel
                 </button>
             </div>
             <c:if test="${actionType ne 'view'}">
@@ -396,7 +411,7 @@
                     <input type="hidden" id="actionTypeForQuestionPage"
                            name="actionTypeForQuestionPage">
 
-                    <select id="questionLangBOList" style="display: none">
+                    <select id="questionLangBOList" class="dis-none">
                         <c:forEach items="${questionLangBOList}" var="questionLang">
                             <option id='${questionLang.questionLangPK.id}'
                                     status="${questionLang.status}"
@@ -405,14 +420,14 @@
                         </c:forEach>
                     </select>
 
-                    <select id="formLangList" style="display: none">
+                    <select id="formLangList" class="dis-none">
                         <c:forEach items="${formLangList}" var="formLang">
                             <option id='${formLang.formLangPK.formId}'
                                     status="${formLang.status}"></option>
                         </c:forEach>
                     </select>
 
-                    <select id="instructionsLangBOList" style="display: none">
+                    <select id="instructionsLangBOList" class="dis-none">
                         <c:forEach items="${instructionsLangBOList}" var="instructionLang">
                             <option id='${instructionLang.instructionLangPK.id}'
                                     status="${instructionLang.status}"
@@ -449,23 +464,23 @@
                     </div>
                     <div class="mt-lg" id="stepContainer">
                         <div
-                                class="add-steps-btn blue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
-                                onclick="getQuestionnaireStep('Instruction');">Add
+                                class="add-steps-btn blue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if> getQuestionnaireStepfunct"
+                                data-text="Instruction">Add
                             Instruction Step
                         </div>
                         <div
-                                class="add-steps-btn green-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
-                                onclick="getQuestionnaireStep('Question');">Add Question
+                                class="add-steps-btn green-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if> getQuestionnaireStepfunct"
+                                 data-text="Question">Add Question
                             Step
                         </div>
                         <div
-                                class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
-                                onclick="getQuestionnaireStep('Form');">Add Form Step
+                                class="add-steps-btn skyblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if> getQuestionnaireStepfunct"
+                                 data-text="Form">Add Form Step
                         </div>
                         <div
-                                class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if>"
+                                class="add-steps-btn skyblue-bg custoWidth<c:if test="${empty questionnaireBo.id}"> cursor-none </c:if> getQuestionnaireStepfunct"
                                 id="groupsBtn"
-                                onclick="getQuestionnaireStep('Groups');">Groups
+                                 data-text="Groups">Groups
                         </div>
                         <div class="add-steps-btn darkblue-bg custoWidth<c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>"
                              data-toggle="modal" id="assigndisable">Assign groups
@@ -482,9 +497,8 @@
                     </div>
                 </form:form>
                 <div class="mt-md">
-                    <table id="content" class="display" cellspacing="0" width="100%"
-                           style="border-color: #ffffff;">
-                        <thead style="display: none;"></thead>
+                    <table id="content" class="display br-cl" cellspacing="0" width="100%">
+                        <thead class="dis-none"></thead>
                         <tbody>
                         <c:forEach items="${qTreeMap}" var="entry" varStatus="loop">
                             <tr id="row_${entry.value.stepId}" type="${entry.value.stepType}"
@@ -528,7 +542,7 @@
                                           <label for="${entry.value.stepId}"></label></span>
                                             </c:otherwise>
                                         </c:choose>
-                                        <div class="form-div ml-xlg" style="margin-top: -20px;">
+                                        <div class="form-div ml-xlg" id="mt-20">
                                             <c:forEach items="${entry.value.fromMap}"
                                                        var="subentry">
 
@@ -574,8 +588,8 @@
                                 </c:choose>
                                 </td>
                                 <td>
-                                    <div class="destinationStep questionnaireStepClass"
-                                         style="display: none;">${entry.value.destinationText}</div>
+                                    <div class="destinationStep questionnaireStepClass dis-none"
+                                         >${entry.value.destinationText}</div>
                                 </td>
                                 <td>
                                     <div>
@@ -601,18 +615,19 @@
                                                 </c:choose>
                                             </c:if>
 
-                                            <span class="ellipse"
-                                                  onmouseenter="ellipseHover(this);"></span>
-                                            <div class="ellipse-hover-icon"
-                                                 onmouseleave="ellipseUnHover(this);">
-      													<span class="sprites_icon preview-g mr-sm"
-                                                              onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
+                                            <span class="ellipse ellipseHoverfunct"></span>
+                                                  <!-- onmouseenter="ellipseHover(this);" 
+                                                  onmouseleave="ellipseUnHover(this);"-->
+                                            <div class="ellipse-hover-icon ellipseUnHoverFunct">
+      													<span class="sprites_icon preview-g mr-sm viewStepFunct" data-id="${entry.value.stepId}"
+                                                            data-text="${entry.value.stepType}"  ></span><%-- onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')" --%>
                                                 <span
                                                         class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
-                                                        <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
+                                                        <c:if test="${actionType ne 'view'}">name="editStepFunct" data-id="${entry.value.stepId}" data-text="${entry.value.stepType}"</c:if>></span>
                                                 <span
                                                         class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
-                                                        <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}', ${entry.value.deletionId})"</c:if>></span>
+                                                        <c:if test="${actionType ne 'view'}"> name="deletStepFunct" data-id="${entry.value.stepId}" data-text="${entry.value.stepType}" data-did="${entry.value.deletionId}"
+                                                         <%-- onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}', ${entry.value.deletionId})" --%></c:if>></span>
                                             </div>
                                         </div>
                                         <c:if test="${entry.value.stepType eq 'Form'}">
@@ -665,7 +680,7 @@
                 <!-- Anchor date type -->
                 <form:form action="" name="anchorFormId" id="anchorFormId"
                            method="post" role="form" data-toggle="validator">
-                    <div class="anchortypeclass" style="display: none;">
+                    <div class="anchortypeclass dis-none">
                         <c:if test="${fn:length(anchorTypeList) gt 0}">
                             <div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
                             <div class="clearfix"></div>
@@ -804,7 +819,7 @@
                                                             for="isLaunchStudy"> Launch
                       									with study</label>
                       							</span>
-                            <div class="onetimeanchorClass mt-sm" style="display: none">
+                            <div class="onetimeanchorClass mt-sm dis-none">
                                 <!-- Anchordate start -->
                                 <div class="opacity06">OR</div>
                                 <!-- Anchordate start-->
@@ -939,7 +954,7 @@
                                                             class='help-block with-errors red-txt'></span>
                       								</span>
                             </div>
-                            <div class="onetimeanchorClass mt-sm" style="display: none">
+                            <div class="onetimeanchorClass mt-sm dis-none">
                                 <div class="opacity06">OR</div>
                                 <!-- Anchordate start-->
                                 <div class="mt-none resetDate">
@@ -1025,13 +1040,14 @@
                                                                                    type="text"
                                                                                    name="questionnairesFrequenciesList[0].frequencyTime"
                                                                                    required
-                                                                                   class="form-control clock dailyClock"
-                                                                                   placeholder="Time"
-                                                                                   onclick='timep(this.id);'/> <span
+                                                                                   class="form-control clock dailyClock timepFunct"
+                                                                                   placeholder="Time"/>
+                                                                                   <!-- onclick='timep(this.id);' -->
+                                                                                    <span
                                                                                 class='help-block with-errors red-txt'></span>
                                       									</span> <span
-                                    class="addBtnDis addbtn mr-sm align-span-center"
-                                    onclick='addTime();'>+</span>
+                                    class="addBtnDis addbtn mr-sm align-span-center addTimefunct"
+                                    >+</span>
                                 <!-- <span
                                     class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
                                     onclick='removeTime(this);'></span> -->
@@ -1052,17 +1068,18 @@
                                                                                        type="text"
                                                                                        name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime"
                                                                                        required
-                                                                                       class="form-control clock dailyClock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                       class="form-control clock dailyClock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} timepFunct"
                                                                                        placeholder="Time"
-                                                                                       onclick='timep(this.id);'
                                                                                        value="${questionnairesFrequencies.frequencyTime}"
                                                                                     ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''} />
+                                                                                    <!-- onclick='timep(this.id);' -->
                                       											<span class='help-block with-errors red-txt'></span>
                                       										</span> <span
-                                        class="addBtnDis addbtn mr-sm align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                        onclick='addTime();'>+</span> <span
-                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
-                                        onclick='removeTime(this);'></span>
+                                        class="addBtnDis addbtn mr-sm align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} addTimefunct"
+                                        >+</span> <span
+                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} removeTimefunct"
+                                        data-id="${questionnaireBo.id}"></span>
+                                         <!-- onclick='removeTime(this);' -->
                                 </div>
                             </c:forEach>
                         </c:if>
@@ -1083,8 +1100,7 @@
                                       								</span>
                         </div>
                         <!-- Anchordate start-->
-                        <div class="dailyanchorDiv col-md-4 pl-none"
-                             style="display: none;">
+                        <div class="dailyanchorDiv col-md-4 pl-none dis-none">
                             <div class=" resetDate">
                                 <div>
                                       										<span
@@ -1219,10 +1235,11 @@
                             class="form-group m-none dis-inline vertical-align-middle pr-md pl-lg">
                                       								<!-- <span class="gray-xs-f">&nbsp;</span><br/> --> <input
                             id="selectWeeklyTime" type="text"
-                            class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls"
-                            required onclick="timep(this.id)" placeholder="Time"
+                            class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} weeklyCls timepFunct"
+                            required placeholder="Time"
                             name="questionnairesFrequenciesBo.frequencyTime"
                             value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+                           <!--  onclick="timep(this.id)" -->
                                       								<span class='help-block with-errors red-txt'></span>
                                       							</span>
                     </div>
@@ -1244,8 +1261,7 @@
                                       								</span>
                         </div>
                         <!-- Anchordate start-->
-                        <div class="weeklyanchorDiv col-md-12 pl-none"
-                             style="display: none;">
+                        <div class="weeklyanchorDiv col-md-12 pl-none dis-none">
                             <div class=" resetDate dis_inlinetop p-none">
                                 <div>
                                       										<span
@@ -1289,12 +1305,12 @@
                                         class="form-group m-none dis-inline vertical-align-middle pr-md">
                                       										<input id="selectWeeklyTimeAnchor"
                                                                                    type="text"
-                                                                                   class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                   class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} timepFunct"
                                                                                    required
-                                                                                   onclick="timep(this.id)"
                                                                                    placeholder="Time"
                                                                                    name="questionnairesFrequenciesBo.frequencyTime"
                                                                                    value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+                                                                                  <!--  onclick="timep(this.id)" -->
                                       										<span class='help-block with-errors red-txt'></span>
                                       									</span>
                             </div>
@@ -1405,12 +1421,12 @@
                                                       								<!-- 	                  <span class="gray-xs-f">&nbsp;</span><br/> -->
                                                       								<input id="selectMonthlyTime"
                                                                                            type="text"
-                                                                                           class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                           class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} timepFunct"
                                                                                            required
-                                                                                           onclick="timep(this.id)"
                                                                                            placeholder="Time"
                                                                                            name="questionnairesFrequenciesBo.frequencyTime"
                                                                                            value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+                                                                                           <!--  onclick="timep(this.id)" -->
                                                       								<span class='help-block with-errors red-txt'></span>
                                                       							</span>
                         <div
@@ -1473,7 +1489,7 @@
                                 class='help-block with-errors red-txt'></span>
                             </span>
                         </div> --%>
-                    <div class="monthlyanchorDiv" style="display: none;">
+                    <div class="monthlyanchorDiv dis-none">
                         <div class="dis_inlinetop p-none">
                             <div class=" resetDate dis_inlinetop p-none">
                                 <div>
@@ -1521,12 +1537,12 @@
                                     class="form-group m-none dis-inline vertical-align-middle pr-md">
                                                       									<input id="selectMonthlyTimeAnchor"
                                                                                                type="text"
-                                                                                               class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
+                                                                                               class="form-control mt-sm clock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''} timepFunct"
                                                                                                required
-                                                                                               onclick="timep(this.id)"
                                                                                                placeholder="Time"
                                                                                                name="questionnairesFrequenciesBo.frequencyTime"
                                                                                                value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+                                                                                               <!-- onclick="timep(this.id)" -->
                                                       									<span class='help-block with-errors red-txt'></span>
                                                       								</span>
                         </div>
@@ -1606,12 +1622,13 @@
                                                       										<input id="StartDate0"
                                                                                                    type="text"
                                                                                                    count='0'
-                                                                                                   class="form-control calendar customCalnder cusStrDate"
+                                                                                                   class="form-control calendar customCalnder cusStrDate customStartDateFunct"
                                                                                                    name="questionnaireCustomScheduleBo[0].frequencyStartDate"
                                                                                                    value=""
                                                                                                    placeholder="Start Date"
-                                                                                                   onclick='customStartDate(this.id,0);'
-                                                                                                   required/> <span
+                                                                                                   required/>
+                                                                                                   <!-- onclick='customStartDate(this.id,0);' -->
+                                                                                                    <span
                                         class='help-block with-errors red-txt'></span>
                                                       									</span>
                                 <span class="gray-xs-f mb-sm pr-md align-span-center">
@@ -1621,11 +1638,12 @@
                                                       										<input id="EndDate0"
                                                                                                    type="text"
                                                                                                    count='0'
-                                                                                                   class="form-control calendar customCalnder cusEndDate"
+                                                                                                   class="form-control calendar customCalnder cusEndDate customEndDateFunct"
                                                                                                    name="questionnaireCustomScheduleBo[0].frequencyEndDate"
                                                                                                    placeholder="End Date"
-                                                                                                   onclick='customEndDate(this.id,0);'
-                                                                                                   required/> <span
+                                                                                                   required/>
+                                                                                                   <!-- onclick='customEndDate(this.id,0);' -->
+                                                                                                    <span
                                         class='help-block with-errors red-txt'></span>
                                                       									</span>
                                 <span
@@ -1633,18 +1651,18 @@
                                                       										<input id="customTime0"
                                                                                                    type="text"
                                                                                                    count='0'
-                                                                                                   class="form-control clock cusTime"
+                                                                                                   class="form-control clock cusTime timepFunct"
                                                                                                    name="questionnaireCustomScheduleBo[0].frequencyTime"
                                                                                                    placeholder="Time"
-                                                                                                   onclick='timep(this.id);'
                                                                                                    disabled
                                                                                                    required/>
+                                                                                                  <!--  onclick='timep(this.id);' -->
                                                       										<span class='help-block with-errors red-txt'></span>
                                                       									</span>
-                                <span class="addbtn addBtnDis align-span-center mr-md"
-                                      onclick="addDate();">+</span> <span id="delete"
-                                                                          class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
-                                                                          onclick="removeDate(this);"></span>
+                                <span class="addbtn addBtnDis align-span-center mr-md addDatefunct"
+                                      >+</span> <span id="delete"
+                                                                          class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center removeDateFunct"></span>
+                                                                         <!--  onclick="removeDate(this);" -->
                             </div>
                         </c:if>
                         <c:if
@@ -1670,12 +1688,13 @@
                                                       											<input id="StartDate${customVar.index}"
                                                                                                        type="text"
                                                                                                        count='${customVar.index}'
-                                                                                                       class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} "
+                                                                                                       class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} customStartDateFunct"
                                                                                                        name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate"
                                                                                                        value="${questionnaireCustomScheduleBo.frequencyStartDate}"
                                                                                                        placeholder="Start Date"
-                                                                                                       onclick='customStartDate(this.id,${customVar.index});'
-                                                                                                       required/> <span
+                                                                                                       required/> 
+                                                                                                       <%-- onclick='customStartDate(this.id,${customVar.index});' --%>
+                                                                                                       <span
                                             class='help-block with-errors red-txt'></span>
                                                       										</span>
                                     <span
@@ -1686,12 +1705,12 @@
                                                       											<input id="EndDate${customVar.index}"
                                                                                                        type="text"
                                                                                                        count='${customVar.index}'
-                                                                                                       class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
+                                                                                                       class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display customEndDateFunct"
                                                                                                        name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate"
                                                                                                        value="${questionnaireCustomScheduleBo.frequencyEndDate}"
                                                                                                        placeholder="End Date"
-                                                                                                       onclick='customEndDate(this.id,${customVar.index});'
                                                                                                        required/>
+                                                                                                       <%-- onclick='customEndDate(this.id,${customVar.index});' --%>
                                                       											<span class='help-block with-errors red-txt'></span>
                                                       										</span>
                                     <span
@@ -1699,24 +1718,25 @@
                                                       											<input id="customTime${customVar.index}"
                                                                                                        type="text"
                                                                                                        count='${customVar.index}'
-                                                                                                       class="form-control clock cusTime ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display"
+                                                                                                       class="form-control clock cusTime ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} cursor-display timepFunct"
                                                                                                        name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
                                                                                                        value="${questionnaireCustomScheduleBo.frequencyTime}"
                                                                                                        placeholder="Time"
-                                                                                                       onclick='timep(this.id);'
-                                                                                                       required/> <span
+                                                                                                       required/>
+                                                                                                       <!-- onclick='timep(this.id);' -->
+                                                                                                        <span
                                             class='help-block with-errors red-txt'></span>
                                                       										</span>
                                     <span
-                                            class="addbtn addBtnDis align-span-center mr-md cursor-display"
-                                            onclick="addDate();">+</span> <span id="delete"
-                                                                                class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
-                                                                                onclick="removeDate(this);"></span>
+                                            class="addbtn addBtnDis align-span-center mr-md cursor-display addDatefunct"
+                                            >+</span> <span id="delete"
+                                                                                class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display removeDateFunct"></span>
+                                                                               <!--  onclick="removeDate(this);" -->
                                 </div>
                             </c:forEach>
                         </c:if>
                     </div>
-                    <div class="manuallyAnchorContainer" style="display: none;">
+                    <div class="manuallyAnchorContainer dis-none">
                         <!-- anchordate Start -->
                         <c:if
                                 test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
@@ -1755,8 +1775,7 @@
                                         class="help-block with-errors red-txt"></span>
                                                       									</span>
                                 <span class="mb-sm pr-md"> <span
-                                        class="light-txt opacity06"> days <span
-                                        style="padding-right: 5px; padding-left: 5px">to </span>
+                                        class="light-txt opacity06"> days <span class="pr-pl">to </span>
                                                       											Anchor Date
                                                       									</span>
                                                       									</span>
@@ -1790,8 +1809,8 @@
                                         class="light-txt opacity06"> days </span>
                                                       									</span>
                                 <span
-                                        class="form-group  dis-inline vertical-align-middle pr-md mt-sm"
-                                        style="margin-bottom: 0px"> <input id="manualTime0"
+                                        class="form-group  dis-inline vertical-align-middle pr-md mt-sm mrgb-0"
+                                        > <input id="manualTime0"
                                                                            type="text"
                                                                            class="form-control clock"
                                                                            name="questionnaireCustomScheduleBo[0].frequencyTime"
@@ -1801,8 +1820,8 @@
                                         class='help-block with-errors red-txt'></span>
                                                       									</span>
                                 <span id="addbtn0"
-                                      class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle mr-sm"
-                                      onclick="addDateAnchor();">+</span>
+                                      class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle mr-sm addDateAnchorfunct"
+                                      >+</span>
                                 <!-- <span id="deleteAncchor0"
                                     class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
                                     onclick="removeDateAnchor(this);"></span> -->
@@ -1856,8 +1875,7 @@
                                             class="help-block with-errors red-txt"></span>
                                                       										</span>
                                     <span class="mb-sm pr-md"> <span
-                                            class="light-txt opacity06"> days <span
-                                            style="padding-right: 5px; padding-left: 5px">to </span>
+                                            class="light-txt opacity06"> days <span class="pr-pl">to </span>
                                                       												Anchor Date
                                                       										</span>
                                                       										</span>
@@ -1891,8 +1909,8 @@
                                             class="light-txt opacity06"> days </span>
                                                       										</span>
                                     <span
-                                            class="form-group  dis-inline vertical-align-middle pr-md"
-                                            style="margin-bottom: 0px"> <input
+                                            class="form-group  dis-inline vertical-align-middle pr-md mrgb-0"
+                                           > <input
                                             id="manualTime${customVar.index}" type="text"
                                             class="form-control clock ${questionnaireCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                             name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime"
@@ -1901,11 +1919,10 @@
                                             class='help-block with-errors red-txt'></span>
                                                       										</span>
                                     <span id="addbtn${customVar.index}"
-                                          class="addbtn addBtnDis addbtnZero align-span-center mr-sm cursor-display"
-                                          onclick="addDateAnchor();">+</span> <span
+                                          class="addbtn addBtnDis addbtnZero align-span-center mr-sm cursor-display addDateAnchorfunct"
+                                          >+</span> <span
                                         id="deleteAncchor${customVar.index}"
-                                        class="sprites_icon delete vertical-align-middle remBtnDis remBtnZero hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display"
-                                        onclick="removeDateAnchor(this);"></span>
+                                        class="sprites_icon delete vertical-align-middle remBtnDis remBtnZero hide align-span-center ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''} cursor-display removeDateAnchorFunct"></span>
                                 </div>
                             </c:forEach>
                         </c:if>
@@ -1917,8 +1934,7 @@
                             times selected above
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-3 mt-xlg mb-lg addNewRuns"
-                         style="display: none;">
+                    <div class="col-md-4 col-lg-3 mt-xlg mb-lg addNewRuns dis-none">
                                                       							<span class="checkbox checkbox-inline addNewRuns"> <input
                                                                                         type="checkbox"
                                                                                         id="addNewRunsId"
@@ -1929,7 +1945,7 @@
                     </div>
                 </div>
             </form:form>
-            <div id="ongoingNoteId" class="note-center" style="display: none">Note:
+            <div id="ongoingNoteId" class="note-center dis-none">Note:
                 Activities scheduled as ongoing will always be available for
                 participants to take any number of times, during the lifetime of
                 the study
@@ -2058,7 +2074,7 @@
 <div id="assignGroup" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog assignGroup" role="document">
         <div class="modal-content">
-            <div class="modal-body" style="padding:40px;">
+            <div class="modal-body" id="pd-40">
                 <div class="form-group">
                     <c:if test="${actionPage ne 'VIEW_PAGE'}">
                         <select id="group"
@@ -2071,7 +2087,7 @@
                             </option>
                         </c:forEach>
                         <c:if test="${groupsList eq null || groupsList.size() eq 0}">
-                            <option style="text-align: center; color: #000000" disabled>- No data
+                            <option class="txt-al" disabled>- No data
                                 available -
                             </option>
                         </c:if>
@@ -2082,17 +2098,16 @@
                     <button type="button" class="btn btn-default gray-btn" data-dismiss="modal">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-primary blue-btn" data-dismiss="modal"
-                            onclick="assign();">OK
+                    <button type="button" class="btn btn-primary blue-btn assignfunct" data-dismiss="modal">OK
                     </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   //assignGroup code
-  function assign() {
+  $(".assignfunct").on('click', function () {
     var grpId = $("#group :selected").val();
     var count = 0;
     var steparray = [];
@@ -2166,7 +2181,7 @@
       $('#content').find('tbody input.step-check').prop('checked', false);
     }
     setTimeout(hideDisplayMessage, 4000);
-  }
+  })
 
   //end
 
@@ -2980,7 +2995,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
       }
       if (!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")) {
-        customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id'), 0);
+    	  customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id'), 0);
       }
       if (nxtDate)
         $(this).parents('.manually-option').find('.cusEndDate').val('').data(
@@ -3633,18 +3648,18 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     return [month, day, year].join('/');
   }
 
-  function addTime() {
+  $(document).on('click', ".addTimefunct", function() {	
     count = count + 1;
     var newTime = "<div class='time-opts mt-md dailyTimeDiv' id=" + count + ">" +
         "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>" +
         "  <input id='time" + count + "' type='text' required name='questionnairesFrequenciesList["
         + count
-        + "].frequencyTime' placeholder='Time' class='form-control clock dailyClock' placeholder='00:00' onclick='timep(this.id);'/>"
+        + "].frequencyTime' placeholder='Time' class='form-control clock dailyClock timepFunct' placeholder='00:00'/>"
         +
         "<span class='help-block with-errors red-txt'></span>" +
         " </span>" +
-        "  <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTime();'>+</span>" +
-        " <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTime(this);'></span>"
+        "  <span class='addBtnDis addbtn mr-sm align-span-center addTimefunct'>+</span>" +
+        " <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center removeTimefunct' data-id='${questionnaireBo.id}'></span>"
         +
         "</div>";
     $(".time-opts:last").after(newTime);
@@ -3659,10 +3674,10 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     $('#time' + count).val("");
     $(document).find('.dailyClock').trigger('dp.change');
     $('#' + count).find('input:first').focus();
-  }
+  })
 
-  function removeTime(param) {
-    $(param).parents(".time-opts").remove();
+  $(document).on('click', ".removeTimefunct", function() { 
+    $(this).parents(".time-opts").remove();
     $(".time-opts").parents("form").validator("destroy");
     $(".time-opts").parents("form").validator();
     if ($('.time-opts').length > 1) {
@@ -3670,16 +3685,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     } else {
       $(".remBtnDis").addClass("hide");
     }
-  }
+  })
 
-  function addDate() {
+  $(document).on('click', ".addDatefunct", function() { 
     customCount = customCount + 1;
     var newDateCon = "<div class='manually-option mb-md form-group' id='" + customCount + "'>"
         + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
         + "  <input id='StartDate" + customCount + "' type='text' count='" + customCount
         + "' required name='questionnaireCustomScheduleBo[" + customCount
-        + "].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"
-        + customCount + ");'/>"
+        + "].frequencyStartDate' class='form-control calendar customCalnder cusStrDate customStartDateFunct' placeholder='Start Date'/>"
         + "	<span class='help-block with-errors red-txt'></span>"
         + "  </span>"
         + "  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
@@ -3688,18 +3702,17 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
         + "  <input id='EndDate" + customCount + "' type='text' count='" + customCount
         + "' required name='questionnaireCustomScheduleBo[" + customCount
-        + "].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"
-        + customCount + ");'/>"
+        + "].frequencyEndDate' class='form-control calendar customCalnder cusEndDate customEndDateFunct' placeholder='End Date'/>"
         + "<span class='help-block with-errors red-txt'></span>"
         + "  </span>"
         + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
         + "  <input id='customTime" + customCount + "' type='text' count='" + customCount
         + "' required name='questionnaireCustomScheduleBo[" + customCount
-        + "].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
+        + "].frequencyTime' class='form-control clock customTime cusTime timepFunct' placeholder='Time' disabled/>"
         + "<span class='help-block with-errors red-txt'></span>"
         + "  </span>"
-        + "  <span class='addbtn addBtnDis align-span-center mr-md' onclick='addDate();'>+</span>"
-        + "  <span id='delete' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDate(this);'></span>"
+        + "  <span class='addbtn addBtnDis align-span-center mr-md addDatefunct'>+</span>"
+        + "  <span id='delete' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center removeDateFunct'></span>"
         + "</div>";
 
     $(".manually-option:last").after(newDateCon);
@@ -3720,10 +3733,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     timep('customTime' + customCount);
     $('#customTime' + customCount).val("");
     $('#' + customCount).find('input:first').focus();
-  }
+  })
 
-  function removeDate(param) {
-    $(param).parents(".manually-option").remove();
+  $(document).on('click', ".removeDateFunct", function() { 
+  //function removeDate(param) {
+    $(this).parents(".manually-option").remove();
     $(".manually-option").parents("form").validator("destroy");
     $(".manually-option").parents("form").validator();
     if ($('.manually-option').length > 1) {
@@ -3737,7 +3751,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       $('.delete').removeClass('display__none');
     }
     $(document).find('.cusTime').trigger('dp.change');
-  }
+  })
+
+  $('.timepFunct').on('click', function() {
+	  let item = $(this).attr('id');
+	  timep(item);
+  });
 
   function timep(item) {
     $('#' + item).not('.cursor-none').datetimepicker({
@@ -3745,10 +3764,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       useCurrent: false,
     });
   }
+  
+  $('.customStartDateFunct').on('click', function() {
+	  let id = $(this).attr('id');
+	  let count = $(this).attr('count');
+	  customStartDate(id, count);
+  });
 
   function customStartDate(id, count) {
-
-    $('.cusStrDate').not('.cursor-none, :disabled').datetimepicker({
+	  $('.cusStrDate').not('.cursor-none, :disabled').datetimepicker({
       format: 'MM/DD/YYYY',
       minDate: serverDate(),
       useCurrent: false,
@@ -3774,7 +3798,16 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     });
   }
 
-  function customEndDate(id, count) {
+  $('.customEndDateFunct').on('click', function() {
+	  
+	  let id = $(this).attr('id');
+	  let count = $(this).attr('count');
+	  customEndDate(id, count);
+  });
+  
+ 
+  
+ function customEndDate(id, count) {
     $('.cusEndDate').not('.cursor-none, :disabled').datetimepicker({
       format: 'MM/DD/YYYY',
       minDate: serverDate(),
@@ -4628,7 +4661,12 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
   }
 
-  function deletStep(stepId, stepType, deletionId) {
+  
+  $('[name=deletStepFunct]').on('click', function () {
+	  //function editStep(stepId, stepType) {
+	 let stepId = $(this).attr('data-id')
+	 let stepType =$(this).attr('data-text')
+	 let deletionId = $(this).attr('data-did')
     bootbox.confirm({
       message: "Are you sure you want to delete this step item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
       buttons: {
@@ -4717,7 +4755,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         }
       }
     });
-  }
+  })
 
   function reloadQuestionnaireStepData(questionnaire, isDone) {
     $('#content').DataTable().clear();
@@ -4779,7 +4817,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               '<div class="destinationStep questionnaireStepClass" style="display: block;">'
               + DOMPurify.sanitize(value.destinationText) + '</div>');
         } else {
-          datarow.push('<div class="destinationStep questionnaireStepClass" style="display: none;">'
+          datarow.push('<div class="destinationStep questionnaireStepClass dis-none">'
               + DOMPurify.sanitize(value.destinationText) + '</div>');
         }
         var dynamicAction = '<div>' +
@@ -4797,22 +4835,15 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
             dynamicAction += '<span class="sprites_v3 calender-gray mr-md"></span>';
           }
         }
-        dynamicAction += '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>' +
-            '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">' +
-            '  <span class="sprites_icon preview-g mr-sm" onclick="viewStep(' + parseInt(
-                value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
+        dynamicAction += '<span class="ellipse ellipseHoverfunct"></span>' +
+            '<div class="ellipse-hover-icon ellipseUnHoverFunct">' +
+            '  <span class="sprites_icon preview-g mr-sm viewStepFunct" data-id="${entry.value.stepId}" data-text="${entry.value.stepType}"></span>';
         if (value.status) {
-          dynamicAction += '<span class="sprites_icon edit-inc editIcon mr-sm" onclick="editStep('
-              + parseInt(
-                  value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
+          dynamicAction += '<span class="sprites_icon edit-inc editIcon mr-sm" name="editStepFunct" data-id="${entry.value.stepId}" data-text="${entry.value.stepType}"></span>';
         } else {
-          dynamicAction += '<span class="edit-inc-draft editIcon mr-md mr-sm" onclick="editStep('
-              + parseInt(
-                  value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType) + '&#34;)"></span>';
+          dynamicAction += '<span class="edit-inc-draft editIcon mr-md mr-sm" name="editStepFunct" data-id="${entry.value.stepId}" data-text="${entry.value.stepType}"></span>';
         }
-        dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('
-            + parseInt(value.stepId) + ',&#34;' + DOMPurify.sanitize(value.stepType)
-            + '&#34;,' + parseInt(value.deletionId) + ')"></span>' +
+        dynamicAction += '  <span class="sprites_icon delete deleteStepButton" name="deletStepFunct" data-id="${entry.value.stepId}" data-text="${entry.value.stepType}" data-did="${entry.value.deletionId}"></span>' +
             '</div>' +
             '</div>';
 
@@ -4845,17 +4876,24 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     }
   }
 
-  function ellipseHover(item) {
-    $(item).hide();
-    $(item).next().show();
-  }
+  $(".ellipseHoverfunct").on('mouseenter' , function () {
+	  //function ellipseHover(item) {
+  	//let item =  document.getElementByClass('ellipseHoverSpan')
+  	
+    $(this).hide();
+    $(this).next().show();
+  })
 
-  function ellipseUnHover(item) {
-    $(item).hide();
-    $(item).prev().show();
-  }
+  
+  $(".ellipseUnHoverFunct").on('mouseleave' , function () {
+  //function ellipseUnHover(item) {
+    $(this).hide();
+    $(this).prev().show();
+  })
 
-  function getQuestionnaireStep(stepType) {
+  
+  $(".getQuestionnaireStepfunct").on('click', function () {
+	  var stepType = $(this).attr('data-text')
     $("#actionTypeForQuestionPage").val('add');
     if (stepType == 'Instruction') {
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/instructionsStep.do?_S=${param._S}";
@@ -4870,10 +4908,13 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}";
       document.contentFormId.submit();
     }
-  }
+  })
 
-  function editStep(stepId, stepType) {
-    $("#actionTypeForQuestionPage").val('edit');
+  $('[name=editStepFunct]').on('click', function () {
+  //function editStep(stepId, stepType) {
+    let stepId = $(this).attr('data-id')
+    let stepType =$(this).attr('data-text')
+	  $("#actionTypeForQuestionPage").val('edit');
     if (stepType == 'Instruction') {
       $("#instructionId").val(stepId);
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/instructionsStep.do?_S=${param._S}";
@@ -4887,10 +4928,14 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       document.contentFormId.action = "/fdahpStudyDesigner/adminStudies/questionStep.do?_S=${param._S}";
       document.contentFormId.submit();
     }
-  }
+  })
 
-  function viewStep(stepId, stepType) {
-    $("#actionTypeForQuestionPage").val('view');
+  
+  $('.viewStepFunct').on('click', function () {
+  //function viewStep(stepId, stepType) {
+	  let stepId = $(this).attr('data-id')
+   	let stepType = $(this).attr('data-text')
+	  $("#actionTypeForQuestionPage").val('view');
     let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     if (stepType == 'Instruction') {
       $("#instructionId").val(stepId);
@@ -4908,10 +4953,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           + lang;
       document.contentFormId.submit();
     }
-  }
+  })
 
-  function goToBackPage(item) {
-    $(item).prop('disabled', true);
+  $(".back-page").on('click', function () {
+  //function goToBackPage(item) {
+    $(this).prop('disabled', true);
     <c:if test="${actionType ne 'view'}">
     bootbox.confirm({
       closeButton: false,
@@ -4932,7 +4978,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -4944,7 +4990,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + lang;
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
   function disablePastTime(timeId, dateId) {
     $(document).on('click change dp.change', timeId + ', ' + dateId, function () {
@@ -5138,7 +5184,8 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     return valid;
   }
 
-  function addDateAnchor() {
+  $(document).on('click', ".addDateAnchorfunct", function() {
+	  //function addDateAnchor() {
     //customAnchorCount = parseInt(customAnchorCount) +1;
     customAnchorCount = parseInt($('.manually-anchor-option').length);
     var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='" + customAnchorCount
@@ -5177,9 +5224,9 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
         + "<span class='help-block with-errors red-txt'></span>"
         + "</span>"
         + "<span id='addbtn" + customAnchorCount
-        + "' class='addbtn addBtnDis addbtnZero align-span-center mr-md' onclick='addDateAnchor();'>+</span>"
+        + "' class='addbtn addBtnDis addbtnZero align-span-center mr-md addDateAnchorfunct'>+</span>"
         + "<span id='deleteAncchor" + customAnchorCount
-        + "' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDateAnchor(this);'></span>"
+        + "' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center removeDateAnchorFunct'></span>"
         + "</div>";
 
     $(".manually-anchor-option:last").after(newDateCon);
@@ -5203,10 +5250,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
     //$('#manualTime'+customAnchorCount).val("");
     $('#' + customAnchorCount).find('input:first').focus();
     $('.selectpicker').selectpicker('refresh');
-  }
+  })
 
-  function removeDateAnchor(param) {
-    $(param).parents(".manually-anchor-option").remove();
+  
+  $(document).on('click', ".removeDateAnchorFunct", function() {
+	  $(this).parents(".manually-anchor-option").remove();
     $(".manually-anchor-option").parents("form").validator("destroy");
     $(".manually-anchor-option").parents("form").validator();
     if ($('.manually-anchor-option').length > 1) {
@@ -5221,7 +5269,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       $('.delete').removeClass('display__none');
     }
     //$(document).find('.cusTime').trigger('dp.change');
-  }
+  });
 
   function setAnchorDropdown(frequency_text, anchorType) {
     if (anchorType == 'Enrollment Date') {

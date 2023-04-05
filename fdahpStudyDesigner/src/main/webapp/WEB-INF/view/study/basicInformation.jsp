@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
   .langSpecific {
     position: relative;
   }
@@ -33,6 +33,19 @@
     right: -14px !important;
     margin-top: 6% !important;
   }
+  
+  #tentativeDurationId{
+    height:auto;
+  }
+  
+  #thumbDivClassId{
+  	color: red;
+  	display: none;
+  }
+  
+  .z-indx{
+  	z-index: 1301 !important;
+  }
 </style>
 
 <!-- ============================================================== -->
@@ -54,7 +67,7 @@
                 </div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -98,7 +111,7 @@
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="mlFullName" value="${studyLanguageBO.fullName}"/>
         <input type="hidden" id="mlStudyTagline" value="${studyLanguageBO.studyTagline}"/>
-        <textarea style="display: none;"
+        <textarea class="dis-none"
                   id="mlDescription">${studyLanguageBO.description}</textarea>
         <input type="hidden" id="mlResearchSponsor" value="${studyLanguageBO.researchSponsor}"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}"/>
@@ -246,7 +259,7 @@
                     <div class="display-flex">
                         <div class="form-group col-md-4 p-none mr-md mb-none">
                             <input type="text" class="form-control" name="tentativeDuration"
-                                   style="height:auto;"
+                                   id="tentativeDurationId"
                                    value="${studyBo.tentativeDuration}" maxlength="3" required
                                    pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$"
                                    data-pattern-error="Please enter valid number."/>
@@ -365,17 +378,16 @@
                                                            data-toggle="tooltip"
                                                            data-placement="top" data-html="true"
                                                            title="<span class='font24 text-weight-light pull-left'></span> JPEG / PNG<br><span class='font20'></span> Recommended Size: 225x225 pixels"/></span></span>
-                        <span class="requiredStar thumbDivClass"
-                              style="color: red; display: none"> *</span>
+                        <span class="requiredStar thumbDivClass" id="thumbDivClassId"> *</span>
                     </div>
                     <div>
                         <div class="thumb">
-                            <img
+                            <img id="basicThumbnailImg"
                                     <c:if test="${not empty studyBo.thumbnailImage}">src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${fn:escapeXml(studyBo.thumbnailImage)}"
                             </c:if>
                                     <c:if test="${empty studyBo.thumbnailImage}">src="/fdahpStudyDesigner/images/dummy-img.jpg" </c:if>
-                                    onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';"
                                     class="wid100"/>
+                                    <!-- onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" -->
                         </div>
                         <div class="dis-inline ">
 							<span id="removeUrl" class="blue-link elaborateHide">X<a
@@ -390,9 +402,10 @@
                                 <span><span
                                         class="help-block with-errors red-txt pos-inherit"></span></span>
                                 <input
-                                        id="uploadImg" class="dis-none" type="file" name="file"
-                                        accept=".png, .jpg, .jpeg" onchange="readURL(this);"
+                                        id="uploadImg" class="dis-none readURLFunct" type="file" name="file"
+                                        accept=".png, .jpg, .jpeg" 
                                         required>
+                                        <!-- onchange="readURL(this);" -->
                                 <input type="hidden" value="${studyBo.thumbnailImage}"
                                        id="thumbnailImageId" name="thumbnailImage"/>
 
@@ -404,7 +417,7 @@
         </div>
         <!-- End body tab section -->
     </form:form>
-    <div class="modal fade dominate" id="myModal" role="dialog" style="z-index: 1301 !important;">
+    <div class="modal fade dominate z-indx" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
             <div class="modal-content">
@@ -435,7 +448,7 @@
 </div>
 <!-- End right Content here -->
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('#loader').hide();
@@ -906,8 +919,9 @@
   }
 
   // Displaying images from file upload
-  function readURL(input) {
-    if (input.files && input.files[0]) {
+  $(".readURLFunct").on('change', function() {
+  //function readURL(input) {
+	  if (this.files && this.files[0]) {
       var reader = new FileReader();
 
       reader.onload = function (e) {
@@ -917,9 +931,9 @@
         .height(66);
       };
 
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(this.files[0]);
     }
-  }
+  })
 
   //Added for image height and width
   var _URL = window.URL || window.webkitURL;
@@ -953,7 +967,7 @@
         }
       };
       img.onerror = function () {
-        $("#uploadImg").parent().find(".help-block").empty()
+    	  $("#uploadImg").parent().find(".help-block").empty()
         .append($("<ul><li> </li></ul>").attr("class", "list-unstyled").text(
             "Please upload image as per provided guidelines."));
         $('#removeUrl').css("visibility", "hidden");
@@ -972,6 +986,12 @@
       img.src = _URL.createObjectURL(file);
     }
   });
+  
+  $("#basicThumbnailImg").on('error', function() {
+	  // this.src='/fdahpStudyDesigner/images/dummy-img.jpg';
+	  $(this).attr("src", "/fdahpStudyDesigner/images/dummy-img.jpg")
+  });
+  
   $("#uploadImg, #thumbnailImageId").change(function () {
     var file = $('#uploadImg').val();
     var thumbnailImageId = $('#thumbnailImageId').val();

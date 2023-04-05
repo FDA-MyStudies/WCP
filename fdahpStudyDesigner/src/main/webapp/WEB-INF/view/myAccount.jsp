@@ -153,7 +153,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row changepwd dis-none" style="display: block;">
+            <div class="row changepwd dis-none add_var_show ">
                 <div class="pl-none ">
                     <div class="b-bor mt-md">
                         <div class="ed-user-layout row">
@@ -299,7 +299,7 @@
     </div>
 </div>
 </div>
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('#rowId').parent().removeClass('white-bg');

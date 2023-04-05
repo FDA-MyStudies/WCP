@@ -5,6 +5,14 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <meta charset="UTF-8">
+    <style nonce="${nonce}">
+      .div-width{
+        width: 80%;
+      }
+      .form-width{
+        width:100%;
+      }
+    </style>
 </head>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
@@ -70,7 +78,7 @@
 <form:form
         action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do"
         data-toggle="validator" id="userForm" role="form" method="post"
-        autocomplete="off" style="width:100%;">
+        autocomplete="off" class="form-width">
     <input type="hidden" name="userId" value="${userBO.userId}">
     <input type="hidden" id="userStatus" name="enabled"
            value="${userBO.enabled}">
@@ -200,11 +208,11 @@
                                         test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
 									<span class="ml-xs">&nbsp; <label
                                             class="switch bg-transparent mt-xs"> <input
-                                            type="checkbox" class="switch-input"
-                                            value="${userBO.enabled}" id="change${userBO.userId}"
+                                            type="checkbox" class="switch-input activateOrDeactivateUserFunct"
+                                            value="${userBO.enabled}" id="change${userBO.userId}" data-id="${userBO.userId}"
                                             <c:if test="${userBO.enabled}">checked</c:if>
-                                            <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || userBO.emailChanged}">disabled</c:if>
-                                            onclick="activateOrDeactivateUser(${userBO.userId});">
+                                            <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || userBO.emailChanged}">disabled</c:if>>
+                                            <%-- onclick="activateOrDeactivateUser(${userBO.userId});" --%>
 											<span class="switch-label bg-transparent" data-on="On"
                                                   data-off="Off"></span> <span
                                                 class="switch-handle"></span>
@@ -219,7 +227,7 @@
 
             <div class="clearfix"></div>
             <!-- Assign Permissions -->
-            <div style="width: 80%;">
+            <div class="div-width">
                 <div class="blue-md-f text-uppercase mt-lg">Assign Permissions</div>
                 <div class="pull-right mb-xs">
                     <span class="gray-xs-f">View Only</span> <span
@@ -349,9 +357,9 @@
                                            stdTxt="${study.name}&nbsp;(${study.customStudyId})"
                                            <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                                     <c:if test="${actionPage ne 'VIEW_PAGE'}">
-										<span class="mr-md"><img
-                                                src="/fdahpStudyDesigner/images/icons/close.png"
-                                                onclick="del(${study.id});"/></span>
+										<span class="mr-md"><img class="imgDelete" id="${study.id}"
+                                                src="/fdahpStudyDesigner/images/icons/close.png"/></span>
+                                               <%--  onclick="del(${study.id});" --%>
                                     </c:if>
                                     <span>${study.name}&nbsp;(${study.customStudyId})</span> <span
                                         class="pull-right"> <span
@@ -427,7 +435,7 @@
 </div>
 </div>
 
-<script>
+<script nonce="${nonce}">
 
   var idleTime = 0;
   $(document).ready(function () {
@@ -621,8 +629,7 @@
         var existingStudyDiv = "<div class='study-selected-item selStd' id='std" + selVal + "'>"
             + "<input type='hidden' class='stdCls' id='" + selVal + "' name='' value='" + selVal
             + "'>"
-            + "<span class='mr-md cls cur-pointer'><img src='/fdahpStudyDesigner/images/icons/close.png' onclick='del("
-            + selVal + ");'/></span>"
+            + "<span class='mr-md cls cur-pointer'><img src='/fdahpStudyDesigner/images/icons/close.png' class='imgDelete' id='${study.id}'/></span>"
             + "<span>" + selTxt + "</span>"
             + "<span class='pull-right'>"
             + "<span class='radio radio-info radio-inline p-45 mr-xs'>"
@@ -837,8 +844,10 @@
     });
   });
 
-  function del(id) {
-    var atxt = $('#std' + id).children().text();
+  $('.imgDelete').on('click', function() {
+  //function del(id) {
+    let id = $(this).attr(id);
+	  var atxt = $('#std' + id).children().text();
 
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(
         function () {
@@ -858,10 +867,12 @@
 
     $('#std' + id).remove();
 
-  }
+  })
 
-  function activateOrDeactivateUser(userId) {
-    var status = $('#change' + userId).val();
+  $('.activateOrDeactivateUserFunct').on('click', function() {
+  //function activateOrDeactivateUser(userId) {
+    let userId = $(this).attr('data-id');
+	 var status = $('#change' + userId).val();
     var msgPart = "";
     if ('false' == status) {
       msgPart = "activate";
@@ -889,7 +900,7 @@
 
       }
     });
-  }
+  })
 
   function saveUser() {
     $('#emailId').prop('disabled', false);

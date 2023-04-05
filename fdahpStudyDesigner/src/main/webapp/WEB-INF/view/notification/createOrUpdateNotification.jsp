@@ -8,7 +8,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<style>
+	<style nonce="${nonce}">
 		.modal-dialog {
 			left: -3px !important;
 		}
@@ -219,7 +219,7 @@
 </div>
 </div>
 
-<script>
+<script nonce="${nonce}">
 	var idleTime = 0;
 	$(document)
 	.ready(

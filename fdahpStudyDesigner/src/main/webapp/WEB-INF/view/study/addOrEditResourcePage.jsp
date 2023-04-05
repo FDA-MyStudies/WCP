@@ -6,7 +6,7 @@
 <head>
 	<meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
 	.ml-disabled {
 		background-color: #eee !important;
 		opacity: 1;
@@ -77,6 +77,11 @@
 		color: #007cba !important;
 		font-size: 15px;
 	}
+	
+	#wd-98{
+		width: 98%;
+	}
+	
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -89,7 +94,7 @@
 		<!-- Start top tab section-->
 		<input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 		<input type="hidden" id="mlTitle" value="${resourceLangBO.title}">
-		<textarea style="display: none;" id="mlRichText">${resourceLangBO.richText}</textarea>
+		<textarea class="dis-none" id="mlRichText">${resourceLangBO.richText}</textarea>
 		<input type="hidden" id="mlResourceText" value="${resourceLangBO.resourceText}">
 		<input type="hidden" id="mlPdfName" value="${resourceLangBO.pdfName}">
 		<input type="hidden" id="mlPdfUrl" value="${resourceLangBO.pdfUrl}">
@@ -120,7 +125,7 @@
 				</div>
 
 				<c:if test="${studyBo.multiLanguageFlag eq true and actionOn != 'add'}">
-					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<div class="dis-line form-group mb-none mr-sm wid-150">
 						<select
 								class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
 								id="studyLanguage" name="studyLanguage" title="Select">
@@ -136,7 +141,7 @@
 				</c:if>
 
 				<c:if test="${studyBo.multiLanguageFlag eq true and actionOn == 'add'}">
-					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
 						  data-placement="bottom"
 						  title="Language selection is available in edit screen only">
@@ -348,8 +353,8 @@
 								   data-pattern-error="Please enter valid number."/> <span
 								class="help-block with-errors red-txt"></span>
 						</span> <span class="mb-sm pr-md"> <span
-							class="light-txt opacity06"> days <span
-							style="padding-right: 5px; padding-left: 5px">to </span> Anchor
+							class="light-txt opacity06"> days <span class="pr-pl"
+							>to </span> Anchor
 								Date
 						</span>
 						</span> <span> <select class="signDropDown selectpicker sign-box"
@@ -425,7 +430,7 @@
 		<!-- End body tab section -->
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" role="dialog">
-			<div class="modal-dialog modal-lg" style="width: 98%;">
+			<div class="modal-dialog modal-lg" id="wd-98">
 				<!-- Modal content-->
 				<div class="modal-content">
 					<div class="modal-header">
@@ -482,7 +487,7 @@
 	<input type="hidden" value="studyResources" name="fileFolder"/>
 	<input type="hidden" value="${resourceBO.pdfUrl}" name="fileName"/>
 </form:form>
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
 	var idleTime = 0;
 	$(document).ready(function () {
 
@@ -689,10 +694,13 @@
 				setup: function (ed) {
 					ed.on('keypress change', function (ed) {
 						resetValidation('.resetContentType');
+						/* if((ed.target.id).val(
+								tinymce.get(ed.target.id).getContent()) != null){ */
 						resetValidation(
 								$('#' + ed.target.id).val(
 										tinymce.get(ed.target.id).getContent()).parents(
 										'form #richText'));
+						//}
 					});
 				},
 				<c:if test="${actionOn eq 'view'}">readonly: 1</c:if>

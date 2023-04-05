@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
   .langSpecific {
     position: relative;
   }
@@ -70,6 +70,10 @@
     color: #007cba !important;
     font-size: 15px;
   }
+  
+  #div-zidx{
+  	z-index: 999;
+  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -95,13 +99,13 @@
         <input type="hidden" id="type" name="type" value="complete"/>
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="briefSummaryLang" value="${consentInfoLangBO.briefSummary}">
-        <textarea style="display: none"
+        <textarea class="dis-none"
                   id="elaboratedLang">${consentInfoLangBO.elaborated}</textarea>
         <input type="hidden" id="displayTitleLang" value="${consentInfoLangBO.displayTitle}">
-        <div class="right-content-head" style="z-index: 999;">
+        <div class="right-content-head" id="div-zdx">
             <div class="text-right">
                 <div class="black-md-f dis-line pull-left line34">
-					<span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
+					<span class="mr-xs cur-pointer back-page">
 						<img src="../images/icons/back-b.png"/>
 					</span>
                     <c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>
@@ -114,7 +118,7 @@
                 </div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and not empty consentInfoBo.id}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -130,7 +134,7 @@
                 </c:if>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and empty consentInfoBo.id}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -143,14 +147,14 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="goToBackPage(this);">Cancel
+                    <button type="button" class="btn btn-default gray-btn back-page"
+                             >Cancel
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none">
                     <button type="button"
-                            class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm"
-                            id="saveId" onclick="saveConsentInfo(this);">Save
+                            class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm saveConsentInfofunct" data-id="${consentInfoBo.id}"
+                            id="saveId">Save
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none">
@@ -207,7 +211,7 @@
                                                                  name="briefSummaryTemp"
                                                                  value="${consentInfoBo.briefSummary}">
             <textarea name="hide" id="elaboratedTemp"
-                      style="display: none;">${consentInfoBo.elaborated}</textarea>
+                      class="dis-none">${consentInfoBo.elaborated}</textarea>
             <div id="displayTitleId">
                 <div class="gray-xs-f mb-xs">
                     Display Title <small>(75 characters max)</small><span
@@ -308,7 +312,7 @@
 
 </div>
 <!-- End right Content here -->
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     // Fancy Scroll Bar
@@ -490,9 +494,11 @@
 
   });
 
-  function saveConsentInfo(item) {
+  
+  $('.saveConsentInfofunct').on('click', function () {
+	   var item = $(this).attr('data-id')
     autoSaveConsentInfo('manual', item);
-  }
+  })
 
   function autoSaveConsentInfo(mode, item) {
     var consentInfo = {};
@@ -636,10 +642,10 @@
     }
   }
 
-  function goToBackPage(item) {
+  $(".back-page").on('click', function () {
     let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     <c:if test="${actionPage ne 'view'}">
-    $(item).prop('disabled', true);
+    $(this).prop('disabled', true);
     bootbox.confirm({
       closeButton: false,
       message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
@@ -659,7 +665,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -670,7 +676,7 @@
         + lang;
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
   //remove the default vallues from the fields when the consent type is changed
   function addDefaultData() {

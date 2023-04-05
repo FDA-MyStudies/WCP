@@ -41,7 +41,7 @@
       </div>
    </div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
 	$(document).ready(function(e){
 		$('#termsId').on('click',function(){
     		$('#termsModal').modal('show');

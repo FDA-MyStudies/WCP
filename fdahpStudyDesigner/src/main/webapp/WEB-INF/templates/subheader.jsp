@@ -20,7 +20,7 @@
 
 <!-- StudyList Section Start-->
 
-<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none" style="display: none;">
+<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none dis-none">
      <div class="md-container">
         <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
            <div class="black-lg-f">
@@ -43,7 +43,7 @@
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="backOrCancelForm" name="backOrCancelForm" method="post">
 </form:form>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
 $(document).ready(function(){
 	
 $('.addEditStudy').on('click',function(){

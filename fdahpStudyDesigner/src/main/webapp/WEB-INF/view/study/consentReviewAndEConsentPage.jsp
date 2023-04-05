@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .form-control {
         margin-bottom: 5px;
       }
@@ -106,6 +106,32 @@
       .help-block ul {
         position: inherit !important;
       }
+      
+      #zi-999{
+      	z-index: 999;
+      }
+      
+      .dis-bl{
+      	display: block;
+      }
+      
+      .hg-900{
+      	height: 900px;
+      }
+      
+      .fs-13{
+      	font-size: 13px; 
+      	font-weight: 600; 
+      	margin-top: 10px;
+      }
+      
+      #wid-100{
+      	width: 100%;
+      }
+      
+      .fw-bl{
+      	font-weight: bold;
+      }
 
     </style>
 </head>
@@ -123,7 +149,7 @@
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <input type="hidden" id="consentId" name="consentId"
            value="${consentBo.id}">
-    <select id="consentLangItems" style="display: none">
+    <select id="consentLangItems" class="dis-none">
         <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
             <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
                     value="${consentInfoLang.displayTitle}">${consentInfoLang.elaborated}</option>
@@ -146,8 +172,8 @@
     <input type="hidden" id="mlTagline" value="${studyLanguageBO.taglineDescription}">
     <input type="hidden" id="mlShortDesc" value="${studyLanguageBO.shortDescription}">
     <input type="hidden" id="mlLongDesc" value="${studyLanguageBO.longDescription}">
-    <textarea style="display: none" id="mlLearnMore">${studyLanguageBO.learnMoreText}</textarea>
-    <textarea style="display: none"
+    <textarea class="dis-none" id="mlLearnMore">${studyLanguageBO.learnMoreText}</textarea>
+    <textarea class="dis-none"
               id="mlConsentDocContent">${studyLanguageBO.consentDocContent}</textarea>
     <input type="hidden" id="mlAgreement" value="${studyLanguageBO.agreementOfConsent}">
     <input type="hidden" id="mlSignature0" value="${studyLanguageBO.signatureOne}">
@@ -159,7 +185,7 @@
     <!-- End body tab section -->
     <div>
         <!--  Start top tab section-->
-        <div class="right-content-head" style="z-index: 999;">
+        <div class="right-content-head" id="zi-999">
             <div class="text-right">
                 <div class="black-md-f text-uppercase dis-line pull-left line34">
                     Review and E-Consent Steps
@@ -167,7 +193,7 @@
                         ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -183,8 +209,8 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="goToBackPage(this);">Cancel
+                    <button type="button" class="btn btn-default gray-btn back-page"
+                           >Cancel
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none mr-sm">
@@ -325,8 +351,10 @@
                             </div>
 
                             <div class="col-md-12 pl-none mt-lg mb-xlg">
-                                <a class="preview__text" href="javascript:void()"
-                                   data-toggle="modal" onclick="previewDataSharing();"> <img
+                                <a class="preview__text previewDataSharingFunct" href="javascript:void()"
+                                   data-toggle="modal">
+                                   <!-- onclick="previewDataSharing();" -->
+                                    <img
                                         class="mr-xs" src="../images/icons/eye-icn.png"> <span>Preview</span>
                                 </a>
 
@@ -359,11 +387,12 @@
                                     for="inlineRadio2">Create New Consent Document</label>
   									</span>
                                 <div class="help-block with-errors red-txt"></div>
+
                             </div>
                         </div>
                     </div>
                     <div class="italic-txt">
-                        <div id="autoCreateHelpTextDiv" style="display: block;">
+                        <div id="autoCreateHelpTextDiv" class="dis-bl">
                             <small class="inst">This is a preview of the Consent
                                 Document to depict how it gets created by the ResearchKit /
                                 ResearchStack frameworks on the mobile app. Consent Items
@@ -373,7 +402,7 @@
                                 last name, signature and date, time of providing consent, as
                                 captured on the app.</small>
                         </div>
-                        <div id="newDocumentHelpTextDiv" style="display: none;">
+                        <div id="newDocumentHelpTextDiv" class="dis-none">
                             <small class="inst">Choose this option if you wish to
                                 provide separate content for the Consent Document instead of
                                 using the auto-generated Consent Document. Note that in this
@@ -389,14 +418,13 @@
                                                    class="requiredStar">*</span>
                         </div>
                         <div class="mt-lg">
-                            <div class="cont_doc" id="autoCreateDivId"
-                                 style="display: block;">
-                                <div style="height: 900px;">
+                            <div class="cont_doc dis-bl" id="autoCreateDivId">
+                                <div class="hg-900">
                                     <div id="autoConsentDocumentDivId"></div>
                                 </div>
                             </div>
                             <div class="cont_editor">
-                                <div id="newDivId" style="display: none;">
+                                <div id="newDivId" class="dis-none">
                                     <div class="form-group ">
   											<textarea class="" rows="8" id="newDocumentDivId"
                                                       name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
@@ -408,8 +436,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-xlg dis-inline" id="autoCreateDivId01"
-                         style="display: block;">
+                    <div class="mt-xlg dis-inline dis-bl" id="autoCreateDivId01">
                         <div class="sign">Participant's First Name</div>
                         <div class="sign">Last Name</div>
                         <div class="sign">Signature</div>
@@ -472,7 +499,7 @@
   										<label for="inlineRadio44">No</label>
   									</span>
                             </div>
-                            <div class="additionalSignature" style="display: none;">
+                            <div class="additionalSignature dis-none">
                                 <div class="text-weight-semibold mb-sm">
                                     Please add the appropriate title that should display next to
                                     each signature line (Up to 3 signature lines are
@@ -498,11 +525,12 @@
                                                        onkeypress="blockSpecialChar(event,this)"/><span
                                                     class="help-block with-errors red-txt"></span>
   											</span><span id="addbtn0"
-                                                         class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
-                                                         onclick="addAdditionalSignature();">+</span><span
+                                                         class="addbtn dis-inline vertical-align-middle mr-sm btm-marg addAdditionalSignatureFunct">+</span>
+                                                         <!-- onclick="addAdditionalSignature();" -->
+                                                         <span
                                             id="deleteAncchor0"
-                                            class="sprites_icon delete vertical-align-middle remBtn align-span-center"
-                                            onclick="removeAdditionalSignature(this);"></span>
+                                            class="sprites_icon delete vertical-align-middle remBtn align-span-center removeAdditionalSignatureFunct"></span>
+                                           <!--  onclick="removeAdditionalSignature(this);" -->
                                     </div>
                                 </c:if>
                                 <c:if test="${fn:length(consentBo.signatures) gt 0}">
@@ -524,16 +552,16 @@
                                                            onkeypress="blockSpecialChar(event,this)"/><span
                                                         class="help-block with-errors red-txt"></span>
   												</span><span id="addbtn${customVar.index}"
-                                                             class="addbtn dis-inline vertical-align-middle mr-sm btm-marg"
-                                                             onclick="addAdditionalSignature();">+</span><span
+                                                             class="addbtn dis-inline vertical-align-middle mr-sm btm-marg addAdditionalSignatureFunct">+</span>
+                                                             <!-- onclick="addAdditionalSignature();" -->
+                                                             <span
                                                 id="deleteAncchor${customVar.index}"
-                                                class="sprites_icon delete vertical-align-middle remBtn align-span-center"
-                                                onclick="removeAdditionalSignature(this);"></span>
+                                                class="sprites_icon delete vertical-align-middle remBtn align-span-center removeAdditionalSignatureFunct"></span>
+                                               <!--  onclick="removeAdditionalSignature(this);" -->
                                         </div>
                                     </c:forEach>
                                 </c:if>
-                                <div
-                                        style="font-size: 13px; font-weight: 600; margin-top: 10px;">
+                                <div class="fs-13">
                                     Note:
                                     The signature line for the staff representative will include
                                     first name, last name, signature and date
@@ -633,18 +661,17 @@
                     <!-- <button style="position: absolute;left: 0;right: 0;margin: auto;top: -10px;" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> -->
                     <div class="pp__img__container">
                         <img src="../images/preview_phone.png" alt="Norway"
-                             style="width: 100%;">
+                             id="wid-100">
                         <div class="pp__top">
-                            <div id="cancelButtonId" class="pl-lg pr-lg"
-                                 style="display: none;">
+                            <div id="cancelButtonId" class="pl-lg pr-lg dis-none">
                                 <button type="button" class="float__right cancel__close mb-sm"
                                         data-dismiss="modal">Cancel
                                 </button>
                             </div>
-                            <div id="doneButtonId" class="pl-lg pr-lg" style="display: none;">
-                                <button type="button" class="float__right cancel__close"
-                                        onclick="previewDataSharing();">Done
+                            <div id="doneButtonId" class="pl-lg pr-lg dis-none">
+                                <button type="button" class="float__right cancel__close previewDataSharingFunct">Done
                                 </button>
+                               <!--  onclick="previewDataSharing();" -->
                             </div>
                             <div class="clearfix"></div>
                             <div class="pl-md pr-md">
@@ -659,13 +686,12 @@
                                             </div>
                                             <div id="learnMoreId" class="pp__learnmore">
                                                 <a href="javascript:void(0)" data-toggle="modal"
-                                                   id="learnMoreText"
-                                                   onclick="previewLearnMore();">Learn more</a>
+                                                   id="learnMoreText" class="previewLearnMoreFunct">Learn more</a>
+                                                   <!-- onclick="previewLearnMore();" -->
                                             </div>
                                             <div id="mainOverviewPanel" class="pp__ul mt-xlg">
-                                                <ul id="accordianNA" style="display: none;">
-                                                    <li id="shortDescriptionModalId"
-                                                        style="font-weight: bold;">
+                                                <ul id="accordianNA" class="dis-none">
+                                                    <li id="shortDescriptionModalId" class="fw-bl">
                                                         - NA -
                                                     </li>
                                                 </ul>
@@ -674,8 +700,7 @@
                                                      id="accordion">
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
-                                                            <div class="panel-title"
-                                                                 style="font-weight: bold;">
+                                                            <div class="panel-title fw-bl">
                                                                 <a data-toggle="collapse"
                                                                    data-parent="#accordion"
                                                                    href="#collapse1"
@@ -710,9 +735,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <ul id="accordian1NA" style="display: none;">
-                                                    <li id="shortDescriptionModalId"
-                                                        style="font-weight: bold;">
+                                                <ul id="accordian1NA" class="dis-none">
+                                                    <li id="shortDescriptionModalId" class="fw-bl">
                                                         - NA -
                                                     </li>
                                                 </ul>
@@ -720,8 +744,7 @@
                                                      id="accordion1">
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
-                                                            <div class="panel-title"
-                                                                 style="font-weight: bold;">
+                                                            <div class="panel-title fw-bl">
                                                                 <a data-toggle="collapse"
                                                                    data-parent="#accordion1"
                                                                    href="#collapse2"
@@ -762,7 +785,7 @@
         </div>
     </div>
     <!-- End right Content here -->
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="${nonce}">
       var idleTime = 0;
       $(document).ready(function () {
         //check the type of page action(view/edit)
@@ -1467,10 +1490,11 @@
         });
       });
 
-      function goToBackPage(item) {
+      $(".back-page").on('click', function () {
+      //function goToBackPage(item) {
         //window.history.back();
         <c:if test="${permission ne 'view'}">
-        $(item).prop('disabled', true);
+        $(this).prop('disabled', true);
         bootbox.confirm({
           closeButton: false,
           message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
@@ -1489,7 +1513,7 @@
               a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
               document.body.appendChild(a).click();
             } else {
-              $(item).prop('disabled', false);
+              $(this).prop('disabled', false);
             }
           }
         });
@@ -1500,7 +1524,7 @@
         a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
         document.body.appendChild(a).click();
         </c:if>
-      }
+      })
 
       function maxLenValEditor() {
         var isValid = true;
@@ -1539,7 +1563,8 @@
         return isValid;
       }
 
-      function previewDataSharing() {
+      $('.previewDataSharingFunct').on('click', function() {
+      //function previewDataSharing() {
         let language = $('#studyLanguage').val();
         var titleText = $("#titleId").val();
         var tagline_description = $("#taglineDescriptionId").val();
@@ -1613,9 +1638,10 @@
         $('#cancelButtonId').show();
         $('#doneButtonId').hide();
         $("#myModal").modal('show');
-      }
+      })
 
-      function previewLearnMore() {
+      $('.previewLearnMoreFunct').on('click', function() {
+      //function previewLearnMore() {
         $('#cancelButtonId').hide();
         $('#doneButtonId').show();
         var learn_more_desc = tinymce.get('learnMoreTextId').getContent({format: 'text'}).trim();
@@ -1649,7 +1675,7 @@
 
         $('.scrollbar__').scrollTop(0);
         colapseUpAndDown();
-      }
+      })
 
       $(document).on('show.bs.collapse', '.collapse', function () {
         $('.collapse').not(this).collapse('hide').removeClass('in');
@@ -1669,7 +1695,9 @@
 
       var customAnchorCount = 0;
 
-      function addAdditionalSignature() {
+      
+      $(document).on('click', ".addAdditionalSignatureFunct", function() { 
+      //function addAdditionalSignature() {
         customAnchorCount = parseInt($('.additional-signature-option:last').attr("id")) + 1;
         var newDateCon = "<div class='additional-signature-option mb-md form-group' id='"
             + customAnchorCount + "'>"
@@ -1681,9 +1709,9 @@
             + "custAttType='cust' autofocus='autofocus' maxlength='30' data-pattern-error='Please fill out this field.' onkeypress='blockSpecialChar(event,this)' required /><span class='help-block with-errors red-txt'></span>"
             + "</span>"
             + "<span id='addbtn" + customAnchorCount
-            + "' class='addbtn dis-inline vertical-align-middle mr-sm btm-marg' onclick='addAdditionalSignature();'>+</span>"
+            + "' class='addbtn dis-inline vertical-align-middle mr-sm btm-marg addAdditionalSignatureFunct'>+</span>"
             + "<span id='deleteAncchor" + customAnchorCount
-            + "' class='sprites_icon delete vertical-align-middle remBtn align-span-center' onclick='removeAdditionalSignature(this);'></span>"
+            + "' class='sprites_icon delete vertical-align-middle remBtn align-span-center removeAdditionalSignatureFunct'></span>"
             + "</div>";
 
         $(".additional-signature-option:last").after(newDateCon);
@@ -1698,10 +1726,12 @@
           $('.additionalSignature').find(".addbtn").addClass("hide");
         }
         $('#' + customAnchorCount).find('input:first').focus();
-      }
+      })
 
-      function removeAdditionalSignature(param) {
-        $(param).parents(".additional-signature-option").remove();
+      
+      $(document).on('click', ".removeAdditionalSignatureFunct", function() { 
+      //function removeAdditionalSignature(param) {
+        $(this).parents(".additional-signature-option").remove();
         $(".additional-signature-option").parents("form").validator("destroy");
         $(".additional-signature-option").parents("form").validator();
         if ($('.additional-signature-option').length > 1) {
@@ -1711,7 +1741,7 @@
           $('.additional-signature-option').find(".addbtn").removeClass("hide");
           $('.additional-signature-option').find('.remBtn').addClass('display__none');
         }
-      }
+      })
 
       function blockSpecialChar(e, t) {
         var k = e.keyCode;

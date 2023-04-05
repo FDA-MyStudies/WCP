@@ -5,7 +5,7 @@
 <%@page import="com.fdahpstudydesigner.util.SessionObject" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .cursonMove {
         cursor: move !important;
       }
@@ -75,7 +75,7 @@
                         ${not empty  sessionScope[isLive] ? '<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -118,7 +118,7 @@
         <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
         <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-        <select id="eligibilityItems" style="display: none">
+        <select id="eligibilityItems" class="dis-none">
             <c:forEach items="${eligibilityTestLangList}" var="eligibilityLang">
                 <option id='lang_${eligibilityLang.eligibilityTestLangPK.id}'
                         status="${eligibilityLang.status}"
@@ -130,7 +130,7 @@
             <div class="mb-xlg form-group" id="eligibilityOptDivId">
                 <div class="gray-xs-f mb-sm">
                     Choose the method to be used for ascertaining participant
-                    eligibility <small style="display: none;" id="forceContinueMsgId">(Please
+                    eligibility <small class="dis-none" id="forceContinueMsgId">(Please
                     save to continue)</small>
                 </div>
                 <span class="radio radio-info radio-inline p-45 pl-1"> <input
@@ -160,7 +160,7 @@
                 <div class="help-block with-errors red-txt"></div>
             </div>
             <div id="instructionTextDivId"
-                 <c:if test="${eligibility.eligibilityMechanism eq 3}">style="display: none;"</c:if>>
+                 <c:if test="${eligibility.eligibilityMechanism eq 3}">class="dis-none"</c:if>>
                 <div class="blue-md-f mb-md text-uppercase">Token Validation</div>
                 <div>
                     <div class="gray-xs-f mb-xs">
@@ -177,7 +177,7 @@
             </div>
         </div>
         <div id="eligibilityQusDivId"
-             <c:if test="${eligibility.eligibilityMechanism eq 1}">style="display: none;"</c:if>>
+             <c:if test="${eligibility.eligibilityMechanism eq 1}">class="dis-none"</c:if>>
             <div class="right-content-head">
                 <div class="text-right">
                     <div class="black-md-f  dis-line pull-left line34">Eligibility
@@ -218,9 +218,9 @@
                                         data-toggle="tooltip" data-placement="top" title="Edit"
                                         etId='${etQusAns.id}'></span>
                                 <span
-                                        class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteIcon"
-                                        data-toggle="tooltip" data-placement="top" title="Delete"
-                                        onclick="deleteEligibiltyTestQusAns('${etQusAns.id}', this);"></span>
+                                        class="sprites_icon copy delete deleteEligibiltyTest <c:if test="${not empty permission}"> cursor-none </c:if> deleteIcon"
+                                        data-toggle="tooltip" data-placement="top" title="Delete" data-test= "${etQusAns.id}"
+                                        ></span>
                             </td>
                         </tr>
                         <c:if test="${chkDone eq 'true' && not etQusAns.status}">
@@ -270,7 +270,7 @@
         action="/fdahpStudyDesigner/adminStudies/viewStudyEligibiltyTestQusAns.do?_S=${param._S}"
         id="viewQAFormId">
 </form:form>
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   var viewPermission = "${permission}";
   var permission = "${permission}";
@@ -690,7 +690,8 @@
     form.submit();
   }
 
-  function deleteEligibiltyTestQusAns(eligibilityTestId, thisAttr) {
+  $(".deleteEligibiltyTest").on('click', function () {
+	  var eligibilityTestId= $(this).attr('data-test')
     var studyId = $('#studyId').val();
     bootbox
     .confirm(
@@ -767,7 +768,7 @@
             }
           }
         });
-  }
+  })
 
   function reloadEligibiltyTestDataTable(eligibiltyTestList) {
     $('#consent_list').DataTable().clear();
@@ -799,8 +800,10 @@
                 + ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'
                 + parseInt(obj.id)
                 + '"></span>'
-                + '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns('
-                + parseInt(obj.id) + ', this);"></span>';
+                + '<span class="sprites_icon copy delete deleteIcon deleteEligibiltyTest" data-toggle="tooltip" data-placement="top" title="Delete" data-test= "${etQusAns.id}"></span>';
+                //onclick="deleteEligibiltyTestQusAns('
+                //+ parseInt(obj.id) + ', this);"
+                
             //                  var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></span>'+
             //                  '<span class="edit-inc mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="" etid="15" data-original-title="Edit"></span>'+
             //                  '<span class="sprites_icon copy delete  deleteIcon" data-toggle="tooltip" data-placement="top" title="" onclick="deleteEligibiltyTestQusAns('+15+', this);" data-original-title="Delete"></span>';

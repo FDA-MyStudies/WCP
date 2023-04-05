@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .table > thead:last-child > tr:last-child > th, .table > body:last-child > tr:last-child > td {
         text-align: center;
       }
@@ -61,6 +61,10 @@
       #timeOutMessage {
         width: 257px;
       }
+      
+      .table-width{
+      	width:100% !important;
+      }
     </style>
 </head>
 
@@ -74,7 +78,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -98,8 +102,8 @@
 					<span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                             <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if>>
-						<button type="button" class="btn btn-primary blue-btn"
-                                id="markAsCompleteBtnId" onclick="markAsCompleted();"
+						<button type="button" class="btn btn-primary blue-btn markAsCompletedfunct"
+                                id="markAsCompleteBtnId"
                                 <c:if test="${!markAsComplete}"> disabled </c:if>>Mark
 							as Completed</button>
 					</span>
@@ -113,16 +117,14 @@
     <div class="right-content-body">
         <div class="table-responsive">
             <table id="participantProperties_list"
-                   class="display bor-none dragtbl dataTable no-footer"
-                   style="width:100% !important">
+                   class="display bor-none dragtbl dataTable no-footer table-width">
                 <thead>
                 <tr>
                     <th>SHORT TITLE</th>
                     <th>DATA TYPE</th>
                     <th><c:if test="${empty permission}">
                         <div class="dis-line form-group mb-none">
-                            <button type="button" id="addButton" class="btn btn-primary blue-btn"
-                                    onclick="addParticipantProperties();">+ Add Property
+                            <button type="button" id="addButton" class="btn btn-primary blue-btn addParticipantPropertiesfunct">+ Add Property
                             </button>
                         </div>
                     </c:if></th>
@@ -134,15 +136,14 @@
                     <tr>
                         <td>${participantProperty.shortTitle}</td>
                         <td>${participantProperty.dataType}</td>
-                        <td><span class="sprites_icon preview-g mr-lg"
-                                  data-toggle="tooltip" data-placement="top" title="View"
-                                  onclick="viewQuestionnaires(${participantProperty.id});"></span>
+                        <td><span class="sprites_icon preview-g mr-lg viewQuestionnairesfunct" data-id="${participantProperty.id}"
+                                  data-toggle="tooltip" data-placement="top" title="View"></span>
                             <span
                                     class="${participantProperty.completed?'edit-inc':'edit-inc-draft mr-md'} mr-lg
 								<c:if test="${not empty permission}"> cursor-none </c:if> 
-								<c:if test="${not participantProperty.status}"> cursor-none </c:if>"
+								<c:if test="${not participantProperty.status}"> cursor-none </c:if> editQuestionnairesfunct" data-id="${participantProperty.id}"
                                     data-toggle="tooltip" data-placement="top" title="Edit"
-                                    onclick="editQuestionnaires(${participantProperty.id});"></span>
+                                    ></span>
                         </td>
                     </tr>
                 </c:forEach>
@@ -190,7 +191,7 @@
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 </form:form>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -238,7 +239,7 @@
 </script>
 
 
-<script>
+<script nonce="${nonce}">
   $(document).ready(function () {
     var idleTime = 0;
     //datatable icon toggle
@@ -315,33 +316,38 @@
     });
   });
 
-  function addParticipantProperties() {
+  
+  $('.addParticipantPropertiesfunct').on('click', function () {
     $("#participantPropertiesId").val('');
     $("#participantPropertiesForm").submit();
-  }
+  })
 
-  function viewQuestionnaires(participantPropertyId) {
+  
+  $('.viewQuestionnairesfunct').on('click', function () {
+	  var participantPropertyId = $(this).attr('data-id')
     if (participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId
         != 'undefined') {
       $("#actionType").val('view');
       $("#participantPropertyId").val(participantPropertyId);
       $("#editParticipantProperties").submit();
     }
-  }
+  })
 
-  function editQuestionnaires(participantPropertyId) {
+  
+  $('.editQuestionnairesfunct').on('click', function () {
+	  var participantPropertyId = $(this).attr('data-id')
     if (participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId
         != 'undefined') {
       $("#actionType").val('edit');
       $("#participantPropertyId").val(participantPropertyId);
       $("#editParticipantProperties").submit();
     }
-  }
+  })
 
-  function markAsCompleted() {
+  $(".markAsCompletedfunct").on('click', function () {
     document.editParticipantProperties.action = "/fdahpStudyDesigner/adminStudies/participantPropertiesMarkAsCompleted.do?_S=${param._S}";
     document.editParticipantProperties.submit();
-  }
+  })
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

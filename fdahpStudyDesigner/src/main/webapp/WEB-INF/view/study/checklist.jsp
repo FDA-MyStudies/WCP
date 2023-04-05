@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       #autoSavedMessage {
         width: 257px;
       }
@@ -254,7 +254,7 @@
 </div>
 <!-- End right Content here -->
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $(".menuNav li").removeClass('active');

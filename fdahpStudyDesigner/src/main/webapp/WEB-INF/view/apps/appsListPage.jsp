@@ -12,13 +12,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       body {
         height: 100vh !important;
       }
     </style>
 </head>
-<style>
+<style nonce="${nonce}">
   #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
     position: relative !important;
     right: 5px !important;
@@ -30,7 +30,7 @@
     <div>
         <!-- widgets section-->
         <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
-            <div class="black-lg-f" style="margin-top: 0">Manage Force Update
+            <div class="black-lg-f mt-none">Manage Force Update
                 <span>
                     <span class="filled-tooltip"
                           data-toggle="tooltip"
@@ -110,7 +110,7 @@
 </div>
 
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('#rowId').parent().removeClass('#white-bg');

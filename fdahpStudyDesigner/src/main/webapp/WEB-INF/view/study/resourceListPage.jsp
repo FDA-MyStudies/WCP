@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .cursonMove {
         cursor: move !important;
       }
@@ -55,7 +55,7 @@
                 ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -78,8 +78,8 @@
 					<span class="tool-tip" data-toggle="tooltip" id="helpNote"
                           data-placement="bottom"
                           <c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if>>
-						<button type="button" class="btn btn-primary blue-btn"
-                                id="markAsComp" onclick="markAsCompleted();"
+						<button type="button" class="btn btn-primary blue-btn markAsCompletedfunct"
+                                id="markAsComp"
                                 <c:if test="${fn:length(resourcesSavedList) ne 0}">disabled</c:if>>
 							Mark as Completed</button>
 					</span>
@@ -102,16 +102,16 @@
 
 									<span id="studyProSpan" class="tool-tip" data-toggle="tooltip"
                                           data-placement="bottom">
-										<button type="button" id="studyProtocolId"
-                                                class="btn btn-primary blue-btn"
-                                                onclick="addStudyProtocol(${studyProtocolResourceBO.id});">
+										<button type="button" id="studyProtocolId" data-id="${studyProtocolResourceBO.id}"
+                                                class="btn btn-primary blue-btn addStudyProtocolfunct"
+                                                >
 										Study Protocol</button>
 									</span>
                         </div>
 
                         <div class="dis-line form-group mb-none">
                             <button type="button" id="addResourceId"
-                                    class="btn btn-primary blue-btn" onclick="addResource();">Add
+                                    class="btn btn-primary blue-btn addResourcefunct">Add
                                 Resource
                             </button>
                         </div>
@@ -125,17 +125,17 @@
                         <td>${resourceInfo.sequenceNo}</td>
                         <td class="wid50 title">${resourceInfo.title}</td>
                         <td class="wid50 text-right"><span
-                                class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
-                                data-placement="top" title="View" id="viewRes"
-                                onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
-                                class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
-                                data-toggle="tooltip" data-placement="top" title="Edit"
-                                id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
+                                class="sprites_icon preview-g mr-lg viewResourceInfofunct" data-toggle="tooltip"
+                                data-placement="top" title="View" id="viewRes" data-id="${resourceInfo.id}"
+                                ></span> <span
+                                class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editResourceInfofunct"
+                                data-toggle="tooltip" data-placement="top" title="Edit" data-id="${resourceInfo.id}"
+                                id="editRes"></span>
                             <span
-                                    class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-                                    data-toggle="tooltip" data-placement="top" title="Delete"
+                                    class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteResourceInfofunct"
+                                    data-toggle="tooltip" data-placement="top" title="Delete" data-id="${resourceInfo.id}"
                                     id="delRes"
-                                    onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+                                    ></span>
                         </td>
                     </tr>
                 </c:forEach>
@@ -176,14 +176,14 @@
     <input type="hidden" name="language" value="${currLanguage}">
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
-    <select id="resourceLangBOList" style="display: none">
+    <select id="resourceLangBOList" class="dis-none">
         <c:forEach items="${resourceLangBOList}" var="resourceLang">
             <option id='${resourceLang.resourcesLangPK.id}' status="${resourceLang.action}"
                     value="${resourceLang.title}">${resourceLang.title}</option>
         </c:forEach>
     </select>
 </form:form>
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   var dataTable;
   $(document).ready(function () {
@@ -357,7 +357,9 @@
     });
   });
 
-  function deleteResourceInfo(resourceInfoId) {
+  $('.deleteResourceInfofunct').on('click', function () {
+	  var resourceInfoId = $(this).attr('data-id')
+  //function deleteResourceInfo(resourceInfoId) {
     $('#delRes').addClass('cursor-none');
     bootbox.confirm("Are you sure you want to delete this resource?", function (result) {
       if (result) {
@@ -409,7 +411,7 @@
       }
     });
     $('#delRes').removeClass('cursor-none');
-  }
+  })
 
   function reloadData(studyId) {
     $.ajax({
@@ -451,17 +453,13 @@
           } else {
             datarow.push(obj.title);
           }
-          var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewResourceInfo("
-              + parseInt(obj.id) + ");'></span>";
+          var actions = "<span class='sprites_icon preview-g mr-lg viewResourceInfofunct' data-id='${resourceInfo.id}'></span>";
           if (obj.status) {
-            actions += "<span class='sprites_icon edit-inc editIcon mr-lg' onclick='editResourceInfo("
-                + parseInt(obj.id) + ");'></span>"
+            actions += "<span class='sprites_icon edit-inc editIcon mr-lg editResourceInfofunct' data-id='${resourceInfo.id}'></span>"
           } else {
-            actions += "<span class='sprites_icon edit-inc-draft editIcon mr-lg' onclick='editResourceInfo("
-                + parseInt(obj.id) + ");'></span>";
+            actions += "<span class='sprites_icon edit-inc-draft editIcon mr-lg editResourceInfofunct' data-id='${resourceInfo.id}'></span>";
           }
-          actions += "<span class='sprites_icon copy delete' onclick='deleteResourceInfo("
-              + parseInt(obj.id) + ");'></span>";
+          actions += "<span class='sprites_icon copy delete deleteResourceInfofunct' data-id='${resourceInfo.id}'></span>";
           datarow.push(actions);
           $('#resource_list').DataTable().row.add(datarow);
           // $('#resource_list tr').find('td[1]').addClass("wid50");
@@ -491,7 +489,9 @@
     })
   }
 
-  function addStudyProtocol(studyProResId) {
+  $('.addStudyProtocolfunct').on('click', function () {
+	  var studyProResId = $(this).attr('data-id')
+  //function addStudyProtocol(studyProResId) {
     $('#studyProtocolId').prop('disabled', true);
     if (studyProResId != null && studyProResId != '' && typeof studyProResId != 'undefined') {
       $("#resourceInfoId").val(studyProResId);
@@ -502,36 +502,43 @@
     }
     $("#isstudyProtocol").val('isstudyProtocol');
     $("#resourceInfoForm").submit();
-  }
+  })
 
-  function addResource() {
+   $('.addResourcefunct').on('click', function () {
+	   //function addResource() {
     $('#addResourceId').prop('disabled', true);
     $("#resourceInfoId").val('');
     $("#actionOn").val('add');
     $("#resourceInfoForm").submit();
-  }
+  })
 
-  function editResourceInfo(resourceInfoId) {
+  
+  $('.editResourceInfofunct').on('click', function () {
+	  var resourceInfoId = $(this).attr('data-id')
+  //function editResourceInfo(resourceInfoId) {
     if (resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId != 'undefined') {
       $('#editRes').addClass('cursor-none');
       $("#resourceInfoId").val(resourceInfoId);
       $("#actionOn").val('edit');
       $("#resourceInfoForm").submit();
     }
-  }
+  })
 
-  function viewResourceInfo(resourceInfoId) {
+  
+  $('.viewResourceInfofunct').on('click', function () {
+	  var resourceInfoId = $(this).attr('data-id')
+  //function viewResourceInfo(resourceInfoId) {
     if (resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId != 'undefined') {
       $('#viewRes').addClass('cursor-none');
       $("#resourceInfoId").val(resourceInfoId);
       $("#actionOn").val('view');
       $("#resourceInfoForm").submit();
     }
-  }
+  })
 
-  function markAsCompleted() {
+  $(".markAsCompletedfunct").on('click', function () {
     $('#resourceMarkAsCompletedForm').submit();
-  }
+  })
 
   function hideDisplayMessage() {
     $('#alertMsg').hide();

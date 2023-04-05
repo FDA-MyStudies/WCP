@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}"> 
       .btns__devider {
         display: inline-block;
         border-top: 1px solid #dddddd;
@@ -53,6 +53,14 @@
       .close {
         background: none;
       }
+      
+      .ws-norm{
+      	white-space: normal;
+      }
+      
+      .bt-ws{
+      	white-space: nowrap;
+      }
     </style>
 </head>
 
@@ -93,10 +101,9 @@
         </div>
         <div>
             <c:if test="${studyBo.studyPreActiveFlag eq false}">
-                <div class="form-group mr-sm" style="white-space: normal;">
-                    <button type="button" class="btn btn-primary blue-btn-action"
-                            style="white-space: nowrap;"
-                            id="publishId" onclick="validateStudyStatus(this);"
+                <div class="form-group mr-sm ws-norm">
+                    <button type="button" class="btn btn-primary blue-btn-action bt-ws validateStudyStatusfunct"
+                            id="publishId"
                             <c:choose>
                                 <c:when test="${not empty permission}">
                                     disabled
@@ -112,9 +119,9 @@
                 </div>
             </c:if>
             <c:if test="${studyBo.studyPreActiveFlag eq true}">
-                <div class="form-group mr-sm" style="white-space: normal;">
-                    <button type="button" class="btn btn-primary blue-btn-action"
-                            id="unpublishId" onclick="validateStudyStatus(this);"
+                <div class="form-group mr-sm ws-norm">
+                    <button type="button" class="btn btn-primary blue-btn-action validateStudyStatusfunct"
+                            id="unpublishId"
                             <c:choose>
                                 <c:when test="${not empty permission}">
                                     disabled
@@ -128,9 +135,9 @@
                     </button>
                 </div>
             </c:if>
-            <div class="form-group mr-sm" style="white-space: normal;">
-                <button type="button" class="btn btn-default gray-btn-action "
-                        id="lunchId" onclick="validateStudyStatus(this);"
+            <div class="form-group mr-sm ws-norm">
+                <button type="button" class="btn btn-default gray-btn-action validateStudyStatusfunct"
+                        id="lunchId"
                         <c:choose>
                             <c:when test="${not empty permission}">
                                 disabled
@@ -144,9 +151,9 @@
                 </button>
             </div>
 
-            <div class="form-group mr-sm" style="white-space: normal;">
-                <button type="button" class="btn btn-default gray-btn-action"
-                        id="updatesId" onclick="validateStudyStatus(this);"
+            <div class="form-group mr-sm ws-norm">
+                <button type="button" class="btn btn-default gray-btn-action validateStudyStatusfunct"
+                        id="updatesId"
                         <c:choose>
                             <c:when test="${not empty permission}">
                                 disabled
@@ -165,9 +172,9 @@
                 </button>
             </div>
 
-            <div class="form-group mr-sm" style="white-space: normal;">
-                <button type="button" class="btn btn-default gray-btn-action "
-                        id="pauseId" onclick="validateStudyStatus(this);"
+            <div class="form-group mr-sm ws-norm">
+                <button type="button" class="btn btn-default gray-btn-action validateStudyStatusfunct"
+                        id="pauseId"
                         <c:choose>
                             <c:when test="${not empty permission}">
                                 disabled
@@ -185,9 +192,9 @@
                 </button>
             </div>
 
-            <div class="form-group mr-sm" style="white-space: normal;">
-                <button type="button" class="btn btn-default gray-btn-action "
-                        id="resumeId" onclick="validateStudyStatus(this);"
+            <div class="form-group mr-sm ws-norm">
+                <button type="button" class="btn btn-default gray-btn-action validateStudyStatusfunct"
+                        id="resumeId"
                         <c:choose>
                             <c:when test="${not empty permission}">
                                 disabled
@@ -203,10 +210,10 @@
                 </button>
             </div>
 
-            <div class="form-group mr-sm" style="white-space: normal;">
+            <div class="form-group mr-sm ws-norm">
 				<span class="btns__devider">
-					<button type="button" class="btn btn-default red-btn-action "
-                            id="deactivateId" onclick="validateStudyStatus(this);"
+					<button type="button" class="btn btn-default red-btn-action validateStudyStatusfunct"
+                            id="deactivateId"
                             <c:choose>
                                 <c:when test="${not empty permission}">
                                     disabled
@@ -246,7 +253,7 @@
         action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}"
         name="studyListInfoForm" id="studyListInfoForm" method="post">
 </form:form>
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $(".menuNav li").removeClass('active');
@@ -370,9 +377,9 @@
       });
     }
   });
-
-  function validateStudyStatus(obj) {
-    var buttonText = obj.id;
+ 
+  $(".validateStudyStatusfunct").on('click', function () {
+	  var buttonText = this.id;
     var messageText = "";
     if (buttonText) {
       if (buttonText == 'unpublishId' || buttonText == 'pauseId'
@@ -467,7 +474,7 @@
       }
     }
 
-  }
+  })
 
   function showErrMsg1(message) {
     $("#alertMsg").removeClass('s-box').addClass('e-box').text(message);

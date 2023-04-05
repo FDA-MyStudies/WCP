@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
   .langSpecific {
     position: relative;
   }
@@ -32,6 +32,10 @@
     right: -14px !important;
     margin-top: 6% !important;
   }
+  
+  #vl-bt{
+  	vertical-align: bottom;
+  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -50,7 +54,7 @@
                         ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -91,7 +95,7 @@
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="mlMediaLink" value="${mlMediaLink}"/>
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-        <select id="overviewPages" style="display: none">
+        <select id="overviewPages" class="dis-none">
             <c:forEach items="${studyPageLanguageList}" var="overviewPage">
                 <option id='${overviewPage.title}'
                         value="${overviewPage.description}">${overviewPage.description}</option>
@@ -278,10 +282,10 @@
                                         </div>
                                         <div>
                                             <div class="thumb">
-                                                <img
+                                                <img id="viewThumbnailImg"
                                                         src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}"
-                                                        onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';"
                                                         class="wid100"/>
+                                                        <!-- onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" -->
                                             </div>
                                             <div class="dis-inline imgCls">
 												<span id="remUrl${spbSt.count}"
@@ -290,7 +294,7 @@
                                                         class="blue-link txt-decoration-underline pl-xs">Remove
 														Image</a></span>
                                                 <div class="form-group mb-none mt-sm"
-                                                     style="vertical-align: bottom;">
+                                                     id="vl-bt">
                                                     <button id="" type="button"
                                                             class="btn btn-default gray-btn uploadImgbtn">
                                                         Upload
@@ -395,7 +399,7 @@
 <!-- End right Content here -->
 
 
-<script>
+<script nonce="${nonce}">
 
   $('a').each(function () {
     this.setAttribute('aria-expanded', 'false')
@@ -753,8 +757,13 @@
       }
     });
 
+    $("#viewThumbnailImg").on('error', function() {
+     	  // this.src='/fdahpStudyDesigner/images/dummy-img.jpg';
+     	  $(this).attr("src", "/fdahpStudyDesigner/images/dummy-img.jpg")
+       });
+    
     parentInterval();
-
+    
     function parentInterval() {
       let timeOutInterval = setInterval(function () {
         idleTime += 1;

@@ -7,7 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
 	.langSpecific {
 		position: relative;
 	}
@@ -107,7 +107,7 @@
 				</div>
 
 				<c:if test="${studyBo.multiLanguageFlag eq true and notificationBO.actionPage != 'addOrCopy'}">
-					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<div class="dis-line form-group mb-none mr-sm wid-150">
 						<select
 								class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
 								id="studyLanguage" name="studyLanguage" title="Select">
@@ -123,7 +123,7 @@
 				</c:if>
 
 				<c:if test="${studyBo.multiLanguageFlag eq true and notificationBO.actionPage == 'addOrCopy'}">
-					<div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+					<div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
 						  data-placement="bottom"
 						  title="Language selection is available in edit screen only">
@@ -306,7 +306,7 @@
 	<input type="hidden" name="notificationId"
 		   value="${notificationBO.notificationId}">
 </form:form>
-<script>
+<script nonce="${nonce}">
 	var idleTime = 0;
 	$(document).ready(function () {
 		var appId = '${appId}';

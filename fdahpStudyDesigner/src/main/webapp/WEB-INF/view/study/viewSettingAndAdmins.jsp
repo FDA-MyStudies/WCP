@@ -9,7 +9,7 @@
 <!-- ============================================================== -->
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       table.dataTable thead th:last-child {
         width: 100px !important;
       }
@@ -117,6 +117,11 @@
       .checkbox input[type="checkbox"]:disabled + label {
         opacity: 0.99 !important;
       }
+      
+  	  .ta-center{
+  	  	text-align: center; 
+  	  	color: #000000;
+  	  }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
@@ -147,7 +152,7 @@
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-        <select id="langDeletableMap" style="display: none">
+        <select id="langDeletableMap" class="dis-none">
             <c:forEach items="${langDeletableMap}" var="langEntry">
                 <option id='lang_${langEntry.key}' value="${langEntry.value}"></option>
             </c:forEach>
@@ -161,7 +166,7 @@
                         ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -256,7 +261,7 @@
             </div>
             <!-- End Section-->
 
-            <div id="langSelect" style="display: none">
+            <div id="langSelect" class="dis-none">
                 <div class="mt-md study-list mb-md addHide">
                     <select
                             class="selectpicker col-md-6 pl-none pr-none aq-select aq-select-form text-normal"
@@ -266,7 +271,7 @@
                                     id="${lang.key}">${lang.value}</option>
                         </c:forEach>
                         <c:if test="${supportedLanguages.size() eq 0}">
-                            <option style="text-align: center; color: #000000" disabled>- All items
+                            <option class="ta-center" disabled>- All items
                                 are already selected -
                             </option>
                         </c:if>
@@ -281,9 +286,9 @@
                         <span id="span-${stdLang.key}">${stdLang.value}
                             <span
                                     id="innerSpan-${stdLang.key}"
-                                    class="ablue removeLang changeView"
-                                    onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;
+                                    class="ablue removeLang changeView removeLangFunct" data-val="${stdLang.value}" count=''> X&nbsp;&nbsp;
                             </span>
+                            <%-- onclick="removeLang(this.id, '${stdLang.value}', '')" --%>
                         </span>
                     </c:forEach>
                 </div>
@@ -409,8 +414,7 @@
                         class="filled-tooltip"></span></span>
                 </div>
 
-                <div class="col-md-7 p-none mt-sm rejointextclassYes"
-                     style="display: none;">
+                <div class="col-md-7 p-none mt-sm rejointextclassYes dis-none">
                     <div class="form-group m-none elaborateClass">
 						<textarea class="form-control" maxlength="250" rows="5"
                                   id="rejoin_comment_yes"
@@ -422,8 +426,7 @@
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
-                <div class="col-md-7 p-none mt-sm rejointextclassNo"
-                     style="display: none;">
+                <div class="col-md-7 p-none mt-sm rejointextclassNo dis-none">
                     <div class="form-group m-none elaborateClass">
 						<textarea class="form-control langSpecific" maxlength="250" rows="5"
                                   id="rejoin_comment_no"
@@ -447,8 +450,8 @@
                     <c:if test="${empty permission && fn:contains(permissions,5)}">
                         <div class="dis-line form-group mb-none">
                             <button type="button" id="addAdminButton"
-                                    class="btn btn-primary blue-btn mb-sm mt-xs"
-                                    onclick="addAdmin();">+ Add Admin
+                                    class="btn btn-primary blue-btn mb-sm mt-xs addAdminFunct"
+                                    >+ Add Admin
                             </button>
                         </div>
                     </c:if>
@@ -494,8 +497,8 @@
 											<label for="inlineRadio3${perm.userId}"></label>
 									</span></td>
                                 <td align="center"><span
-                                        class="sprites_icon copy delete <c:if test="${not empty permission || !fn:contains(permissions,5)}"> cursor-none </c:if>"
-                                        onclick="removeUser(${perm.userId})" data-toggle="tooltip"
+                                        class="sprites_icon copy delete <c:if test="${not empty permission || !fn:contains(permissions,5)}"> cursor-none </c:if> removeUserFunct"
+                                         data-toggle="tooltip" data-id="${perm.userId}"
                                         data-placement="top" title="Delete"></span></td>
                             </tr>
                         </c:forEach>
@@ -549,19 +552,19 @@
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f dis-line pull-left line34">
-					<span class="pr-sm"><a href="javascript:void(0)"
-                                           onclick="cancelAddAdmin();"><img
+					<span class="pr-sm"><a href="javascript:void(0)" class="cancelAddAdminFunct"
+                                          ><img
                             src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>Add Admins
                 </div>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="cancelAddAdmin();">Cancel
+                    <button type="button" class="btn btn-default gray-btn cancelAddAdminFunct"
+                            >Cancel
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-primary blue-btn"
-                            id="addAdminsToStudyId" onclick="addAdminsToStudy()">Add
+                    <button type="button" class="btn btn-primary blue-btn addAdminsToStudyFunct"
+                            id="addAdminsToStudyId">Add
                     </button>
                 </div>
             </div>
@@ -576,7 +579,7 @@
                         <th></th>
                         <th>USERS<span class="sort"></span></th>
                         <th>E-MAIL ADDRESS</th>
-                        <th style="width: 100px !important">ROLE</th>
+                        <th>ROLE</th>
 
                     </tr>
                     </thead>
@@ -655,9 +658,10 @@
         </div>
     </div>
 </div>
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
+
     $('#loader').hide();
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
@@ -1153,7 +1157,7 @@
 
   <c:if test="${empty permission && fn:contains(permissions,5)}">
 
-  function addAdmin() {
+  $('.addAdminFunct').on('click', function () {
     var userListTableRowCount = $('.checkCount').length;
     if (userListTableRowCount == 0) {
       bootbox.alert({
@@ -1165,9 +1169,10 @@
       $('#adminsId').show();
       $('#addAdminsToStudyId').prop('disabled', true);
     }
-  }
+  })
 
-  function cancelAddAdmin() {
+  
+  $('.cancelAddAdminFunct').on('click', function () {
     bootbox.confirm({
       closeButton: false,
       message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
@@ -1189,9 +1194,10 @@
         }
       }
     });
-  }
+  })
 
-  function addAdminsToStudy() {
+  
+  $('.addAdminsToStudyFunct').on('click', function () {
     $('#addAdminsToStudyId').attr('disabled', true);
     $('[name=case]:checked').each(function () {
       var name = escapeXml($(this).val());
@@ -1221,17 +1227,18 @@
           '<label for="inlineRadio3' + userId + '"></label>' +
           '</span></td>';
       domStr = domStr
-          + '<td align="center"><span class="sprites_icon copy delete" onclick="removeUser('
-          + userId + ')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
+          + '<td align="center"><span class="sprites_icon copy delete removeUserFunct" data-id="${perm.userId}" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
       domStr = domStr + '</tr>';
       $('#studyAdminId').append(domStr);
 
       $('.dataTables_empty').remove();
     });
     $('#addAdminsToStudyId').attr('disabled', false);
-  }
+  })
 
-  function removeUser(userId) {
+  
+  $('.removeUserFunct').on('click', function () {
+	  var userId = $(this).attr('data-id')
     var userId = userId;
     var count = 0;
     $('.studyAdminRowCls').each(function () {
@@ -1249,7 +1256,7 @@
     $('[data-toggle="tooltip"]').tooltip('dispose');
 
     $('#user' + userId).addClass('checkCount').show();
-  }
+  })
 
   function escapeXml(unsafe) {
     return unsafe.replace(/[<>&'"]/g, function (c) {
@@ -1305,6 +1312,13 @@
 
   var removedLanguages = '';
 
+  $('.removeLangFunct').on('click', function() {
+	  let langObject = $(this).attr('id');
+	  let fullName = $(this).attr('data-val');
+	  let allLang = $(this).attr('count');
+	  removeLang(langObject, fullName, allLang)
+  });
+  
   function removeLang(langObject, fullName, allLang) {
     if (fullName === 'new') {
       let text = $('#' + langObject).parent().text();

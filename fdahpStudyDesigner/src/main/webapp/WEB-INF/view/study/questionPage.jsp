@@ -4206,11 +4206,11 @@
         </c:if>
         <c:if test="${actionTypeForFormStep eq 'view'}">
           clearInterval(timeOutInterval);
-          keepAlive();
+          // keepAlive();
           timeOutFunction();
         </c:if>
       }
-      }, 224400); // 5 minutes
+      }, 228000); // 5 minutes
     }
 
     $(this).mousemove(function (e) {

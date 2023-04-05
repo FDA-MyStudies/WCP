@@ -181,10 +181,10 @@
         console.log('Inside first interval, idleTime : ' + idleTime);
         if (idleTime > 3) { // 5 minutes
           clearInterval(timeOutInterval);
-          keepAlive();
+          // keepAlive();
           timeOutFunction();
         }
-      }, 226000);
+      }, 228000);
     }
 
     $(this).mousemove(function (e) {

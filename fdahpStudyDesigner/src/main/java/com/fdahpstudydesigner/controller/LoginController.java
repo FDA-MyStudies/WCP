@@ -369,13 +369,13 @@ public class LoginController {
     SessionObject sesObj;
     try {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-      if (auth != null) {
-        sesObj =
-            (SessionObject)
-                request.getSession(false).getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-        loginService.logUserLogOut(sesObj);
-        new SecurityContextLogoutHandler().logout(request, response, auth);
-      }
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+        sesObj = request.getSession(false) != null
+            ? (SessionObject) request.getSession(false).getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT)
+            : null;
+        if (sesObj != null) {
+          loginService.logUserLogOut(sesObj);
+        }
       request.getSession(true).setAttribute("errMsg", msg);
       request.getSession(true).setAttribute("sucMsg", sucMsg);
     } catch (Exception e) {

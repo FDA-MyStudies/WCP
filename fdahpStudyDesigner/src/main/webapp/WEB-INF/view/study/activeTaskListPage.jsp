@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <meta charset="UTF-8">
-    <style nonce="${nonce}">
+    <style>
       .help-block ul {
         width: 160px !important;
       }
@@ -55,7 +55,7 @@
             <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS</div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm wid-150">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -79,8 +79,8 @@
 						<span id="spancomId" class="tool-tip" data-toggle="tooltip"
                               data-placement="bottom"
                                 <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
-							<button type="button" class="btn btn-primary blue-btn markAsCompletedFunct"
-                                    id="markAsComp"
+							<button type="button" class="btn btn-primary blue-btn"
+                                    id="markAsComp" onclick="markAsCompleted();"
                                     <c:if test="${!markAsComplete}">disabled</c:if>>
 								Mark as Completed</button>
 						</span>
@@ -98,15 +98,15 @@
                    width="100%">
                 <thead>
                 <tr>
-                    <th class="dis-none"></th>
+                    <th style="display: none;"></th>
                     <th>TITLE<span class="sort"></span></th>
                     <th>TYPE<span class="sort"></span></th>
                     <th>FREQUENCY<span class="sort"></span></th>
                     <th>
                         <div class="dis-line form-group mb-none">
                             <c:if test="${empty permission}">
-                                <button type="button" class="btn btn-primary blue-btn addActiveTaskPageFunct" id="addBtn"
-                                        >Add Active Task
+                                <button type="button" class="btn btn-primary blue-btn" id="addBtn"
+                                        onclick="addActiveTaskPage();">Add Active Task
                                 </button>
                             </c:if>
                         </div>
@@ -116,7 +116,7 @@
                 <tbody>
                 <c:forEach items="${activeTasks}" var="activeTasksInfo">
                     <tr id="row${activeTasksInfo.id}" status="${activeTasksInfo.action}">
-                        <td class="dis-none">${activeTasksInfo.createdDate}</td>
+                        <td style="display: none;">${activeTasksInfo.createdDate}</td>
                         <td class="title">
                             <div class="dis-ellipsis pr-100"
                                  title="${fn:escapeXml(activeTasksInfo.displayName)}">${activeTasksInfo.displayName}</div>
@@ -124,15 +124,17 @@
                         <td>${activeTasksInfo.type}</td>
                         <td>${activeTasksInfo.frequency  == 'Manually Schedule' ? 'Custom Schedule' : activeTasksInfo.frequency}</td>
                         <td>
-                            <span class="sprites_icon preview-g mr-lg viewTaskInfoFunct" data-toggle="tooltip"
-                                  data-placement="top" title="View" data-id="${activeTasksInfo.id}"
-                                  ></span>
-                            <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editTaskInfoFunct"
+                            <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
+                                  data-placement="top" title="View"
+                                  onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
+                            <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                                   data-toggle="tooltip" data-placement="top" title="Edit"
-                                  id="editTask" data-id="${activeTasksInfo.id}"></span>
-                            <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteTaskInfoFunct"
+                                  id="editTask"
+                                  onclick="editTaskInfo(${activeTasksInfo.id});"></span>
+                            <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                                   data-toggle="tooltip" data-placement="top" title="Delete"
-                                  id="delTask" data-id="${activeTasksInfo.id}"></span>
+                                  id="delTask"
+                                  onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
                         </td>
                     </tr>
                 </c:forEach>
@@ -164,7 +166,7 @@
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
-    <select id="activeTaskLangItems" class="dis-none">
+    <select id="activeTaskLangItems" style="display: none">
         <c:forEach items="${activeTaskLangBOS}" var="activeTaskLang">
             <option id='${activeTaskLang.activeTaskLangPK.id}' status="${activeTaskLang.status}"
                     value="${activeTaskLang.displayName}">${activeTaskLang.displayName}</option>
@@ -176,7 +178,7 @@
     <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}"/>
 </form:form>
 <c:set var="studyId">${_S}studyId</c:set>
-<script nonce="${nonce}">
+<script>
   var idleTime = 0;
   var dataTable;
   $(document).ready(function () {
@@ -271,37 +273,30 @@
 
   });
 
-  
-  $(".addActiveTaskPageFunct").on('click', function () {
+  function addActiveTaskPage() {
     $("#actionType").val('add');
     $("#activeTaskInfoId").val('');
     $("#activeTaskInfoForm").submit();
-  })
+  }
 
-  $('.viewTaskInfoFunct').on('click', function () {
-	  var taskInfoId = $(this).attr('data-id')
-  //function viewTaskInfo(taskInfoId) {
+  function viewTaskInfo(taskInfoId) {
     if (taskInfoId != null && taskInfoId != '' && typeof taskInfoId != 'undefined') {
       $("#actionType").val('view');
       $("#activeTaskInfoId").val(taskInfoId);
       $("#activeTaskInfoForm").submit();
     }
-  })
+  }
 
-  $('.editTaskInfoFunct').on('click', function () {
-	  var taskInfoId = $(this).attr('data-id')
-  //function editTaskInfo(taskInfoId) {
+  function editTaskInfo(taskInfoId) {
     if (taskInfoId != null && taskInfoId != '' && typeof taskInfoId != 'undefined') {
       $('#editTask').addClass('cursor-none');
       $("#actionType").val('addEdit');
       $("#activeTaskInfoId").val(taskInfoId);
       $("#activeTaskInfoForm").submit();
     }
-  })
-  
-  $('.deleteTaskInfoFunct').on('click', function () {
-	  var taskInfoId = $(this).attr('data-id')
-  //function deleteTaskInfo(activeTaskInfoId) {
+  }
+
+  function deleteTaskInfo(activeTaskInfoId) {
     $('#delTask').addClass('cursor-none');
     bootbox.confirm({
       message: "Are you sure you want to delete this active task item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
@@ -371,14 +366,13 @@
       }
     });
     $('#delTask').removeClass('cursor-none');
-  })
+  }
 
-  
-  $('.markAsCompletedFunct').on('click', function () {
+  function markAsCompleted() {
     let input = $("<input>").attr("name", "language").val($('#studyLanguage').val());
     $('#completeInfoForm').append(input);
     $("#completeInfoForm").submit();
-  })
+  }
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

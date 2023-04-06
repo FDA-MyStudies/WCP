@@ -54,7 +54,11 @@ public class CSPFilter implements Filter {
         + "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do,"
         + "/fdahpStudyDesigner/adminStudies/comprehensionQuestionPage.do,"
         + "/fdahpStudyDesigner/adminStudies/viewActiveTask.do,"
-        + "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+        + "/fdahpStudyDesigner/adminStudies/consentListPage.do,"
+        + "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do,"
+        + "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do,"
+        + "/fdahpStudyDesigner/adminStudies/formQuestion.do,"
+        + "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
     if (response instanceof HttpServletResponse) {
       if (Arrays.asList(disallowCspUrls.split(",")).contains(query)) {
         ((HttpServletResponse) response).setHeader("Content-Security-Policy", LENIENT_POLICY);

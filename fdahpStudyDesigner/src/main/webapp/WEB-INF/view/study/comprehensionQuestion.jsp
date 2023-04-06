@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style nonce="${nonce}">
+<style>
   .langSpecific {
     position: relative;
   }
@@ -83,7 +83,7 @@
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f dis-line pull-left line34">
-					<span class="mr-xs cur-pointer back-page"><img
+					<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
                             src="../images/icons/back-b.png"/></span>
                     <c:if test="${empty comprehensionQuestionBo.id}">Add Comprehension Test Question</c:if>
                     <c:if
@@ -95,7 +95,7 @@
                 </div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and not empty comprehensionQuestionBo.id}">
-                    <div class="dis-line form-group mb-none mr-sm wid-150">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -111,7 +111,7 @@
                 </c:if>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and empty comprehensionQuestionBo.id}">
-                    <div class="dis-line form-group mb-none mr-sm wid-150">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -124,7 +124,8 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn back-page">Cancel
+                    <button type="button" class="btn btn-default gray-btn"
+                            onclick="goToBackPage(this);">Cancel
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none mr-sm ">
@@ -149,7 +150,7 @@
             <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
             <input type="hidden" id="questionTextLang"
                    value="${comprehensionQuestionLangBO.questionText}">
-            <select id="responseItems" class="dis-none">
+            <select id="responseItems" style="display: none">
                 <c:forEach items="${comprehensionQuestionLangBO.comprehensionResponseLangBoList}"
                            var="responseList">
                     <option id='${responseList.comprehensionResponseLangPK.id}'
@@ -205,12 +206,12 @@
                         <div class="ans-opts row col-md-12 p-none" id="0">
                             <div class='col-md-6 pl-none'>
                                 <div class='form-group'>
-                                    <input type='text' class='form-control responseOptionClass resetValuefunct validateForUniqueValueFunct inputClass'
+                                    <input type='text' class='form-control responseOptionClass'
                                            name="responseList[0].responseOption"
-                                           id="responseOptionId0" data-text="function(){}"
-                                           required maxlength="150"/>
-                                           <!-- onkeypress="resetValue(this);" 
-                                           onblur="validateForUniqueValue(this,function(){});"-->
+                                           id="responseOptionId0"
+                                           required maxlength="150"
+                                           onblur="validateForUniqueValue(this,function(){});"
+                                           onkeypress="resetValue(this);"/>
                                     <div class='help-block with-errors red-txt'></div>
                                 </div>
                             </div>
@@ -230,22 +231,22 @@
                             <div class="col-md-3 pl-none">
                                 <div class="clearfix"></div>
                                 <div class="mt-xs formgroup">
-									<span class="addBtnDis addbtn mr-sm align-span-center addAnsFunct"
-                                          >+</span> <span
-                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeAnsfunct"></span>
+									<span class="addBtnDis addbtn mr-sm align-span-center"
+                                          onclick='addAns();'>+</span> <span
+                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                        onclick='removeAns(this);'></span>
                                 </div>
                             </div>
                         </div>
                         <div class="ans-opts row col-md-12 p-none" id="1">
                             <div class='col-md-6 pl-none'>
                                 <div class='form-group'>
-                                    <input type='text' class='form-control resetValuefunct validateForUniqueValueFunct'
+                                    <input type='text' class='form-control'
                                            name="responseList[1].responseOption"
                                            id="responseOptionId1"
                                            required maxlength="150"
-                                           />
-                                           <!-- onkeypress="resetValue(this);" 
-                                           onblur="validateForUniqueValue(this,function(){});"-->
+                                           onblur="validateForUniqueValue(this,function(){});"
+                                           onkeypress="resetValue(this);"/>
                                     <div class='help-block with-errors red-txt'></div>
                                 </div>
                             </div>
@@ -265,10 +266,10 @@
                             <div class="col-md-3 pl-none">
                                 <div class="clearfix"></div>
                                 <div class="mt-xs formgroup">
-									<span class="addBtnDis addbtn mr-sm align-span-center addAnsFunct"
-                                          >+</span> <span
-                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeAnsfunct"
-                                        ></span>
+									<span class="addBtnDis addbtn mr-sm align-span-center"
+                                          onclick='addAns();'>+</span> <span
+                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                        onclick='removeAns(this);'></span>
                                 </div>
                             </div>
                         </div>
@@ -302,14 +303,13 @@
                                         <input type='hidden' id="responseId${responseBoVar.index}"
                                                name="responseList[${responseBoVar.index}].id"
                                                value="${responseBo.id}"/>
-                                        <input type='text' class='form-control resetValuefunct validateForUniqueValueFunct'
+                                        <input type='text' class='form-control'
                                                name="responseList[${responseBoVar.index}].responseOption"
                                                id="responseOptionId${responseBoVar.index}"
                                                value="${responseBo.responseOption}" required
                                                maxlength="150"
-                                               />
-                                              <!--  onkeypress="resetValue(this);"
-                                              onblur="validateForUniqueValue(this,function(){});"/> -->
+                                               onblur="validateForUniqueValue(this,function(){});"
+                                               onkeypress="resetValue(this);"/>
                                         <div class='help-block with-errors red-txt'></div>
                                     </div>
                                 </div>
@@ -334,10 +334,10 @@
                                 <div class="col-md-3 pl-none">
                                     <div class="clearfix"></div>
                                     <div class="mt-xs formgroup">
-										<span class="addBtnDis study-addbtn ml-none addAnsFunct"
-                                              >+</span> <span
-                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeAnsfunct"
-                                            ></span>
+										<span class="addBtnDis study-addbtn ml-none"
+                                              onclick='addAns();'>+</span> <span
+                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                            onclick='removeAns(this);'></span>
                                     </div>
                                 </div>
                             </div>
@@ -404,7 +404,7 @@
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<script type="text/javascript" nonce="${nonce}">
+<script type="text/javascript">
   var idleTime = 0;
   $(document).ready(
       function () {
@@ -433,8 +433,12 @@
             "click",
             function () {
               if (isFromValid("#comprehensionFormId")
-                  && validateCorrectAnswers() && validateUniqueValue()) {           	  
+                  && validateCorrectAnswers()) {
+                validateForUniqueValue('', function (val) {
+                  if (val) {
                     $("#comprehensionFormId").submit();
+                  }
+                });
               }
             });
         $("#saveId").on(
@@ -529,16 +533,16 @@
 
   var ansCount = $(".ans-opts").length - 1;
 
-  $(document).on('click', ".addAnsFunct", function() {
+  function addAns() {
     ansCount = ansCount + 1;
     var newAns = "<div class='ans-opts row col-md-12 p-none' id='" + ansCount
         + "'><div class='col-md-6 pl-none'>"
         + "<div class='form-group'>"
-        + "<input type='text' class='form-control resetValuefunct validateForUniqueValueFunct' required name='responseList["
+        + "<input type='text' class='form-control' required name='responseList["
         + ansCount
         + "].responseOption' id='responseOptionId"
         + ansCount
-        + "'  maxlength='150'/>"
+        + "'  maxlength='150' onblur='validateForUniqueValue(this,function(){});' onkeypress='resetValue(this);'/>"
         + "<div class='help-block with-errors red-txt'></div>"
         + "</div>"
         + "</div>"
@@ -555,8 +559,8 @@
         + "<div class='col-md-3 pl-none'>"
         + "	<div class='clearfix'></div>"
         + "	<div class='mt-xs form-group'> "
-        + "		<span id='ans-btn' class='addBtnDis addbtn mr-sm align-span-center addAnsFunct'>+</span>"
-        + "		<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center removeAnsfunct'></span>"
+        + "		<span id='ans-btn' class='addBtnDis addbtn mr-sm align-span-center' onclick='addAns();'>+</span>"
+        + "		<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeAns(this);'></span>"
         + "    </div> " + "</div>" + " </div>" + "</div></div>";
     $(".ans-opts:last").after(newAns);
     $(".ans-opts").parents("form").validator("destroy");
@@ -570,11 +574,11 @@
     }
     $('.selectpicker').selectpicker('refresh');
     $('#' + ansCount).find('input:first').focus();
-  })
+  }
 
- $(document).on('click', ".removeAnsfunct", function() {	
-	ansCount = ansCount - 1;
-    $(this).parents(".ans-opts").remove();
+  function removeAns(param) {
+    ansCount = ansCount - 1;
+    $(param).parents(".ans-opts").remove();
     $(".ans-opts").parents("form").validator("destroy");
     $(".ans-opts").parents("form").validator();
     if ($('.ans-opts').length > 2) {
@@ -584,12 +588,11 @@
       $(".remBtnDis").addClass("hide");
 
     }
-  })
+  }
 
-  $(".back-page").on('click', function () {
-  //function goToBackPage(item) {
+  function goToBackPage(item) {
     <c:if test="${actionPage ne 'view'}">
-    $(this).prop('disabled', true);
+    $(item).prop('disabled', true);
     bootbox
     .confirm({
       closeButton: false,
@@ -610,7 +613,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(this).prop('disabled', false);
+          $(item).prop('disabled', false);
         }
       }
     });
@@ -620,7 +623,7 @@
     a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}";
     document.body.appendChild(a).click();
     </c:if>
-  })
+  }
 
   function saveComrehensionTestQuestion(mode) {
     var comprehensionTestQuestion = {};
@@ -766,66 +769,57 @@
       return false;
     }
   }
-  
 
-  $(".validateForUniqueValueFunct").on('click', function () {
-  //function validateForUniqueValueFunct(item, callback) {
-	  validateUniqueValue();
- });
-  
-  function validateUniqueValue() {
-	  var isValid = true;
-	    var valueArray = [];
-	    $('.ans-opts')
-	    .each(
-	        function () {
-	          var id = $(this).attr("id");
-	          var diaplay_value = $("#responseOptionId" + id)
-	          .val();
-	          $("#responseOptionId" + id).parent().removeClass(
-	              "has-danger").removeClass("has-error");
-	          $("#responseOptionId" + id).parent().find(
-	              ".help-block").empty();
-	          if (diaplay_value != '') {
-	            if (valueArray.indexOf(diaplay_value
-	            .toLowerCase()) != -1) {
-	              isValid = false;
+  function validateForUniqueValue(item, callback) {
+    var isValid = true;
+    var valueArray = [];
+    $('.ans-opts')
+    .each(
+        function () {
+          var id = $(this).attr("id");
+          var diaplay_value = $("#responseOptionId" + id)
+          .val();
+          $("#responseOptionId" + id).parent().removeClass(
+              "has-danger").removeClass("has-error");
+          $("#responseOptionId" + id).parent().find(
+              ".help-block").empty();
+          if (diaplay_value != '') {
+            if (valueArray.indexOf(diaplay_value
+            .toLowerCase()) != -1) {
+              isValid = false;
 
-	              $("#responseOptionId" + id).parent()
-	              .addClass("has-danger").addClass(
-	                  "has-error");
-	              $("#responseOptionId" + id).parent().find(
-	                  ".help-block").empty();
-	              $("#responseOptionId" + id)
-	              .parent()
-	              .find(".help-block")
-	              .append(
-	                  $("<ul><li> </li></ul>")
-	                  .attr("class",
-	                      "list-unstyled")
-	                  .text(
-	                      "The value should be unique "));
-	            } else
-	              valueArray
-	              .push(diaplay_value.toLowerCase());
-	          } else {
-	            $("#responseOptionId" + id).parent().addClass(
-	                "has-danger").addClass("has-error");
-	            $("#responseOptionId" + id).parent().find(
-	                ".help-block").empty();
-	          }
+              $("#responseOptionId" + id).parent()
+              .addClass("has-danger").addClass(
+                  "has-error");
+              $("#responseOptionId" + id).parent().find(
+                  ".help-block").empty();
+              $("#responseOptionId" + id)
+              .parent()
+              .find(".help-block")
+              .append(
+                  $("<ul><li> </li></ul>")
+                  .attr("class",
+                      "list-unstyled")
+                  .text(
+                      "The value should be unique "));
+            } else
+              valueArray
+              .push(diaplay_value.toLowerCase());
+          } else {
+            $("#responseOptionId" + id).parent().addClass(
+                "has-danger").addClass("has-error");
+            $("#responseOptionId" + id).parent().find(
+                ".help-block").empty();
+          }
 
-	        });
-	    return isValid;
+        });
+    callback(isValid);
+  }
 
-	  }
-  
-
-  $(".resetValuefunct").on('click', function () {
-  //function resetValue(item) {
-    $(this).parent().addClass("has-danger").addClass("has-error");
-    $(this).parent().find(".help-block").empty();
-  })
+  function resetValue(item) {
+    $(item).parent().addClass("has-danger").addClass("has-error");
+    $(item).parent().find(".help-block").empty();
+  }
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

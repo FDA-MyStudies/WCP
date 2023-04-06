@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style nonce="${nonce}">
+    <style>
       .tool-tip {
         display: inline-block;
       }
@@ -34,10 +34,6 @@
       .langSpecific > button {
         padding-left: 30px;
       }
-      
-      #wd-200{
-      	width: 200px !important;
-      }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -47,7 +43,7 @@
     <input type="hidden" name="studyId" value="${studyBo.id}" id="studyId">
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
-    <select id="questionnaireLangBOS" class="dis-none">
+    <select id="questionnaireLangBOS" style="display: none">
         <c:forEach items="${questionnaireLangBOS}" var="questionnaireLang">
             <option id='${questionnaireLang.questionnaireLangPK.id}'
                     status="${questionnaireLang.status}"
@@ -60,7 +56,7 @@
             <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES</div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm wid-150">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -87,8 +83,8 @@
 					<span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                             <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if>>
-						<button type="button" class="btn btn-primary blue-btn markAsCompletedfunct"
-                                id="markAsCompleteBtnId"
+						<button type="button" class="btn btn-primary blue-btn"
+                                id="markAsCompleteBtnId" onclick="markAsCompleted();"
                                 <c:if test="${!markAsComplete}"> disabled </c:if>>Mark
 							as Completed</button>
 					</span>
@@ -106,13 +102,13 @@
                    cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th  class="dis-none"></th>
+                    <th style="display: none;"></th>
                     <th>TITLE<span class="sort"></span></th>
                     <th>FREQUENCY<span class="sort"></span></th>
                     <th><c:if test="${empty permission}">
                         <div class="dis-line form-group mb-none">
-                            <button type="button" class="btn btn-primary blue-btn addQuestionnairesfunct"
-                                    id="addButton">Add Questionnaire
+                            <button type="button" class="btn btn-primary blue-btn"
+                                    id="addButton" onclick="addQuestionnaires();">Add Questionnaire
                             </button>
                         </div>
                     </c:if></th>
@@ -126,19 +122,19 @@
                             title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}
                         </td>
                         <td>${questionnaryInfo.frequency == 'Manually Schedule' ? 'Custom Schedule' :questionnaryInfo.frequency}</td>
-                        <td id="wd-200"><span
-                                class="sprites_icon preview-g mr-lg viewQuestionnairesfunct" data-toggle="tooltip"
+                        <td style="width: 200px !important;"><span
+                                class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                                 data-placement="top" title="View"
-                                data-id="${questionnaryInfo.id}"></span> <span
-                                class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>
-                                editQuestionnairesfunct" data-toggle="tooltip" data-placement="top" title="Edit" data-id="${questionnaryInfo.id}"
-                                ></span> <span
-                                class="sprites_icon copy  mr-lg<c:if test="${not empty permission}"> cursor-none </c:if> copyQuestionnairefunct"
-                                data-toggle="tooltip" data-placement="top" title="Copy" data-id="${questionnaryInfo.id}"
-                                ></span> <span
-                                class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteQuestionnairefunct"
-                                data-toggle="tooltip" data-placement="top" title="Delete" data-id="${questionnaryInfo.id}"
-                                ></span></td>
+                                onclick="viewQuestionnaires(${questionnaryInfo.id});"></span> <span
+                                class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                data-toggle="tooltip" data-placement="top" title="Edit"
+                                onclick="editQuestionnaires(${questionnaryInfo.id});"></span> <span
+                                class="sprites_icon copy  mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>"
+                                data-toggle="tooltip" data-placement="top" title="Copy"
+                                onclick="copyQuestionnaire(${questionnaryInfo.id});"></span> <span
+                                class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                data-toggle="tooltip" data-placement="top" title="Delete"
+                                onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -172,7 +168,7 @@
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
 </form:form>
 
-<script nonce="${nonce}">
+<script>
   var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -268,32 +264,25 @@
     });
   });
 
-  
-  $('.editQuestionnairesfunct').on('click', function () {
-	var questionnaryId = $(this).attr('data-id')
+  function editQuestionnaires(questionnaryId) {
     console.log("consentInfoId:" + questionnaryId);
     if (questionnaryId != null && questionnaryId != '' && typeof questionnaryId != 'undefined') {
       $("#actionType").val('edit');
       $("#questionnaireId").val(questionnaryId);
       $("#questionnaireInfoForm").submit();
     }
-  })
+  }
 
-  
-  $('.viewQuestionnairesfunct').on('click', function () {
-	  var questionnaryId = $(this).attr('data-id')
+  function viewQuestionnaires(questionnaryId) {
     console.log("consentInfoId:" + questionnaryId);
     if (questionnaryId != null && questionnaryId != '' && typeof questionnaryId != 'undefined') {
       $("#actionType").val('view');
       $("#questionnaireId").val(questionnaryId);
       $("#questionnaireInfoForm").submit();
     }
-  })
+  }
 
-  
-  $('.copyQuestionnairefunct').on('click', function () {
-	var questionnaryId = $(this).attr('data-id')
- // function copyQuestionnaire(questionnaryId) {
+  function copyQuestionnaire(questionnaryId) {
     console.log("consentInfoId:" + questionnaryId);
     if (questionnaryId != null && questionnaryId != '' && typeof questionnaryId != 'undefined') {
       $("#questionnaireId").val(questionnaryId);
@@ -301,16 +290,15 @@
       document.questionnaireInfoForm.action = "/fdahpStudyDesigner/adminStudies/copyQuestionnaire.do?_S=${param._S}";
       document.questionnaireInfoForm.submit();
     }
-  })
+  }
 
-  $('.addQuestionnairesfunct').on('click', function () {
+  function addQuestionnaires() {
     $("#actionType").val('add');
     $("#questionnaireId").val('');
     $("#questionnaireInfoForm").submit();
-  })
+  }
 
-  $('.deleteQuestionnairefunct').on('click', function () {
-	var questionnaireId = $(this).attr('data-id')
+  function deleteQuestionnaire(questionnaireId) {
     var studyId = $("#studyId").val();
     bootbox.confirm({
       message: "Are you sure you want to delete this questionnaire item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
@@ -323,8 +311,8 @@
         }
       },
       callback: function (result) {
-    	  if (result) {
-    		  if (questionnaireId != null && questionnaireId != '' && typeof questionnaireId
+        if (result) {
+          if (questionnaireId != null && questionnaireId != '' && typeof questionnaireId
               != 'undefined') {
             $.ajax({
               url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
@@ -379,7 +367,7 @@
         }
       }
     });
-  });
+  }
 
   function reloadDataTabel(questionnaireList) {
     $('#questionnaire_list').DataTable().clear();
@@ -404,15 +392,20 @@
         } else {
           datarow.push(obj.frequency);
         }
-        var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip viewQuestionnairesfunct' data-placement='top' title='View' data-id='${questionnaryInfo.id}'></span>";
+        var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewQuestionnaires("
+            + parseInt(obj.id) + ");'></span>";
         if (obj.status) {
-          actionDiv += "<span class='sprites_icon edit-inc editIcon mr-lg editQuestionnairesfunct' data-toggle='tooltip' data-placement='top' title='Edit' data-id='${questionnaryInfo.id}'></span>";
+          actionDiv += "<span class='sprites_icon edit-inc editIcon mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
+              + parseInt(obj.id) + ");'></span>";
         } else {
-          actionDiv += "<span class='edit-inc-draft editIcon mr-md mr-lg editQuestionnairesfunct' data-toggle='tooltip' data-placement='top' title='Edit' data-id='${questionnaryInfo.id}'></span>";
+          actionDiv += "<span class='edit-inc-draft editIcon mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("
+              + parseInt(obj.id) + ");'></span>";
         }
-        actionDiv += "<span class='sprites_icon copy  mr-lg copyQuestionnairefunct' data-toggle='tooltip' data-placement='top' title='Copy' data-id='${questionnaryInfo.id}'></span>";
+        actionDiv += "<span class='sprites_icon copy  mr-lg' data-toggle='tooltip' data-placement='top' title='Copy' onclick='copyQuestionnaire("
+            + parseInt(obj.id) + ");'></span>";
 
-        actionDiv += "<span class='sprites_icon copy delete deleteQuestionnairefunct' data-toggle='tooltip' data-placement='top' title='Delete' data-id='${questionnaryInfo.id}'></span>";
+        actionDiv += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteQuestionnaire("
+            + parseInt(obj.id) + ");'></span>";
         datarow.push(actionDiv);
         $('#questionnaire_list').DataTable().row.add(datarow);
       });
@@ -425,10 +418,10 @@
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  $(".markAsCompletedfunct").on('click', function () {
+  function markAsCompleted() {
     document.questionnaireInfoForm.action = "/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";
     document.questionnaireInfoForm.submit();
-  })
+  }
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style nonce="${nonce}">
+    <style>
       .tool-tip {
         display: inline-block;
       }
@@ -99,16 +99,15 @@
       }
     </style>
 </head>
-<script type="text/javascript" nonce="${nonce}">
- // function isNumber(evt) {
-	 $('.isNumberFunct').on('keypress', function(evt) {
+<script type="text/javascript">
+  function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     }
     return true;
-  })
+  }
 </script>
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -124,7 +123,7 @@
                 </div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm wid-150">
+                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -152,9 +151,10 @@
 						<span class="tool-tip" data-toggle="tooltip"
                               data-placement="bottom" id="helpNote"
                                 <c:if test="${!markAsComplete && consentBo.needComprehensionTest eq 'Yes'}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if>>
-							<button type="button" class="btn btn-primary blue-btn markAsCompletedfunct"
+							<button type="button" class="btn btn-primary blue-btn"
                                     id="markAsCompleteBtnId"
-                                    <c:if test="${!markAsComplete && consentBo.needComprehensionTest eq 'Yes'}">disabled</c:if>>Mark as Completed</button>
+                                    <c:if test="${!markAsComplete && consentBo.needComprehensionTest eq 'Yes'}">disabled</c:if>
+                                    onclick="markAsCompleted();">Mark as Completed</button>
 						</span>
                     </div>
                 </c:if>
@@ -198,8 +198,8 @@
                         <th>Question</th>
                         <th><c:if test="${empty permission}">
                             <div class="dis-line form-group mb-none">
-                                <button type="button" class="btn btn-primary blue-btn addComphernsionQuestionPagefunc"
-                                        id="addQuestionId">
+                                <button type="button" class="btn btn-primary blue-btn"
+                                        id="addQuestionId" onclick="addComphernsionQuestionPage();">
                                     Add
                                     Question
                                 </button>
@@ -217,14 +217,15 @@
                                 <div class="dis-ellipsis"
                                      title="${fn:escapeXml(comprehensionTestQuestion.questionText)}">${fn:escapeXml(comprehensionTestQuestion.questionText)}</div>
                             </td>
-                            <td><span class="sprites_icon preview-g mr-lg viewComprehensionQuestionfunct"
-                                      data-toggle="tooltip" data-placement="top" title="View" data-id="${comprehensionTestQuestion.id}"></span>
+                            <td><span class="sprites_icon preview-g mr-lg"
+                                      data-toggle="tooltip" data-placement="top" title="View"
+                                      onclick="viewComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
                                 <span
-                                        class="${comprehensionTestQuestion.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if> editComprehensionQuestionfunct"
-                                        data-id="${comprehensionTestQuestion.id}"></span>
+                                        class="${comprehensionTestQuestion.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                        onclick="editComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
                                 <span
-                                        class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteComprehensionQuestionfunct"
-                                         data-id="${comprehensionTestQuestion.id}"></span>
+                                        class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                        onclick="deleteComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
                             </td>
                         </tr>
                     </c:forEach>
@@ -236,9 +237,9 @@
                 <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
                 <div class="form-group col-md-5 p-none scoreClass">
                     <input type="text" id="comprehensionTestMinimumScore"
-                           class="form-control return isNumberFunct" name="comprehensionTestMinimumScore"
-                           value="${consentBo.comprehensionTestMinimumScore}" maxlength="3">
-                           <!-- onkeypress="return isNumber(event)" -->
+                           class="form-control" name="comprehensionTestMinimumScore"
+                           value="${consentBo.comprehensionTestMinimumScore}" maxlength="3"
+                           onkeypress="return isNumber(event)">
                     <div class="help-block with-errors red-txt"></div>
                 </div>
                 <input type="hidden" name="consentId" id="consentId"
@@ -250,7 +251,7 @@
         <!--  End body tab section -->
     </div>
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
-    <select id="comprehensionLangItems" class="dis-none">
+    <select id="comprehensionLangItems" style="display: none;">
         <c:forEach items="${comprehensionQuestionLangList}" var="comprehensionLang">
             <option id='lang_${comprehensionLang.comprehensionQuestionLangPK.id}'
                     status="${comprehensionLang.status}"
@@ -306,7 +307,7 @@
     <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
 </form:form>
 <!-- End right Content here -->
-<script type="text/javascript" nonce="${nonce}">
+<script type="text/javascript">
   var idleTime = 0;
   $(document).ready(function () {
     $(".menuNav li").removeClass('active');
@@ -532,9 +533,7 @@
 
   });
 
-  
-  $(".deleteComprehensionQuestionfunct").on('click', function () {
-	  var questionId= $(this).attr('data-id')
+  function deleteComprehensionQuestion(questionId) {
     bootbox.confirm("Are you sure you want to delete this question?", function (result) {
       if (result) {
         var studyId = $("#studyId").val();
@@ -570,7 +569,7 @@
         }
       }
     });
-  })
+  }
 
   function reloadData(studyId) {
     $.ajax({
@@ -593,33 +592,27 @@
     });
   }
 
-  
-  $(".addComphernsionQuestionPagefunc").on('click', function () {
+  function addComphernsionQuestionPage() {
     $("#comprehensionQuestionId").val('');
     $("#actionType").val('addEdit');
     $("#comprehenstionQuestionForm").submit();
-  })
+  }
 
-  
-  $('.editComprehensionQuestionfunct').on('click', function () {
-	  var testQuestionId = $(this).attr('data-id')
-  //function editComprehensionQuestion(testQuestionId) {
+  function editComprehensionQuestion(testQuestionId) {
     if (testQuestionId != null && testQuestionId != '' && typeof testQuestionId != 'undefined') {
       $("#comprehensionQuestionId").val(testQuestionId);
       $("#actionType").val('addEdit');
       $("#comprehenstionQuestionForm").submit();
     }
-  })
+  }
 
-  
-  $('.viewComprehensionQuestionfunct').on('click', function () {
-	  var testQuestionId = $(this).attr('data-id')
+  function viewComprehensionQuestion(testQuestionId) {
     if (testQuestionId != null && testQuestionId != '' && typeof testQuestionId != 'undefined') {
       $("#comprehensionQuestionId").val(testQuestionId);
       $("#actionType").val('view');
       $("#comprehenstionQuestionForm").submit();
     }
-  })
+  }
 
   function reloadComprehensionQuestionDataTable(comprehensionTestQuestionList) {
     $('#comprehension_list').DataTable().clear();
@@ -638,9 +631,13 @@
           datarow.push(
               "<div class='dis-ellipsis'>" + DOMPurify.sanitize(obj.questionText) + "</div>");
         }
-        var actions = "<span class='sprites_icon preview-g mr-lg viewComprehensionQuestionfunct' data-id='${comprehensionTestQuestion.id}'></span>";
-            + "<span class='sprites_icon editIcon mr-lg editComprehensionQuestionfunct' data-id='${comprehensionTestQuestion.id}'></span>";
-            + "</span><span class='sprites_icon copy delete deleteComprehensionQuestionfunct' data-id='${comprehensionTestQuestion.id}'></span>";
+        var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewComprehensionQuestion("
+            + parseInt(obj.id) + ");'></span>"
+            + "<span class='sprites_icon edit-inc editIcon mr-lg' onclick='editComprehensionQuestion("
+            + parseInt(obj.id) + ");'>"
+            + "</span><span class='sprites_icon copy delete' onclick='deleteComprehensionQuestion("
+            + parseInt(obj.id) + ");'>"
+            + "</span>";
         datarow.push(actions);
         $('#comprehension_list').DataTable().row.add(datarow);
       });
@@ -653,7 +650,7 @@
     }
   }
 
-  $(".markAsCompletedfunct").on('click', function () {
+  function markAsCompleted() {
     var table = $('#comprehension_list').DataTable();
     var minimumScore = $("#comprehensionTestMinimumScore").val();
     var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
@@ -671,7 +668,7 @@
         saveConsent("Done");
       }
     }
-  })
+  }
 
   function autoSaveComprehensionList(mode) {
     $("#comprehensionTestMinimumScore").trigger('blur');

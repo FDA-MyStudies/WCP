@@ -6,7 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
     <meta charset="UTF-8">
-    <style nonce="${nonce}">
+    <style>
       .tool-tip {
         display: inline-block;
       }
@@ -157,7 +157,7 @@
 
     </style>
 </head>
-<script type="text/javascript" nonce="${nonce}">
+<script type="text/javascript">
   function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -211,7 +211,7 @@
 <div class="right-content-head">
     <div class="text-right">
         <div class="black-md-f dis-line pull-left line34">
-				<span class="mr-xs cur-pointer back-page"><img
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
                         src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question</c:if>
             <c:if test="${actionTypeForFormStep == 'view'}">View Question <c:set
@@ -221,7 +221,7 @@
         </div>
 
         <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForFormStep != 'add'}">
-            <div class="dis-line form-group mb-none mr-sm wid-150">
+            <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                 <select
                         class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                         id="studyLanguage" name="studyLanguage" required title="Select">
@@ -238,7 +238,7 @@
 
         <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForFormStep == 'add'}">
             <div class="dis-line form-group mb-none mr-sm">
-                    <span class="tool-tip wid-150" id="markAsTooltipId"
+                    <span style="width: 150px;" class="tool-tip" id="markAsTooltipId"
                           data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -251,7 +251,8 @@
         </c:if>
 
         <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn back-page">Cancel
+            <button type="button" class="btn btn-default gray-btn"
+                    onclick="goToBackPage(this);">Cancel
             </button>
         </div>
         <c:if test="${actionTypeForFormStep ne 'view'}">
@@ -431,8 +432,8 @@
                	</c:otherwise>
                </c:choose>
             </div> --%>
-                <div class="mt-lg mb-lg dis-none" id="useAnchorDateContainerId"
-                     >
+                <div class="mt-lg mb-lg" id="useAnchorDateContainerId"
+                     style="display: none">
                     <c:choose>
                         <c:when test="${questionsBo.useAnchorDate}">
 								<span class="tool-tip" data-toggle="tooltip" data-html="true"
@@ -450,7 +451,8 @@
 								</span>
 								</span>
                             <div class="clearfix"></div>
-                            <div class="col-md-6 p-none useAnchorDateName mt-md dis-none">
+                            <div class="col-md-6 p-none useAnchorDateName mt-md"
+                                 style="display: none">
                                 <div class="gray-xs-f mb-xs">
                                     Define name for Anchor date<span class="requiredStar">*</span>
                                 </div>
@@ -483,7 +485,8 @@
 								</span>
 								</span>
                             <div class="clearfix"></div>
-                            <div class="col-md-6 p-none useAnchorDateName mt-md dis-none">
+                            <div class="col-md-6 p-none useAnchorDateName mt-md"
+                                 style="display: none">
                                 <div class="gray-xs-f mb-xs">
                                     Define name for Anchor date<span class="requiredStar">*</span>
                                 </div>
@@ -501,7 +504,7 @@
                 </div>
                 <c:if test="${fn:contains(studyBo.platform, 'I')}">
                     <div class="clearfix"></div>
-                    <div class="mt-lg dis-none" id="allowHealthKitId">
+                    <div class="mt-lg" id="allowHealthKitId" style="display: none">
 							<span class="checkbox checkbox-inline"> <input
                                     type="checkbox" id="allowHealthKit" name="allowHealthKit"
                                     value="Yes"
@@ -514,7 +517,7 @@
 							</label>
 							</span>
                     </div>
-                    <div id="healthKitContainerId" class="dis-none">
+                    <div id="healthKitContainerId" style="display: none">
                         <div class="col-md-4 p-none">
                             <div class="gray-xs-f mt-lg">
                                 Select a HealthKit quantity data type <span
@@ -541,8 +544,10 @@
                 </c:if>
                 <div class="clearfix"></div>
                 <c:if test="${questionnaireBo.frequency ne 'One time'}">
-                    <div class="bor-dashed mt-md mb-md dis-none" id="borderHealthdashId"></div>
-                    <div class="mt-lg mb-lg dis-none" id="addLineChartContainerId">
+                    <div class="bor-dashed mt-md mb-md" id="borderHealthdashId"
+                         style="display: none"></div>
+                    <div class="mt-lg mb-lg" id="addLineChartContainerId"
+                         style="display: none">
 							<span class="checkbox checkbox-inline"> <input
                                     type="checkbox" id="addLineChart" name="addLineChart"
                                     value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}
@@ -552,7 +557,7 @@
 							</span>
                     </div>
                     <div class="clearfix"></div>
-                    <div id="chartContainer" class="dis-none">
+                    <div id="chartContainer" style="display: none">
                         <div class="col-md-6 p-none">
                             <div class="gray-xs-f mb-xs">
                                 Time range for the chart <span class="requiredStar">*</span> <span
@@ -613,9 +618,11 @@
                     </div>
                 </c:if>
                 <div class="clearfix"></div>
-                <div class="bor-dashed mb-md dis-none" id="borderdashId"></div>
+                <div class="bor-dashed mb-md" id="borderdashId"
+                     style="display: none"></div>
                 <div class="clearfix"></div>
-                <div class="mb-lg dis-none" id="useStasticDataContainerId">
+                <div class="mb-lg" id="useStasticDataContainerId"
+                     style="display: none">
 						<span class="checkbox checkbox-inline"> <input
                                 type="checkbox" id="useStasticData" value="Yes"
                                 name="useStasticData"
@@ -626,7 +633,7 @@
 						</span>
                 </div>
                 <div class="clearfix"></div>
-                <div id="statContainer" class="dis-none">
+                <div id="statContainer" style="display: none">
                     <div class="col-md-6 col-lg-4 p-none">
                         <div class="gray-xs-f mb-xs">
                             Short identifier name (1 to 20 characters)<span
@@ -776,7 +783,7 @@
                 <input type="hidden" class="form-control"
                        name="questionReponseTypeBo.step" id="stepValueId"/>
                 <div id="responseTypeDivId">
-                    <div id="scaleType" class="dis-none">
+                    <div id="scaleType" style="display: none">
                         <div class="mt-lg">
                             <div class="gray-xs-f mb-xs">
                                 Scale Type <span class="requiredStar">*</span>
@@ -800,7 +807,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="Scale" class="dis-none">
+                    <div id="Scale" style="display: none">
                         <div class="clearfix"></div>
                         <div class="row mt-md mb-xs">
                             <div class="col-md-6 pl-none">
@@ -954,13 +961,12 @@
                                             title="Upload an image that represents the minimum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span>
                                     </div>
                                     <div class="form-group col-smthumb-2">
-                                        <div class="sm-thumb-btn openUploadWindowFunct">
-                                         <!-- onclick="openUploadWindow(this);" -->
+                                        <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
                                             <div class="thumb-img">
                                                 <img
                                                         src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.minImage)}"
-                                                        class="imageChoiceWidth questThumbnailImg"/>
-                                                        <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                        onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                        class="imageChoiceWidth"/>
                                             </div>
 
                                             <c:if
@@ -982,7 +988,8 @@
                                                id="scaleMinImagePathId"
                                                value="${questionsBo.questionReponseTypeBo.minImage}">
                                         <span id="removeUrl"
-                                              class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}">hide</c:if> removeImageFunct">X<a
+                                              class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}">hide</c:if>"
+                                              onclick="removeImage(this);">X<a
                                                 href="javascript:void(0)"
                                                 class="blue-link txt-decoration-underline pl-xs">Remove
 													Image</a></span>
@@ -999,13 +1006,12 @@
                                             title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span>
                                     </div>
                                     <div class="form-group col-smthumb-2">
-                                        <div class="sm-thumb-btn openUploadWindowFunct">
-                                         <!-- onclick="openUploadWindow(this);" -->
+                                        <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
                                             <div class="thumb-img">
                                                 <img
                                                         src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.maxImage)}"
-                                                        class="imageChoiceWidth questThumbnailImg"/>
-                                                         <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                        onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                        class="imageChoiceWidth"/>
                                             </div>
 
                                             <c:if
@@ -1027,7 +1033,8 @@
                                                id="scaleMaxImagePathId"
                                                value="${questionsBo.questionReponseTypeBo.maxImage}">
                                         <span id="removeUrl "
-                                              class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}">hide</c:if> removeImageFunct">X<a
+                                              class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}">hide</c:if>"
+                                              onclick="removeImage(this);">X<a
                                                 href="javascript:void(0)"
                                                 class="blue-link txt-decoration-underline pl-xs">Remove
 													Image</a></span>
@@ -1038,7 +1045,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="ContinuousScale" class="dis-none">
+                <div id="ContinuousScale" style="display: none">
                     <div class="clearfix"></div>
                     <div class="row mt-md mb-xs">
                         <div class="col-md-6 pl-none">
@@ -1168,13 +1175,12 @@
                                         title="Upload an image that represents the minimum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span>
                                 </div>
                                 <div class="form-group col-smthumb-2">
-                                    <div class="sm-thumb-btn openUploadWindowFunct">
-                                     <!-- onclick="openUploadWindow(this);" -->
+                                    <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
                                         <div class="thumb-img">
                                             <img
                                                     src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.minImage)}"
-                                                    class="imageChoiceWidth questThumbnailImg"/>
-                                                     <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                    onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                    class="imageChoiceWidth"/>
                                         </div>
 
                                         <c:if
@@ -1198,7 +1204,8 @@
                                            id="continuesScaleMinImagePathId"
                                            value="${questionsBo.questionReponseTypeBo.minImage}">
                                     <span id="removeUrl"
-                                          class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}">hide</c:if> removeImageFunct">X<a
+                                          class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.minImage}">hide</c:if>"
+                                          onclick="removeImage(this);">X<a
                                             href="javascript:void(0)"
                                             class="blue-link txt-decoration-underline pl-xs">Remove
 												Image</a></span>
@@ -1216,13 +1223,12 @@
                                         title="Upload an image that represents the maximum value.<br>JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span>
                                 </div>
                                 <div class="form-group col-smthumb-2">
-                                    <div class="sm-thumb-btn openUploadWindowFunct">
-                                     <!-- onclick="openUploadWindow(this);" -->
+                                    <div class="sm-thumb-btn" onclick="openUploadWindow(this);">
                                         <div class="thumb-img">
                                             <img
                                                     src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionReponseTypeBo.maxImage)}"
-                                                    class="imageChoiceWidth questThumbnailImg"/>
-                                                   <!--  onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                    onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                    class="imageChoiceWidth"/>
                                         </div>
 
                                         <c:if
@@ -1246,7 +1252,8 @@
                                            id="continuesScaleMaxImagePathId"
                                            value="${questionsBo.questionReponseTypeBo.maxImage}">
                                     <span id="removeUrl"
-                                          class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}">hide</c:if> removeImageFunct">X<a
+                                          class="blue-link elaborateHide removeImageId <c:if test="${empty questionsBo.questionReponseTypeBo.maxImage}">hide</c:if>"
+                                          onclick="removeImage(this);">X<a
                                             href="javascript:void(0)"
                                             class="blue-link txt-decoration-underline pl-xs">Remove
 												Image</a></span>
@@ -1256,7 +1263,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Location" class="dis-none">
+                <div id="Location" style="display: none">
                     <div class="mt-lg">
                         <div class="gray-xs-f mb-xs">
                             Use Current Location <span class="requiredStar">*</span> <span
@@ -1282,7 +1289,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Email" class="dis-none">
+                <div id="Email" style="display: none">
                     <div class="row mt-sm">
                         <div class="col-md-6 pl-none">
                             <div class="col-md-12 col-lg-12 p-none">
@@ -1302,7 +1309,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Text" class="dis-none">
+                <div id="Text" style="display: none">
                     <div class="mt-lg">
                         <div class="gray-xs-f mb-xs">
                             Allow Multiple Lines? <span class="requiredStar">*</span> <span
@@ -1466,7 +1473,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Height" class="dis-none">
+                <div id="Height" style="display: none">
                     <div class="mt-lg">
                         <div class="gray-xs-f mb-xs">
                             Measurement System <span class="requiredStar">*</span> <span
@@ -1518,7 +1525,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Timeinterval" class="dis-none">
+                <div id="Timeinterval" style="display: none;">
                     <div class="row mt-sm display__flex__center">
                         <div class="col-md-2 pl-none">
                             <div class="gray-xs-f mb-xs">
@@ -1554,7 +1561,7 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
-                <div id="Numeric" class="dis-none">
+                <div id="Numeric" style="display: none;">
                     <div class="mt-lg">
                         <div class="gray-xs-f mb-xs">
                             Style <span class="requiredStar">*</span> <span
@@ -1651,7 +1658,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Date" class="dis-none">
+                <div id="Date" style="display: none;">
                     <div class="mt-lg">
                         <div class="gray-xs-f mb-xs">
                             Style <span class="requiredStar">*</span> <span
@@ -1708,7 +1715,7 @@
                     </div>
                     <div class="clearfix"></div>
                     <div id="customDateContainerId"
-                         <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' || questionsBo.questionReponseTypeBo.selectionStyle eq 'After current date'}">class="dis-none"</c:if>>
+                         <c:if test="${questionsBo.questionReponseTypeBo.selectionStyle eq 'Until current date' || questionsBo.questionReponseTypeBo.selectionStyle eq 'After current date'}">style="display: none;"</c:if>>
                         <div class="row">
                             <div class="col-md-6 pl-none">
                                 <div class="col-md-8 col-lg-8 p-none">
@@ -1763,7 +1770,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="Boolean" class="dis-none">
+                <div id="Boolean" style="display: none;">
                     <div class="clearfix"></div>
                     <div class="mt-lg">
                         <div class="gray-choice-f mb-xs">
@@ -1824,7 +1831,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="ValuePicker" class="dis-none">
+                <div id="ValuePicker" style="display: none;">
                     <div class="mt-lg">
                         <div class="gray-choice-f mb-xs">
                             Values for the picker<span
@@ -1882,11 +1889,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2 pl-none mt__6">
-													<span class="addBtnDis addbtn mr-sm align-span-center top6 addValuePickerFunct">+</span>
-													<!-- onclick='addValuePicker();' -->
-													 <span
-                                                    class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeValuePickerFunct"></span>
-                                                    <!-- onclick='removeValuePicker(this);' -->
+													<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                          onclick='addValuePicker();'>+</span> <span
+                                                    class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0"
+                                                    onclick='removeValuePicker(this);'></span>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -1916,11 +1922,10 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2 pl-none mt__6">
-												<span class="addBtnDis addbtn mr-sm align-span-center top6 addValuePickerFunct">+</span>
-												<!-- onclick='addValuePicker();' -->
-												 <span
-                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeValuePickerFunct"></span>
-                                                <!-- onclick='removeValuePicker(this);' -->
+												<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                      onclick='addValuePicker();'>+</span> <span
+                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0"
+                                                onclick='removeValuePicker(this);'></span>
                                         </div>
                                     </div>
                                     <div class="value-picker row form-group mb-xs" id="1">
@@ -1947,11 +1952,10 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2 pl-none mt__6">
-												<span class="addBtnDis addbtn mr-sm align-span-center top6 addValuePickerFunct">+</span>
-												<!-- onclick='addValuePicker();' -->
-												 <span
-                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeValuePickerFunct"></span>
-                                                <!-- onclick='removeValuePicker(this);' -->
+												<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                      onclick='addValuePicker();'>+</span> <span
+                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0"
+                                                onclick='removeValuePicker(this);'></span>
                                         </div>
                                     </div>
                                 </c:otherwise>
@@ -1960,7 +1964,7 @@
                     </div>
                     <div></div>
                 </div>
-                <div id="TextScale" class="dis-none">
+                <div id="TextScale" style="display: none;">
                     <div class="clearfix"></div>
                     <div class="gray-choice-f mb-xs mt-md">
                         Text Choices<span class="ml-xs sprites_v3 filled-tooltip"
@@ -2019,19 +2023,17 @@
 														<span class='tool-tip' data-toggle='tooltip'
                                                               data-placement='top'
                                                               title='Only a max of 8 rows are allowed'><span
-                                                                class='addBtnDis addbtn mr-sm align-span-center cursor-none addTextScaleFunct'
-                                                                >+</span></span>
-                                                                <!-- onclick='addTextScale();' -->
+                                                                class='addBtnDis addbtn mr-sm align-span-center cursor-none'
+                                                                onclick='addTextScale();'>+</span></span>
                                                 </c:when>
                                                 <c:otherwise>
-														<span class="addBtnDis addbtn mr-sm align-span-center addTextScaleFunct"
-                                                              >+</span>
-                                                              <!-- onclick='addTextScale();' -->
+														<span class="addBtnDis addbtn mr-sm align-span-center"
+                                                              onclick='addTextScale();'>+</span>
                                                 </c:otherwise>
                                             </c:choose>
                                             <span
-                                                    class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeTextScaleFunct"></span>
-                                                    <!-- onclick='removeTextScale(this);' -->
+                                                    class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                                    onclick='removeTextScale(this);'></span>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -2061,12 +2063,10 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 pl-none mt__8">
-											<span class="addBtnDis addbtn mr-sm align-span-center addTextScaleFunct"
-                                                  >+</span>
-                                                 <!--  onclick='addTextScale();' -->
-                                                   <span
-                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeTextScaleFunct"></span>
-                                            <!-- onclick='removeTextScale(this);' -->
+											<span class="addBtnDis addbtn mr-sm align-span-center"
+                                                  onclick='addTextScale();'>+</span> <span
+                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                            onclick='removeTextScale(this);'></span>
                                     </div>
                                 </div>
                                 <div class="text-scale row" id="1">
@@ -2093,12 +2093,10 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 pl-none mt__8">
-											<span class="addBtnDis addbtn mr-sm align-span-center addTextScaleFunct"
-                                                  >+</span>
-                                                  <!-- onclick='addTextScale();' -->
-                                                   <span
-                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeTextScaleFunct"></span>
-                                            <!--  onclick='removeTextScale(this);' -->
+											<span class="addBtnDis addbtn mr-sm align-span-center"
+                                                  onclick='addTextScale();'>+</span> <span
+                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                            onclick='removeTextScale(this);'></span>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -2125,7 +2123,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="TextChoice" class="dis-none">
+                <div id="TextChoice" style="display: none;">
                     <div class="mt-lg">
                         <div class="gray-xs-f mb-xs">
                             Selection Style <span class="requiredStar">*</span>
@@ -2337,11 +2335,10 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-2 pl-none pt-xlg">
-                        <span class="addBtnDis addbtn align-span-center top6 addTextChoiceFunct">+</span> 
-                        <!-- onclick='addTextChoice();' -->
-                        <span
-                                                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm removeTextChoiceFunct"></span>
-                                                                   <!-- onclick='removeTextChoice(this);' -->
+                        <span class="addBtnDis addbtn align-span-center top6"
+                              onclick='addTextChoice();'>+</span> <span
+                                                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
+                                                                            onclick='removeTextChoice(this);'></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -2500,11 +2497,10 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 pl-none pt-xlg">
-                                  <span class="addBtnDis addbtn mr-sm align-span-center top6 addTextChoiceFunct">+</span>
-                                  <!-- onclick='addTextChoice();' -->
-                                   <span
-                                                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm removeTextChoiceFunct"></span>
-                                                               <!-- onclick='removeTextChoice(this);' -->
+                                  <span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                        onclick='addTextChoice();'>+</span> <span
+                                                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
+                                                                        onclick='removeTextChoice(this);'></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2661,11 +2657,10 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 pl-none pt-xlg">
-												<span class="addBtnDis addbtn mr-sm align-span-center top6 addTextChoiceFunct">+</span>
-												<!-- onclick='addTextChoice();' -->
-												 <span
-                                                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm removeTextChoiceFunct"></span>
-                                                              <!-- onclick='removeTextChoice(this);' -->
+												<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                      onclick='addTextChoice();'>+</span> <span
+                                                                        class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm"
+                                                                        onclick='removeTextChoice(this);'></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2698,7 +2693,7 @@
                                    title="Fields related to an explicit 'Other' option are not supported for text-choice Question Steps that are within a Form Step."></span>
                     </div>
                 </div>
-                <div id="ImageChoice" class="dis-none">
+                <div id="ImageChoice" style="display: none;">
                     <div class="mt-lg">
                         <div class="gray-choice-f mb-xs">
                             Image Choices<span class="ml-xs sprites_v3 filled-tooltip"
@@ -2761,13 +2756,13 @@
                                                value="${questionResponseSubType.responseSubTypeValueId}">
                                         <div class="col-md-2 pl-none col-smthumb-2">
                                             <div class="form-group">
-                                                <div class="sm-thumb-btn openUploadWindowFunct">
-                                                <!-- onclick="openUploadWindow(this);" -->
+                                                <div class="sm-thumb-btn"
+                                                     onclick="openUploadWindow(this);">
                                                     <div class="thumb-img">
                                                         <img
                                                                 src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}"
-                                                                class="imageChoiceWidth questThumbnailImg"/>
-                                                               <!--  onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                                onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                                class="imageChoiceWidth"/>
                                                     </div>
                                                     <div class="textLabelimagePathId${subtype.index}">
                                                         Change
@@ -2790,13 +2785,13 @@
                                         </div>
                                         <div class="col-md-2 pl-none col-smthumb-2">
                                             <div class="form-group">
-                                                <div class="sm-thumb-btn openUploadWindowFunct">
-                                                <!-- onclick="openUploadWindow(this);" -->
+                                                <div class="sm-thumb-btn"
+                                                     onclick="openUploadWindow(this);">
                                                     <div class="thumb-img">
                                                         <img
                                                                 src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.selectedImage)}"
-                                                                class="imageChoiceWidth questThumbnailImg"/>
-                                                                <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                                onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                                class="imageChoiceWidth"/>
                                                     </div>
                                                     <div class="textLabelselectImagePathId${subtype.index}">
                                                         Change
@@ -2841,11 +2836,10 @@
                                         </div>
 
                                         <div class="col-md-2 pl-none mt__6">
-												<span class="addBtnDis addbtn mr-sm align-span-center top6 addImageChoiceFunct">+</span> 
-												<!-- onclick='addImageChoice();' -->
-												<span
-                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeImageChoiceFunct"></span>
-                                                <!-- onclick='removeImageChoice(this);' -->
+												<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                      onclick='addImageChoice();'>+</span> <span
+                                                class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0"
+                                                onclick='removeImageChoice(this);'></span>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -2854,13 +2848,13 @@
                                 <div class="image-choice row" id="0">
                                     <div class="col-md-2 pl-none col-smthumb-2">
                                         <div class="form-group">
-                                            <div class="sm-thumb-btn openUploadWindowFunct">
-                                            <!-- onclick="openUploadWindow(this);" -->
+                                            <div class="sm-thumb-btn"
+                                                 onclick="openUploadWindow(this);">
                                                 <div class="thumb-img">
                                                     <img
                                                             src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].image)}"
-                                                            class="imageChoiceWidth questThumbnailImg"/>
-                                                            <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                            onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                            class="imageChoiceWidth"/>
                                                 </div>
                                                 <c:if
                                                         test="${empty questionsBo.questionResponseSubTypeList[0].image}">
@@ -2886,13 +2880,13 @@
                                     </div>
                                     <div class="col-md-2 pl-none col-smthumb-2">
                                         <div class="form-group">
-                                            <div class="sm-thumb-btn openUploadWindowFunct">
-                                            <!-- onclick="openUploadWindow(this);" -->
+                                            <div class="sm-thumb-btn"
+                                                 onclick="openUploadWindow(this);">
                                                 <div class="thumb-img">
                                                     <img
                                                             src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].selectedImage)}"
-                                                            class="imageChoiceWidth questThumbnailImg"/>
-                                                             <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                            onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                            class="imageChoiceWidth"/>
                                                 </div>
                                                 <c:if
                                                         test="${empty questionsBo.questionResponseSubTypeList[0].selectedImage}">
@@ -2945,23 +2939,22 @@
                                     </div>
 
                                     <div class="col-md-2 pl-none mt__6">
-											<span class="addBtnDis addbtn mr-sm align-span-center top6 addImageChoiceFunct">+</span>
-											<!-- onclick='addImageChoice();' -->
-											 <span
-                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeImageChoiceFunct"></span>
-                                            <!-- onclick='removeImageChoice(this);' -->
+											<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                  onclick='addImageChoice();'>+</span> <span
+                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0"
+                                            onclick='removeImageChoice(this);'></span>
                                     </div>
                                 </div>
                                 <div class="image-choice row" id="1">
                                     <div class="col-md-2 pl-none col-smthumb-2">
                                         <div class="form-group">
-                                            <div class="sm-thumb-btn openUploadWindowFunct">
-                                            <!-- onclick="openUploadWindow(this);" -->
+                                            <div class="sm-thumb-btn"
+                                                 onclick="openUploadWindow(this);">
                                                 <div class="thumb-img">
                                                     <img
                                                             src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].image)}"
-                                                            class="imageChoiceWidth questThumbnailImg"/>
-                                                            <!-- onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                            onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                            class="imageChoiceWidth"/>
                                                 </div>
                                                 <c:if
                                                         test="${empty questionsBo.questionResponseSubTypeList[1].image}">
@@ -2988,13 +2981,13 @@
                                     </div>
                                     <div class="col-md-2 pl-none col-smthumb-2">
                                         <div class="form-group">
-                                            <div class="sm-thumb-btn openUploadWindowFunct">
-                                            <!-- onclick="openUploadWindow(this);" -->
+                                            <div class="sm-thumb-btn"
+                                                 onclick="openUploadWindow(this);">
                                                 <div class="thumb-img">
                                                     <img
                                                             src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].selectedImage)}"
-                                                            class="imageChoiceWidth questThumbnailImg"/>
-                                                           <!--  onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" -->
+                                                            onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';"
+                                                            class="imageChoiceWidth"/>
                                                 </div>
                                                 <c:if
                                                         test="${empty questionsBo.questionResponseSubTypeList[1].selectedImage}">
@@ -3047,11 +3040,10 @@
                                     </div>
 
                                     <div class="col-md-2 pl-none mt__6">
-											<span class="addBtnDis addbtn mr-sm align-span-center top6 addImageChoiceFunct">+</span>
-											<!-- onclick='addImageChoice();' -->
-											 <span
-                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeImageChoiceFunct"></span>
-                                            <!-- onclick='removeImageChoice(this);' -->
+											<span class="addBtnDis addbtn mr-sm align-span-center top6"
+                                                  onclick='addImageChoice();'>+</span> <span
+                                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0"
+                                            onclick='removeImageChoice(this);'></span>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -3094,7 +3086,7 @@
 <!-- End right Content here -->
 
 
-<script type="text/javascript" nonce="${nonce}">
+<script type="text/javascript">
   var idleTime = 0;
   $(document).ready(function () {
 
@@ -4096,10 +4088,6 @@
     $('[data-toggle="tooltip"]').tooltip();
     // File Upload
 
-    $('.openUploadWindowFunct').on('click', function() {
-    	openUploadWindow(this);
-    })
-    
     openUploadWindow = function (item) {
       $(item).siblings('.upload-image').click();
     }
@@ -4149,12 +4137,6 @@
         img.src = _URL.createObjectURL(file);
       }
     });
-    
-    $(".questThumbnailImg").on('error', function() {
-  	  // this.src='/fdahpStudyDesigner/images/dummy-img.jpg';
-  	  $(this).attr("src", "/fdahpStudyDesigner/images/icons/sm-thumb.jpg")
-    });
-    
     $('.textScaleValue').on('blur', function () {
       validateForUniqueValue(this, "Text Scale", function () {
       });
@@ -5082,9 +5064,8 @@
   }
 
   var count = $('.value-picker').length;
- 
-  $(document).on('click', ".addValuePickerFunct", function() {
-  //function addValuePicker() {
+
+  function addValuePicker() {
     count = count + 1;
     var newValuePicker = "<div class='value-picker row form-group mb-xs' id=" + count + ">" +
         "	<div class='col-md-3 pl-none'>" +
@@ -5103,9 +5084,9 @@
         "   </div>" +
         "</div>" +
         "<div class='col-md-2 pl-none mt__6'>" +
-        "   <span class='addBtnDis addbtn mr-sm align-span-center top6 addValuePickerFunct'>+</span>"
+        "   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addValuePicker();'>+</span>"
         +
-        "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeValuePickerFunct'></span>"
+        "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeValuePicker(this);'></span>"
         +
         "</div>" +
         "</div>";
@@ -5121,13 +5102,12 @@
       $(".remBtnDis").addClass("hide");
     }
     $('#' + count).find('input:first').focus();
-  })
+  }
 
-  $(document).on('click', ".removeValuePickerFunct", function() {
-  //function removeValuePicker(param) {
+  function removeValuePicker(param) {
     if ($('.value-picker').length > 2) {
 
-      $(this).parents(".value-picker").remove();
+      $(param).parents(".value-picker").remove();
       $(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
       $(".value-picker").parent().find(".help-block").empty();
       $(".value-picker").parents("form").validator("destroy");
@@ -5138,12 +5118,11 @@
         $(".remBtnDis").addClass("hide");
       }
     }
-  })
+  }
 
   var scaleCount = $('.text-scale').length;
 
-  $(document).on('click', ".addTextScaleFunct", function() {
-  //function addTextScale() {
+  function addTextScale() {
     scaleCount = scaleCount + 1;
     if ($('.text-scale').length < 8) {
       var newTextScale = "<div class='text-scale row' id=" + scaleCount + ">" +
@@ -5165,9 +5144,9 @@
           "    </div>" +
           " </div>";
       newTextScale += "<div class='col-md-2 pl-none mt__8'>" +
-          "	<span class='addBtnDis addbtn mr-sm align-span-center addTextScaleFunct'>+</span>"
+          "	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"
           +
-          "  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center removeTextScaleFunct'></span>"
+          "  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"
           +
           "	</div>" +
           "</div>";
@@ -5185,22 +5164,21 @@
       if ($('.text-scale').length == 8) {
         $(".text-scale:last").find('span.addBtnDis').remove();
         $(".text-scale:last").find('span.delete').before(
-            "<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none addTextScaleFunct'>+</span></span>");
+            "<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
         $('[data-toggle="tooltip"]').tooltip();
       } else {
         $(".text-scale:last").find('span.addBtnDis').remove();
         $(".text-scale:last").find('span.delete').before(
-            "<span class='addBtnDis addbtn mr-sm align-span-center addTextScaleFunct'>+</span>");
+            "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
       }
 
     }
     $('#' + scaleCount).find('input:first').focus();
-  })
+  }
 
-  $(document).on('click', ".removeTextScaleFunct", function() {
-  //function removeTextScale(param) {
+  function removeTextScale(param) {
     if ($('.text-scale').length > 2) {
-      $(this).parents(".text-scale").remove();
+      $(param).parents(".text-scale").remove();
       $(".text-scale").parent().removeClass("has-danger").removeClass("has-error");
       $(".text-scale").parent().find(".help-block").empty();
       $(".text-scale").parents("form").validator("destroy");
@@ -5214,20 +5192,19 @@
       if ($('.text-scale').length == 8) {
         $(".text-scale:last").find('span.addBtnDis').remove();
         $(".text-scale:last").find('span.delete').before(
-            "<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none addTextScaleFunct'>+</span></span>");
+            "<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
         $('[data-toggle="tooltip"]').tooltip();
       } else {
         $(".text-scale:last").find('span.addBtnDis').remove();
         $(".text-scale:last").find('span.delete').before(
-            "<span class='addBtnDis addbtn mr-sm align-span-center addTextScaleFunct'>+</span>");
+            "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
       }
     }
-  })
+  }
 
   var choiceCount = $('.text-choice').length;
- 
-  $(document).on('click', ".addTextChoiceFunct", function() {
-  //function addTextChoice() {
+
+  function addTextChoice() {
     var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
     var newTextChoice = "<tr class='text-choice' id='" + choiceCount + "''>"
 
@@ -5306,9 +5283,9 @@
         "   </div>" +
         "</div>" +
         "<div class='col-md-2 pl-none pt-xlg'>" +
-        "	 <span class='addBtnDis addbtn align-span-center top6 addTextChoiceFunct'>+</span>"
+        "	 <span class='addBtnDis addbtn align-span-center top6' onclick='addTextChoice();'>+</span>"
         +
-        "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm removeTextChoiceFunct'></span>        "
+        "	 <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 ml-sm' onclick='removeTextChoice(this);'></span>        "
         +
         " </div></div>" +
         "</div></div></div></div></td></tr><div class='clearfix'></div>";
@@ -5325,7 +5302,7 @@
       $(".remBtnDis").addClass("hide");
     }
     $('#' + choiceCount).find('input:first').focus();
-  })
+  }
 
   var valueArrayTxtChoice = [];
   $('.text-choice').find('input.textChoiceVal').each(function (index, ele) {
@@ -5335,16 +5312,14 @@
     }
   });
 
-  
-  $(document).on('click', ".removeTextChoiceFunct", function() {
-  //function removeTextChoice(param) {
-    let prm = $(this).parents(".text-choice").find('input.textChoiceVal').val();
+  function removeTextChoice(param) {
+    let prm = $(param).parents(".text-choice").find('input.textChoiceVal').val();
     let index = valueArrayTxtChoice.indexOf(prm);
     if (index > -1) {
       valueArrayTxtChoice.splice(index, 1);
     }
     if ($('.text-choice').length > 2) {
-      $(this).parents(".text-choice").remove();
+      $(param).parents(".text-choice").remove();
       $(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
       $(".text-choice").parent().find(".help-block").empty();
       $(".text-choice").parents("form").validator("destroy");
@@ -5356,18 +5331,16 @@
       }
     }
     delete_reset1();
-  })
+  }
 
   var imageCount = $('.image-choice').length;
 
-  
-  $(document).on('click', ".addImageChoiceFunct", function() {
-  //function addImageChoice() {
+  function addImageChoice() {
     imageCount = imageCount + 1;
     var newImageChoice = "<div class='image-choice row' id='" + imageCount + "'>" +
         "	   <div class='col-md-2 pl-none col-smthumb-2'>" +
         "   <div class='form-group'>" +
-        "      <div class='sm-thumb-btn openUploadWindowFunct'>" +
+        "      <div class='sm-thumb-btn' onclick='openUploadWindow(this);'>" +
         "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>" +
         "         <div class='textLabelimagePathId" + imageCount + "'>Upload</div>" +
         "      </div>" +
@@ -5382,7 +5355,7 @@
         "</div>" +
         "<div class='col-md-2 pl-none col-smthumb-2'>" +
         "   <div class='form-group'>" +
-        "      <div class='sm-thumb-btn openUploadWindowFunct'>" +
+        "      <div class='sm-thumb-btn' onclick='openUploadWindow(this);'>" +
         "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>" +
         "         <div class='textLabelselectImagePathId" + imageCount + "'>Upload</div>" +
         "      </div>" +
@@ -5413,9 +5386,9 @@
         "   </div>" +
         "</div>";
     newImageChoice += "<div class='col-md-2 pl-none mt__6'>" +
-        "   <span class='addBtnDis addbtn mr-sm align-span-center top6 addImageChoiceFunct'>+</span>"
+        "   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addImageChoice();'>+</span>"
         +
-        "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0 removeImageChoiceFunct'></span>"
+        "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeImageChoice(this);'></span>"
         +
         "</div>" +
         "</div> ";
@@ -5432,12 +5405,11 @@
       $(".remBtnDis").addClass("hide");
     }
     $('#' + imageCount).find('input:first').focus();
-  }) 
+  }
 
-  $(document).on('click', ".removeImageChoiceFunct", function() {
-  //function removeImageChoice(param) {
+  function removeImageChoice(param) {
     if ($('.image-choice').length > 2) {
-      $(this).parents(".image-choice").remove();
+      $(param).parents(".image-choice").remove();
       $(".image-choice").parent().removeClass("has-danger").removeClass("has-error");
       $(".image-choice").parent().find(".help-block").empty();
       $(".image-choice").parents("form").validator("destroy");
@@ -5448,7 +5420,7 @@
         $(".remBtnDis").addClass("hide");
       }
     }
-  })
+  }
 
   function validateStatsShorTitle(event, callback) {
     var short_title = $("#statShortNameId").val();
@@ -5745,17 +5717,16 @@
     }
   }
 
-  $(document).on('click', ".removeImageFunct", function() {
-  //function removeImage(item) {
-    var id = $(this).parent().find('input').attr('id');
-    var id2 = $(this).parent().find('input[type="hidden"]').attr('id')
+  function removeImage(item) {
+    var id = $(item).parent().find('input').attr('id');
+    var id2 = $(item).parent().find('input[type="hidden"]').attr('id')
 
     $("#" + id).val('');
     $("#" + id2).val('');
     $('.textLabel' + id2).text("Upload");
-    $(this).parent().find('img').attr("src", "../images/icons/sm-thumb.jpg");
-    $(this).addClass("hide");
-  })
+    $(item).parent().find('img').attr("src", "../images/icons/sm-thumb.jpg");
+    $(item).addClass("hide");
+  }
 
   function validateAnchorDateText(item, callback) {
     var anchordateText = $("#anchorTextId").val();
@@ -6187,7 +6158,7 @@
 </script>
 
 
-<script nonce="${nonce}">
+<script>
   $(document).ready(function () {
     var maxWidth = 1;
 
@@ -6226,7 +6197,7 @@
   }
 </script>
 
-<script nonce="${nonce}">
+<script>
 
 
   // $(document).on('click','.remove',function(){
@@ -6248,7 +6219,7 @@
 </script>
 
 
-<script nonce="${nonce}">
+<script>
   function view_spanish_deactivemode() {
     $("#diagnosis_list tbody").sortable("destroy");
 

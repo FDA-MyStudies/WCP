@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
     <meta charset="UTF-8">
-    <style nonce="${nonce}">
+    <style>
       .cursonMove {
         cursor: move !important;
       }
@@ -84,7 +84,7 @@
     <!--  Start top tab section-->
     <div class="right-content-head">
 
-        <select id="consentLangItems" class="dis-none">
+        <select id="consentLangItems" style="display: none">
             <c:forEach items="${consentInfoLangList}" var="consentInfoLang">
                 <option id='lang_${consentInfoLang.consentInfoLangPK.id}'
                         status="${consentInfoLang.status}"
@@ -101,7 +101,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm wid-150">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -125,8 +125,8 @@
                           data-placement="bottom" id="helpNote"
                             <c:if test="${fn:length(consentInfoList) eq 0 }"> title="Please ensure you add one or more Consent Sections before attempting to mark this section as Complete." </c:if>
 						<c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if>>
-						<button type="button" class="btn btn-primary blue-btn markAsCompletedfunct"
-                                id="markAsCompleteBtnId"
+						<button type="button" class="btn btn-primary blue-btn"
+                                id="markAsCompleteBtnId" onclick="markAsCompleted();"
                                 <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>>Mark
 							as Completed</button>
 					</span>
@@ -148,9 +148,9 @@
                     <th>
                         <div class="dis-line form-group mb-none">
                             <c:if test="${empty permission}">
-                                <button type="button" class="btn btn-primary blue-btn addConsentPagefunc"
+                                <button type="button" class="btn btn-primary blue-btn"
                                         id="addConsent"
-                                        >Add Consent Section
+                                        onclick="addConsentPage();">Add Consent Section
                                 </button>
                             </c:if>
                         </div>
@@ -164,16 +164,19 @@
                         <td class="title">${consentInfo.displayTitle}</td>
                         <td class="visualStep">${consentInfo.visualStep}</td>
                         <td>
-								<span class="sprites_icon preview-g mr-lg viewConsentInfofunct"
-                                      data-toggle="tooltip" data-placement="top" title="View" data-id='${consentInfo.id}'>
+								<span class="sprites_icon preview-g mr-lg"
+                                      data-toggle="tooltip" data-placement="top" title="View"
+                                      onclick="viewConsentInfo(${consentInfo.id});">
 								</span>
                             <span
-                                    class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg editIcon<c:if test="${not empty permission}"> cursor-none </c:if> editConsentInfofunct"
-                                    data-toggle="tooltip" data-placement="top" title="Edit" data-id='${consentInfo.id}'>
+                                    class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg editIcon<c:if test="${not empty permission}"> cursor-none </c:if>"
+                                    data-toggle="tooltip" data-placement="top" title="Edit"
+                                    onclick="editConsentInfo(${consentInfo.id});">
 								</span>
                             <span
-                                    class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteConsentInfofunc"
-                                    data-toggle="tooltip" data-placement="top" title="Delete" data-id='${consentInfo.id}'>
+                                    class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+                                    data-toggle="tooltip" data-placement="top" title="Delete"
+                                    onclick="deleteConsentInfo(${consentInfo.id});">
 								</span>
                         </td>
                     </tr>
@@ -213,7 +216,7 @@
         name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
     <input type="hidden" name="studyId" id="studyId" value="${studyId}"/>
 </form:form>
-<script type="text/javascript" nonce="${nonce}">
+<script type="text/javascript">
   var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -381,8 +384,7 @@
     });
   });
 
-  $(document).on('click', ".deleteConsentInfofunc", function() {
-	  var consentInfoId = $(this).attr('data-id')
+  function deleteConsentInfo(consentInfoId) {
     bootbox.confirm("Are you sure you want to delete this consent item?", function (result) {
       if (result) {
         var studyId = $("#studyId").val();
@@ -396,7 +398,7 @@
               studyId: studyId,
               "${_csrf.parameterName}": "${_csrf.token}",
             },
-            success: function deleteConsentInfofunc(data) {
+            success: function deleteConsentInfo(data) {
               var status = data.message;
               if (status == "SUCCESS") {
                 $("#alertMsg").removeClass('e-box').addClass('s-box').text(
@@ -428,7 +430,7 @@
         }
       }
     });
-  })
+  }
 
   function reloadData(studyId) {
     $.ajax({
@@ -474,13 +476,18 @@
         } else {
           datarow.push(obj.visualStep);
         }
-        var actions = "<span class='sprites_icon preview-g mr-lg viewConsentInfofunct' data-id='${consentInfo.id}'></span>";
+        var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("
+            + parseInt(obj.id) + ");'></span>";
         if (obj.status) {
-          actions += "<span class='sprites_icon edit-inc editIcon mr-lg editConsentInfofunct' data-id='${consentInfo.id}'></span>"
+          actions += "<span class='sprites_icon edit-inc editIcon mr-lg' onclick='editConsentInfo("
+              + parseInt(
+                  obj.id) + ");'></span>"
         } else {
-          actions += "<span class='sprites_icon edit-inc-draft editIcon mr-lg editConsentInfofunct' data-id='${consentInfo.id}'></span>";
+          actions += "<span class='sprites_icon edit-inc-draft editIcon mr-lg' onclick='editConsentInfo("
+              + parseInt(obj.id) + ");'></span>";
         }
-        actions += "<span class='sprites_icon copy delete deleteConsentInfofunc' data-id='${consentInfo.id}'></span>";
+        actions += "<span class='sprites_icon copy delete' onclick='deleteConsentInfo(" + parseInt(
+            obj.id) + ");'></span>";
         datarow.push(actions);
         $('#consent_list').DataTable().row.add(datarow);
         idList.push(obj.id);
@@ -498,16 +505,13 @@
     updateClassName(idList);
   }
 
-  
-  $('.addConsentPagefunc').on('click', function () {
-  //function addConsentPage() {
+  function addConsentPage() {
     $("#consentInfoId").val('');
     $("#actionType").val('addEdit');
     $("#consentInfoForm").submit();
-  })
+  }
 
-  
-  $(".markAsCompletedfunct").on('click', function () {
+  function markAsCompleted() {
     var table = $('#consent_list').DataTable();
     if (!table.data().count()) {
 
@@ -520,26 +524,25 @@
       $('#comprehensionInfoForm').append(input);
       $("#comprehensionInfoForm").submit();
     }
-  })
+  }
 
-  $(document).on('click', ".editConsentInfofunct", function() {
-	  var consentInfoId = $(this).attr('data-id')
+  function editConsentInfo(consentInfoId) {
+
     if (consentInfoId != null && consentInfoId != '' && typeof consentInfoId != 'undefined') {
       $("#consentInfoId").val(consentInfoId);
       $("#actionType").val('addEdit');
       $("#consentInfoForm").submit();
     }
-  })
+  }
 
+  function viewConsentInfo(consentInfoId) {
 
-  $(document).on('click', ".viewConsentInfofunct", function() {
-	  var consentInfoId = $(this).attr('data-id')
     if (consentInfoId != null && consentInfoId != '' && typeof consentInfoId != 'undefined') {
       $("#actionType").val('view');
       $("#consentInfoId").val(consentInfoId);
       $("#consentInfoForm").submit();
     }
-  })
+  }
 
   function updateClassName(idList) {
     $('tr.odd,.even').each(function (index) {
@@ -653,7 +656,7 @@
 
 </script>
 
-<script nonce="${nonce}">
+<script>
   // Fancy Scroll Bar
   (function ($) {
     $(window).on("load", function () {

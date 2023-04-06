@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style nonce="${nonce}">
+    <style>
       .cursonMove {
         cursor: move !important;
       }
@@ -127,10 +127,6 @@
         color: #007cba !important;
         font-size: 15px;
       }
-      
-      #hg-136{
-      	height: 136px;
-      }
     </style>
 </head>
 <!-- Start right Content here -->
@@ -139,7 +135,7 @@
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f dis-line pull-left line34">
-				<span class="mr-xs cur-pointer back-page"><img
+				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
                         src="../images/icons/back-b.png"/></span>
                 <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
                 <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
@@ -149,7 +145,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
-                <div class="dis-line form-group mb-none mr-sm wid-150">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -166,7 +162,7 @@
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
                 <div class="dis-line form-group mb-none mr-sm">
-                    <span class="tool-tip wid-150" id="markAsTooltipId"
+                    <span style="width: 150px;" class="tool-tip" id="markAsTooltipId"
                           data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -179,7 +175,8 @@
             </c:if>
 
             <div class="dis-line form-group mb-none mr-sm">
-                <button type="button" class="btn btn-default gray-btn back-page">Cancel
+                <button type="button" class="btn btn-default gray-btn"
+                        onclick="goToBackPage(this);">Cancel
                 </button>
             </div>
             <c:if test="${actionTypeForQuestionPage ne 'view'}">
@@ -187,13 +184,13 @@
                     <c:choose>
                         <c:when test="${not empty questionnairesStepsBo.stepId}">
                             <button type="button" id="saveBtn"
-                                    class="btn btn-default gray-btn saveFormStepfunct">
+                                    class="btn btn-default gray-btn" onclick="saveFormStep(this);">
                                 Save
                             </button>
                         </c:when>
                         <c:otherwise>
                             <button type="button" id="saveBtn"
-                                    class="btn btn-default gray-btn saveFormStepfunct">
+                                    class="btn btn-default gray-btn" onclick="saveFormStep(this);">
                                 Next
                             </button>
                         </c:otherwise>
@@ -267,7 +264,7 @@
                     type="hidden" id="actionTypeForFormStep"
                     name="actionTypeForFormStep"/>
                 <input type="hidden" id="seqNo" value="${questionnairesStepsBo.sequenceNo}">
-                <select id="questionLangBOList" class="dis-none">
+                <select id="questionLangBOList" style="display: none">
                     <c:forEach items="${questionLangBOList}" var="questionLang">
                         <option id='${questionLang.questionLangPK.id}'
                                 status="${questionLang.status}"
@@ -409,7 +406,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4"></div>
-                            <div class="col-md-5 form-group dis-none" id="contents">
+                            <div class="col-md-5 form-group" id="contents" style="display:none">
                                 <select class="selectpicker text-normal" name="preLoadSurveyId"
                                         <c:if test="${not empty questionnairesStepsBo.differentSurveyPreLoad and questionnairesStepsBo.differentSurveyPreLoad}"> required </c:if>
                                         id="preLoadSurveyId" title="-select survey id-">
@@ -422,7 +419,7 @@
                                         </option>
                                     </c:forEach>
                                     <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
-                                        <option class="txt-al" disabled>
+                                        <option style="text-align: center; color: #000000" disabled>
                                             - No items found -
                                         </option>
                                     </c:if>
@@ -478,7 +475,7 @@
                                                var="preLoadLogicBean" varStatus="status">
                                         <div id="form-div${status.index}"
                                              <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
-                                             <c:if test="${status.index eq 0}">class="hg-150"</c:if>
+                                             <c:if test="${status.index eq 0}">style="height: 150px;"</c:if>
                                              class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
                                             <c:if test="${status.index gt 0}">
                                                 <div class="form-group">
@@ -505,18 +502,20 @@
                                                     </div>
                                                     <div class="col-md-10 text-right">
                                                         <c:if test="${status.index gt 0}">
-                                                            <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeFormulaContainerFunct"
-                                                                  data-id="form-div${status.index}"></span>
-                                                                  <!-- onclick="removeFormulaContainer(this)" -->
+                                                            <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
+                                                                  data-id="form-div${status.index}"
+                                                                  onclick="removeFormulaContainer(this)"></span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-                                                <div class="br-sb">
+                                                <div style="height: 100px; border:1px solid #bfdceb;">
                                                     <div class="row">
-                                                        <div class="col-md-3 gray-xs-f mb-xs pd-tp">Define
+                                                        <div class="col-md-3 gray-xs-f mb-xs"
+                                                             style="padding-top: 18px;">Define
                                                             Functions
                                                         </div>
-                                                        <div class="col-md-3 gray-xs-f mb-xs pd-tp">
+                                                        <div class="col-md-3 gray-xs-f mb-xs"
+                                                             style="padding-top: 18px;">
                                                             Define Inputs
                                                             <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip"
                                                                   data-toggle="tooltip"
@@ -526,7 +525,8 @@
                                                         <div class="col-md-6"></div>
                                                     </div>
                                                     <div class="row data-div">
-                                                        <div class="col-md-1 pd-tp7">Operator
+                                                        <div class="col-md-1"
+                                                             style="padding-top: 7px">Operator
                                                         </div>
                                                         <div class="col-md-2 form-group">
                                                             <select class="selectpicker operator text-normal"
@@ -543,7 +543,8 @@
                                                             <div class="help-block with-errors red-txt"></div>
                                                         </div>
 
-                                                        <div class="col-md-1 pd-tp7">Value&nbsp;&nbsp;&nbsp;=
+                                                        <div class="col-md-1"
+                                                             style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;=
                                                         </div>
                                                         <div class="col-md-3 form-group">
                                                             <input type="hidden"
@@ -567,17 +568,19 @@
                                 </c:when>
 
                                 <c:otherwise>
-                                    <div id="hg-136" class="form-div">
+                                    <div style="height: 136px" class="form-div">
                                         <div class="row formula-box">
                                             <div class="col-md-2">
                                                 <strong class="font-family: arial;">Formula</strong>
                                             </div>
                                         </div>
-                                        <div class="br-sb">
+                                        <div style="height: 100px; border:1px solid #bfdceb;">
                                             <div class="row">
-                                                <div class="col-md-3 gray-xs-f mb-xs pd-tp">Define Functions
+                                                <div class="col-md-3 gray-xs-f mb-xs"
+                                                     style="padding-top: 18px;">Define Functions
                                                 </div>
-                                                <div class="col-md-3 gray-xs-f mb-xs pd-tp">
+                                                <div class="col-md-3 gray-xs-f mb-xs"
+                                                     style="padding-top: 18px;">
                                                     Define Inputs
                                                     <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip"
                                                           data-toggle="tooltip"
@@ -587,7 +590,7 @@
                                                 <div class="col-md-6"></div>
                                             </div>
                                             <div class="row data-div">
-                                                <div class="col-md-1 pd-tp7">
+                                                <div class="col-md-1" style="padding-top: 7px">
                                                     Operator
                                                 </div>
                                                 <div class="col-md-2 form-group">
@@ -604,7 +607,7 @@
                                                     <div class="help-block with-errors red-txt"></div>
                                                 </div>
 
-                                                <div class="col-md-1 pd-tp7">Value&nbsp;&nbsp;&nbsp;=</div>
+                                                <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;=</div>
                                                 <div class="col-md-3 form-group">
                                                     <input type="hidden" id="id${status.index}">
                                                     <input type="text" class="form-control value"
@@ -620,8 +623,8 @@
                                 </c:otherwise>
                             </c:choose>
                         </div>
-                        <button type="button" id="addFormula"
-                                class="btn btn-primary blue-btn mr-tp">Add Formula
+                        <button type="button" id="addFormula" style="margin-top:10px"
+                                class="btn btn-primary blue-btn">Add Formula
                         </button>
                     </div>
                 </div>
@@ -672,8 +675,8 @@
                         <div class="col-md-6 p-none">
                             <div class="dis-line form-group mb-md pull-right">
                                 <button type="button"
-                                        class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if> addNewQuestionfunct"
-                                         id="addQuestionId">Add
+                                        class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>"
+                                        onclick="addNewQuestion('');" id="addQuestionId">Add
                                     New Question
                                 </button>
                             </div>
@@ -683,7 +686,7 @@
                         <div class="col-12 mt-md mb-lg">
 
                             <table id="content" class="display" cellspacing="0" width="100%">
-                                <thead class="dis-none"></thead>
+                                <thead style="display: none"></thead>
                                 <c:forEach items="${questionnairesStepsBo.formQuestionMap}"
                                            var="entry">
                                     <tr id="row${entry.value.questionInstructionId}"
@@ -720,15 +723,14 @@
                                                           onmouseenter="ellipseHover(this);"></span>
                                                     <div class="ellipse-hover-icon"
                                                          onmouseleave="ellipseUnHover(this);">
-														<span class="sprites_icon preview-g mr-sm viewQuestionfunct" data-id="${entry.value.questionInstructionId}"
-                                                              ></span>
+														<span class="sprites_icon preview-g mr-sm"
+                                                              onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
                                                         <span
                                                                 class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} editIcon mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
-                                                                <c:if test="${actionTypeForQuestionPage ne 'view'}">class="editQuestionfunct" data-id="${entry.value.questionInstructionId}"</c:if>></span>
+                                                                <c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
                                                         <span
                                                                 class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
-                                                                <c:if test="${actionTypeForQuestionPage ne 'view'}">class="deletQuestionfunct" data-step="${entry.value.stepId}" data-id="${entry.value.questionInstructionId}"</c:if>></span>
-                                                                <%--  onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})" --%>
+                                                                <c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"</c:if>></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -776,7 +778,7 @@
     </div>
 </div>
 <!-- End right Content here -->
-<script type="text/javascript" nonce="${nonce}">
+<script type="text/javascript">
   var table1 = null;
   var defaultVisibility = $('#groupDefaultVisibility');
   var idleTime = 0;
@@ -1128,10 +1130,9 @@
     });
   });
 
-  $(".saveFormStepfunct").on('click', function () {
-  //function saveFormStep() {
+  function saveFormStep() {
     autoSaveFormStep('manual');
-  })
+  }
 
   function autoSaveFormStep(mode) {
     $("body").addClass("loading");
@@ -1171,31 +1172,26 @@
     });
   }
 
-  $(".addNewQuestionfunct").on('click', function () {
-	  //function addNewQuestion(questionId) {
+  function addNewQuestion(questionId) {
     $("#questionId").val(questionId);
     $("#actionTypeForFormStep").val('add');
     document.formStepId.action = "/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";
     document.formStepId.submit();
-  });
+  }
 
-  $(".viewQuestionfunct").on('click' , function () {
-  	var questionId = $(this).attr('data-id')
-	  //function viewQuestion(questionId) {
+  function viewQuestion(questionId) {
     $("#questionId").val(questionId);
     $("#actionTypeForFormStep").val('view');
     document.formStepId.action = "/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";
     document.formStepId.submit();
-  })
+  }
 
-  $(".editQuestionfunct").on('click' , function () {
-  		var questionId = $(this).attr('data-id')
-	  //function editQuestion(questionId) {
+  function editQuestion(questionId) {
     $("#questionId").val(questionId);
     $("#actionTypeForFormStep").val('edit');
     document.formStepId.action = "/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";
     document.formStepId.submit();
-  })
+  }
 
   function saveFormStepQuestionnaire(item, callback) {
     var stepId = $("#stepId").val();
@@ -1364,11 +1360,7 @@
     $(item).prev().show();
   }
 
-  
-  $('.deletQuestionfunct').on('click', function() {
-  //function deletQuestion(formId, questionId) {
-	  var formId = $(this).attr('data-step')
-	var questionId = $(this).attr('data-id')
+  function deletQuestion(formId, questionId) {
     var questionnairesId = $("#questionnairesId").val();
     bootbox.confirm({
       message: "Are you sure you want to delete this question item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
@@ -1436,7 +1428,7 @@
         }
       }
     });
-  })
+  }
 
   function reloadQuestionsData(questions, isDone) {
     $('#content').DataTable().clear();
@@ -1469,11 +1461,14 @@
             '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">' +
             '  <span class="sprites_icon preview-g mr-sm"></span>';
         if (value.status) {
-          dynamicAction += '<span class="sprites_icon edit-inc editIcon mr-sm editQuestionfunct" data-id="${entry.value.questionInstructionId}"></span>';
+          dynamicAction += '<span class="sprites_icon edit-inc editIcon mr-sm" onclick="editQuestion('
+              + parseInt(value.questionInstructionId) + ');"></span>';
         } else {
-          dynamicAction += '<span class="edit-inc-draft editIcon mr-md mr-sm editQuestionfunct" data-id="${entry.value.questionInstructionId}"></span>';
+          dynamicAction += '<span class="edit-inc-draft editIcon mr-md mr-sm" onclick="editQuestion('
+              + parseInt(value.questionInstructionId) + ');"></span>';
         }
-        dynamicAction += '<span class="sprites_icon delete" class="deletQuestionfunct" data-step="${entry.value.stepId}" data-id="${entry.value.questionInstructionId}"></span>' +
+        dynamicAction += '<span class="sprites_icon delete" onclick="deletQuestion(' + parseInt(
+                value.stepId) + ',' + parseInt(value.questionInstructionId) + ')"></span>' +
             '</div>' +
             '</div></div>';
         datarow.push(dynamicAction);
@@ -1493,8 +1488,8 @@
     }
   }
 
-  $(".back-page").on('click', function () {
-    $(this).prop('disabled', true);
+  function goToBackPage(item) {
+    $(item).prop('disabled', true);
     <c:if test="${actionTypeForQuestionPage ne 'view'}">
     bootbox.confirm({
       closeButton: false,
@@ -1515,7 +1510,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(this).prop('disabled', false);
+          $(item).prop('disabled', false);
         }
       }
     });
@@ -1527,7 +1522,7 @@
         + lang;
     document.body.appendChild(a).click();
     </c:if>
-  })
+  }
 
   function validateShortTitle(item, callback) {
     var shortTitle = $("#stepShortTitle").val();
@@ -1772,18 +1767,18 @@
         '<label for="orRadio' + count + '">OR</label>' +
         '</span>' +
         '</div>' +
-        '<div class="hg-150">' +
+        '<div style="height: 150px">' +
         '<div class="row formula-box">' +
         '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>' +
         '<div class="col-md-10 text-right">' +
         '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div'
-        + count + '" ></span>' +
+        + count + '" onclick="removeFormulaContainer(this)"></span>' +
         '</div>' +
         '</div>' +
-        '<div class="br-sb">' +
+        '<div style="height: 100px; border:1px solid #bfdceb;">' +
         '<div class="row">' +
-        '<div class="col-md-3 gray-xs-f mb-xs pd-tp">Define Functions</div>' +
-        '<div class="col-md-3 gray-xs-f mb-xs pd-tp">Define Inputs ' +
+        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>' +
+        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs ' +
         '<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip" ' +
         'title="For response including \'Height\' please provide response in cm.">' +
         '</span>' +
@@ -1791,7 +1786,7 @@
         '<div class="col-md-6"></div>' +
         '</div>' +
         '<div class="row data-div">' +
-        '<div class="col-md-1 pd-tp7">Operator</div>' +
+        '<div class="col-md-1" style="padding-top: 7px">Operator</div>' +
         '<div class="col-md-2 form-group">' +
         '<select  class="selectpicker operator text-normal" data-error="Please select an option" ' +
         'id="operator' + count + '" name="preLoadLogicBeans[' + count
@@ -1805,7 +1800,7 @@
         '</select>' +
         '<div class="help-block with-errors red-txt"></div>' +
         '</div>' +
-        '<div class="col-md-1 pd-tp7">Value&nbsp;&nbsp;&nbsp;= </div>' +
+        '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>' +
         '<div class="col-md-3 form-group">' +
         '<input type="hidden" class="id"/>' +
         '<input type="text" data-error="Please fill out this field." class="form-control value" id="value'
@@ -1898,11 +1893,11 @@
       $('#repeatableNo').attr('checked', true);
     }
   })
- 
-  $(document).on('click', ".removeFormulaContainerFunct", function() {
-    let id = $(this).attr('data-id');
+
+  function removeFormulaContainer(object) {
+    let id = object.getAttribute('data-id');
     $('#' + id).remove();
-  })
+  }
 
   function setOperatorDropDown(responseType) {
     if (responseType != null) {

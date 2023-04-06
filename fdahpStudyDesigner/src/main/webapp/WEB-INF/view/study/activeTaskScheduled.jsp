@@ -98,7 +98,7 @@
     <!-- Anchor date type -->
     <form:form action="" name="anchorFormId" id="anchorFormId" method="post"
             role="form" data-toggle="validator">
-    <div class="anchortypeclass dis-none"">
+    <div class="anchortypeclass" style="display: none;">
         <c:if test="${fn:length(anchorTypeList) gt 0}">
             <div class="gray-xs-f mb-sm">Select Anchor Date Type</div>
             <div class="clearfix"></div>
@@ -391,14 +391,12 @@
                             class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<input id="time0" type="text"
                                name="activeTaskFrequenciesList[0].frequencyTime" required
-                               class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} timepFunct"
-                               placeholder="Time"/>
-                               <!-- onclick='timep(this.id);' -->
-                                <span
+                               class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                               placeholder="Time" onclick='timep(this.id);'/> <span
                             class='help-block with-errors red-txt'></span>
 					</span> <span
-                        class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} addTimeFunct">+</span>
-                        <!-- onclick='addTime();' -->
+                        class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                        onclick='addTime();'>+</span>
                     <!-- <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span> -->
                 </div>
             </c:if>
@@ -415,18 +413,15 @@
 							<input id="time${frequeincesVar.index}" type="text"
                                    name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime"
                                    required
-                                   class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} timepFunct"
-                                   placeholder="Time"
-                                   value="${activeTasksFrequencies.frequencyTime}"/> 
-                                   <!-- onclick='timep(this.id);' -->
-                                   <span
+                                   class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                                   placeholder="Time" onclick='timep(this.id);'
+                                   value="${activeTasksFrequencies.frequencyTime}"/> <span
                             class='help-block with-errors red-txt'></span>
 						</span> <span
-                            class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} addTimeFunct">+</span> 
-                            <!-- onclick='addTime();' -->
-                            <span
-                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} removeTimefunct"></span>
-                           <!--  onclick='removeTime(this);' -->
+                            class="addBtnDis addbtn mr-sm align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                            onclick='addTime();'>+</span> <span
+                            class="delete vertical-align-middle remBtnDis hide pl-md align-span-center ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                            onclick='removeTime(this);'></span>
                     </div>
                 </c:forEach>
             </c:if>
@@ -447,7 +442,7 @@
 				</span>
             </div>
             <!-- Anchordate start-->
-            <div class="dailyanchorDiv col-md-4 pl-none dis-none"">
+            <div class="dailyanchorDiv col-md-4 pl-none" style="display: none;">
                 <div class=" resetDate">
                     <div>
 						<span
@@ -565,12 +560,10 @@
                     class="form-group m-none dis-inline vertical-align-middle pr-md pl-lg">
 				<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> --> <input
                     id="selectWeeklyTime" type="text"
-                    class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} timepFunct"
-                    required  placeholder="Time"
+                    class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                    required onclick="timep(this.id)" placeholder="Time"
                     name="activeTaskFrequenciesBo.frequencyTime"
-                    value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-                   <!--  onclick="timep(this.id)" -->
-                     <span
+                    value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/> <span
                     class='help-block with-errors red-txt'></span>
 			</span>
         </div>
@@ -588,7 +581,7 @@
 			</span>
 			</span>
             <!-- Anchordate start-->
-            <div class="weeklyanchorDiv pl-none dis-none">
+            <div class="weeklyanchorDiv pl-none" style="display: none;">
                 <div class=" resetDate dis_inlinetop p-none">
                     <div>
 						<span
@@ -624,11 +617,10 @@
                     <span
                             class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<input id="selectWeeklyTimeAnchor" type="text"
-                               class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} timepFunct"
-                               required placeholder="Time"
+                               class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                               required onclick="timep(this.id)" placeholder="Time"
                                name="activeTaskFrequenciesBo.frequencyTime"
                                value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-                               <!-- onclick="timep(this.id)"  -->
 						<span class='help-block with-errors red-txt'></span>
 					</span>
                 </div>
@@ -721,12 +713,10 @@
                 class="form-group m-none dis-inline vertical-align-middle pr-md">
 				<!-- 	       <span class="gray-xs-f">&nbsp;</span><br/> --> <input
                 id="selectMonthlyTime" type="text"
-                class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} timepFunct"
-                required placeholder="Time"
+                class="form-control mt-sm clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                required onclick="timep(this.id)" placeholder="Time"
                 name="activeTaskFrequenciesBo.frequencyTime"
-                value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-                <!-- onclick="timep(this.id)" --> 
-                 <span
+                value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/> <span
                 class='help-block with-errors red-txt'></span>
 			</span>
             <div class="gray-xs-f mt-sm mb-lg italic-txt text-weight-light">If
@@ -749,7 +739,7 @@
 				</span>
             </div>
             <!-- Anchordate start-->
-            <div class="monthlyanchorDiv pl-none dis-none">
+            <div class="monthlyanchorDiv pl-none" style="display: none;">
                 <div class="dis_inlinetop resetDate">
                     <div>
 						<span
@@ -790,11 +780,10 @@
 					<span
                             class="form-group m-none dis-inline vertical-align-middle pr-md">
 						<input id="selectMonthlyTimeAnchor" type="text"
-                               class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''} timepFunct"
-                               required  placeholder="Time"
+                               class="form-control clock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}"
+                               required onclick="timep(this.id)" placeholder="Time"
                                name="activeTaskFrequenciesBo.frequencyTime"
                                value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
-                               <!-- onclick="timep(this.id)" -->
 						<span class='help-block with-errors red-txt'></span>
 					</span>
                     </div>
@@ -886,30 +875,25 @@
                            value="${activeTaskBo.id}"> <span
                         class="form-group dis-inline vertical-align-middle pr-md">
 						<input id="StartDate0" type="text" count='0'
-                               class="form-control calendar customCalnder cusStrDate customStartDateFunct"
+                               class="form-control calendar customCalnder cusStrDate"
                                name="activeTaskCustomScheduleBo[0].frequencyStartDate" value=""
-                               placeholder="Start Date"
-                               required/>
-                                <!-- onclick='customStartDate(this.id,0);' -->
-                                <span class='help-block with-errors red-txt'></span>
+                               placeholder="Start Date" onclick='customStartDate(this.id,0);'
+                               required/> <span class='help-block with-errors red-txt'></span>
 					</span> <span class="gray-xs-f mb-sm pr-md align-span-center"> to </span>
                     <span class="form-group dis-inline vertical-align-middle pr-md">
 						<input id="EndDate0" type="text" count='0'
-                               class="form-control calendar customCalnder cusEndDate customEndDateFunct"
+                               class="form-control calendar customCalnder cusEndDate"
                                name="activeTaskCustomScheduleBo[0].frequencyEndDate"
-                               placeholder="End Date"
-                               required/>
-                               <!-- onclick='customEndDate(this.id,0);' -->
-                                <span class='help-block with-errors red-txt'></span>
+                               placeholder="End Date" onclick='customEndDate(this.id,0);'
+                               required/> <span class='help-block with-errors red-txt'></span>
 					</span> <span class="form-group dis-inline vertical-align-middle pr-md">
 						<input id="customTime0" type="text" count='0'
-                               class="form-control clock cusTime timepFunct"
+                               class="form-control clock cusTime"
                                name="activeTaskCustomScheduleBo[0].frequencyTime"
-                               placeholder="Time" disabled required/>
-                               <!-- onclick='timep(this.id);'  -->
+                               placeholder="Time" onclick='timep(this.id);' disabled required/>
 						<span class='help-block with-errors red-txt'></span>
-					</span> <span class="addBtnDis addbtn mr-sm align-span-center addDatefunct">+</span>
-					 <!-- onclick='addDate();' -->
+					</span> <span class="addBtnDis addbtn mr-sm align-span-center"
+                                  onclick='addDate();'>+</span>
                     <!-- <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span> -->
                 </div>
             </c:if>
@@ -933,43 +917,40 @@
                             class="form-group  dis-inline vertical-align-middle pr-md">
 							<input id="StartDate${customVar.index}" type="text"
                                    count='${customVar.index}'
-                                   class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} customStartDateFunct"
+                                   class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                    name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate"
                                    value="${activeTaskCustomScheduleBo.frequencyStartDate}"
                                    placeholder="Start Date"
-                                   required/>
-                                   <%-- onclick='customStartDate(this.id,${customVar.index});' --%>
+                                   onclick='customStartDate(this.id,${customVar.index});' required/>
 							<span class='help-block with-errors red-txt'></span>
 						</span> <span class="gray-xs-f mb-sm pr-md align-span-center"> to
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md">
 							<input id="EndDate${customVar.index}" type="text"
                                    count='${customVar.index}'
-                                   class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} customEndDateFunct"
+                                   class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                    name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate"
                                    value="${activeTaskCustomScheduleBo.frequencyEndDate}"
                                    placeholder="End Date"
-                                   required/>
-                                    <%-- onclick='customEndDate(this.id,${customVar.index});' --%>
+                                   onclick='customEndDate(this.id,${customVar.index});' required/>
 							<span class='help-block with-errors red-txt'></span>
 						</span> <span class="form-group  dis-inline vertical-align-middle pr-md">
 							<input id="customTime${customVar.index}" type="text"
                                    count='${customVar.index}'
-                                   class="form-control clock cusTime ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''} timepFunct"
+                                   class="form-control clock cusTime ${activeTaskCustomScheduleBo.used && studyBo.status ne 'Pre-launch' ?'cursor-none' : ''}"
                                    name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime"
                                    value="${activeTaskCustomScheduleBo.frequencyTime}"
-                                   placeholder="Time" required/>
-                                    <!-- onclick='timep(this.id);' -->
-                                    <span
+                                   placeholder="Time" onclick='timep(this.id);' required/> <span
                             class='help-block with-errors red-txt'></span>
-						</span> <span class="addbtn addBtnDis align-span-center mr-md addDatefunct">+</span> <span id="delete"
-                                                                          class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''} removeDateFunct"></span>
-                                                                          <!-- onclick="removeDate(this);" -->
+						</span> <span class="addbtn addBtnDis align-span-center mr-md "
+                                      onclick="addDate();">+</span> <span id="delete"
+                                                                          class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+                                                                          onclick="removeDate(this);"></span>
                     </div>
                 </c:forEach>
             </c:if>
         </div>
         <!-- anchor start-->
-        <div class="manuallyAnchorContainer dis-none">
+        <div class="manuallyAnchorContainer" style="display: none;">
             <c:if
                     test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
                 <div class="manually-anchor-option mb-md form-group" id="0">
@@ -1031,9 +1012,8 @@
                                                                      required/> <span
                         class='help-block with-errors red-txt'></span>
 					</span> <span
-                        class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle addDateAnchorfunct"
-                        >+</span>
-                        <!-- onclick="addDateAnchor();" -->
+                        class="addbtn addBtnDis addbtnZero dis-inline vertical-align-middle "
+                        onclick="addDateAnchor();">+</span>
                     <!-- <span id="deleteAncchor"
 						class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center"
 						onclick="removeDateAnchor(this);"></span> -->
@@ -1114,12 +1094,10 @@
                             placeholder="Time" required/> <span
                             class='help-block with-errors red-txt'></span>
 						</span> <span
-                            class="addbtn addBtnDis addbtnZero align-span-center mr-md addDateAnchorfunct"
-                            >+</span>
-                            <!-- onclick="addDateAnchor();" -->
-                             <span id="deleteAncchor"
-                                                                      class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''} removeDateAnchorFunct"></span>
-                                                                      <!-- onclick="removeDateAnchor(this);" -->
+                            class="addbtn addBtnDis addbtnZero align-span-center mr-md "
+                            onclick="addDateAnchor();">+</span> <span id="deleteAncchor"
+                                                                      class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+                                                                      onclick="removeDateAnchor(this);"></span>
                     </div>
                 </c:forEach>
             </c:if>
@@ -2105,20 +2083,19 @@ $('span.remBtnDis').remove();
         return [month, day, year].join('/');
       }
 
-      $(document).on('click', ".addTimefunct", function() {	
-      //function addTime() {
+      function addTime() {
         count = count + 1;
         var newTime = "<div class='time-opts mt-md dailyTimeDiv' id=" + count + ">" +
             "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>" +
             "  <input id='time" + count + "' type='text' required name='activeTaskFrequenciesList["
             + count
-            + "].frequencyTime' placeholder='Time' class='form-control clock dailyClock timepFunct' placeholder='00:00'/>"
+            + "].frequencyTime' placeholder='Time' class='form-control clock dailyClock' placeholder='00:00' onclick='timep(this.id);'/>"
             +
             "<span class='help-block with-errors red-txt'></span>" +
             " </span>" +
-            "  <span class='addBtnDis addbtn mr-sm align-span-center addTimefunct'>+</span>"
+            "  <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTime();'>+</span>"
             +
-            " <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center removeTimefunct'></span>"
+            " <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTime(this);'></span>"
             +
             "</div>";
         $(".time-opts:last").after(newTime);
@@ -2134,10 +2111,10 @@ $('span.remBtnDis').remove();
         var flag = 'schedule';
         setFrequencyVal(flag);
         $('#' + count).find('input:first').focus();
-      })
+      }
 
-       $(document).on('click', ".removeTimefunct", function() { 
-        $(this).parents(".time-opts").remove();
+      function removeTime(param) {
+        $(param).parents(".time-opts").remove();
         $(".time-opts").parents("form").validator("destroy");
         $(".time-opts").parents("form").validator();
         if ($('.time-opts').length > 1) {
@@ -2148,15 +2125,16 @@ $('span.remBtnDis').remove();
         $(document).find('.dailyClock').trigger('dp.change');
         var flag = 'schedule';
         setFrequencyVal(flag);
-      })
+      }
 
-      $(document).on('click', ".addDatefunct", function() { 
+      function addDate() {
         customCount = customCount + 1;
         var newDateCon = "<div class='manually-option mb-md form-group' id='" + customCount + "'>"
             + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
             + "  <input id='StartDate" + customCount + "' type='text' count='" + customCount
             + "' required name='activeTaskCustomScheduleBo[" + customCount
-            + "].frequencyStartDate' class='form-control calendar customCalnder cusStrDate customStartDateFunct' placeholder='Start Date'/>"
+            + "].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"
+            + customCount + ");'/>"
             + "	<span class='help-block with-errors red-txt'></span>"
             + "  </span>"
             + "  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
@@ -2165,17 +2143,18 @@ $('span.remBtnDis').remove();
             + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
             + "  <input id='EndDate" + customCount + "' type='text' count='" + customCount
             + "' required name='activeTaskCustomScheduleBo[" + customCount
-            + "].frequencyEndDate' class='form-control calendar customCalnder cusEndDate customEndDateFunct' placeholder='End Date'/>"
+            + "].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"
+            + customCount + ");'/>"
             + "<span class='help-block with-errors red-txt'></span>"
             + "  </span>"
             + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
             + "  <input id='customTime" + customCount + "' type='text' count='" + customCount
             + "' required name='activeTaskCustomScheduleBo[" + customCount
-            + "].frequencyTime' class='form-control clock customTime cusTime timepFunct' placeholder='Time' disabled/>"
+            + "].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
             + "<span class='help-block with-errors red-txt'></span>"
             + "  </span>"
-            + "  <span class='addbtn addBtnDis align-span-center mr-md addDatefunct'>+</span>"
-            + "  <span id='delete' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center removeDateFunct'></span>"
+            + "  <span class='addbtn addBtnDis align-span-center mr-md' onclick='addDate();'>+</span>"
+            + "  <span id='delete' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDate(this);'></span>"
             + "</div>";
 
         $(".manually-option:last").after(newDateCon);
@@ -2191,11 +2170,10 @@ $('span.remBtnDis').remove();
         timep('customTime' + customCount);
         $('#customTime' + customCount).val("");
         $('#' + customCount).find('input:first').focus();
-      })
+      }
 
-      $(document).on('click', ".removeDateFunct", function() { 
-      //function removeDate(param) {
-        $(this).parents(".manually-option").remove();
+      function removeDate(param) {
+        $(param).parents(".manually-option").remove();
         $(".manually-option").parents("form").validator("destroy");
         $(".manually-option").parents("form").validator();
         if ($('.manually-option').length > 1) {
@@ -2204,13 +2182,8 @@ $('span.remBtnDis').remove();
           $('.manuallyContainer').find(".remBtnDis").addClass("hide");
         }
         $(document).find('.cusTime').trigger('dp.change');
-      })
+      }
 
-      $('.timepFunct').on('click', function() {
-    	  let item = $(this).attr('id');
-    	  timep(item);
-      });
-      
       function timep(item) {
         $('#' + item).not('.cursor-none').datetimepicker({
           format: 'h:mm a',
@@ -2218,12 +2191,6 @@ $('span.remBtnDis').remove();
         });
       }
 
-      $('.customStartDateFunct').on('click', function() {
-    	  let id = $(this).attr('id');
-    	  let count = $(this).attr('count');
-    	  customStartDate(id, count);
-      });
-      
       function customStartDate(id, count) {
         $('.cusStrDate').not('.cursor-none, :disabled').datetimepicker({
           format: 'MM/DD/YYYY',
@@ -2250,14 +2217,6 @@ $('span.remBtnDis').remove();
         });
       }
 
-      $('.customEndDateFunct').on('click', function() {
-    	  
-    	  let id = $(this).attr('id');
-    	  let count = $(this).attr('count');
-    	  customEndDate(id, count);
-      });
-      
-      
       function customEndDate(id, count) {
         $('.cusEndDate').not('.cursor-none, :disabled').datetimepicker({
           format: 'MM/DD/YYYY',
@@ -3348,8 +3307,7 @@ $('span.remBtnDis').remove();
         return valid;
       }
 
-      $(document).on('click', ".addDateAnchorfunct", function() {
-      //function addDateAnchor() {
+      function addDateAnchor() {
         //customAnchorCount = parseInt(customAnchorCount) +1;
         customAnchorCount = $('.manually-anchor-option').length;
         var newDateCon = "<div class='manually-anchor-option mb-md form-group' id='"
@@ -3387,8 +3345,8 @@ $('span.remBtnDis').remove();
             + customAnchorCount + "].frequencyTime' placeholder='Time' required/>"
             + "<span class='help-block with-errors red-txt'></span>"
             + "</span>"
-            + "<span class='addbtn addBtnDis align-span-center mr-md addDateAnchorfunct'>+</span>"
-            + "<span id='deleteAncchor' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center removeDateAnchorFunct'></span>"
+            + "<span class='addbtn addBtnDis align-span-center mr-md' onclick='addDateAnchor();'>+</span>"
+            + "<span id='deleteAncchor' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDateAnchor(this);'></span>"
             + "</div>";
 
         $(".manually-anchor-option:last").after(newDateCon);
@@ -3406,10 +3364,9 @@ $('span.remBtnDis').remove();
         //$('#manualTime'+customAnchorCount).val("");
         $('#' + customAnchorCount).find('input:first').focus();
         $('.selectpicker').selectpicker('refresh');
-      })
+      }
 
-      $(document).on('click', ".removeDateAnchorFunct", function() {
-      //function removeDateAnchor(param) {
+      function removeDateAnchor(param) {
         $(param).parents(".manually-anchor-option").remove();
         $(".manually-anchor-option").parents("form").validator("destroy");
         $(".manually-anchor-option").parents("form").validator();
@@ -3419,7 +3376,7 @@ $('span.remBtnDis').remove();
           $('.manuallyAnchorContainer').find(".remBtnDis").addClass("hide");
         }
         //$(document).find('.cusTime').trigger('dp.change');
-      })
+      }
 
       function setAnchorDropdown(frequency_text, anchorType) {
         if (anchorType == 'Enrollment Date') {

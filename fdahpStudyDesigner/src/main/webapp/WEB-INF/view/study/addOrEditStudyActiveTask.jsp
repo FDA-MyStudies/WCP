@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style nonce="${nonce}">
+<style>
   .help-block ul {
     width: 160px !important;
   }
@@ -107,7 +107,7 @@
 
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="pr-xs cur-pointer back-page">
+				<span class="pr-xs cur-pointer" onclick="goToBackPage(this);">
 					<img src="../images/icons/back-b.png"/>
 				</span>
                 <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
@@ -118,7 +118,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionPage != 'add'}">
-                <div class="dis-line form-group mb-none mr-sm wid-150"">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage globe lang-specific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -134,7 +134,7 @@
             </c:if>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionPage == 'add'}">
-                <div class="dis-line form-group mb-none mr-sm wid-150"">
+                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -147,7 +147,8 @@
             </c:if>
 
             <div class="dis-line form-group mb-none mr-sm">
-                <button type="button" class="btn btn-default gray-btn back-page">Cancel
+                <button type="button" class="btn btn-default gray-btn"
+                        onclick="goToBackPage(this);">Cancel
                 </button>
             </div>
 
@@ -210,7 +211,7 @@
     <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<script nonce="${nonce}">
+<script>
   $(document)
   .ready(
       function () {
@@ -401,10 +402,10 @@
         });
       });
 
-  $(".back-page").on('click', function () {
+  function goToBackPage(item) {
     //window.history.back();
     <c:if test="${actionPage ne 'view'}">
-    $(this).prop('disabled', true);
+    $(item).prop('disabled', true);
     bootbox
     .confirm({
       closeButton: false,
@@ -425,7 +426,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(this).prop('disabled', false);
+          $(item).prop('disabled', false);
         }
       }
     });
@@ -437,7 +438,7 @@
         + lang;
     document.body.appendChild(a).click();
     </c:if>
-  })
+  }
 
   function actionPageView() {
     <c:if test="${actionPage eq 'view'}">

@@ -15,14 +15,14 @@
             <div class="black-lg-f" style="margin-top: 0px">Manage Users</div>
 
             <div class="dis-inline" style="margin-top: 8px">
-                <form class="navbar-form" role="search">
+<%--                <form class="navbar-form" role="search">--%>
                     <div class="form-group mb-none mt-xs">
                         <div class="input-group add-on">
                             <input placeholder="Search" class="c__search" type="text"
                                    style="height: auto; padding: 4px 20px; background-position: left 7px top 6px; color: #000;">
                         </div>
                     </div>
-                </form>
+<%--                </form>--%>
             </div>
 
             <div class="dis-line pull-right ml-md">

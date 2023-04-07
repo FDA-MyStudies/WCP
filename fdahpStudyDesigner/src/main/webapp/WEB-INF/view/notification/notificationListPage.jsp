@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       <!--
       .sorting, .sorting_asc, .sorting_desc {
         background: none !important;
@@ -143,7 +143,7 @@
 </div>
 </div>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   //notificationTable();
   $(document).ready(function () {

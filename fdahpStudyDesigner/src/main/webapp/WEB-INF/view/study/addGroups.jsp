@@ -8,7 +8,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .modal-dialog {
         left: -3px !important;
       }
@@ -77,6 +77,14 @@
       .preload-tooltip {
         margin-bottom: 3px;
       }
+      
+      #hgt-136{
+      	height: 136px;
+      }
+      
+      .z-indx{
+  		z-index: 1301 !important;
+  	  }
 
     </style>
 
@@ -99,12 +107,12 @@
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f dis-line pull-left line34">
-                <span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
+                <span class="mr-xs cur-pointer back-page">
                 <img src="../images/icons/back-b.png"/></span>
                     Group-Level Attributes
                 </div>
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -120,7 +128,7 @@
                 </c:if>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -132,8 +140,7 @@
                     </div>
                 </c:if>
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="goToBackPage(this);">Cancel
+                    <button type="button" class="btn btn-default gray-btn back-page">Cancel
                     </button>
                 </div>
                 <div class="dis-line form-group mb-none mr-sm">
@@ -265,7 +272,7 @@
                                    varStatus="status">
                             <div id="form-div${status.index}"
                                  <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
-                                 <c:if test="${status.index eq 0}">style="height: 150px;"</c:if>
+                                 <c:if test="${status.index eq 0}">class="hg-150"</c:if>
                                  class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
                                 <c:if test="${status.index gt 0}">
                                     <div class="form-group">
@@ -294,20 +301,17 @@
                                         </div>
                                         <div class="col-md-10 text-right">
                                             <c:if test="${status.index gt 0}">
-                                                <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center"
-                                                      data-id="form-div${status.index}"
-                                                      onclick="removeFormulaContainer(this)"></span>
+                                                <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeFormulaContainerFunct"
+                                                      data-id="form-div${status.index}"></span>
                                             </c:if>
                                         </div>
                                     </div>
-                                    <div style="height: 100px; border:1px solid #bfdceb;">
+                                    <div class="br-sb">
                                         <div class="row">
-                                            <div class="col-md-3 gray-xs-f mb-xs"
-                                                 style="padding-top: 18px;">Define
+                                            <div class="col-md-3 gray-xs-f mb-xs pd-tp">Define
                                                 Functions
                                             </div>
-                                            <div class="col-md-3 gray-xs-f mb-xs"
-                                                 style="padding-top: 18px;">
+                                            <div class="col-md-3 gray-xs-f mb-xs pd-tp">
                                                 Define Inputs
                                                 <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip"
                                                       data-toggle="tooltip"
@@ -317,7 +321,7 @@
                                             <div class="col-md-6"></div>
                                         </div>
                                         <div class="row data-div">
-                                            <div class="col-md-1" style="padding-top: 7px">
+                                            <div class="col-md-1 pd-tp7">
                                                 Operator
                                             </div>
                                             <div class="col-md-2 parent-pll form-group">
@@ -334,7 +338,7 @@
                                                 <div class="help-block with-errors red-txt"></div>
                                             </div>
 
-                                            <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;=
+                                            <div class="col-md-1 pd-tp7">Value&nbsp;&nbsp;&nbsp;=
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <input type="hidden" value="${preLoadLogicBean.id}"
@@ -357,19 +361,17 @@
                     </c:when>
 
                     <c:otherwise>
-                        <div style="height: 136px" class="form-div">
+                        <div id="hgt-136" class="form-div">
                             <div class="row formula-box">
                                 <div class="col-md-2">
                                     <strong class="font-family: arial;">Formula</strong>
                                 </div>
                             </div>
-                            <div style="height: 100px; border:1px solid #bfdceb;">
+                            <div class="br-sb">
                                 <div class="row">
-                                    <div class="col-md-3 gray-xs-f mb-xs"
-                                         style="padding-top: 18px;">Define Functions
+                                    <div class="col-md-3 gray-xs-f mb-xs pd-tp">Define Functions
                                     </div>
-                                    <div class="col-md-3 gray-xs-f mb-xs"
-                                         style="padding-top: 18px;">
+                                    <div class="col-md-3 gray-xs-f mb-xs pd-tp">
                                         Define Inputs
                                         <span class="ml-xs sprites_v3 filled-tooltip preload-tooltip"
                                               data-toggle="tooltip"
@@ -379,7 +381,7 @@
                                     <div class="col-md-6"></div>
                                 </div>
                                 <div class="row data-div">
-                                    <div class="col-md-1" style="padding-top: 7px">Operator</div>
+                                    <div class="col-md-1 pd-tp7">Operator</div>
                                     <div class="col-md-2 parent-pll form-group">
                                         <select required
                                                 class="selectpicker operator text-normal req-pll"
@@ -392,7 +394,7 @@
                                         <div class="help-block with-errors red-txt"></div>
                                     </div>
 
-                                    <div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;=</div>
+                                    <div class="col-md-1 pd-tp7">Value&nbsp;&nbsp;&nbsp;=</div>
                                     <div class="col-md-3 form-group">
                                         <input type="hidden" id="id${status.index}">
                                         <input type="text" required
@@ -408,8 +410,8 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <button type="button" id="addFormula" style="margin-top:10px"
-                    class="btn btn-primary blue-btn">Add Formula
+            <button type="button" id="addFormula"
+                    class="btn btn-primary blue-btn mr-tp">Add Formula
             </button>
         </div>
     </div>
@@ -420,7 +422,7 @@
     <input type="hidden" id="stepType" value="${stepType}" name="stepType">
     <input type="hidden" id="questionIdList" value="${questionIdList}" name="questionIdList">
 
-    <div class="modal fade dominate" id="myModal" role="dialog" style="z-index: 1301 !important;">
+    <div class="modal fade dominate z-indx" id="myModal" role="dialog">
         <div class="modal-dialog modal-sm flr_modal">
             <!-- Modal content-->
             <div class="modal-content">
@@ -451,7 +453,7 @@
 
 </form:form>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $(".menuNav li.active").removeClass('active');
@@ -605,9 +607,10 @@
     $('#currentLanguage').val('en');
   }
 
-  function goToBackPage(item) {
+  $(".back-page").on('click', function () {
+  //function goToBackPage(item) {
     var actionPage = "${actionType}";
-    $(item).prop('disabled', true);
+    $(this).prop('disabled', true);
     <c:if test="${actionType ne 'view'}">
     bootbox
     .confirm({
@@ -629,7 +632,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -641,7 +644,7 @@
         + lang;
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
   $('#preLoadSurveyId').on('change', function () {
     refreshSourceKeys();
@@ -686,18 +689,18 @@
         '<label for="orRadio' + count + '">OR</label>' +
         '</span>' +
         '</div>' +
-        '<div style="height: 150px">' +
+        '<div class="hg-150">' +
         '<div class="row formula-box">' +
         '<div class="col-md-2"><strong class="font-family: arial;">Formula</strong></div>' +
         '<div class="col-md-10 text-right">' +
-        '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" data-id="form-div'
-        + count + '" onclick="removeFormulaContainer(this)"></span>' +
+        '<span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center removeFormulaContainerFunct" data-id="form-div'
+        + count + '" ></span>' +
         '</div>' +
         '</div>' +
-        '<div style="height: 100px; border:1px solid #bfdceb;">' +
+        '<div class="br-sb">' +
         '<div class="row">' +
-        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Functions</div>' +
-        '<div class="col-md-3 gray-xs-f mb-xs" style="padding-top: 18px;">Define Inputs' +
+        '<div class="col-md-3 gray-xs-f mb-xs pd-tp">Define Functions</div>' +
+        '<div class="col-md-3 gray-xs-f mb-xs pd-tp">Define Inputs' +
         '<span class="ml-xs sprites_v3 filled-tooltip preload-tooltip" data-toggle="tooltip" ' +
         'title="For response including \'Height\' please provide response in cm.">' +
         '</span>' +
@@ -705,7 +708,7 @@
         '<div class="col-md-6"></div>' +
         '</div>' +
         '<div class="row data-div">' +
-        '<div class="col-md-1" style="padding-top: 7px">Operator</div>' +
+        '<div class="col-md-1 pd-tp7">Operator</div>' +
         '<div class="col-md-2 parent-pll form-group">' +
         '<select required class="selectpicker operator text-normal req-pll" ' +
         'id="operator' + count + '" name="preLoadLogicBeans[' + count
@@ -718,7 +721,7 @@
         '<option> <= </option>' +
         '</select> <div class="help-block with-errors red-txt"></div>' +
         '</div>' +
-        '<div class="col-md-1" style="padding-top: 7px">Value&nbsp;&nbsp;&nbsp;= </div>' +
+        '<div class="col-md-1 pd-tp7">Value&nbsp;&nbsp;&nbsp;= </div>' +
         '<div class="col-md-3 form-group">' +
         '<input type="hidden" class="id"/>' +
         '<input type="text" required class="form-control value req-pll" id="value' + count
@@ -881,10 +884,10 @@
     }
   }
 
-  function removeFormulaContainer(object) {
-    let id = object.getAttribute('data-id');
+  $(document).on('click', ".removeFormulaContainerFunct", function() { 
+    let id = $(this).attr('data-id');
     $('#' + id).remove();
-  }
+  })
 
   $("#doneGroupId").click(function () {
     $('#groupId').prop('disabled', false)

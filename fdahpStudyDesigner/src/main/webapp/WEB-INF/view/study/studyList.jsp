@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
   #studies_list_wrapper {
     width: 100%;
   }
@@ -14,14 +14,18 @@
   table thead {
     background: #fff;
   }
+  
+  #dis-cont{
+  	display:contents;
+  }
 
 </style>
-<div style="display:contents;">
+<div id="dis-cont">
     <table id="studies_list" class="table wid100 tbl">
         <thead>
         <tr>
-            <th style="display: none;"><span class="sort"></span></th>
-            <th style="display: none;">Live Study ID <span class="sort"></span></th>
+            <th class="dis-none"><span class="sort"></span></th>
+            <th class="dis-none">Live Study ID <span class="sort"></span></th>
             <th>Study ID <span class="sort"></span></th>
             <th>Study name <span class="sort"></span></th>
             <th>Study Category <span class="sort"></span></th>
@@ -34,8 +38,8 @@
         <tbody>
         <c:forEach items="${studyBos}" var="study">
             <tr>
-                <td style="display: none;">${study.createdOn}</td>
-                <td style="display: none;">${study.liveStudyId}</td>
+                <td class="dis-none">${study.createdOn}</td>
+                <td class="dis-none">${study.liveStudyId}</td>
                 <td>${study.customStudyId}</td>
                 <td>
                     <div class="studylist-txtoverflow"
@@ -97,7 +101,7 @@
         </div>
     </div>
 </div>
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('.studyClass').addClass('active');

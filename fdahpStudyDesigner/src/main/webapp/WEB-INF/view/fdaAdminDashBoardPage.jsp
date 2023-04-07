@@ -49,9 +49,9 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
 
     <!-- Head Libs -->
-    <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
+    <!-- <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script> -->
 </head>
-<style>
+<style nonce="${nonce}">
   #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
     position: relative !important;
     right: 5px !important;
@@ -67,8 +67,7 @@
 
   }
 </style>
-<body class="loading background__img" onload="noBack();" onpageshow="if (event.persisted) noBack();"
-      onunload="">
+<body class="loading background__img">
 <div id="loader"><span></span></div>
 <form:form action="" name="studyListForm" id="studyListForm" method="get">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -290,7 +289,7 @@
 <script src="/fdahpStudyDesigner/js/theme.js"></script>
 <script src="/fdahpStudyDesigner/js/common.js"></script>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   (function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;
@@ -312,6 +311,8 @@
   }
 
   $(document).ready(function (e) {
+	  
+	  noBack();
 
     $('#termsId').on('click', function () {
       $('#termsModal').modal('show');

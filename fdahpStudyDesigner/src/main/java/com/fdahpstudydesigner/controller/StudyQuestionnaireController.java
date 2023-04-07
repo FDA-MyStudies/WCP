@@ -960,7 +960,7 @@ public class StudyQuestionnaireController {
           formId = (String) request.getSession().getAttribute(sessionStudyCount + "formId");
           request.getSession().setAttribute(sessionStudyCount + "formId", formId);
         }
-        if (StringUtils.isEmpty(questionId)) {
+        if (StringUtils.isEmpty(questionId) || !StringUtils.isNumeric(questionId)) {
           questionId = (String) request.getSession().getAttribute(sessionStudyCount + "questionId");
           request.getSession().setAttribute(sessionStudyCount + "questionId", questionId);
         }

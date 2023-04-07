@@ -198,8 +198,7 @@
                                     <option value="${timeRangeAttr}">${timeRangeAttr}</option>
                                 </c:forEach>
                             </select>
-                            <div class="mt-sm black-xs-f italic-txt activeaddToChartText"
-                                 style="display: none;"></div>
+                            <div class="mt-sm black-xs-f italic-txt activeaddToChartText dis-none"></div>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>

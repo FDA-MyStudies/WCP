@@ -8,7 +8,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .modal-dialog {
         left: -3px !important;
       }
@@ -86,12 +86,12 @@
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f text-uppercase dis-line pull-left line34">
-                <span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
+                <span class="mr-xs cur-pointer back-page">
                 <img src="../images/icons/back-b.png"/></span>
                     Survey List
                 </div>
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150"">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -106,7 +106,7 @@
                     </div>
                 </c:if>
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150"">
                                 <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                                       data-placement="bottom"
                                       title="Language selection is available in edit screen only">
@@ -118,8 +118,7 @@
                     </div>
                 </c:if>
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="goToBackPage(this);">Cancel
+                    <button type="button" class="btn btn-default gray-btn back-page">Cancel
                     </button>
                 </div>
             </div>
@@ -148,8 +147,8 @@
                                     </c:if>
                                     <c:if test="${loop.index >= 2}">
                                         	<span class="mr-md close_img"><img
-                                                    src="/fdahpStudyDesigner/images/icons/close.png"
-                                                    onclick="del(${groupsAssignedList.stepId});"/></span>
+                                                    src="/fdahpStudyDesigner/images/icons/close.png" class="delFunct" id="${groupsAssignedList.stepId}"/></span>
+                                                   <%--  onclick="del(${groupsAssignedList.stepId});" --%>
                                     </c:if>
                                     <c:if test="${groupsAssignedList.stepType ne 'Form'}">
                                         <c:forEach items="${groupsAssignedList.description}"
@@ -202,7 +201,7 @@
     </div>
 </div>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $(".menuNav li.active").removeClass('active');
@@ -300,13 +299,14 @@
     });
   });
 
-  function goToBackPage(item) {
+  $(".back-page").on('click', function () {
+  //function goToBackPage(item) {
     var a = document.createElement('a');
     let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     a.href = "/fdahpStudyDesigner/adminStudies/viewGroups.do?_S=${param._S}&actionType=${actionType}&language="
         + lang;
     document.body.appendChild(a).click();
-  }
+  })
 
   $('#chkSelect').on('change', function (e) {
     if ($(this).is(':checked')) {
@@ -348,7 +348,9 @@
   let size =${fn:length(groupsAssignedList)};
   let count = size;
 
-  function del(stepId) {
+  $('delFunct').on('click', function() {
+  //function del(stepId) {
+	  let stepId = $(this).attr('id');
     bootbox.confirm({
       message: "This step and following steps will be deassigned. Are you sure?",
       buttons: {
@@ -392,7 +394,7 @@
         }
       }
     });
-  }
+  })
 
   <c:if test="${actionType == 'view'}">
   $('#deassignId').addClass('ml-disabled');

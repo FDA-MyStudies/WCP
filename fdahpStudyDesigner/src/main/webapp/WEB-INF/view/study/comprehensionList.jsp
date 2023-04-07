@@ -633,7 +633,7 @@
         }
         var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewComprehensionQuestion("
             + parseInt(obj.id) + ");'></span>"
-            + "<span class='sprites_icon editIcon mr-lg' onclick='editComprehensionQuestion("
+            + "<span class='sprites_icon edit-inc editIcon mr-lg' onclick='editComprehensionQuestion("
             + parseInt(obj.id) + ");'>"
             + "</span><span class='sprites_icon copy delete' onclick='deleteComprehensionQuestion("
             + parseInt(obj.id) + ");'>"

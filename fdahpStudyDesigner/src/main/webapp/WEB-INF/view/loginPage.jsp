@@ -62,7 +62,7 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
 
     <!-- Head Libs -->
-    <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
+<%--    <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>--%>
 
     <!-- Vendor -->
     <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.6.0.min.js"></script>
@@ -82,7 +82,7 @@
     <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
 
 
-    <script>
+    <script nonce="${nonce}">
       (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
         i[r] = i[r] || function () {
@@ -99,9 +99,14 @@
       ga('send', 'pageview');
     </script>
 
+    <style nonce="${nonce}">
+      .pt-20 {
+        color: #fff;
+        padding-top: 20px;
+      }
+    </style>
 </head>
-<body class="loading background__img" onload="noBack();"
-      onpageshow="if (event.persisted) noBack();" onunload="">
+<body class="loading background__img">
 <div id="loader">
     <span></span>
 </div>
@@ -264,7 +269,7 @@
                         <input type="password" class="input-field wow_input"
                                id="password" placeholder="Password" required maxlength="64"
                                data-error="This field shouldn't be empty" autocomplete="off"
-                               readonly onfocus="$(this).removeAttr('readonly');">
+                               readonly>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="mb-lg form-group">
@@ -278,15 +283,13 @@
                             href="javascript:void(0)">Get Help</a>
                     </div>
                 </div>
-                <input type="password" name="password" id="hidePass"
-                       style="display: none;"/>
+                <input type="password" name="password" id="hidePass" class="dis-none"/>
             </form:form>
             <form:form id="forgotForm" data-toggle="validator" role="form"
                        action="forgotPassword.do" method="post" autocomplete="off">
                 <div class="pwd dis-none">
                     <div class="mb-lg">
-                        <h3 style="color: #fff; padding-top: 20px;" class="mt-none">Forgot
-                            Password?</h3>
+                        <h3 class="mt-none pt-20">Forgot Password?</h3>
                         <div class="mt-md white__text">Enter your Email address to
                             get a link to reset your password
                         </div>
@@ -376,12 +379,14 @@
 <script src="/fdahpStudyDesigner/js/autofill-event.js"></script>
 <script src="/fdahpStudyDesigner/js/ajaxRequestInterceptor.js"></script>
 
-<script>
+<script nonce="${nonce}">
   var isChanged = true;
+
   $(document)
   .ready(
       function (e) {
 
+        noBack();
         var year = new Date().getFullYear();
         var copyRightText = 'Copyright © ' + year + ' FDA';
         document.getElementById("copyright").innerHTML = copyRightText;
@@ -425,6 +430,9 @@
           $('#privacyModal').modal('show');
         });
 
+        $('#password').on('focus', function () {
+          $(this).removeAttr('readonly');
+        })
         // 			$('input:last').change(function() {
         // 				if(isChanged) {
         // 					if($('#email').val()){

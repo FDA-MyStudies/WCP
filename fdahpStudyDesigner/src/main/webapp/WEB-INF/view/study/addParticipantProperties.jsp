@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .checkBoxForm {
 
       }
@@ -111,6 +111,10 @@
         color: #007cba !important;
         font-size: 15px;
       }
+      
+      .ws-norm{
+      	white-space: normal;
+      }
     </style>
 </head>
 
@@ -125,7 +129,7 @@
             </div> -->
 
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img
+				<span class="pr-sm cur-pointer back-page"><img
                         src="../images/icons/back-b.png" class="pr-md"/></span>
                 <c:if test="${actionType eq 'add'}">Add Property</c:if>
                 <c:if test="${actionType eq 'edit'}">Edit Property</c:if>
@@ -133,7 +137,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -149,7 +153,7 @@
             </c:if>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -162,8 +166,8 @@
             </c:if>
 
             <div class="dis-line form-group mb-none mr-sm">
-                <button type="button" class="btn btn-default gray-btn"
-                        onclick="goToBackPage(this);">Cancel
+                <button type="button" class="btn btn-default gray-btn back-page"
+                        >Cancel
                 </button>
             </div>
 
@@ -308,8 +312,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate"
-                             style="display: none;">
+                        <div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate dis-none">
                                 <%-- <form:checkbox id="inlineCheckbox1" value=""
                                     path="useAsAnchorDate" />
                                 <label for="inlineCheckbox1"> Use as Anchor Date </label> --%>
@@ -366,7 +369,7 @@
                     </div> --%>
                     <div class="clearfix"></div>
 
-                    <div class="mt-lg mb-lg refresh-value" style="display: none;">
+                    <div class="mt-lg mb-lg refresh-value dis-none">
                             <%-- <form:checkbox id="inlineCheckbox2" path="refreshedValue" />
                             <label class="checkBoxForm" for="inlineCheckbox2"> Query
                                 for Refreshed Value </label> --%>
@@ -384,21 +387,20 @@
             <div class="dis-line form-group mb-none mr-sm">
                 <c:choose>
                     <c:when test="${participantProperties.live eq 1}">
-                        <div class="form-group mr-sm" style="white-space: normal;">
-                            <button type="button" class="btn btn-default red-btn-action"
-                                    id="deactivateId"
-                                    onclick="deactivateParticipantProperty(${participantProperties.id});">
+                        <div class="form-group mr-sm ws-norm">
+                            <button type="button" class="btn btn-default red-btn-action deactivateParticipantPropertyFunct"
+                                    id="deactivateId" data-id="${participantProperties.id}">
                                 Deactivate
                             </button>
+                            <%-- onclick="deactivateParticipantProperty(${participantProperties.id});" --%>
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="form-group mr-sm" style="white-space: normal;">
+                        <div class="form-group mr-sm ws-norm">
                             <button type="button"
-                                    class="btn btn-default red-btn-action
+                                    class="btn btn-default red-btn-action deleteParticipantPropertyFunct
 							<c:if test="${empty participantProperties.id}">cursor-none</c:if>"
-                                    id="deleteId"
-                                    onclick="deleteParticipantProperty(${participantProperties.id});">
+                                    id="deleteId" data-id="${participantProperties.id}">
                                 Delete
                             </button>
                         </div>
@@ -456,7 +458,7 @@
     <input type="hidden" name="participantPropertyId"
            id="participantPropertyId" value=""/>
 </form:form>
-<script>
+<script nonce="${nonce}">
   <c:if test="${actionType == 'view'}">
   $('#participantPropertiesFormId input[type="text"]').prop('disabled', true);
   $('#participantPropertiesFormId input[type="checkbox"]').prop('disabled',
@@ -825,8 +827,8 @@
     }
   }
 
-  function goToBackPage(item) {
-    $(item).prop('disabled', true);
+  $(".back-page").on('click', function () {
+    $(this).prop('disabled', true);
     <c:if test="${actionType ne 'view'}">
     bootbox
     .confirm({
@@ -848,7 +850,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -858,10 +860,13 @@
     a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}";
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
-  function deactivateParticipantProperty(participantPropertyId) {
-    bootbox.confirm("Are you sure you want to deactivate this Participant Property?",
+  
+  $(".deactivateParticipantPropertyFunct").on('click', function() {
+  //function deactivateParticipantProperty(participantPropertyId) {
+    let participantPropertyId = $(this).attr('data-id')
+	  bootbox.confirm("Are you sure you want to deactivate this Participant Property?",
         function (result) {
           if (result) {
             $("#participantPropertyId").val(participantPropertyId);
@@ -869,9 +874,12 @@
             showSucMsg('Participant Property successfully deactivated.');
           }
         });
-  }
+  })
 
-  function deleteParticipantProperty(participantPropertyId) {
+  
+  $(".deleteParticipantPropertyFunct").on('click', function() {
+  //function deleteParticipantProperty(participantPropertyId) {
+	  let participantPropertyId = $(this).attr('data-id')
     bootbox.confirm({
       message: "Are you sure you want to delete this Participant Property item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
       buttons: {
@@ -893,7 +901,7 @@
         }
       }
     });
-  }
+  })
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

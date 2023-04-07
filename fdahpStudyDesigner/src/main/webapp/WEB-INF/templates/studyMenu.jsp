@@ -2,7 +2,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="com.fdahpstudydesigner.util.SessionObject" %>
+<style nonce="${nonce}">
+	.pl-18{
+	   padding-left:18px;
+	}
+	.pl-25{
+		padding-left:25px;
+	}
 
+</style>
 <!-- Start left Content here -->
 <!-- ============================================================== -->
 <div class="col-sm-2 col-lc p-none">
@@ -133,7 +141,7 @@
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
             </li>
-            <li class="seventh commonCls" style="padding-left:18px;">Study Activities
+            <li class="seventh commonCls pl-18">Study Activities
                 <c:if
                     test="${studyBo.studySequenceBo.studyExcQuestionnaries and studyBo.studySequenceBo.studyExcActiveTask}">
                     <span class="sprites-icons-2 tick pull-right mt-xs"></span>
@@ -144,7 +152,7 @@
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
             </li>
-            <li class="sub seventhTask commonCls " style="padding-left:25px;">Active Tasks <c:if
+            <li class="sub seventhTask commonCls pl-25">Active Tasks <c:if
                     test="${studyBo.studySequenceBo.studyExcActiveTask}">
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
@@ -202,7 +210,7 @@
 </div>
 
 <!-- End left Content here -->
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   $(document).ready(function () {
     $("#rowId").addClass('lc-gray-bg');
     $('#createStudyId').show();

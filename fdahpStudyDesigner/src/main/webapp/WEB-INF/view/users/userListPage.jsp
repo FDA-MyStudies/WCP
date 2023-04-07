@@ -5,6 +5,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
     <meta charset="UTF-8">
+    <style nonce="${nonce}">
+    	.mt-8{
+    	  margin-top: 8px;
+    	}
+    	.pd-20{
+    	  height: auto;
+    	  padding: 4px 20px; 
+    	  background-position: left 7px top 6px; 
+    	  color: #000;
+    	}
+    	.mt-12{
+    	  margin-top: 12px;
+    	}
+    	.mt-10{
+    	  margin-top: 10px; 
+    	  height: auto;
+    	}
+    </style>
 </head>
 <div
         class="col-xs-12 col-sm-12 col-md-12 col-lg-12 grayeef2f5-bg p-none">
@@ -12,14 +30,13 @@
         <!-- widgets section-->
         <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
 
-            <div class="black-lg-f" style="margin-top: 0px">Manage Users</div>
+            <div class="black-lg-f mt-none">Manage Users</div>
 
-            <div class="dis-inline" style="margin-top: 8px">
+            <div class="dis-inline mt-8">
 <%--                <form class="navbar-form" role="search">--%>
                     <div class="form-group mb-none mt-xs">
                         <div class="input-group add-on">
-                            <input placeholder="Search" class="c__search" type="text"
-                                   style="height: auto; padding: 4px 20px; background-position: left 7px top 6px; color: #000;">
+                            <input placeholder="Search" class="c__search" type="text" class="pd-20">
                         </div>
                     </div>
 <%--                </form>--%>
@@ -37,14 +54,12 @@
                     <c:if
                             test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                         <button type="button"
-                                class="btn btn-primary blue-btn addOrEditUser"
-                                style="margin-top: 12px;">Add User
+                                class="btn btn-primary blue-btn addOrEditUser mt-12">Add User
                         </button>
                     </c:if>
                 </div>
             </div>
-            <div class="dis-line pull-right"
-                 style="margin-top: 10px; height: auto;">
+            <div class="dis-line pull-right mt-10">
                 <div class="mb-none mt-xs">
                     <select class="selectpicker btn-md" id="filterRole">
                         <option value="" selected>Filter by Role</option>
@@ -103,11 +118,11 @@
                                                         <c:if test="${user.emailChanged}">title="Status: Pending Verification"</c:if>
                                                         <c:if test="${!user.emailChanged && not empty user.userPassword && user.enabled}">title="Status: Active"</c:if>
                                                         <c:if test="${!user.emailChanged && not empty user.userPassword &&  not user.enabled}">title="Status: Deactivated"</c:if>>
-											<input type="checkbox" class="switch-input"
+											<input type="checkbox" class="switch-input activateOrDeactivateUserFunct"
                                                    value="${user.enabled ? 1 : 0}"
-                                                   id="${user.userId}"
+                                                   id="${user.userId}" data-id="${user.userId}"
                                                    <c:if test="${user.enabled}">checked</c:if>
-                                                   onchange="activateOrDeactivateUser(${user.userId})"
+                                                   <%-- onchange="activateOrDeactivateUser(${user.userId})" --%>
                                                    <c:if test="${empty user.userPassword || user.emailChanged}">disabled</c:if>>
 											<span class="switch-label" data-on="On"
                                                   data-off="Off"></span>
@@ -149,7 +164,7 @@
            name="checkViewRefreshFlag">
 </form:form>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('#rowId').parent().removeClass('#white-bg');
@@ -313,7 +328,9 @@
     });
   });
 
-  function activateOrDeactivateUser(userId) {
+  
+  $(".activateOrDeactivateUserFunct").on('click', function () {
+	var userId= $(this).attr('data-id')
     var status = $('#' + userId).val();
     var msgPart = "";
     if ("0" == status) {
@@ -365,5 +382,5 @@
 
       }
     });
-  }
+  })
 </script>

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       <!--
       .sorting, .sorting_asc, .sorting_desc {
         background: none !important;
@@ -66,7 +66,7 @@
             <div class="black-md-f text-uppercase dis-line pull-left line34">Notifications</div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -90,8 +90,7 @@
                      data-placement="bottom"
                      title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
                     <button type="button"
-                            class="btn btn-primary blue-btn markCompleted <c:if test="${not empty notificationSavedList}">linkDis</c:if>"
-                            onclick="markAsCompleted();"
+                            class="btn btn-primary blue-btn markCompleted <c:if test="${not empty notificationSavedList}">linkDis</c:if> markAsCompletedfunct"
                     >Mark as Completed
                     </button>
                 </div>
@@ -186,7 +185,7 @@
     <input type="hidden" name="language" value="${currLanguage}">
     <input type="hidden" id="mlName" value="${studyLanguageBO.name}"/>
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
-    <select id="notificationLangBOList" style="display: none">
+    <select id="notificationLangBOList" class="dis-none">
         <c:forEach items="${notificationLangBOList}" var="notificationLang">
             <option id='${notificationLang.notificationLangPK.notificationId}'
                     status="${notificationLang.notificationAction}"
@@ -205,7 +204,7 @@
     <input type="hidden" name="language" value="${currLanguage}">
 </form:form>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -304,10 +303,10 @@
     });
   });
 
-  function markAsCompleted() {
-    $('.markCompleted').prop('disabled', true);
+  $(".markAsCompletedfunct").on('click', function () {
+      $('.markCompleted').prop('disabled', true);
     $("#notificationMarkAsCompletedForm").submit();
-  }
+  })
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

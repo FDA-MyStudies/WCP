@@ -5,7 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 
-<style>
+<style nonce="${nonce}">
 .navbar-inverse{
 padding:0px;
 }
@@ -119,7 +119,7 @@ display:flex;
 </form:form>
 <%--<form:form action="/fdahpStudyDesigner/adminDashboard/viewDashBoard.do" id="landingPageForm" name="landingPageForm" method="post">--%>
 <%--</form:form>--%>
- <script type="text/javascript">
+ <script type="text/javascript" nonce="${nonce}">
  $(document).ready(function(){
  	var a = document.createElement('a');
  	$('#usersSection').on('click',function(){
@@ -167,7 +167,7 @@ display:flex;
 	}
  </script>
  <!-- browser back button disable code here -->
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="${nonce}">
   history.pushState(null, null, location.href);
   history.back();
   history.forward();

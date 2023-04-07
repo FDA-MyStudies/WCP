@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
+<style nonce="${nonce}">
   .langSpecific {
     position: relative;
   }
@@ -76,6 +76,11 @@
     color: #007cba !important;
     font-size: 15px;
   }
+  
+  #ml-17{
+  	width: 65%; 
+  	margin-left: 17%;
+  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -89,7 +94,7 @@
         <div class="right-content-head">
             <div class="text-right">
                 <div class="black-md-f text-uppercase dis-line pull-left line34">
-					<span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img
+					<span class="mr-xs cur-pointer back-page"><img
                             src="../images/icons/back-b.png"/></span>
                     <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Instruction Step</c:if>
                     <c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step <c:set
@@ -99,7 +104,7 @@
                 </div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage != 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -115,7 +120,7 @@
                 </c:if>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionTypeForQuestionPage == 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -128,14 +133,13 @@
                 </c:if>
 
                 <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn"
-                            onclick="goToBackPage(this);">Cancel
+                    <button type="button" class="btn btn-default gray-btn back-page">Cancel
                     </button>
                 </div>
                 <c:if test="${actionTypeForQuestionPage ne 'view'}">
                     <div class="dis-line form-group mb-none mr-sm">
-                        <button type="button" class="btn btn-default gray-btn" id="saveId"
-                                onclick="saveIns(this);">Save
+                        <button type="button" class="btn btn-default gray-btn saveInsfunct" id="saveId"
+                                >Save
                         </button>
                     </div>
                     <div class="dis-line form-group mb-none">
@@ -261,7 +265,7 @@
 
     <div class="modal fade" id="pipingModal" role="dialog">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="width: 65%; margin-left: 17%;">
+            <div class="modal-content" id="ml-17">
                 <div class="pl-xlg cust-hdr pt-xl">
                     <h5 class="modal-title">
                         <b>Piping</b>
@@ -295,7 +299,7 @@
                     <br>
 
                     <div id="surveyBlock" <c:if test="${empty instructionsBo.questionnairesStepsBo.differentSurvey
-				or !instructionsBo.questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
+				or !instructionsBo.questionnairesStepsBo.differentSurvey}">class="dis-none"</c:if>>
                         <div class="gray-xs-f mb-xs">Survey ID</div>
                         <div class="mb-xs">
                             <select class="selectpicker text-normal req" name="pipingSurveyId"
@@ -308,7 +312,7 @@
                                     </option>
                                 </c:forEach>
                                 <c:if test="${questionnaireIds eq null || questionnaireIds.size() eq 0}">
-                                    <option style="text-align: center; color: #000000" disabled>- No
+                                    <option class="txt-al" disabled>- No
                                         items found -
                                     </option>
                                 </c:if>
@@ -330,7 +334,7 @@
                                 </option>
                             </c:forEach>
                             <c:if test="${sameSurveyPipingSourceKeys eq null || sameSurveyPipingSourceKeys.size() eq 0}">
-                                <option style="text-align: center; color: #000000" disabled>- No
+                                <option class="txt-al" disabled>- No
                                     items found -
                                 </option>
                             </c:if>
@@ -345,8 +349,8 @@
                         </button>
                     </div>
                     <div class="dis-line form-group mb-none mr-sm">
-                        <button type="button" class="btn btn-primary blue-btn" id="savePiping"
-                                onclick="submitPiping();">Submit
+                        <button type="button" class="btn btn-primary blue-btn submitPipingFunct" id="savePiping"
+                                >Submit
                         </button>
                     </div>
                 </div>
@@ -385,7 +389,7 @@
     </div>
 </div>
 <!-- End right Content here -->
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
 
@@ -556,9 +560,10 @@
     $('#pipingModal').modal('toggle');
   });
 
-  function saveIns() {
-    autoSaveInstructionStepPage('manual');
-  }
+  
+  $(".saveInsfunct").on("click", function () {
+	  autoSaveInstructionStepPage('manual');
+  });
 
   function autoSaveInstructionStepPage(mode) {
     $("body").addClass("loading");
@@ -780,8 +785,9 @@
     }
   }
 
-  function goToBackPage(item) {
-    $(item).prop('disabled', true);
+  $(".back-page").on('click', function () {
+  //function goToBackPage(item) {
+    $(this).prop('disabled', true);
     <c:if test="${actionTypeForQuestionPage ne 'view'}">
     bootbox
     .confirm({
@@ -803,7 +809,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -815,7 +821,7 @@
         + lang;
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
@@ -955,7 +961,8 @@
     }
   });
 
-  function submitPiping() {
+  $(".submitPipingFunct").on('click' , function () {
+ // function submitPiping() {
     if (validatePipingRequiredFields()) {
       if ($('#stepId').val() !== '') {
         let pipingObject = {};
@@ -999,7 +1006,7 @@
         showErrMsg("Please save step first!");
       }
     }
-  }
+  })
 
   function validatePipingRequiredFields() {
     let valid = true;

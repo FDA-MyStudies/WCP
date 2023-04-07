@@ -20,12 +20,12 @@
 
 <!-- StudyList Section Start-->
 
-<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none" style="display: none;">
+<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none dis-none">
      <div class="md-container">
         <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
            <div class="black-lg-f">
                Manage Studies
-           </div>          
+           </div>
             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
             <div class="dis-line pull-right ml-md mt-xs">
                 <div class="form-group mb-none">
@@ -39,11 +39,11 @@
 <!-- StudyList Section End-->
 
 <form:form action="/fdahpStudyDesigner/adminStudies/viewStudyDetails.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
-</form:form> 
+</form:form>
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="backOrCancelForm" name="backOrCancelForm" method="post">
 </form:form>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="${nonce}">
 $(document).ready(function(){
 	
 $('.addEditStudy').on('click',function(){
@@ -56,7 +56,7 @@ $('.backOrCancelBtn').on('click',function(){
 });
 
 <c:if test="${studyListId eq true}">
-   $('#studyListId').show();
+   $('#studyListId').removeClass('dis-none');
 </c:if>
 // 	<c:if test="${createStudyId eq true}">
 // 	$('#createStudyId').show();

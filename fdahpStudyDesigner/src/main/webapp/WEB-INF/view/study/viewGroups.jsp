@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .tool-tip {
         display: inline-block;
       }
@@ -34,6 +34,14 @@
       .langSpecific > button {
         padding-left: 30px;
       }
+      
+      .mt-6{
+      	margin-top: -6px;
+      }
+      
+      .wdt-200{
+      	width: 200px !important;
+      }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -44,14 +52,14 @@
     <div class="right-content-head">
         <div class="text-right">
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="mr-xs cur-pointer" onclick="goToBackPage(this);">
+				<span class="mr-xs cur-pointer back-page">
 				<img src="../images/icons/back-b.png"/></span>
                 <c:if test="${actionType eq 'edit'}">Groups</c:if>
                 <c:if test="${actionType eq 'view'}">View Groups</c:if>
             </div>
             <div class="dis-line form-group mb-none">
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -66,7 +74,7 @@
                     </div>
                 </c:if>
                 <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -91,7 +99,7 @@
                    cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th style="display: none;"></th>
+                    <th class="dis-none"></th>
                     <th>GROUP ID<span class="sort"></span></th>
                     <th>GROUP NAME<span class="sort"></span></th>
                     <th>ACTION</th>
@@ -100,15 +108,14 @@
                 <tbody>
                 <c:forEach items="${groupsList}" var="groupsList">
                     <tr id="row${groupsList.groupId}">
-                        <td style="display: none">${groupsList.id}</td>
+                        <td class="dis-none">${groupsList.id}</td>
                         <td>${groupsList.groupId}</td>
                         <td class="wid50 title">${groupsList.groupName}</td>
-                        <td style="width: 200px !important;">
-                 <span class="sprites_icon <c:if test="${not empty permission}"> cursor-none </c:if>"
-                       id="${groupsList.id}" data-toggle="tooltip"
-                       data-placement="top" title="Deassign" id=""
-                       onclick=deAssignGroups(${groupsList.id});>
-                  	<img src="../images/deassign.png" class="pr-md" style="margin-top: -6px;"/>
+                        <td class="wdt-200">
+                 <span class="sprites_icon <c:if test="${not empty permission}"> cursor-none </c:if> deAssignGroupsfunct"
+                       id="${groupsList.id}" data-toggle="tooltip" data-id="${groupsList.id}"
+                       data-placement="top" title="Deassign" id="">
+                  	<img src="../images/deassign.png" class="pr-md mt-6"/>
                   	</span>
                             <c:choose>
                                 <c:when test="${actionType eq 'view'}">
@@ -124,10 +131,10 @@
                     </span>
                                 </c:otherwise>
                             </c:choose>
-                            <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
+                            <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if> deleteGroupfunct"
                                   data-toggle="tooltip" data-placement="top" title="Delete"
-                                  id="${groupsList.id}"
-                                  onclick="deleteGroup(${groupsList.id}, '${groupsList.groupId}');"></span>
+                                  id="${groupsList.id}" data-name ="${groupsList.groupId}"
+                                  ></span>
                         </td>
                     </tr>
                 </c:forEach>
@@ -165,7 +172,7 @@
     </div>
 </div>
 
-<script>
+<script nonce="${nonce}">
   var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -264,8 +271,9 @@
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
-  function goToBackPage(item) {
-    $(item).prop('disabled', true);
+  $(".back-page").on('click', function () {
+  //function goToBackPage(item) {
+    $(this).prop('disabled', true);
     <c:if test="${actionType ne 'view'}">
     bootbox
     .confirm({
@@ -287,7 +295,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(this).prop('disabled', false);
         }
       }
     });
@@ -297,7 +305,7 @@
     a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
   $('.addOrEditGroups').on('click', function () {
     $('#id').val($(this).attr('id'));
@@ -309,16 +317,23 @@
     $('#addgroupsInfoForm').submit();
   });
 
-  function deAssignGroups(id) {
-    var a = document.createElement('a');
+  
+  $('.deAssignGroupsfunct').on('click', function () {
+  //function deAssignGroups(id) {
+	  var id = $(this).attr('data-id')
+	  var a = document.createElement('a');
     let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     a.href = "/fdahpStudyDesigner/adminStudies/deassignGroup.do?_S=${param._S}&language=" + lang
         + "&id="
         + id;
     document.body.appendChild(a).click();
-  }
+  })
 
-  function deleteGroup(id, groupId) {
+  
+  $('.deleteGroupfunct').on('click', function () {
+	var id = $(this).attr('id')
+	var groupId = $(this).attr('data-name')
+ // function deleteGroup(id, groupId) {
     bootbox.confirm("Are you sure you want to delete this group?", function (result) {
       if (result) {
         var studyId = $("#studyId").val();
@@ -354,7 +369,7 @@
         }
       }
     });
-  }
+  })
 
   function refreshAndFetchLanguageData(language) {
     $.ajax({

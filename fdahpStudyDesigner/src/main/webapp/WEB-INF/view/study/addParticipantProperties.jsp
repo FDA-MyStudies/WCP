@@ -647,11 +647,11 @@
       </c:if>
       <c:if test="${actionType eq 'view'}">
         clearInterval(timeOutInterval);
-        keepAlive();
+        // keepAlive();
         timeOutFunction();
       </c:if>
     }
-    }, 226000); // 5 minutes
+    }, 228000); // 5 minutes
   }
 
   $(this).mousemove(function (e) {

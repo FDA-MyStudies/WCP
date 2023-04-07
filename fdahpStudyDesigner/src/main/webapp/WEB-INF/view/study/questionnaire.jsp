@@ -3529,11 +3529,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           </c:if>
           <c:if test="${actionType eq 'view'}">
           clearInterval(autoSaveInterval);
-          keepAlive();
+          // keepAlive();
           timeOutFunction();
           </c:if>
         }
-      }, 226000); // 5 minutes
+      }, 228000); // 5 minutes
     }
 
     var timeOutInterval;

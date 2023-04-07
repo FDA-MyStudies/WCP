@@ -601,12 +601,12 @@
 					</c:if>
 					<c:if test="${notificationBO.actionPage eq 'view'}">
 						clearInterval(timeOutInterval);
-						keepAlive();
+						// keepAlive();
 						timeOutFunction();
 					</c:if>
 					}
 				}
-			}, 226000);
+			}, 228000);
 		}
 
 		$(this).mousemove(function (e) {

@@ -175,10 +175,10 @@
         idleTime += 1;
         if (idleTime > 3) { // 5 minutes
           clearInterval(autoSaveInterval);
-          keepAlive();
+          // keepAlive();
           timeOutFunction();
         }
-      }, 226000);
+      }, 228000);
     }
 
     $(this).mousemove(function (e) {

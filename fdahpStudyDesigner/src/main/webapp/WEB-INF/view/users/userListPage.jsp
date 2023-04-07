@@ -33,13 +33,13 @@
             <div class="black-lg-f mt-none">Manage Users</div>
 
             <div class="dis-inline mt-8">
-                <form class="navbar-form" role="search">
+<%--                <form class="navbar-form" role="search">--%>
                     <div class="form-group mb-none mt-xs">
                         <div class="input-group add-on">
                             <input placeholder="Search" class="c__search" type="text" class="pd-20">
                         </div>
                     </div>
-                </form>
+<%--                </form>--%>
             </div>
 
             <div class="dis-line pull-right ml-md">
@@ -274,10 +274,10 @@
         idleTime += 1;
         if (idleTime > 3) { // 5 minutes
           clearInterval(timeOutInterval);
-          keepAlive();
+          // keepAlive();
           timeOutFunction();
         }
-      }, 226000);
+      }, 228000);
     }
 
     $(this).mousemove(function (e) {

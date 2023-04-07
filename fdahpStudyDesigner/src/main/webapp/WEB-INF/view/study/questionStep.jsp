@@ -4986,7 +4986,7 @@
 				<br>
 
 				<div id="surveyBlock" <c:if test="${empty questionnairesStepsBo.differentSurvey
-				or !questionnairesStepsBo.differentSurvey}">style="display:none"</c:if>>
+				or !questionnairesStepsBo.differentSurvey}">class="dis-none"</c:if>>
 					<div class="gray-xs-f mb-xs">Survey ID</div>
 					<div class="mb-xs">
 						<select class="selectpicker text-normal req" name="pipingSurveyId"
@@ -10013,9 +10013,9 @@
 					".help-block").empty();
 		}
 		if ($(this).is(':checked')) {
-			$('#surveyBlock').show();
+			$('#surveyBlock').removeClass('dis-none');
 		} else {
-			$('#surveyBlock').hide();
+			$('#surveyBlock').addClass('dis-none');
 			refreshSourceKeys($('#questionnairesId').val(), null);
 			$('#surveyId').val('').selectpicker('refresh');
 			$('#sourceQuestion').val('').selectpicker('refresh');

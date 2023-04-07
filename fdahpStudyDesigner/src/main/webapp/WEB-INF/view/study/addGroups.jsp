@@ -85,6 +85,20 @@
       .z-indx{
   		z-index: 1301 !important;
   	  }
+  	  
+  	  .br-sb{
+  		height: 104px; 
+  		border:1px solid #bfdceb;
+  	  }
+  
+  	.hg-150{
+  		height: 160px
+  	}
+  	
+  	.hig-mrg{
+  		height: 200px; 
+  		margin-top:25px
+  	}
 
     </style>
 
@@ -271,7 +285,7 @@
                         <c:forEach items="${preLoadLogicBoList}" var="preLoadLogicBean"
                                    varStatus="status">
                             <div id="form-div${status.index}"
-                                 <c:if test="${status.index gt 0}">style="height: 200px; margin-top:20px"</c:if>
+                                 <c:if test="${status.index gt 0}">class="hig-mrg"</c:if>
                                  <c:if test="${status.index eq 0}">class="hg-150"</c:if>
                                  class="form-div <c:if test="${status.index gt 0}">deletable</c:if>">
                                 <c:if test="${status.index gt 0}">
@@ -674,7 +688,7 @@
     let count = formContainer.find('div.formula-box').length;
     let formula =
         '<div id="form-div' + count
-        + '" class="form-div deletable" style="height: 200px; margin-top:20px">' +
+        + '" class="form-div deletable hig-mrg">' +
         '<div class="form-group">' +
         '<span class="radio radio-info radio-inline p-45 pl-2">' +
         '<input type="radio" id="andRadio' + count

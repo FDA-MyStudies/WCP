@@ -514,13 +514,13 @@
 
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if ($('#inlineCheckbox1').is(':checked')) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
     if (${participantProperties.isUsedInQuestionnaire || participantProperties.isUsedInActiveTask || participantProperties.isUsedInResource}) {
@@ -574,13 +574,13 @@
     dataVal = $("#dataType").val();
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if (this.checked) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
   });
@@ -590,13 +590,13 @@
     dataVal = $("#dataType").val();
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if ($('#inlineCheckbox1').is(':checked')) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
   });
@@ -606,13 +606,13 @@
     dataVal = $("#dataType").val();
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if ($('#inlineCheckbox1').is(':checked')) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
   });

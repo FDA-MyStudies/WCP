@@ -36,7 +36,7 @@
 <%--                <form class="navbar-form" role="search">--%>
                     <div class="form-group mb-none mt-xs">
                         <div class="input-group add-on">
-                            <input placeholder="Search" class="c__search" type="text" class="pd-20">
+                            <input placeholder="Search" type="text" class="c__search pd-20">
                         </div>
                     </div>
 <%--                </form>--%>

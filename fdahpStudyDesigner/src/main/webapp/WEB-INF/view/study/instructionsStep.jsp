@@ -880,9 +880,9 @@
           ".help-block").empty();
     }
     if ($(this).is(':checked')) {
-      $('#surveyBlock').show();
+      $('#surveyBlock').removeClass('dis-none');
     } else {
-      $('#surveyBlock').hide();
+      $('#surveyBlock').addClass('dis-none');
       refreshSourceKeys($('#questionnaireId').val(), null);
       $('#surveyId').val('').selectpicker('refresh');
       $('#sourceQuestion').val('').selectpicker('refresh');

@@ -499,9 +499,9 @@
     $(".menuNav li.sixth").addClass('active');
     dataVal = $("#dataType").val();
     if (dataVal === 'date') {
-      $(".useAsAnchorDate").show();
+      $(".useAsAnchorDate").removeClass('dis-none');
     } else {
-      $(".useAsAnchorDate").hide();
+      $(".useAsAnchorDate").addClass('dis-none');
       $("#inlineCheckbox1").prop('checked', false);
     }
     propType = $('.enrollment-cls:checked').val();
@@ -620,9 +620,9 @@
   $("#dataType").change(function () {
     dataVal = $("#dataType").val();
     if (dataVal === 'date') {
-      $(".useAsAnchorDate").show();
+      $(".useAsAnchorDate").removeClass('dis-none');
     } else {
-      $(".useAsAnchorDate").hide();
+      $(".useAsAnchorDate").addClass('dis-none');
       $("#inlineCheckbox1").prop('checked', false);
     }
   });

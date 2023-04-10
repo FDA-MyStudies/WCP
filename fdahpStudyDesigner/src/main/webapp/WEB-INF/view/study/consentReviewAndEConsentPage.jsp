@@ -806,15 +806,15 @@
         $('.addSignature').change(function () {
           var addSignatureVal = $('.addSignature:checked').val();
           if (addSignatureVal === 'Yes') {
-            $('.additionalSignature').show();
+            $('.additionalSignature').removeClass('dis-none');
           } else {
-            $('.additionalSignature').hide();
+            $('.additionalSignature').addClass('dis-none');
           }
         });
 
         var addSignatureVal = $('.addSignature:checked').val();
         if (addSignatureVal === 'Yes') {
-          $('.additionalSignature').show();
+        	$('.additionalSignature').removeClass('dis-none');
         }
 
         if ($('.additional-signature-option').length == 1) {

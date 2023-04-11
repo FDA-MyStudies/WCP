@@ -1019,7 +1019,7 @@
             $("#autoCreateDivId").show();
             $("#autoCreateDivId01").show();
             $('#newDocumentDivId').attr("required", false);
-            $("#newDivId").hide();
+            $("#newDivId").addClass('dis-none');
             $("#typeOfCensent").val("Auto");
             $("#autoCreateHelpTextDiv").show();
             $("#newDocumentHelpTextDiv").hide();
@@ -1027,7 +1027,7 @@
             autoCreateConsentDocument();
           } else {
             console.log("consentDocumentDivType else");
-            $("#newDivId").show();
+            $("#newDivId").removeClass('dis-none');
             $("#autoCreateDivId").hide();
             $("#autoCreateDivId01").hide();
             $("#typeOfCensent").val("New");

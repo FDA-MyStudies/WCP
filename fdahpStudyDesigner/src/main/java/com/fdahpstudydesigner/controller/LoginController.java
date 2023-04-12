@@ -376,7 +376,8 @@ public class LoginController {
         if (sesObj != null) {
           loginService.logUserLogOut(sesObj);
         }
-        if (!StringUtils.isNoneBlank(msg, sucMsg)) {
+        HttpSession httpSession = request.getSession(false);
+        if (httpSession != null && !StringUtils.isNoneBlank(msg, sucMsg)) {
           request.getSession(true).setAttribute("errMsg", msg);
           request.getSession(true).setAttribute("sucMsg", sucMsg);
         }

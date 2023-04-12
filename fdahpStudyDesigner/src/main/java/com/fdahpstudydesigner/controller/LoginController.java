@@ -376,8 +376,10 @@ public class LoginController {
         if (sesObj != null) {
           loginService.logUserLogOut(sesObj);
         }
-      request.getSession(true).setAttribute("errMsg", msg);
-      request.getSession(true).setAttribute("sucMsg", sucMsg);
+        if (!StringUtils.isNoneBlank(msg, sucMsg)) {
+          request.getSession(true).setAttribute("errMsg", msg);
+          request.getSession(true).setAttribute("sucMsg", sucMsg);
+        }
     } catch (Exception e) {
       logger.error("LoginController - sessionOut() - ERROR ", e);
     }

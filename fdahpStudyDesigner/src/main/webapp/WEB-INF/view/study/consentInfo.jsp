@@ -436,7 +436,7 @@
           timeOutFunction();
         </c:if>
       }
-    }, 228000); // 5 minutes
+    }, 224000); // 5 minutes
     }
 
     $(this).mousemove(function (e) {

@@ -213,7 +213,7 @@
           // keepAlive();
           timeOutFunction();
         }
-      }, 228000);
+      }, 224000);
     }
 
     $(this).mousemove(function (e) {

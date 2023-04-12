@@ -303,11 +303,12 @@
       let timeOutInterval = setInterval(function () {
         idleTime += 1;
         if (idleTime > 3) { // 5 minutes
+          console.log("parent interval");
           clearInterval(timeOutInterval);
           // keepAlive();
           timeOutFunction();
         }
-      }, 228000);
+      }, 224000);
     }
 
     $(this).mousemove(function (e) {
@@ -320,17 +321,23 @@
     var timeOutInterval;
 
     function timeOutFunction() {
+      console.log("inside timeout function ");
       $('#myModal').modal('show');
       let i = 14;
+      console.log("starting set interval");
       timeOutInterval = setInterval(function () {
         if (i === 0) {
+          console.log("interval: " + i);
           $('#timeOutMessage').html(
               '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
               + i + ' minutes');
+          console.log('now 0 minutes.');
           if ($('#myModal').hasClass('show')) {
+            console.log('calling session out');
             var a = document.createElement('a');
             a.href = "/fdahpStudyDesigner/sessionOut.do";
             document.body.appendChild(a).click();
+            console.log('called session out');
           }
           clearInterval(timeOutInterval);
         } else {

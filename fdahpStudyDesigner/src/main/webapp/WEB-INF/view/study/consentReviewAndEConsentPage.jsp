@@ -1019,7 +1019,7 @@
             $("#autoCreateDivId").show();
             $("#autoCreateDivId01").show();
             $('#newDocumentDivId').attr("required", false);
-            $("#newDivId").hide();
+            $("#newDivId").addClass('dis-none');
             $("#typeOfCensent").val("Auto");
             $("#autoCreateHelpTextDiv").show();
             $("#newDocumentHelpTextDiv").hide();
@@ -1027,7 +1027,7 @@
             autoCreateConsentDocument();
           } else {
             console.log("consentDocumentDivType else");
-            $("#newDivId").show();
+            $("#newDivId").removeClass('dis-none');
             $("#autoCreateDivId").hide();
             $("#autoCreateDivId01").hide();
             $("#typeOfCensent").val("New");
@@ -1494,7 +1494,7 @@
       //function goToBackPage(item) {
         //window.history.back();
         <c:if test="${permission ne 'view'}">
-        $(this).prop('disabled', true);
+        $(".back-page").prop('disabled', true);
         bootbox.confirm({
           closeButton: false,
           message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
@@ -1513,7 +1513,7 @@
               a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
               document.body.appendChild(a).click();
             } else {
-              $(this).prop('disabled', false);
+              $(".back-page").prop('disabled', false);
             }
           }
         });

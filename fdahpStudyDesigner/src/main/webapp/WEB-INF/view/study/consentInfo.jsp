@@ -645,7 +645,7 @@
   $(".back-page").on('click', function () {
     let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     <c:if test="${actionPage ne 'view'}">
-    $(this).prop('disabled', true);
+    $(".back-page").prop('disabled', true);
     bootbox.confirm({
       closeButton: false,
       message: 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',
@@ -665,7 +665,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(this).prop('disabled', false);
+          $(".back-page").prop('disabled', false);
         }
       }
     });

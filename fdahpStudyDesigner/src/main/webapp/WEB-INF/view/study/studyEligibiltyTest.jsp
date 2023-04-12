@@ -523,7 +523,7 @@
   }
 
   $(".back-page").on('click', function () {
-    $(this).prop('disabled', true);
+    $(".back-page").prop('disabled', true);
     <c:if test="${actionTypeForQuestionPage ne 'view'}">
     bootbox
     .confirm({
@@ -545,7 +545,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(this).prop('disabled', false);
+          $(".back-page").prop('disabled', false);
         }
       }
     });

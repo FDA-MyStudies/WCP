@@ -3,10 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="com.fdahpstudydesigner.util.SessionObject" %>
 <style nonce="${nonce}">
-	.pl-18{
+	#pl-18{
 	   padding-left:18px;
 	}
-	.pl-25{
+	#pl-25{
 		padding-left:25px;
 	}
 
@@ -141,7 +141,7 @@
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
             </li>
-            <li class="seventh commonCls pl-18">Study Activities
+            <li class="seventh commonCls" id="pl-18">Study Activities
                 <c:if
                     test="${studyBo.studySequenceBo.studyExcQuestionnaries and studyBo.studySequenceBo.studyExcActiveTask}">
                     <span class="sprites-icons-2 tick pull-right mt-xs"></span>
@@ -152,7 +152,7 @@
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>
             </li>
-            <li class="sub seventhTask commonCls pl-25">Active Tasks <c:if
+            <li class="sub seventhTask commonCls" id="pl-25">Active Tasks <c:if
                     test="${studyBo.studySequenceBo.studyExcActiveTask}">
                 <span class="sprites-icons-2 tick pull-right mt-xs"></span>
             </c:if>

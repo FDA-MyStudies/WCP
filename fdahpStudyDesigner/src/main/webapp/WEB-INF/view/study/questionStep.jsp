@@ -6680,6 +6680,11 @@
 	}
 
 	function setOperatorDropDown(responseType) {
+		if(${questionnaireBo.branching} === true){
+			let defaultVisibility = $('#groupDefaultVisibility');
+			defaultVisibility.prop('checked', true).trigger('change');
+			  defaultVisibility.prop('disabled', true);
+		}else{
 		if (responseType != null) {
 			if (responseType === '1' || responseType === '2' ||
 					responseType === '8') {
@@ -6713,6 +6718,7 @@
 				defaultVisibility.prop('disabled', true);
 			}
 		}
+	}
 	}
 
 	function setOperatorDropDownOnAdd(responseType, count) {

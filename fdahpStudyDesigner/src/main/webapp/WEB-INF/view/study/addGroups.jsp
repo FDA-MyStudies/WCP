@@ -116,6 +116,7 @@
     <input type="hidden" value="" id="buttonText" value="${id}" name="buttonText">
     <input type="hidden" id="stepOrGroup" value="${groupsBo.stepOrGroup}" name="stepOrGroup"/>
     <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+    <input type="hidden" name="questionnaireId" id="questionnaireId" value="${fn:escapeXml(questionnaireBo.id)}">
     <div class="col-sm-10 col-rc white-bg p-none">
         <!--  Start top tab section-->
         <div class="right-content-head">
@@ -610,6 +611,7 @@
     } else {
       $('#stepOrGroup').val('');
     }
+    let questionnaireId = $('#questionnaireId').val()
     $('#addGroupFormId').submit();
   }
 
@@ -622,9 +624,9 @@
   }
 
   $(".back-page").on('click', function () {
-  //function goToBackPage(item) {
-    var actionPage = "${actionType}";
-    $(this).prop('disabled', true);
+	  var actionPage = "${actionType}";
+	  var item = $(this).val();
+    $(".back-page").prop('disabled', true);
     <c:if test="${actionType ne 'view'}">
     bootbox
     .confirm({
@@ -646,7 +648,7 @@
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(this).prop('disabled', false);
+          $(".back-page").prop('disabled', false);
         }
       }
     });
@@ -915,6 +917,7 @@
       } else {
         $('#stepOrGroup').val('');
       }
+      let questionnaireId = $('#questionnaireId').val()
       $('#addGroupFormId').submit();
     }
   });

@@ -1568,6 +1568,7 @@ public class StudyQuestionnaireController {
               }
             }
             map.addAttribute("allowReorder", studyQuestionnaireService.isPreloadLogicAndPipingEnabled(questionnaireBo.getId()));
+            map.addAttribute("defaultVisibilityCheck", studyQuestionnaireService.isDefaultVisibilityEnabled(questionnaireBo.getId()));
           }
           if ("edit".equals(actionType)) {
             map.addAttribute("actionType", "edit");

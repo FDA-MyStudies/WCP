@@ -250,4 +250,6 @@ public String deleteStepMaprecords(String id,String questionnaireId);
 
 public String updateGroupDefaultVisibility(Integer groupId);
 
+public Boolean isDefaultVisibilityEnabled(Integer queId);
+
 }

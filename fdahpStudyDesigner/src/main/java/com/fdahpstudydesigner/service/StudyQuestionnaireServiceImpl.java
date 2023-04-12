@@ -2739,5 +2739,10 @@ public String updateGroupDefaultVisibility(Integer groupId) {
 	return status;
 }
 
+@Override
+public Boolean isDefaultVisibilityEnabled(Integer queId) {
+  return studyQuestionnaireDAO.isDefaultVisibilityEnabled(queId);
+}
+
 
 }

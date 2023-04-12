@@ -2950,6 +2950,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
             questionnaireStepBean.setStepId(questionsBo.getId());
             questionnaireStepBean.setDeletionId(questionnairesStepsBo.getStepId());
+            questionnaireStepBean.setDefaultVisibility(questionnairesStepsBo.getDefaultVisibility());
             questionnaireStepBean.setStepType(FdahpStudyDesignerConstants.QUESTION_STEP);
             questionnaireStepBean.setSequenceNo(
                 sequenceNoMap.get(questionsBo.getId() + FdahpStudyDesignerConstants.QUESTION_STEP));
@@ -3009,7 +3010,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       if (!formIdList.isEmpty()) {
         String fromQuery =
             "select f.form_id, f.question_id, f.sequence_no, q.id, q.question, q.response_type, q.add_line_chart, " +
-                    "q.use_stastic_data, q.status, q.use_anchor_date, qs.step_short_title from questionnaires_steps qs, " +
+                    "q.use_stastic_data, q.status, q.use_anchor_date, qs.step_short_title, qs.default_visibility from questionnaires_steps qs, " +
                     "questions q, form_mapping f where qs.instruction_form_id=f.form_id and q.id=f.question_id and " +
                     "q.active=1 and f.form_id IN (:formIdList ) and f.active=1 order by f.form_id";
         List<?> result =
@@ -3029,6 +3030,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             Boolean status = (Boolean) objects[8];
             Boolean useAnchorDate = (Boolean) objects[9];
             String stepShortTitle = (String) objects[10];
+            Boolean defaultVisibility = (Boolean) objects[11];
             if (formIdList.get(i).equals(formId)) {
               QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
               questionnaireStepBean.setStepId(formId);
@@ -3042,6 +3044,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               questionnaireStepBean.setStatus(status);
               questionnaireStepBean.setUseAnchorDate(useAnchorDate);
               questionnaireStepBean.setStepShortTitle(stepShortTitle);
+              questionnaireStepBean.setDefaultVisibility(defaultVisibility);
               formQuestionMap.put(sequenceNo, questionnaireStepBean);
             }
           }
@@ -7899,6 +7902,36 @@ public String updateGroupDefaultVisibility(Integer groupId) {
 	}
 	logger.info("updateGroupDefaultVisibility() - Ends");
 	return status;
+}
+
+@Override
+public Boolean isDefaultVisibilityEnabled(Integer queId) {
+  logger.info("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - Starts");
+  Session session = null;
+  boolean allowReorder = true;
+  try {
+    session = hibernateTemplate.getSessionFactory().openSession();
+    transaction = session.beginTransaction();
+  if(queId != null) {
+    BigInteger defaultCount = (BigInteger) session.createSQLQuery("select count(*) from questionnaires_steps where questionnaires_id=:queId "
+        + "and (default_visibility=:dv)")
+        .setParameter("dv", false)
+        .setParameter("queId", queId)
+        .uniqueResult();
+    System.out.println("number"+ defaultCount.intValue());
+    if (defaultCount.intValue() > 0) {
+      allowReorder = false;
+    }
+  }
+  } catch (Exception e) {
+    logger.error("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - ERROR ", e);
+  } finally {
+    if (null != session && session.isOpen()) {
+      session.close();
+    }
+  }
+  logger.info("StudyQuestionnaireDAOImpl - isPreloadLogicAndPipingEnabled() - Ends");
+  return allowReorder;
 }
 
 }

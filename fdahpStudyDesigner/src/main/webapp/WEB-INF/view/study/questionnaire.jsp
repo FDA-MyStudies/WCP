@@ -3311,6 +3311,11 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
       table1.rowReorder.disable();
       //$('#branchingId').prop('disabled', true);
     }
+    
+    if ('${defaultVisibilityCheck}' === 'false') {
+        $('#branchingId').prop('disabled', true);
+      }
+    
 
     //If defaultVisibility for group is false then disable the branching checkbox
     <c:forEach items="${groupsList}" var="groupList">

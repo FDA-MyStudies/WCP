@@ -388,6 +388,21 @@ public class LoginController {
     return new ModelAndView("redirect:login.do");
   }
 
+  @RequestMapping("/autoSessionOut.do")
+  public ModelAndView autoSessionOut(
+      HttpServletRequest request,
+      HttpServletResponse response) {
+    logger.info("LoginController - autoSessionOut() - Starts");
+    try {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+    } catch (Exception e) {
+      logger.error("LoginController - autoSessionOut() - ERROR ", e);
+    }
+    logger.info("LoginController - autoSessionOut() - Ends");
+    return new ModelAndView("redirect:login.do");
+  }
+
   /* Setter Injection */
   @Autowired
   public void setLoginService(LoginServiceImpl loginService) {

@@ -214,8 +214,7 @@ public class LoginController {
       HttpServletResponse response)
       throws IOException {
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-    if (error != null
-        && (("timeOut").equalsIgnoreCase(error) || ("multiUser").equalsIgnoreCase(error))) {
+    if ((("timeOut").equalsIgnoreCase(error) || ("multiUser").equalsIgnoreCase(error))) {
       request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
     } else if (error != null) {
       request

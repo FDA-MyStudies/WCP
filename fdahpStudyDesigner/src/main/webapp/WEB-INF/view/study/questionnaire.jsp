@@ -3538,7 +3538,7 @@ if(scheduletype != '' && scheduletype != null && typeof scheduletype != 'undefin
           timeOutFunction();
           </c:if>
         }
-      }, 224000); // 5 minutes
+      }, 225000); // 5 minutes
     }
 
     var timeOutInterval;

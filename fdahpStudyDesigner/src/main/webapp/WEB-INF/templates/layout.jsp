@@ -207,12 +207,13 @@
 					theme : "minimal-dark"
 				});
 			});
-			if ('${sessionScope.sessionObject}' != '') {
-				setTimeout(
-						function() {
-							window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
-						}, 1000 * 60 * 31);
-			}
+			// conflicting with spring security timeout and auto session out
+			<%--if ('${sessionScope.sessionObject}' != '') {--%>
+			<%--	setTimeout(--%>
+			<%--			function() {--%>
+			<%--				window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';--%>
+			<%--			}, 1000 * 60 * 31);--%>
+			<%--}--%>
 			setInterval(function () {
 				var diff = new Date().getTime() - startDate.getTime();
 				mytime = moment(

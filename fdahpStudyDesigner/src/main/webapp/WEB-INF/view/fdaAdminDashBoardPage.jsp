@@ -358,11 +358,12 @@
       document.studyListForm.action = "/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
       document.studyListForm.submit();
     });
-    if ('${sessionScope.sessionObject}' != '') {
-      setTimeout(function () {
-        window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
-      }, 1000 * 60 * 31);
-    }
+    // conflicting with spring security timeout and auto session out
+    <%--if ('${sessionScope.sessionObject}' != '') {--%>
+    <%--  setTimeout(function () {--%>
+    <%--    window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';--%>
+    <%--  }, 1000 * 60 * 31);--%>
+    <%--}--%>
 
     var year = new Date().getFullYear();
     var copyRightText = 'Copyright © ' + year + ' FDA';
@@ -378,7 +379,7 @@
           // keepAlive();
           timeOutFunction();
         }
-      }, 224000);
+      }, 225000);
     }
 
     $(this).mousemove(function (e) {

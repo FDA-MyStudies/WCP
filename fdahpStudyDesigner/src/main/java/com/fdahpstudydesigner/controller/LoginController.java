@@ -28,22 +28,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-/** @author BTC */
+/**
+ * @author BTC
+ */
 @Controller
 public class LoginController {
 
-  private static Logger logger = LogManager.getLogger(LoginController.class.getName());
+  private static final Logger logger = LogManager.getLogger(LoginController.class.getName());
 
-  @Autowired private DashBoardAndProfileService dashBoardAndProfileService;
+  @Autowired
+  private DashBoardAndProfileService dashBoardAndProfileService;
 
   private LoginServiceImpl loginService;
 
   /**
    * Validate access code and add new password
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView}
+   * @author BTC
    */
   @RequestMapping("/addPassword.do")
   public ModelAndView addPassword(HttpServletRequest request, UserBO userBO) {
@@ -97,8 +100,8 @@ public class LoginController {
   /**
    * Navigate the app details page
    *
-   * @author BTC
    * @return {@link ModelAndView} , appDetails page view
+   * @author BTC
    */
   @RequestMapping("/appDetails.do")
   public ModelAndView appDetails() {
@@ -116,10 +119,10 @@ public class LoginController {
   /**
    * Navigate to the force change password view
    *
-   * @author BTC
-   * @param request , {@link HttpServletRequest}
+   * @param request  , {@link HttpServletRequest}
    * @param response , {@link HttpServletResponse}
    * @return {@link ModelAndView} , forceChangePassword page view
+   * @author BTC
    */
   @RequestMapping(value = "/profile/changeExpiredPassword.do")
   public ModelAndView changeExpiredPassword(HttpServletRequest request) {
@@ -151,10 +154,10 @@ public class LoginController {
   /**
    * Initiate the change password process
    *
-   * @author BTC
-   * @param request , {@link HttpServletRequest}
+   * @param request  , {@link HttpServletRequest}
    * @param response , {@link HttpServletResponse}
    * @return {@link ModelAndView} , login page
+   * @author BTC
    */
   @RequestMapping(value = "/changePassword.do")
   public ModelAndView changePassword(HttpServletRequest request) {
@@ -171,12 +174,12 @@ public class LoginController {
       userId = sesObj.getUserId();
       String newPassword =
           null != request.getParameter("newPassword")
-                  && !"".equals(request.getParameter("newPassword"))
+              && !"".equals(request.getParameter("newPassword"))
               ? request.getParameter("newPassword").replaceAll(request.getParameter("_csrf"), "")
               : "";
       String oldPassword =
           null != request.getParameter("oldPassword")
-                  && !"".equals(request.getParameter("oldPassword"))
+              && !"".equals(request.getParameter("oldPassword"))
               ? request.getParameter("oldPassword").replaceAll(request.getParameter("_csrf"), "")
               : "";
       message = loginService.changePassword(userId, newPassword, oldPassword, sesObj);
@@ -200,12 +203,12 @@ public class LoginController {
   /**
    * Navigate to login page
    *
-   * @author BTC
-   * @param error , the error message from Spring security
+   * @param error   , the error message from Spring security
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView} , View login page
    * @throws IOException
    * @throws Exception
+   * @author BTC
    */
   @RequestMapping(value = "/errorRedirect.do")
   public ModelAndView errorRedirect(
@@ -242,9 +245,9 @@ public class LoginController {
   /**
    * Initiate the forget password process
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView} , View redirect to login page
+   * @author BTC
    */
   @RequestMapping(value = "/forgotPassword.do")
   public ModelAndView forgotPassword(HttpServletRequest request) {
@@ -273,11 +276,11 @@ public class LoginController {
   /**
    * Navigate to login page
    *
-   * @author BTC
-   * @param error , the error message from Spring security
+   * @param error   , the error message from Spring security
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView} , View login page
    * @throws Exception
+   * @author BTC
    */
   @RequestMapping(value = "/login.do")
   public ModelAndView loginPage(HttpServletRequest request) {
@@ -303,9 +306,9 @@ public class LoginController {
   /**
    * Navigate to privacy policy Page
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView} , termsAndCondition page
+   * @author BTC
    */
   @RequestMapping("/privacyPolicy.do")
   public ModelAndView privacyPolicy() {
@@ -353,10 +356,10 @@ public class LoginController {
   /**
    * Remove User from the Session
    *
-   * @author BTC
-   * @param request , {@link HttpServletRequest}
+   * @param request  , {@link HttpServletRequest}
    * @param response , {@link HttpServletResponse}
    * @return {@link ModelAndView} , View login page
+   * @author BTC
    */
   @RequestMapping("/sessionOut.do")
   public ModelAndView sessionOut(
@@ -369,17 +372,18 @@ public class LoginController {
     try {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       new SecurityContextLogoutHandler().logout(request, response, auth);
-        sesObj = request.getSession(false) != null
-            ? (SessionObject) request.getSession(false).getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT)
-            : null;
-        if (sesObj != null) {
-          loginService.logUserLogOut(sesObj);
-        }
-        HttpSession httpSession = request.getSession(false);
-        if (httpSession != null && !StringUtils.isNoneBlank(msg, sucMsg)) {
-          request.getSession(true).setAttribute("errMsg", msg);
-          request.getSession(true).setAttribute("sucMsg", sucMsg);
-        }
+      sesObj = request.getSession(false) != null
+          ? (SessionObject) request.getSession(false)
+          .getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT)
+          : null;
+      if (sesObj != null) {
+        loginService.logUserLogOut(sesObj);
+      }
+      HttpSession httpSession = request.getSession(false);
+      if (httpSession != null && !StringUtils.isNoneBlank(msg, sucMsg)) {
+        request.getSession(true).setAttribute("errMsg", msg);
+        request.getSession(true).setAttribute("sucMsg", sucMsg);
+      }
     } catch (Exception e) {
       logger.error("LoginController - sessionOut() - ERROR ", e);
     }
@@ -411,9 +415,9 @@ public class LoginController {
   /**
    * Navigate to terms and condition Page
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView} , termsAndCondition page
+   * @author BTC
    */
   @RequestMapping("/termsAndCondition.do")
   public ModelAndView termsAndCondition() {
@@ -426,9 +430,9 @@ public class LoginController {
   /**
    * Prevent the user to view unauthorized view
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView} , View unauthorized error page
+   * @author BTC
    */
   @RequestMapping(value = "/unauthorized.do")
   public ModelAndView unauthorized() {
@@ -439,9 +443,9 @@ public class LoginController {
   /**
    * This method is used to validate access code
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView}
+   * @author BTC
    */
   @RequestMapping("/validateAccessCode.do")
   public ModelAndView validateAccessCode(HttpServletRequest request) {
@@ -476,9 +480,9 @@ public class LoginController {
   /**
    * Validate the Security Token and navigate to sign up or change password page
    *
-   * @author BTC
    * @param request , {@link HttpServletRequest}
    * @return {@link ModelAndView}
+   * @author BTC
    */
   @RequestMapping("/createPassword.do")
   public ModelAndView validateSecurityToken(HttpServletRequest request) {

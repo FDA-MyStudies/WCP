@@ -6,9 +6,10 @@
     <meta charset="UTF-8">
 </head>
 <style>
-.help-block ul {
-        width: 160px !important;
-        }
+  .help-block ul {
+    width: 160px !important;
+  }
+
   .ml-dropdown-disabled {
     background-color: #eee !important;
     opacity: 1;
@@ -16,30 +17,29 @@
     pointer-events: none;
   }
 
-  .globe{
-    	position: relative;
-  	  }
+  .globe {
+    position: relative;
+  }
 
-  	  .globe > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+  .globe > button::before {
+    content: '';
+    display: block;
+    background-image: url("../images/global_icon.png");
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background-repeat: no-repeat;
+  }
 
-  	  .globe > button{
-        padding-left: 30px;
-  	  }
+  .globe > button {
+    padding-left: 30px;
+  }
 
-      .fade:not(.show)
-      {
-        opacity: 1;
-      }
+  .fade:not(.show) {
+    opacity: 1;
+  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -172,11 +172,13 @@
 
         <ul class="nav nav-tabs  customTabs  gray-bg" id="tabsId">
             <li class="nav-item contentClass active">
-            <a data-toggle="tab" class="btn btnCusto nav-link active"
-                                               href="#content">Content</a>
-                                               </li>
+                <a data-toggle="tab" class="btn btnCusto nav-link active"
+                   href="#content">Content</a>
+            </li>
             <li class="nav-item scheduleTaskClass linkDis" disabled><a class="btn btnCusto nav-link"
-                    data-toggle="tab" href="#schedule">Schedule</a></li>
+                                                                       data-toggle="tab"
+                                                                       href="#schedule">Schedule</a>
+            </li>
         </ul>
         <div class="tab-content pl-xlg pr-xlg">
             <!-- Content-->
@@ -202,7 +204,7 @@
             <!-- End Content-->
             <!---  Schedule --->
             <div id="schedule" class="tab-pane fade in mt-xlg">
-              <div class="schedule"></div> 
+                <div class="schedule"></div>
             </div>
         </div>
     </div>
@@ -229,7 +231,6 @@
 
         var selectedTask = $('.targetOption').find(
             "option:selected").text();
-          
 
         if (activeTaskInfoId) {
           $('.targetOption').prop('disabled', true);
@@ -293,19 +294,19 @@
               .removeClass('linkDis');
             });
         // if (activeTaskInfoId || selectedTask) {
-         
-          loadActiveSchedule(changeTabSchedule);
+
+        loadActiveSchedule(changeTabSchedule);
+
         // }
-        
 
         function loadSelectedATask(typeOfActiveTask,
             activeTaskInfoId, actionType) {
-          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
           let isAutoSaved = $('#isAutoSavedParent').val();
-          
+
           $(".changeContent").load(
               "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}&language="
-              + lang+'&isAutoSaved='+isAutoSaved, {
+              + lang + '&isAutoSaved=' + isAutoSaved, {
                 noncache: new Date().getTime(),
                 typeOfActiveTask: typeOfActiveTask,
                 activeTaskInfoId: activeTaskInfoId,
@@ -420,7 +421,7 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
           a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
               + lang;
           document.body.appendChild(a).click();
@@ -432,7 +433,7 @@
     </c:if>
     <c:if test="${actionPage eq 'view'}">
     var a = document.createElement('a');
-    let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+    let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
     a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}&language="
         + lang;
     document.body.appendChild(a).click();
@@ -485,21 +486,21 @@
           if (targetOption === '3') {
             if ($('#Score_spatial_chart_id').prop('checked') === true)
               $('#lineChartId').val($('#mlChartTitle', htmlData).val());
-            if ($('#Score_spatial_stat_id').prop('checked') === true){
-            	$('#displayStat4').val($('#mlDisplayStat', htmlData).val());
-            	 $('#displayUnitStat4').val($('#mlDisplayUnitStat', htmlData).val());
+            if ($('#Score_spatial_stat_id').prop('checked') === true) {
+              $('#displayStat4').val($('#mlDisplayStat', htmlData).val());
+              $('#displayUnitStat4').val($('#mlDisplayUnitStat', htmlData).val());
             }
             if ($('#Number_of_Games_spatial_chart_id').prop('checked') === true)
               $('#lineChartId1').val($('#mlChartTitle2', htmlData).val());
-            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true){
-            	 $('#displayStat5').val($('#mlDisplayStat2', htmlData).val());
-            	 $('#displayUnitStat5').val($('#mlDisplayUnitStat2', htmlData).val());
+            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true) {
+              $('#displayStat5').val($('#mlDisplayStat2', htmlData).val());
+              $('#displayUnitStat5').val($('#mlDisplayUnitStat2', htmlData).val());
             }
             if ($('#Number_of_Failures_spatial_chart_id').prop('checked') === true)
               $('#lineChartId2').val($('#mlChartTitle3', htmlData).val());
-            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true){
-            	$('#displayStat6').val($('#mlDisplayStat3', htmlData).val());
-            	$('#displayUnitStat6').val($('#mlDisplayUnitStat3', htmlData).val());
+            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true) {
+              $('#displayStat6').val($('#mlDisplayStat3', htmlData).val());
+              $('#displayUnitStat6').val($('#mlDisplayUnitStat3', htmlData).val());
             }
           } else {
             let id1 = '';
@@ -513,7 +514,7 @@
             }
             if ($(id1).prop('checked') === true)
               $('#lineChartId').val($('#mlChartTitle', htmlData).val());
-            if ($(id2).prop('checked') === true){
+            if ($(id2).prop('checked') === true) {
               $('#displayStat').val($('#mlDisplayStat', htmlData).val());
               $('#displayUnitStat').val($('#mlDisplayUnitStat', htmlData).val());
             }
@@ -540,21 +541,21 @@
           if (targetOption === '3') {
             if ($('#Score_spatial_chart_id').prop('checked') === true)
               $('#lineChartId').val($('#enSpatialTitleChart1', htmlData).val());
-            if ($('#Score_spatial_stat_id').prop('checked') === true){
-            	$('#displayStat4').val($('#enSpatialDisplayStat1', htmlData).val());
-            	 $('#displayUnitStat4').val($('#enSpatialDisplayUnitStat1', htmlData).val());
+            if ($('#Score_spatial_stat_id').prop('checked') === true) {
+              $('#displayStat4').val($('#enSpatialDisplayStat1', htmlData).val());
+              $('#displayUnitStat4').val($('#enSpatialDisplayUnitStat1', htmlData).val());
             }
             if ($('#Number_of_Games_spatial_chart_id').prop('checked') === true)
               $('#lineChartId1').val($('#enSpatialTitleChart2', htmlData).val());
-            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true){
-            	 $('#displayStat5').val($('#enSpatialDisplayStat2', htmlData).val());
-            	 $('#displayUnitStat5').val($('#enSpatialDisplayUnitStat2', htmlData).val());
+            if ($('#Number_of_Games_spatial_stat_id').prop('checked') === true) {
+              $('#displayStat5').val($('#enSpatialDisplayStat2', htmlData).val());
+              $('#displayUnitStat5').val($('#enSpatialDisplayUnitStat2', htmlData).val());
             }
             if ($('#Number_of_Failures_spatial_chart_id').prop('checked') === true)
               $('#lineChartId2').val($('#enSpatialTitleChart3', htmlData).val());
-            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true){
-            	 $('#displayStat6').val($('#enSpatialDisplayStat3', htmlData).val());
-            	 $('#displayUnitStat6').val($('#enSpatialDisplayUnitStat3', htmlData).val());
+            if ($('#Number_of_Failures_spatial_stat_id').prop('checked') === true) {
+              $('#displayStat6').val($('#enSpatialDisplayStat3', htmlData).val());
+              $('#displayUnitStat6').val($('#enSpatialDisplayUnitStat3', htmlData).val());
             }
           } else {
             let id1 = '';
@@ -574,34 +575,34 @@
             }
             if ($(id1).prop('checked') === true)
               $('#lineChartId').val($(id3, htmlData).val());
-            if ($(id2).prop('checked') === true){
+            if ($(id2).prop('checked') === true) {
               $('#displayStat').val($(id4, htmlData).val());
               $('#displayUnitStat').val($(id4, htmlData).val());
             }
           }
 
-            <c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}">
-            $('#shortTitleId').attr('disabled', true);
-            if (targetOption === '3') {
-                $('#identifierId1').attr('disabled', true);
-                $('#identifierId2').attr('disabled', true);
-                $('#identifierId3').attr('disabled', true);
-            } else {
-                $('#identifierId').attr('disabled', true);
-            }
-            </c:if>
+          <c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 0)}">
+          $('#shortTitleId').attr('disabled', true);
+          if (targetOption === '3') {
+            $('#identifierId1').attr('disabled', true);
+            $('#identifierId2').attr('disabled', true);
+            $('#identifierId3').attr('disabled', true);
+          } else {
+            $('#identifierId').attr('disabled', true);
+          }
+          </c:if>
 
-            <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1 || activeTaskBo.isDuplicate > 0}">
-            $('#schedule1').attr('disabled', true);
-            </c:if>
+          <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1 || activeTaskBo.isDuplicate > 0}">
+          $('#schedule1').attr('disabled', true);
+          </c:if>
 
-            <c:if test="${empty anchorTypeList || activeTaskBo.isDuplicate > 0 || isAnchorQuestionnaire}">
-            $('#schedule2').attr('disabled', true);
-            </c:if>
+          <c:if test="${empty anchorTypeList || activeTaskBo.isDuplicate > 0 || isAnchorQuestionnaire}">
+          $('#schedule2').attr('disabled', true);
+          </c:if>
 
-            <c:if test="${activeTaskBo.isDuplicate > 0}">
-            $('input[name="frequency"]').attr('disabled', true);
-            </c:if>
+          <c:if test="${activeTaskBo.isDuplicate > 0}">
+          $('input[name="frequency"]').attr('disabled', true);
+          </c:if>
 
           <c:if test="${actionPage eq 'view'}">
           $(document).find('input,textarea').prop('disabled', true);

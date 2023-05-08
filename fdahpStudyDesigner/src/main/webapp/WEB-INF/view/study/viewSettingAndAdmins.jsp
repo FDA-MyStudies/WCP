@@ -14,15 +14,15 @@
         width: 100px !important;
       }
 
-      .text-normal > button > .filter-option{
+      .text-normal > button > .filter-option {
         text-transform: inherit !important;
       }
 
-      .langSpecific{
+      .langSpecific {
         position: relative;
       }
 
-      .langSpecific > button::before{
+      .langSpecific > button::before {
         content: '';
         display: block;
         background-image: url("../images/global_icon.png");
@@ -34,83 +34,89 @@
         background-repeat: no-repeat;
       }
 
-      .langSpecific > button{
+      .langSpecific > button {
         padding-left: 30px;
       }
-      #myAutoModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-      position:relative !important;
-      right:-14px !important;
-      margin-top:6% !important;
+
+      #myAutoModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
       }
 
-      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-        position:relative !important;
-        right:-14px !important;
-        margin-top:6% !important;
-        }
-
-      .flr_modal{
-      float:right !important;
+      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
       }
 
-      .grey_txt{
-      color:grey;
-      font-size:15px;
-      font-weight:500;
+      .flr_modal {
+        float: right !important;
       }
 
-      .blue_text{
-      color:#007CBA !important;
-      font-size:15px;
-      font-weight:500;
+      .grey_txt {
+        color: grey;
+        font-size: 15px;
+        font-weight: 500;
       }
 
-      .timerPos{
-      position:relative;
-      top:-2px;
-      right:2px !important;
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
       }
 
-      .bold_txt{
-      font-weight:900 !important;
-      color:#007cba !important;
-      font-size:15px;
-       }
-       .close{
-       background-image: none;
-       }
- /*      
-.checkbox label.addadmin_check::before {
-    margin-left: 0px !important;
-    margin-top: -13px !important;
-    }
-.checkbox label.addadmin_check::after {
-    margin-left: 0px !important;
-    margin-top: -13px !important;
-    }
-*/
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
 
-.checkbox label {
-    display: inline !important;
-}
-.checkbox label::before { top: 1px !important;} 
+      .bold_txt {
+        font-weight: 900 !important;
+        color: #007cba !important;
+        font-size: 15px;
+      }
 
-.checkbox label::after {
-    display: inline !important;
-    top: 1px !important;
-    }
-    
-.close {
-    margin-right: 5px;
-}
+      .close {
+        background-image: none;
+      }
 
-.radio input[type="radio"] {
-    opacity: 0 !important;
-}
+      /*
+     .checkbox label.addadmin_check::before {
+         margin-left: 0px !important;
+         margin-top: -13px !important;
+         }
+     .checkbox label.addadmin_check::after {
+         margin-left: 0px !important;
+         margin-top: -13px !important;
+         }
+     */
 
-.checkbox input[type="checkbox"]:disabled+label {
-    opacity: 0.99 !important;
-}
+      .checkbox label {
+        display: inline !important;
+      }
+
+      .checkbox label::before {
+        top: 1px !important;
+      }
+
+      .checkbox label::after {
+        display: inline !important;
+        top: 1px !important;
+      }
+
+      .close {
+        margin-right: 5px;
+      }
+
+      .radio input[type="radio"] {
+        opacity: 0 !important;
+      }
+
+      .checkbox input[type="checkbox"]:disabled + label {
+        opacity: 0.99 !important;
+      }
     </style>
 </head>
 <div class="col-sm-10 col-rc white-bg p-none" id="settingId">
@@ -140,7 +146,7 @@
         <input type="hidden" id="allowRejoinText" value="${studyBo.allowRejoinText}">
         <input type="hidden" id="permissions" name="permissions">
         <input type="hidden" id="projectLead" name="projectLead">
-         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+        <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
         <select id="langDeletableMap" style="display: none">
             <c:forEach items="${langDeletableMap}" var="langEntry">
                 <option id='lang_${langEntry.key}' value="${langEntry.value}"></option>
@@ -251,7 +257,7 @@
             <!-- End Section-->
 
             <div id="langSelect" style="display: none">
-                <div class="mt-md study-list mb-md addHide" >
+                <div class="mt-md study-list mb-md addHide">
                     <select
                             class="selectpicker col-md-6 pl-none pr-none aq-select aq-select-form text-normal"
                             title="- Select and add languages -" id="multiple">
@@ -274,14 +280,14 @@
                                value="${stdLang.key}">
                         <span id="span-${stdLang.key}">${stdLang.value}
                             <span
-                                id="innerSpan-${stdLang.key}" class="ablue removeLang changeView"
-                                onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;
+                                    id="innerSpan-${stdLang.key}"
+                                    class="ablue removeLang changeView"
+                                    onclick="removeLang(this.id, '${stdLang.value}', '')"> X&nbsp;&nbsp;
                             </span>
                         </span>
                     </c:forEach>
                 </div>
             </div>
-           
 
 
             <!-- Start Section-->
@@ -511,25 +517,30 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    <div id="autoSavedMessage" class="text-right">
+                        <div class="blue_text">Last saved now</div>
+                        <div class="grey_txt"><span class="timerPos"><img
+                                src="../images/timer2.png"/></span>Your session expires in <span
+                                class="bold_txt">15 minutes</span></div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
+    </div>
 
-         <div class="modal fade" id="timeOutModal" role="dialog">
-                             <div class="modal-dialog modal-sm flr_modal">
-                                 <!-- Modal content-->
-                                 <div class="modal-content">
-                                         <div class="modal-body">
-                                         <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                         </div>
-                                     </div>
-                                 </div>
-                     </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 
@@ -577,7 +588,8 @@
 										<input type="checkbox" class="addAdminCheckbox"
                                                id="inlineCheckboxNew${user.userId}" name="case"
                                                value="${fn:escapeXml(user.userFullName)}"
-                                               userId="${user.userId}"> <label class="addadmin_check"
+                                               userId="${user.userId}"> <label
+                                    class="addadmin_check"
                                     for="inlineCheckboxNew${user.userId}"></label>
 								</span></td>
                             <td><span class="dis-ellipsis"
@@ -644,9 +656,9 @@
     </div>
 </div>
 <script>
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(function () {
-	  $('#loader').hide();
+    $('#loader').hide();
     let currLang = $('#studyLanguage').val();
     if (currLang !== undefined && currLang !== null && currLang !== '' && currLang !== 'en') {
       $('#currentLanguage').val(currLang);
@@ -654,13 +666,13 @@ var idleTime = 0;
     }
 
     let disableMLFlag = false;
-    $('#langDeletableMap option').each(function() {
+    $('#langDeletableMap option').each(function () {
       let id = this.id.split('_')[1];
-      $('#innerSpan-'+id).addClass('cursor-none');
+      $('#innerSpan-' + id).addClass('cursor-none');
       disableMLFlag = true;
     })
-    if (disableMLFlag===true){
-      if ($('#mlYes').prop('checked')===true) {
+    if (disableMLFlag === true) {
+      if ($('#mlYes').prop('checked') === true) {
         $('#mlNo').prop('disabled', true);
       }
     }
@@ -683,7 +695,7 @@ var idleTime = 0;
     });
     </c:if>
 
-   $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
 
     $('#adminsId').hide();
 
@@ -768,7 +780,7 @@ var idleTime = 0;
     });
 
     $("#saveId").click(function () {
-    	saveSettingAndAdminsPage('manual');
+      saveSettingAndAdminsPage('manual');
     });
 
     var allowRejoin = '${studyBo.allowRejoin}';
@@ -776,92 +788,120 @@ var idleTime = 0;
       if (allowRejoin == 'Yes') {
         $('.rejointextclassYes').show();
         $('#rejoin_comment_no').empty();
-        ;
+
         $('.rejointextclassNo').hide();
       } else {
         $('.rejointextclassNo').show();
         $('.rejointextclassYes').hide();
         $('#rejoin_comment_yes').empty();
-        ;
+
       }
     }
     $("[data-toggle=tooltip]").tooltip();
     $("#infoIconId").hover(function () {
       $('#myModal').modal('show');
     });
-    
-    setInterval(function () {
+
+    parentInterval();
+
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
         idleTime += 1;
         if (idleTime > 3) {
-                <c:if test="${permission ne 'view'}">
-                saveSettingAndAdminsPage('auto');
-                 </c:if>
-                <c:if test="${permission eq 'view'}">
-                    timeOutFunction();
-                </c:if>
-        }
-    }, 226000); // 5 minutes
+          <c:if test="${permission ne 'view'}">
+        saveSettingAndAdminsPage('auto');
+        </c:if>
+        <c:if test="${permission eq 'view'}">
+          clearInterval(timeOutInterval);
+          // keepAlive();
+          timeOutFunction();
+        </c:if>
+      }
+      }, 225000); // 5 minutes
+    }
 
     $(this).mousemove(function (e) {
-        idleTime = 0;
+      idleTime = 0;
     });
     $(this).keypress(function (e) {
-        idleTime = 0;
+      idleTime = 0;
     });
 
-     function timeOutFunction() {
+    var timeOutInterval;
+
+    function timeOutFunction() {
       $('#timeOutModal').modal('show');
-       let i = 14;
-       let timeOutInterval = setInterval(function () {
+      let i = 14;
+      timeOutInterval = setInterval(function () {
         if (i === 0) {
-         $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
           if ($('#timeOutModal').hasClass('show')) {
             var a = document.createElement('a');
             a.href = "/fdahpStudyDesigner/sessionOut.do";
             document.body.appendChild(a).click();
-         }
+          }
           clearInterval(timeOutInterval);
-            } else {
-              if (i === 1) {
-            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-              } else {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-             }
-              idleTime = 0;
-              i-=1;
-               }
-               }, 60000);
-               }
-      // pop message after 15 minutes
-      if ($('#isAutoSaved').val() === 'true') {
-          $('#myAutoModal').modal('show');
-          let i = 1;
-          let j = 14;
-          let lastSavedInterval = setInterval(function () {
-              if ((i === 15) || (j === 0)) {
-              $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  if ($('#myAutoModal').hasClass('show')) {
-                      var a = document.createElement('a');
-                      a.href = "/fdahpStudyDesigner/sessionOut.do";
-                      document.body.appendChild(a).click();
-                  }
-                  clearInterval(lastSavedInterval);
-              } else {
-                  if ((i === 1) || (j === 14)) {
-                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                  }
-                  else if ((i === 14) || (j === 1)) {
-                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                  }
-                  else {
-                  $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  }
-                  idleTime = 0;
-                  i+=1;
-                  j-=1;
-              }
-          }, 60000);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#timeOutModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
       }
+    });
+
+    // pop message after 15 minutes
+    if ($('#isAutoSaved').val() === 'true') {
+      $('#myAutoModal').modal('show');
+      let i = 1;
+      let j = 14;
+      let lastSavedInterval = setInterval(function () {
+        if ((i === 15) || (j === 0)) {
+          $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+              + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+              + j + ' minutes</span></div>').css("fontSize", "15px");
+          if ($('#myAutoModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(lastSavedInterval);
+        } else {
+          if ((i === 1) || (j === 14)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+                "fontSize", "15px");
+          } else if ((i === 14) || (j === 1)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+          } else {
+            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                + j + ' minutes</span></div>').css("fontSize", "15px");
+          }
+          idleTime = 0;
+          i += 1;
+          j -= 1;
+        }
+      }, 60000);
+    }
   });
 
   function checkRadioRequired() {
@@ -891,9 +931,9 @@ var idleTime = 0;
       }
     }
   }
-  
-  function saveSettingAndAdminsPage(mode){
-	  platformTypeValidation('save', mode);
+
+  function saveSettingAndAdminsPage(mode) {
+    platformTypeValidation('save', mode);
   }
 
   function platformTypeValidation(buttonText, mode) {
@@ -928,10 +968,9 @@ var idleTime = 0;
             bootbox.alert(errorMessage);
           } else {
             if (mode === 'auto') {
-                $("#isAutoSaved").val('true');
-            }
-            else{
-            $("#isAutoSaved").val('false');
+              $("#isAutoSaved").val('true');
+            } else {
+              $("#isAutoSaved").val('false');
             }
             submitButton(buttonText);
           }
@@ -945,12 +984,11 @@ var idleTime = 0;
         global: false
       });
     } else {
-       if (mode === 'auto') {
-           $("#isAutoSaved").val('true');
-       }
-        else{
+      if (mode === 'auto') {
+        $("#isAutoSaved").val('true');
+      } else {
         $("#isAutoSaved").val('false');
-        }
+      }
       submitButton(buttonText);
     }
   }
@@ -1078,7 +1116,7 @@ var idleTime = 0;
 
   });
 
-  if ($('#mlYes').prop('checked')===true) {
+  if ($('#mlYes').prop('checked') === true) {
     $("#langSelect").show();
   } else {
     $("#langSelect").hide();
@@ -1090,20 +1128,21 @@ var idleTime = 0;
       let languages = '';
       let allLang = $('#selectedLanguages').find('span.removeLang');
       let size = allLang.length;
-      allLang.each(function (index){
+      allLang.each(function (index) {
         let langName = $(this).parent().text().split(' ')[0];
-        if (message==='') {
-          message=langName;
+        if (message === '') {
+          message = langName;
         } else {
-          if (index === size-1) {
-            message += (' and '+langName);
+          if (index === size - 1) {
+            message += (' and ' + langName);
           } else {
-            message += (', '+langName);
+            message += (', ' + langName);
           }
         }
-        languages === '' ? languages=this.id.split('-')[1] : languages += (','+this.id.split('-')[1]);
+        languages === '' ? languages = this.id.split('-')[1] : languages += (',' + this.id.split(
+            '-')[1]);
       })
-      if (languages!=='') {
+      if (languages !== '') {
         removeLang('', message, languages);
       }
       $("#langSelect").slideUp('slow');
@@ -1186,7 +1225,7 @@ var idleTime = 0;
           + userId + ')" data-toggle="tooltip" data-placement="top" title="Delete"></span></td>';
       domStr = domStr + '</tr>';
       $('#studyAdminId').append(domStr);
-      
+
       $('.dataTables_empty').remove();
     });
     $('#addAdminsToStudyId').attr('disabled', false);
@@ -1200,15 +1239,15 @@ var idleTime = 0;
     });
     if (count == 1) {
       $('[data-toggle="tooltip"]').tooltip('dispose');
-   
+
       table.clear().draw();
-     
+
     }
     $('[data-toggle="tooltip"]').tooltip('dispose');
     $('#studyAdminRowId' + userId).remove();
 
     $('[data-toggle="tooltip"]').tooltip('dispose');
-    
+
     $('#user' + userId).addClass('checkCount').show();
   }
 
@@ -1288,7 +1327,7 @@ var idleTime = 0;
       },
       callback: function (result) {
         if (result) {
-          if (langObject==='') {
+          if (langObject === '') {
             $('#mlFlag').val('Y');
             $('#deletedLanguage').val(allLang);
           } else {
@@ -1298,7 +1337,7 @@ var idleTime = 0;
           $('#newSelLanguages').val(newSelectedLang)
           $('#removeLangFormId').submit();
         } else {
-          if (langObject==='') {
+          if (langObject === '') {
             $('#mlYes').prop('checked', true).change();
           }
         }
@@ -1387,21 +1426,21 @@ var idleTime = 0;
             $('[data-id="multiple"]').removeAttr('style').removeClass('cursor-none');
 
             let disableMLFlag = false;
-            $('#langDeletableMap option', htmlData).each(function() {
+            $('#langDeletableMap option', htmlData).each(function () {
               let id = this.id.split('_')[1];
-              $('#innerSpan-'+id).addClass('cursor-none');
+              $('#innerSpan-' + id).addClass('cursor-none');
               disableMLFlag = true;
             })
-            if (disableMLFlag===true){
-              if ($('#mlYes').prop('checked')===true) {
+            if (disableMLFlag === true) {
+              if ($('#mlYes').prop('checked') === true) {
                 $('#mlNo').prop('disabled', true);
               }
             }
 
-              <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'I')}">
-              $('input[name="platform"]').prop('disabled', true);
-              </c:if>
-            
+            <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'I')}">
+            $('input[name="platform"]').prop('disabled', true);
+            </c:if>
+
             <c:if test="${permission == 'view'}">
             $('#settingfoFormId input,textarea').prop('disabled', true);
             </c:if>

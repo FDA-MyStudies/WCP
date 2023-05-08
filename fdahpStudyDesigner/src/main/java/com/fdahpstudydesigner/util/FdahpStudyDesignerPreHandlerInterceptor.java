@@ -52,7 +52,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
                 request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
       }
       // Allow some of the URL
-      String list[] = excludeActions.split(",");
+      String[] list = excludeActions.split(",");
       for (int i = 0; i < list.length; i++) {
         if (uri.endsWith(list[i].trim())) {
           flag = true;

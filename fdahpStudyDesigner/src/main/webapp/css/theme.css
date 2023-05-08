@@ -1083,3 +1083,30 @@ display: contents !important;
 .dataTables_wrapper .dataTables_paginate .ellipsis {
     padding: 0 1em !important;
 }
+
+ .wid-150{
+  	width: 150px;
+  }
+  
+  .txt-al{
+  	text-align: center; 
+  	color: #000000
+  }
+  
+  .pr-pl{
+  	padding-right: 5px; 
+  	padding-left: 5px
+  }
+  
+  
+  .pd-tp{
+  	padding-top: 18px;
+  }
+  
+  .pd-tp7{
+  	padding-top: 7px;
+  }
+  
+  .mr-tp{
+  	margin-top:10px;
+  }

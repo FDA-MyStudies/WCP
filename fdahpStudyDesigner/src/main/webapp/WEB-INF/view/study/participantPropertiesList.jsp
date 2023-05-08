@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .table > thead:last-child > tr:last-child > th, .table > body:last-child > tr:last-child > td {
         text-align: center;
       }
@@ -15,52 +15,56 @@
         border: none !important;
         margin: 0px !important;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
 
-  	  #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-            position:relative !important;
-            right:-14px !important;
-            margin-top:6% !important;
-            }
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
+      }
 
-            .flr_modal{
-            float:right !important;
-            }
+      .flr_modal {
+        float: right !important;
+      }
 
-            .blue_text{
-            color:#007CBA !important;
-            font-size:15px;
-            font-weight:500;
-            }
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
+      }
 
-            .timerPos{
-            position:relative;
-            top:-2px;
-            right:2px !important;
-            }
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
 
-            #timeOutMessage{
-            width:257px;
-            }
+      #timeOutMessage {
+        width: 257px;
+      }
+      
+      .table-width{
+      	width:100% !important;
+      }
     </style>
 </head>
 
@@ -74,7 +78,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -98,8 +102,8 @@
 					<span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                             <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if>>
-						<button type="button" class="btn btn-primary blue-btn"
-                                id="markAsCompleteBtnId" onclick="markAsCompleted();"
+						<button type="button" class="btn btn-primary blue-btn markAsCompletedfunct"
+                                id="markAsCompleteBtnId"
                                 <c:if test="${!markAsComplete}"> disabled </c:if>>Mark
 							as Completed</button>
 					</span>
@@ -113,15 +117,14 @@
     <div class="right-content-body">
         <div class="table-responsive">
             <table id="participantProperties_list"
-                   class="display bor-none dragtbl dataTable no-footer" style="width:100% !important">
+                   class="display bor-none dragtbl dataTable no-footer table-width">
                 <thead>
                 <tr>
                     <th>SHORT TITLE</th>
                     <th>DATA TYPE</th>
                     <th><c:if test="${empty permission}">
                         <div class="dis-line form-group mb-none">
-                            <button type="button" id="addButton" class="btn btn-primary blue-btn"
-                                    onclick="addParticipantProperties();">+ Add Property
+                            <button type="button" id="addButton" class="btn btn-primary blue-btn addParticipantPropertiesfunct">+ Add Property
                             </button>
                         </div>
                     </c:if></th>
@@ -133,15 +136,14 @@
                     <tr>
                         <td>${participantProperty.shortTitle}</td>
                         <td>${participantProperty.dataType}</td>
-                        <td><span class="sprites_icon preview-g mr-lg"
-                                  data-toggle="tooltip" data-placement="top" title="View"
-                                  onclick="viewQuestionnaires(${participantProperty.id});"></span>
+                        <td><span class="sprites_icon preview-g mr-lg viewQuestionnairesfunct" data-id="${participantProperty.id}"
+                                  data-toggle="tooltip" data-placement="top" title="View"></span>
                             <span
                                     class="${participantProperty.completed?'edit-inc':'edit-inc-draft mr-md'} mr-lg
 								<c:if test="${not empty permission}"> cursor-none </c:if> 
-								<c:if test="${not participantProperty.status}"> cursor-none </c:if>"
+								<c:if test="${not participantProperty.status}"> cursor-none </c:if> editQuestionnairesfunct" data-id="${participantProperty.id}"
                                     data-toggle="tooltip" data-placement="top" title="Edit"
-                                    onclick="editQuestionnaires(${participantProperty.id});"></span>
+                                    ></span>
                         </td>
                     </tr>
                 </c:forEach>
@@ -150,16 +152,19 @@
         </div>
     </div>
     <!--  End body tab section -->
-  <div class="modal fade" id="myModal" role="dialog">
-          <div class="modal-dialog modal-sm flr_modal">
-              <!-- Modal content-->
-              <div class="modal-content">
-                      <div class="modal-body">
-                      <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End right Content here -->
 
@@ -186,8 +191,8 @@
     <input type="hidden" id="currentLanguage" name="language" value="${currLanguage}">
 </form:form>
 
-<script>
-var idleTime = 0;
+<script nonce="${nonce}">
+  var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -234,7 +239,7 @@ var idleTime = 0;
 </script>
 
 
-<script>
+<script nonce="${nonce}">
   $(document).ready(function () {
     var idleTime = 0;
     //datatable icon toggle
@@ -250,72 +255,99 @@ var idleTime = 0;
       }
     });
 
-    setInterval(function () {
-          idleTime += 1;
-           if (idleTime > 3) { // 5 minutes
-           timeOutFunction();
-            }
-            }, 226000);
+    parentInterval();
 
-            $(this).mousemove(function (e) {
-              idleTime = 0;
-            });
-            $(this).keypress(function (e) {
-             idleTime = 0;
-             });
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          clearInterval(timeOutInterval);
+          // keepAlive();
+          timeOutFunction();
+        }
+      }, 225000);
+    }
 
-             function timeOutFunction() {
-             $('#myModal').modal('show');
-              let i = 14;
-              let timeOutInterval = setInterval(function () {
-              if (i === 0) {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              if ($('#myModal').hasClass('show')) {
-              var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/sessionOut.do";
-              document.body.appendChild(a).click();
-                }
-                clearInterval(timeOutInterval);
-                 } else {
-                 if (i === 1) {
-                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                  } else {
-                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    }
-                    idleTime = 0;
-                    i-=1;
-                     }
-                   }, 60000);
-                 }
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+
+    var timeOutInterval;
+
+    function timeOutFunction() {
+      $('#myModal').modal('show');
+      let i = 14;
+      timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#myModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
   });
 
-  function addParticipantProperties() {
+  
+  $('.addParticipantPropertiesfunct').on('click', function () {
     $("#participantPropertiesId").val('');
     $("#participantPropertiesForm").submit();
-  }
+  })
 
-  function viewQuestionnaires(participantPropertyId) {
+  
+  $('.viewQuestionnairesfunct').on('click', function () {
+	  var participantPropertyId = $(this).attr('data-id')
     if (participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId
         != 'undefined') {
       $("#actionType").val('view');
       $("#participantPropertyId").val(participantPropertyId);
       $("#editParticipantProperties").submit();
     }
-  }
+  })
 
-  function editQuestionnaires(participantPropertyId) {
+  
+  $('.editQuestionnairesfunct').on('click', function () {
+	  var participantPropertyId = $(this).attr('data-id')
     if (participantPropertyId != null && participantPropertyId != '' && typeof participantPropertyId
         != 'undefined') {
       $("#actionType").val('edit');
       $("#participantPropertyId").val(participantPropertyId);
       $("#editParticipantProperties").submit();
     }
-  }
+  })
 
-  function markAsCompleted() {
+  $(".markAsCompletedfunct").on('click', function () {
     document.editParticipantProperties.action = "/fdahpStudyDesigner/adminStudies/participantPropertiesMarkAsCompleted.do?_S=${param._S}";
     document.editParticipantProperties.submit();
-  }
+  })
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();

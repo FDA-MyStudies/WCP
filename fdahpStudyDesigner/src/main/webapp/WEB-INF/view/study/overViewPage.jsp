@@ -6,12 +6,12 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<style>
-  .langSpecific{
+<style nonce="${nonce}">
+  .langSpecific {
     position: relative;
   }
 
-  .langSpecific > button::before{
+  .langSpecific > button::before {
     content: '';
     display: block;
     background-image: url("../images/global_icon.png");
@@ -23,15 +23,19 @@
     background-repeat: no-repeat;
   }
 
-  .langSpecific > button{
+  .langSpecific > button {
     padding-left: 30px;
   }
 
-  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-    position:relative !important;
-    right:-14px !important;
-    margin-top:6% !important;
-    }
+  #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+    position: relative !important;
+    right: -14px !important;
+    margin-top: 6% !important;
+  }
+  
+  #vl-bt{
+  	vertical-align: bottom;
+  }
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -50,7 +54,7 @@
                         ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 
                 <c:if test="${studyBo.multiLanguageFlag eq true}">
-                    <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                    <div class="dis-line form-group mb-none mr-sm wid-150">
                         <select
                                 class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                                 id="studyLanguage" name="studyLanguage" title="Select">
@@ -90,8 +94,8 @@
         <input type="hidden" value="" id="buttonText" name="buttonText">
         <input type="hidden" id="currentLanguage" name="currentLanguage" value="${currLanguage}">
         <input type="hidden" id="mlMediaLink" value="${mlMediaLink}"/>
-         <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
-        <select id="overviewPages" style="display: none">
+        <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+        <select id="overviewPages" class="dis-none">
             <c:forEach items="${studyPageLanguageList}" var="overviewPage">
                 <option id='${overviewPage.title}'
                         value="${overviewPage.description}">${overviewPage.description}</option>
@@ -106,7 +110,7 @@
 						http://www.google.com</span>) <small>(300 characters max) </small>
                 </div>
                 <div class="form-group">
-                    <input autofocus="autofocus" type="text" class="form-control"
+                    <input autofocus="autofocus" type="url" class="form-control"
                            id="studyMediaLinkId" name="mediaLink"
                            value="${fn:escapeXml(studyBo.mediaLink)}" maxlength="300"
                            pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
@@ -278,10 +282,10 @@
                                         </div>
                                         <div>
                                             <div class="thumb">
-                                                <img
+                                                <img id="viewThumbnailImg"
                                                         src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}"
-                                                        onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';"
                                                         class="wid100"/>
+                                                        <!-- onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" -->
                                             </div>
                                             <div class="dis-inline imgCls">
 												<span id="remUrl${spbSt.count}"
@@ -290,7 +294,7 @@
                                                         class="blue-link txt-decoration-underline pl-xs">Remove
 														Image</a></span>
                                                 <div class="form-group mb-none mt-sm"
-                                                     style="vertical-align: bottom;">
+                                                     id="vl-bt">
                                                     <button id="" type="button"
                                                             class="btn btn-default gray-btn uploadImgbtn">
                                                         Upload
@@ -366,33 +370,40 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
-                    <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
+                    <div id="autoSavedMessage" class="text-right">
+                        <div class="blue_text">Last saved now</div>
+                        <div class="grey_txt"><span class="timerPos"><img
+                                src="../images/timer2.png"/></span>Your session expires in <span
+                                class="bold_txt">15 minutes</span></div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="timeOutModal" role="dialog">
-                            <div class="modal-dialog modal-sm flr_modal">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                        <div class="modal-body">
-                                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                        </div>
-                                    </div>
-                                </div>
+    <div class="modal fade" id="timeOutModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <!-- End right Content here -->
 
 
-<script>
-  
-$('a').each(function() { this.setAttribute('aria-expanded', 'false')});
+<script nonce="${nonce}">
+
+  $('a').each(function () {
+    this.setAttribute('aria-expanded', 'false')
+  });
 
   var totalSavedPages = ${studyPageBos.size()};
   var idleTime = 0;
@@ -631,12 +642,12 @@ $('a').each(function() { this.setAttribute('aria-expanded', 'false')});
     });
     $('.submitEle').click(function (e) {
       $('#actTy').remove();
-                $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value',
-                    $(this).attr('actType')).attr('id', 'actTy').appendTo('#overViewFormId');
-                if ($(this).attr('actType') == 'save') {
-                  e.preventDefault();
-                  autoSaveOverviewPage('manual');
-                }
+      $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value',
+          $(this).attr('actType')).attr('id', 'actTy').appendTo('#overViewFormId');
+      if ($(this).attr('actType') == 'save') {
+        e.preventDefault();
+        autoSaveOverviewPage('manual');
+      }
     });
     $("#completedId").on('click', function (e) {
       e.preventDefault();
@@ -746,91 +757,124 @@ $('a').each(function() { this.setAttribute('aria-expanded', 'false')});
       }
     });
 
-     setInterval(function () {
-            idleTime += 1;
-            if (idleTime > 3) { // 5 minutes
-                    <c:if test="${permission ne 'view'}">
-                    autoSaveOverviewPage('auto');
-                    </c:if>
-                    <c:if test="${permission eq 'view'}">
-                    timeOutFunction();
-                    </c:if>
-            }
-        }, 226000); // 5 minutes
-
-        $(this).mousemove(function (e) {
-            idleTime = 0;
-        });
-        $(this).keypress(function (e) {
-            idleTime = 0;
-        });
-
-       function timeOutFunction() {
-                       $('#timeOutModal').modal('show');
-                               let i = 14;
-                               let timeOutInterval = setInterval(function () {
-                               if (i === 0) {
-                               $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                               if ($('#timeOutModal').hasClass('show')) {
-                               var a = document.createElement('a');
-                               a.href = "/fdahpStudyDesigner/sessionOut.do";
-                               document.body.appendChild(a).click();
-                                 }
-                                 clearInterval(timeOutInterval);
-                                  } else {
-                                  if (i === 1) {
-                                 $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                                   } else {
-                                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                                     }
-                                     idleTime = 0;
-                                     i-=1;
-                                      }
-                                    }, 60000);
-                                  }
-
-      // pop message after 15 minutes
-      if ($('#isAutoSaved').val() === 'true') {
-          $('#myModal').modal('show');
-          let i = 1;
-          let j = 14;
-          let lastSavedInterval = setInterval(function () {
-              if ((i === 15) || (j === 0)) {
-                $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  if ($('#myModal').hasClass('show')) {
-                      var a = document.createElement('a');
-                      a.href = "/fdahpStudyDesigner/sessionOut.do";
-                      document.body.appendChild(a).click();
-                  }
-                  clearInterval(lastSavedInterval);
-              } else {
-                  if ((i === 1) || (j === 14)) {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-                  }
-                   else if ((i === 14) || (j === 1)) {
-                   $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-                   }
-                   else {
-                      $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-                  }
-                  idleTime = 0;
-                  i+=1;
-                  j-=1;
-              }
-          }, 60000);
+    $("#viewThumbnailImg").on('error', function() {
+     	  // this.src='/fdahpStudyDesigner/images/dummy-img.jpg';
+     	  $(this).attr("src", "/fdahpStudyDesigner/images/dummy-img.jpg")
+       });
+    
+    parentInterval();
+    
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          <c:if test="${permission ne 'view'}">
+        autoSaveOverviewPage('auto');
+        </c:if>
+        <c:if test="${permission eq 'view'}">
+          clearInterval(timeOutInterval);
+          // keepAlive();
+          timeOutFunction();
+        </c:if>
       }
-  });
-    function autoSaveOverviewPage(mode){
-    $('#overViewFormId').validator('destroy');
-                       if (mode === 'auto') {
-                       $("#isAutoSaved").val('true');
-                       }
-                       else{
-                       $("#isAutoSaved").val('false');
-                       }
-                      $('#overViewFormId').submit();
-
+      }, 225000); // 5 minutes
     }
+
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+
+    var timeOutInterval;
+
+    function timeOutFunction() {
+      $('#timeOutModal').modal('show');
+      let i = 14;
+      timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#timeOutModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#timeOutModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
+
+    // pop message after 15 minutes
+    if ($('#isAutoSaved').val() === 'true') {
+      $('#myModal').modal('show');
+      let i = 1;
+      let j = 14;
+      let lastSavedInterval = setInterval(function () {
+        if ((i === 15) || (j === 0)) {
+          $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+              + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+              + j + ' minutes</span></div>').css("fontSize", "15px");
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(lastSavedInterval);
+        } else {
+          if ((i === 1) || (j === 14)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+                "fontSize", "15px");
+          } else if ((i === 14) || (j === 1)) {
+            $('#autoSavedMessage').html(
+                '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+          } else {
+            $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+                + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+                + j + ' minutes</span></div>').css("fontSize", "15px");
+          }
+          idleTime = 0;
+          i += 1;
+          j -= 1;
+        }
+      }, 60000);
+    }
+  });
+
+  function autoSaveOverviewPage(mode) {
+    $('#overViewFormId').validator('destroy');
+    if (mode === 'auto') {
+      $("#isAutoSaved").val('true');
+    } else {
+      $("#isAutoSaved").val('false');
+    }
+    $('#overViewFormId').submit();
+
+  }
+
   // Displaying images from file upload
   function readURL(input) {
     if (input.files && input.files[0]) {

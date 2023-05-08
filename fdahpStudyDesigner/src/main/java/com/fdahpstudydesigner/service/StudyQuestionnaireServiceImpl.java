@@ -23,30 +23,37 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/** @author BTC */
+/**
+ * @author BTC
+ */
 @Service
 public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService {
-  private static Logger logger = LogManager.getLogger(StudyQuestionnaireServiceImpl.class);
 
-  @Autowired private AuditLogDAO auditLogDAO;
+  private static final Logger logger = LogManager.getLogger(StudyQuestionnaireServiceImpl.class);
 
-  @Autowired private StudyQuestionnaireDAO studyQuestionnaireDAO;
+  @Autowired
+  private AuditLogDAO auditLogDAO;
 
-  @Autowired private StudyDAO studyDAO;
+  @Autowired
+  private StudyQuestionnaireDAO studyQuestionnaireDAO;
 
-  @Autowired private StudyService studyService;
+  @Autowired
+  private StudyDAO studyDAO;
+
+  @Autowired
+  private StudyService studyService;
 
   /**
    * From step have a one or more question.Each question have the short title field this will be
    * created the as column in response server so its should be unique across all the
    * steps.Validateing the Unique of question short title inside form step
    *
-   * @author BTC
    * @param Integer , questionnaireId {@link QuestionnairesStepsBo}
-   * @param String , shortTitle {@link QuestionsBo}
-   * @param String , questionnaireShortTitle {@link QuestionnaireBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , shortTitle {@link QuestionsBo}
+   * @param String  , questionnaireShortTitle {@link QuestionnaireBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return String Success/Failure
+   * @author BTC
    */
   @Override
   public String checkFromQuestionShortTitle(
@@ -65,10 +72,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * This method is used to validate the questionnaire have response type text scale while changing
    * the platform in study settings page
    *
-   * @author BTC
    * @param Integer , studyId {@link StudyBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return String SUCCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
@@ -83,11 +90,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * response server for this we are doing the unique title validation for each questionnaire in
    * study level
    *
-   * @author BTC
    * @param Integer , studyId {@link StudyBo}
-   * @param String , shortTitle {@link StudyBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , shortTitle {@link StudyBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return String : SUCCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String checkQuestionnaireShortTitle(
@@ -109,13 +116,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * field. Which will be response column for the step in response server.so it should be the
    * unique.Here validating the unique for step short title
    *
-   * @author BTC
    * @param Integer , QuestionnaireId {@link QuestionnairesStepsBo}
-   * @param String , stepType {@link QuestionnairesStepsBo}
-   * @param String , shortTitle {@link QuestionnairesStepsBo}
-   * @param String , questionnaireShortTitle {@link QuestionnaireBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , stepType {@link QuestionnairesStepsBo}
+   * @param String  , shortTitle {@link QuestionnairesStepsBo}
+   * @param String  , questionnaireShortTitle {@link QuestionnaireBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return String, Success or Failure
+   * @author BTC
    */
   @Override
   public String checkQuestionnaireStepShortTitle(
@@ -143,11 +150,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * name should be unique across all the state in the study So validating the unique validation for
    * short name in states.
    *
-   * @author BTC
    * @param Integer , StudyId {@link StudyBo}
-   * @param String , shortTitle {@link QuestionsBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , shortTitle {@link QuestionsBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return String , SUCCESS or FAILUE
+   * @author BTC
    */
   @Override
   public String checkStatShortTitle(Integer studyId, String shortTitle, String customStudyId) {
@@ -160,11 +167,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * icon in the questionnaire list.It will copy the existed questionnaire into the study with out
    * questionnaire short title because the short title will be unique across the study
    *
-   * @author BTC
-   * @param Integer , questionnaireId
-   * @param String , customStudyId {@link StudyBo}
+   * @param Integer       , questionnaireId
+   * @param String        , customStudyId {@link StudyBo}
    * @param sessionObject , {@link SessionObject}
    * @return {@link QuestionnaireBo}
+   * @author BTC
    */
   @Override
   public QuestionnaireBo copyStudyQuestionnaireBo(
@@ -177,12 +184,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   /**
    * This method is used to delete the question inside the form step of an questionnaire
    *
-   * @author BTC
-   * @param Integer , formId {@link FormBo}
-   * @param Integer , questionId {@link QuestionsBo}
+   * @param Integer       , formId {@link FormBo}
+   * @param Integer       , questionId {@link QuestionsBo}
    * @param sessionObject , {@link SessionObject}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String        , customStudyId {@link StudyBo}
    * @return String SUCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String deleteFromStepQuestion(
@@ -203,13 +210,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   /**
    * Delete of an questionnaire step(Instruction,Question,Form) which are listed in questionnaire.
    *
-   * @author BTC
-   * @param Integer , stepId {@link QuestionnairesStepsBo}
-   * @param Integer , questionnaireId {@link QuestionnairesStepsBo}
-   * @param String ,stepType {@link QuestionnairesStepsBo}
+   * @param Integer       , stepId {@link QuestionnairesStepsBo}
+   * @param Integer       , questionnaireId {@link QuestionnairesStepsBo}
+   * @param String        ,stepType {@link QuestionnairesStepsBo}
    * @param sessionObject , {@link SessionObject}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String        , customStudyId {@link StudyBo}
    * @return String SUCCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String deleteQuestionnaireStep(
@@ -235,12 +242,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   /**
    * Deleting of an Questionnaire in Study
    *
-   * @author BTC
    * @param Integer , studyId {@link StudyBo}
    * @param Integer , questionnaireId {@link QuestionnaireBo}
-   * @param Object , sessionObject {@link SessionObject}
-   * @param String , customStudyId {@link StudyBo}
+   * @param Object  , sessionObject {@link SessionObject}
+   * @param String  , customStudyId {@link StudyBo}
    * @return String : SUCCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String deletQuestionnaire(
@@ -255,8 +262,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * give the user a provision to allow the app to read the response from HealthKit this method is
    * used to get the pre-defined list of HealthKit quantity data types
    *
-   * @author BTC
    * @return List of {@link HealthKitKeysInfo}
+   * @author BTC
    */
   @Override
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList() {
@@ -268,12 +275,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * Instruction step page in questionnaire.Lays down instructions for the user in mobile app. Which
    * contains the short title instruction title and text
    *
-   * @author BTC
    * @param Integer , instructionId in {@link InstructionsBo}
-   * @param String , questionnaireShortTitle in {@link QuestionnairesBo}
-   * @param String , customStudyId in {@link StudyBo}
+   * @param String  , questionnaireShortTitle in {@link QuestionnairesBo}
+   * @param String  , customStudyId in {@link StudyBo}
    * @param Integer , questionnaireId in {@link QuestionnairesStepsBo}
    * @return {@link InstructionsBo}
+   * @author BTC
    */
   @Override
   public InstructionsBo getInstructionsBo(
@@ -299,10 +306,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * information. Each step corresponds to one screen on the mobile app.There can be multiple types
    * of QA in a questionnaire depending on the type of response format selected per QA.
    *
-   * @author BTC
    * @param Integer , questionnaireId in {@link QuestionnaireBo}
-   * @param String , customStudyId in {@link StudyBo}
+   * @param String  , customStudyId in {@link StudyBo}
    * @return {@link QuestionnaireBo}
+   * @author BTC
    */
   @Override
   public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
@@ -340,7 +347,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
         if (questionnaireBo.getQuestionnairesFrequenciesBo() != null
             && StringUtils.isNotBlank(
-                questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime())) {
+            questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime())) {
           questionnaireBo
               .getQuestionnairesFrequenciesBo()
               .setFrequencyTime(
@@ -423,10 +430,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * attributes of question step,from step and instruction step to select the destination step if
    * branching is enabled for that questionnaire
    *
-   * @author BTC
    * @param Integer , questionnaireId
    * @param Integer , sequenceNo
    * @return List {@link QuestionnairesStepsBo}
+   * @author BTC
    */
   @Override
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
@@ -447,13 +454,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * Load the Question step page in questionnaire which contains the question and answer. Which
    * Carries one QA per screen in Mobile app
    *
-   * @author BTC
    * @param Integer , stepId {@link QuestionnairesStepsBo}
-   * @param String , stepType {@link QuestionnairesStepsBo}
-   * @param String , questionnaireShortTitle {@link QuestionnaireBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , stepType {@link QuestionnairesStepsBo}
+   * @param String  , questionnaireShortTitle {@link QuestionnaireBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @param Integer , questionnaireId {@link QuestionnaireBo}
    * @return {@link QuestionnairesStepsBo}
+   * @author BTC
    */
   @Override
   public QuestionnairesStepsBo getQuestionnaireStep(
@@ -470,7 +477,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               stepId, stepType, questionnaireShortTitle, customStudyId, questionnaireId);
 
       if (questionnairesStepsBo != null) {
-        List<PreLoadLogicBo> preLoadLogicBos = studyQuestionnaireDAO.getPreLoadLogicByStep(questionnairesStepsBo.getStepId());
+        List<PreLoadLogicBo> preLoadLogicBos = studyQuestionnaireDAO.getPreLoadLogicByStep(
+            questionnairesStepsBo.getStepId());
         List<PreLoadLogicBean> preLoadLogicBeans = new ArrayList<>();
         for (PreLoadLogicBo bo : preLoadLogicBos) {
           PreLoadLogicBean bean = new PreLoadLogicBean();
@@ -479,27 +487,27 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
         questionnairesStepsBo.setPreLoadLogicBeans(preLoadLogicBeans);
         if (stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)
-                && questionnairesStepsBo.getFormQuestionMap() != null) {
+            && questionnairesStepsBo.getFormQuestionMap() != null) {
           List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList =
-                  studyQuestionnaireDAO.getQuestionReponseTypeList();
+              studyQuestionnaireDAO.getQuestionReponseTypeList();
           if (questionResponseTypeMasterInfoList != null
-                  && !questionResponseTypeMasterInfoList.isEmpty()) {
+              && !questionResponseTypeMasterInfoList.isEmpty()) {
             for (QuestionResponseTypeMasterInfoBo questionResponseTypeMasterInfoBo :
-                    questionResponseTypeMasterInfoList) {
+                questionResponseTypeMasterInfoList) {
               for (Entry<Integer, QuestionnaireStepBean> entry :
-                      questionnairesStepsBo.getFormQuestionMap().entrySet()) {
+                  questionnairesStepsBo.getFormQuestionMap().entrySet()) {
                 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
                 if (questionnaireStepBean.getResponseType() != null
-                        && questionnaireStepBean
-                        .getResponseType()
-                        .equals(questionResponseTypeMasterInfoBo.getId())) {
+                    && questionnaireStepBean
+                    .getResponseType()
+                    .equals(questionResponseTypeMasterInfoBo.getId())) {
                   if (FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(
-                          questionResponseTypeMasterInfoBo.getResponseType())) {
+                      questionResponseTypeMasterInfoBo.getResponseType())) {
                     questionnaireStepBean.setResponseTypeText(
-                            questionResponseTypeMasterInfoBo.getResponseType());
+                        questionResponseTypeMasterInfoBo.getResponseType());
                   } else {
                     questionnaireStepBean.setResponseTypeText(
-                            questionResponseTypeMasterInfoBo.getDataType());
+                        questionResponseTypeMasterInfoBo.getDataType());
                   }
                 }
               }
@@ -519,9 +527,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * information. Each step corresponds to one screen on the mobile app.There can be multiple types
    * of QA in a questionnaire depending on the type of response format selected per QA.
    *
-   * @author BTC
    * @param Integer , questionnaireId {@link QuestionnaireBo}
    * @return Map : TreeMap<Integer, QuestionnaireStepBean>
+   * @author BTC
    */
   @Override
   public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
@@ -583,8 +591,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * This method is used to get the Response Type Master information which research kit and research
    * stack supports
    *
-   * @author BTC
    * @return List : {@link QuestionResponseTypeMasterInfoBo}
+   * @author BTC
    */
   @Override
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList() {
@@ -603,11 +611,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * Load the question of form step inside questionnaire.Question contains the question level
    * attributes and response level attributes
    *
-   * @author BTC
    * @param Integer , questionId {@link QuestionsBo}
-   * @param String , questionnaireShortTitle {@link QuestionnaireBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , questionnaireShortTitle {@link QuestionnaireBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return {@link QuestionsBo}
+   * @author BTC
    */
   @Override
   public QuestionsBo getQuestionsById(
@@ -626,13 +634,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   /*------------------------------------Added By Vivek Start---------------------------------------------------*/
+
   /**
    * return List of all the Questionnaires of an study.A Study can have 0 or more Questionnaires and
-   * admin can manage a list of questionnaires for the study Questionnaires based on user's Study Id
+   * admin can manage a list of questionnaires for the study Questionnaires based on user's Study
+   * Id
    *
-   * @author BTC
    * @param studyId , studyId of the {@link StudyBo}
    * @return List of {@link QuestionnaireBo}
+   * @author BTC
    */
   @Override
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive) {
@@ -653,10 +663,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * here we are validating for anchor date is checked or not for any other question while create or
    * updating the new question in a study
    *
-   * @author BTC
    * @param Integer , studyId {@link StudyBo}
-   * @param String , customStudyId {@link StudyBo}
+   * @param String  , customStudyId {@link StudyBo}
    * @return Boolean true or false
+   * @author BTC
    */
   @Override
   public Boolean isAnchorDateExistsForStudy(Integer studyId, String customStudyId) {
@@ -667,9 +677,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   /**
    * Checking for questionnaire creation is completed or not
    *
-   * @author BTC
    * @param Integer : studyId {@link StudyBo}
    * @return Boolean true r false
+   * @author BTC
    */
   @Override
   public Boolean isQuestionnairesCompleted(Integer studyId) {
@@ -681,11 +691,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * From step contains the list of questions with default admin created master order.Admin can
    * manage these orders by reordering the question on drag and drop of a questions in the list
    *
-   * @author BTC
    * @param Integer , fromId {@link FormBo}
-   * @param int , oldOrderNumber
-   * @param int ,: newOrderNumber
+   * @param int     , oldOrderNumber
+   * @param int     ,: newOrderNumber
    * @return String : SUCCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber, int newOrderNumber) {
@@ -707,11 +717,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * step.Here we can do the reordering of an questionnaire steps(Instruction,Question,Form) which
    * are listed on questionnaire content page.
    *
-   * @author BTC
    * @param Integer , questionnaireId {@link QuestionnairesStepsBo}
-   * @param int, oldOrderNumber
-   * @param int, newOrderNumber
+   * @param int,    oldOrderNumber
+   * @param int,    newOrderNumber
    * @return String SUCCESS or FAILURE
+   * @author BTC
    */
   @Override
   public String reOrderQuestionnaireSteps(
@@ -734,11 +744,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * attributes. which are step level attribute,form level attribute.Admin has fill the required
    * fields and click on done it save the info here.
    *
-   * @author BTC
    * @param Object , {@link QuestionnairesStepsBo}
    * @param Object , {@link SessionObject}
    * @param String , customStudyId {@link StudyBo}
    * @return {@link QuestionnairesStepsBo}
+   * @author BTC
    */
   @Override
   public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(
@@ -753,7 +763,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(
               questionnairesStepsBo, sesObj, customStudyId, studyId);
       if (questionnairesStepsBo.getInstructionFormId() == null) {
-        questionnairesStepsBo.setInstructionFormId(addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
+        questionnairesStepsBo.setInstructionFormId(
+            addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
         questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
       }
       this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
@@ -764,14 +775,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     return addOrUpdateQuestionnairesStepsBo;
   }
 
-  private void doPreLoadLogic(QuestionnairesStepsBo questionnairesStepsBo, String customStudyId) throws Exception{
+  private void doPreLoadLogic(QuestionnairesStepsBo questionnairesStepsBo, String customStudyId)
+      throws Exception {
     try {
       List<PreLoadLogicBean> preLoadLogicBeans = questionnairesStepsBo.getPreLoadLogicBeans();
       if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
-        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(questionnairesStepsBo.getStepId());
+        List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(
+            questionnairesStepsBo.getStepId());
         for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
-          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicByIdAndType(logicBean.getId(), FdahpStudyDesignerConstants.STEP);
-          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicByIdAndType(
+              logicBean.getId(), FdahpStudyDesignerConstants.STEP);
+          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(
+              logicBean.getInputValue())) {
             if (preLoadLogicBo == null) {
               preLoadLogicBo = new PreLoadLogicBo();
               preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.STEP);
@@ -787,13 +802,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
         studyQuestionnaireDAO.deleteFormula(preLoadIds);
         QuestionnairesStepsBo persistentStepsBo =
-                studyQuestionnaireDAO.getQuestionnaireStep(
-                        questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getStepType(), null,
-                        customStudyId, questionnairesStepsBo.getQuestionnairesId());
+            studyQuestionnaireDAO.getQuestionnaireStep(
+                questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getStepType(),
+                null,
+                customStudyId, questionnairesStepsBo.getQuestionnairesId());
         if (persistentStepsBo != null) {
-          persistentStepsBo.setDefaultVisibility("true".equals(questionnairesStepsBo.getGroupDefaultVisibility()));
-          persistentStepsBo.setDestinationTrueAsGroup(questionnairesStepsBo.getDestinationTrueAsGroup());
-          persistentStepsBo.setDifferentSurveyPreLoad(questionnairesStepsBo.getDifferentSurveyPreLoad());
+          persistentStepsBo.setDefaultVisibility(
+              "true".equals(questionnairesStepsBo.getGroupDefaultVisibility()));
+          persistentStepsBo.setDestinationTrueAsGroup(
+              questionnairesStepsBo.getDestinationTrueAsGroup());
+          persistentStepsBo.setDifferentSurveyPreLoad(
+              questionnairesStepsBo.getDifferentSurveyPreLoad());
           persistentStepsBo.setPreLoadSurveyId(questionnairesStepsBo.getPreLoadSurveyId());
           persistentStepsBo.setStepOrGroup(questionnairesStepsBo.getStepOrGroup());
           studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
@@ -805,14 +824,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     }
   }
 
-  private void doGroupPreLoadLogic(GroupsBean groupsBo) throws Exception{
+  private void doGroupPreLoadLogic(GroupsBean groupsBo) throws Exception {
     try {
       List<PreLoadLogicBean> preLoadLogicBeans = groupsBo.getPreLoadLogicBeans();
       if (preLoadLogicBeans != null && !preLoadLogicBeans.isEmpty()) {
         List<Integer> preLoadIds = studyQuestionnaireDAO.getPreLoadIds(groupsBo.getId());
         for (PreLoadLogicBean logicBean : preLoadLogicBeans) {
-          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicByIdAndType(logicBean.getId(), FdahpStudyDesignerConstants.GROUP);
-          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(logicBean.getInputValue())) {
+          PreLoadLogicBo preLoadLogicBo = studyQuestionnaireDAO.getPreLoadLogicByIdAndType(
+              logicBean.getId(), FdahpStudyDesignerConstants.GROUP);
+          if (StringUtils.isNotBlank(logicBean.getOperator()) && StringUtils.isNotBlank(
+              logicBean.getInputValue())) {
             if (preLoadLogicBo == null) {
               preLoadLogicBo = new PreLoadLogicBo();
               preLoadLogicBo.setStepOrGroup(FdahpStudyDesignerConstants.GROUP);
@@ -828,11 +849,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         }
         studyQuestionnaireDAO.deleteFormula(preLoadIds);
         GroupsBo persistentStepsBo = null;
-        if(groupsBo.getId()!=null){
+        if (groupsBo.getId() != null) {
           persistentStepsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBo.getId());
         }
         if (persistentStepsBo != null) {
-          persistentStepsBo.setDefaultVisibility(Boolean.TRUE.equals(groupsBo.getDefaultVisibility()));
+          persistentStepsBo.setDefaultVisibility(
+              Boolean.TRUE.equals(groupsBo.getDefaultVisibility()));
           persistentStepsBo.setDestinationTrueAsGroup(groupsBo.getDestinationTrueAsGroup());
           studyQuestionnaireDAO.saveOrUpdateObject(persistentStepsBo);
         }
@@ -847,11 +869,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * Create the instruction step in Questionnaire which lays the instruction to user in mobile
    * app.Admin would needs to fill the short title instruction title and instruction text.
    *
-   * @author BTC
    * @param Object , {@link InstructionsBo}
    * @param Object , {@link SessionObject}
    * @param String , customStudyId in {@link StudyBo}
    * @return Object , {@link InstructionsBo}
+   * @author BTC
    */
   @Override
   public InstructionsBo saveOrUpdateInstructionsBo(
@@ -972,11 +994,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * branching Response-level attributes (same as that for Question Step).Here we can save or update
    * the form questions.
    *
-   * @author BTC
    * @param Object , {@link QuestionsBo}
    * @param Object , {@link SessionObject}
    * @param String , customStudyId {@link StudyBo}
    * @return Object , {@link QuestionsBo}
+   * @author BTC
    */
   @Override
   public QuestionsBo saveOrUpdateQuestion(
@@ -995,7 +1017,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
         if (questionsBo.getId() != null) {
           addQuestionsBo =
-                  studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(), null, customStudyId);
+              studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(), null, customStudyId);
         } else {
           addQuestionsBo = new QuestionsBo();
           addQuestionsBo.setActive(true);
@@ -1004,21 +1026,23 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
         Integer id = questionsBo.getId();
         if (id != null && questionsBo.getResponseType() != null
-                && questionsBo.getResponseType().equals(6)
-                && (StringUtils.isEmpty(language) || "en".equals(language)))  {
+            && questionsBo.getResponseType().equals(6)
+            && (StringUtils.isEmpty(language) || "en".equals(language))) {
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
             StringBuilder dispText = new StringBuilder();
             StringBuilder desc = new StringBuilder();
             if (questionsBo.getQuestionResponseSubTypeList() != null
-                    && !questionsBo.getQuestionResponseSubTypeList().isEmpty()) {
+                && !questionsBo.getQuestionResponseSubTypeList().isEmpty()) {
               List<QuestionResponseSubTypeBo> subTypeBoList = questionsBo.getQuestionResponseSubTypeList();
               int size = subTypeBoList.size();
               int i = 0;
               if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
                 Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
-                  public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
-                    if (StringUtils.isNoneBlank(object1.getSequenceNumber(), object2.getSequenceNumber())) {
+                  public int compare(final QuestionResponseSubTypeBo object1,
+                      final QuestionResponseSubTypeBo object2) {
+                    if (StringUtils.isNoneBlank(object1.getSequenceNumber(),
+                        object2.getSequenceNumber())) {
                       return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
                     }
                     return 0;
@@ -1028,11 +1052,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
                 // for spanish
                 String dispLang = StringUtils.isNotBlank(subTypeBo.getDisplayTextLang())
-                        ? subTypeBo.getDisplayTextLang()
-                        : "";
+                    ? subTypeBo.getDisplayTextLang()
+                    : "";
                 String descLang = StringUtils.isNotBlank(subTypeBo.getDescriptionLang())
-                        ? subTypeBo.getDescriptionLang()
-                        : "";
+                    ? subTypeBo.getDescriptionLang()
+                    : "";
                 if (i == size - 1) {
                   dispText.append(dispLang);
                   desc.append(descLang);
@@ -1088,10 +1112,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           StringBuilder description = new StringBuilder();
           List<QuestionResponseSubTypeBo> subTypeBoList = questionsBo.getQuestionResponseSubTypeList();
           if (subTypeBoList != null && !subTypeBoList.isEmpty()
-                  && FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
+              && FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionsBo.getType())) {
             Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
-              public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
-                if (StringUtils.isNoneBlank(object1.getSequenceNumber(), object2.getSequenceNumber())) {
+              public int compare(final QuestionResponseSubTypeBo object1,
+                  final QuestionResponseSubTypeBo object2) {
+                if (StringUtils.isNoneBlank(object1.getSequenceNumber(),
+                    object2.getSequenceNumber())) {
                   return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
                 }
                 return 0;
@@ -1206,8 +1232,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           if (questionsBo.getUseAnchorDate() != null) {
             addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
             addQuestionsBo.setAnchorDateName(questionsBo.getAnchorDateName());
-            if (questionsBo.getAnchorDateId() != null)
+            if (questionsBo.getAnchorDateId() != null) {
               addQuestionsBo.setAnchorDateId(questionsBo.getAnchorDateId());
+            }
           }
           if (questionsBo.getQuestionnaireId() != null) {
             addQuestionsBo.setQuestionnaireId(questionsBo.getQuestionnaireId());
@@ -1230,8 +1257,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             }
           }
           if (questionsBo.getIsShorTitleDuplicate() != null
-              && questionsBo.getIsShorTitleDuplicate() > 0)
+              && questionsBo.getIsShorTitleDuplicate() > 0) {
             addQuestionsBo.setIsShorTitleDuplicate(questionsBo.getIsShorTitleDuplicate());
+          }
 
           addQuestionsBo.setCustomStudyId(customStudyId);
           addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
@@ -1279,11 +1307,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * managed by the admin.The questionnaire schedule frequency can be One
    * time,Daily,Weekly,Monthly,Custom and admin has to select any one frequency.
    *
-   * @author BTC
    * @param Object , {@link QuestionnaireBo}
    * @param Object , {@link SessionObject}
    * @param String , customStudyId {@link StudyBo}
    * @return {@link QuestionnaireBo}
+   * @author BTC
    */
   @Override
   public QuestionnaireBo saveOrUpdateQuestionnaire(
@@ -1351,8 +1379,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             addQuestionnaireBo.setScheduleType(questionnaireBo.getScheduleType());
           }
           if (StringUtils.equals(
-                  questionnaireBo.getScheduleType(),
-                  FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)
+              questionnaireBo.getScheduleType(),
+              FdahpStudyDesignerConstants.SCHEDULETYPE_ANCHORDATE)
               && questionnaireBo.getAnchorDateId() != null) {
             addQuestionnaireBo.setAnchorDateId(questionnaireBo.getAnchorDateId());
           } else {
@@ -1360,8 +1388,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           }
           if (questionnaireBo.getFrequency() != null
               && !questionnaireBo
-                  .getFrequency()
-                  .equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
+              .getFrequency()
+              .equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)) {
             if (StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart())
                 && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart())
                 && !questionnaireBo.getStudyLifetimeStart().isEmpty()) {
@@ -1535,11 +1563,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   /**
    * This method is used to save the questionnaire schedule information of an study
    *
-   * @author BTC
    * @param Object , {@link QuestionnaireBo}
    * @param Object , {@link SessionObject}
    * @param String , customStudyId {@link StudyBo}
    * @return {@link QuestionnaireBo}
+   * @author BTC
    */
   @Override
   public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(
@@ -1564,11 +1592,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * the response format, the attributes of the QA would vary Here we can create or update the
    * question step in questionnaire
    *
-   * @author BTC
    * @param Object , {@link QuestionnairesStepsBo}
    * @param Object , {@link SessionObject}
    * @param String , customStudyId {@link StudyBo}
    * @return {@link QuestionnairesStepsBo}
+   * @author BTC
    */
   @Override
   public QuestionnairesStepsBo saveOrUpdateQuestionStep(
@@ -1607,9 +1635,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               questionnairesStepsBo.getQuestionnairesId(), Integer.parseInt(studyId));
         }
         if (id != null && questionnairesStepsBo.getQuestionsBo() != null
-                && questionnairesStepsBo.getQuestionsBo().getResponseType() != null
-                && questionnairesStepsBo.getQuestionsBo().getResponseType().equals(6)
-                && (StringUtils.isEmpty(language) || "en".equals(language))) {
+            && questionnairesStepsBo.getQuestionsBo().getResponseType() != null
+            && questionnairesStepsBo.getQuestionsBo().getResponseType().equals(6)
+            && (StringUtils.isEmpty(language) || "en".equals(language))) {
 
           questionLangBO = studyQuestionnaireDAO.getQuestionLangBo(id, "es");
           if (questionLangBO != null) {
@@ -1619,10 +1647,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
             if (subTypeBoList != null && !subTypeBoList.isEmpty()) {
               int size = subTypeBoList.size();
               int i = 0;
-              if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(questionnairesStepsBo.getType())) {
+              if (FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE.equals(
+                  questionnairesStepsBo.getType())) {
                 Collections.sort(subTypeBoList, new Comparator<QuestionResponseSubTypeBo>() {
-                  public int compare(final QuestionResponseSubTypeBo object1, final QuestionResponseSubTypeBo object2) {
-                    if (object1.getSequenceNumber() != null)  {
+                  public int compare(final QuestionResponseSubTypeBo object1,
+                      final QuestionResponseSubTypeBo object2) {
+                    if (object1.getSequenceNumber() != null) {
                       return object1.getSequenceNumber().compareTo(object2.getSequenceNumber());
                     }
                     return 0;
@@ -1632,11 +1662,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               for (QuestionResponseSubTypeBo subTypeBo : subTypeBoList) {
                 // for spanish
                 String dispLang = StringUtils.isNotBlank(subTypeBo.getDisplayTextLang())
-                        ? subTypeBo.getDisplayTextLang()
-                        : "";
+                    ? subTypeBo.getDisplayTextLang()
+                    : "";
                 String descLang = StringUtils.isNotBlank(subTypeBo.getDescriptionLang())
-                        ? subTypeBo.getDescriptionLang()
-                        : "";
+                    ? subTypeBo.getDescriptionLang()
+                    : "";
                 if (i == size - 1) {
                   dispText.append(dispLang);
                   desc.append(descLang);
@@ -1780,12 +1810,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
           if (questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null) {
             addQuestionsBo.setUseAnchorDate(
                 questionnairesStepsBo.getQuestionsBo().getUseAnchorDate());
-            if (StringUtils.isNotEmpty(questionnairesStepsBo.getQuestionsBo().getAnchorDateName()))
+            if (StringUtils.isNotEmpty(
+                questionnairesStepsBo.getQuestionsBo().getAnchorDateName())) {
               addQuestionsBo.setAnchorDateName(
                   questionnairesStepsBo.getQuestionsBo().getAnchorDateName());
-            if (questionnairesStepsBo.getQuestionsBo().getAnchorDateId() != null)
+            }
+            if (questionnairesStepsBo.getQuestionsBo().getAnchorDateId() != null) {
               addQuestionsBo.setAnchorDateId(
                   questionnairesStepsBo.getQuestionsBo().getAnchorDateId());
+            }
           }
           if (questionnairesStepsBo.getQuestionsBo().getAllowHealthKit() != null) {
             addQuestionsBo.setAllowHealthKit(
@@ -1811,7 +1844,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
               studyQuestionnaireDAO.saveOrUpdateQuestionStep(
                   questionnairesStepsBo, sessionObject, customStudyId);
           if (questionnairesStepsBo.getInstructionFormId() == null) {
-            questionnairesStepsBo.setInstructionFormId(addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
+            questionnairesStepsBo.setInstructionFormId(
+                addOrUpdateQuestionnairesStepsBo.getInstructionFormId());
             questionnairesStepsBo.setStepId(addOrUpdateQuestionnairesStepsBo.getStepId());
           }
           this.doPreLoadLogic(questionnairesStepsBo, customStudyId);
@@ -1836,10 +1870,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * activity.when admin change the frequency in questionnaire schedule its validate the options in
    * the time range for chart options.
    *
-   * @author BTC
    * @param Integer , questionnaireId {@link QuestionnaireBo}
-   * @param String , frequency {@link QuestionnaireBo}
+   * @param String  , frequency {@link QuestionnaireBo}
    * @return String , Success or Failure
+   * @author BTC
    */
   @Override
   public String validateLineChartSchedule(Integer questionnaireId, String frequency) {
@@ -1854,12 +1888,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * be defined along with a destination step to navigate to if the result of evaluation is TRUE and
    * an alternative destination step if FALSE.Admin can check the condition is valid or not here.
    *
-   * @author BTC
    * @param String , lhs
    * @param String , rhs
    * @param String , operator
    * @param String , input
    * @return List of {@link QuestionConditionBranchBo}
+   * @author BTC
    */
   @Override
   public FormulaInfoBean validateQuestionConditionalBranchingLogic(
@@ -1883,9 +1917,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * states data to the dashbord.here we are validating the added line chart and statistics data
    * before updating the form as repeatable.
    *
-   * @author BTC
    * @param Integer , formId {@link FormBo}
-   * @param String , Success or failure
+   * @param String  , Success or failure
+   * @author BTC
    */
   @Override
   public String validateRepetableFormQuestionStats(Integer formId) {
@@ -1898,10 +1932,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
    * field. Which will be response column for the step in response server.so it should be the
    * unique.Here validating the unique for step short title
    *
-   * @author BTC
    * @param String , anchordateText {@link QuestionnairesStepsBo}
    * @param String , customStudyId {@link StudyBo}
    * @return String, Success or Failure
+   * @author BTC
    */
   @Override
   public String checkUniqueAnchorDateName(
@@ -2249,15 +2283,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep, Integer stepId) {
+  public List<GroupsBo> getGroupsByStudyId(String studyId, String questionnaireId, boolean isStep,
+      Integer stepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupsByStudyId - Starts");
     List<GroupsBo> groups = null;
     try {
 
       if (isStep && stepId != null) {
-        groups = studyQuestionnaireDAO.getGroupsByStudyIdAndStepId(studyId,questionnaireId, stepId);
+        groups = studyQuestionnaireDAO.getGroupsByStudyIdAndStepId(studyId, questionnaireId,
+            stepId);
       } else {
-        groups = studyQuestionnaireDAO.getGroupsByStudyId(studyId,questionnaireId);
+        groups = studyQuestionnaireDAO.getGroupsByStudyId(studyId, questionnaireId);
       }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getGroupsByStudyId() - ERROR ", e);
@@ -2268,11 +2304,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId, String queIdForGroups, Integer stepId, boolean isPreload) {
+  public List<GroupsBo> getGroupsForPreloadAndPostLoad(String questionnaireId,
+      String queIdForGroups, Integer stepId, boolean isPreload) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad - Starts");
     List<GroupsBo> groups = null;
     try {
-      groups = studyQuestionnaireDAO.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups, stepId, isPreload);
+      groups = studyQuestionnaireDAO.getGroupsForPreloadAndPostLoad(questionnaireId, queIdForGroups,
+          stepId, isPreload);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getGroupsForPreloadAndPostLoad() - ERROR ", e);
     }
@@ -2317,15 +2355,15 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
     try {
       GroupsBo groupsBo = null;
-      if(groupsBean.getId() != null ){
-          groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
-    	  if(groupsBean.isAction()) {
-    		  groupsBo.setAction(groupsBean.isAction());
-    	  } else {
-    		  groupsBo.setAction(groupsBean.isAction());
-    	  }
+      if (groupsBean.getId() != null) {
+        groupsBo = studyQuestionnaireDAO.getGroupsDetails(groupsBean.getId());
+        if (groupsBean.isAction()) {
+          groupsBo.setAction(groupsBean.isAction());
+        } else {
+          groupsBo.setAction(groupsBean.isAction());
+        }
       }
-      
+
       if (groupsBo == null) {
         addFlag = true;
         groupsBo = new GroupsBo();
@@ -2345,27 +2383,28 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         groupsBo.setDestinationTrueAsGroup(groupsBean.getDestinationTrueAsGroup());
       }
       groupsBo.setStepOrGroup(groupsBean.getStepOrGroup());
-      groupsBo.setGroupName(null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
+      groupsBo.setGroupName(
+          null != groupsBean.getGroupName() ? groupsBean.getGroupName().trim() : "");
       groupsBo.setGroupId(groupsBean.getGroupId());
       studyQuestionnaireDAO.saveOrUpdateGroup(groupsBo);
       this.doGroupPreLoadLogic(groupsBean);
       if (addFlag) {
-          activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
-          activitydetails =
-                  " groups saved";
-        }
-        if (!addFlag) {
-          activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
-          activitydetails =
-                  "updated group";
-        }
-      msg=auditLogDAO.saveToAuditLog(
-              null,
-              null,
-              userSession,
-              activity,
-              activitydetails,
-              "StudyQuestionnaireServiceImpl - addOrUpdateGroupsDetails");
+        activity = FdahpStudyDesignerConstants.SAVE_GROUP_SUCCESS_MESSAGE;
+        activitydetails =
+            " groups saved";
+      }
+      if (!addFlag) {
+        activity = FdahpStudyDesignerConstants.UPDATE_GROUP_SUCCESS_MESSAGE;
+        activitydetails =
+            "updated group";
+      }
+      msg = auditLogDAO.saveToAuditLog(
+          null,
+          null,
+          userSession,
+          activity,
+          activitydetails,
+          "StudyQuestionnaireServiceImpl - addOrUpdateGroupsDetails");
 
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - addOrUpdateGroupDetails() - ERROR", e);
@@ -2374,55 +2413,56 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     return msg;
   }
 
-@Override
-public String deleteGroup(String id, SessionObject sessionObject) {
-logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
-	
+  @Override
+  public String deleteGroup(String id, SessionObject sessionObject) {
+    logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
+
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
-          studyQuestionnaireDAO.deleteGroup( id,sessionObject);
+          studyQuestionnaireDAO.deleteGroup(id, sessionObject);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error", e);
     }
     logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Ends");
     return message;
-}
-
-
-@Override
-public String checkGroupId(String questionnaireId, String groupId, String studyId) {
-  logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Starts");
-  String message = FdahpStudyDesignerConstants.FAILURE;
-  try {
-    message = studyQuestionnaireDAO.checkGroupId(questionnaireId, groupId,studyId);
-  } catch (Exception e) {
-    logger.error("StudyQuestionnaireServiceImpl - checkGroupId() - Error", e);
   }
-  logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Ends");
-  return message;
-}
 
-@Override
-public String checkGroupName(String questionnaireId, String groupName, String studyId) {
-	logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Starts");
-	  String message = FdahpStudyDesignerConstants.FAILURE;
-	  try {
-	    message = studyQuestionnaireDAO.checkGroupName(questionnaireId, groupName,studyId);
-	  } catch (Exception e) {
-	    logger.error("StudyQuestionnaireServiceImpl - checkGroupName() - Error", e);
-	  }
-	  logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Ends");
-	  return message;
-}
 
   @Override
-  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId, String questionnaireId) {
+  public String checkGroupId(String questionnaireId, String groupId, String studyId) {
+    logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message = studyQuestionnaireDAO.checkGroupId(questionnaireId, groupId, studyId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - checkGroupId() - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - checkGroupId() - Ends");
+    return message;
+  }
+
+  @Override
+  public String checkGroupName(String questionnaireId, String groupName, String studyId) {
+    logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Starts");
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      message = studyQuestionnaireDAO.checkGroupName(questionnaireId, groupName, studyId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - checkGroupName() - Error", e);
+    }
+    logger.info("StudyQuestionnaireServiceImpl - checkGroupName() - Ends");
+    return message;
+  }
+
+  @Override
+  public List<GroupMappingBo> assignQuestionSteps(List<String> arr, Integer grpId,
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - assignQuestionsteps - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
-    List<GroupMappingBo> groupMappingBo = new ArrayList<>();;
+    List<GroupMappingBo> groupMappingBo = new ArrayList<>();
     try {
-      groupMappingBo = studyQuestionnaireDAO.assignQuestionSteps(arr,grpId,questionnaireId);
+      groupMappingBo = studyQuestionnaireDAO.assignQuestionSteps(arr, grpId, questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - assignQuestionSteps() - ERROR ", e);
     }
@@ -2431,8 +2471,10 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller, Integer stepId, Integer currQuestionnaireId) {
-    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId, currQuestionnaireId);
+  public List<QuestionnairesStepsBo> getSameSurveySourceKeys(int queId, int seq, String caller,
+      Integer stepId, Integer currQuestionnaireId) {
+    return studyQuestionnaireDAO.getSameSurveySourceKeys(queId, seq, caller, stepId,
+        currQuestionnaireId);
   }
 
   @Override
@@ -2441,12 +2483,14 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public List<QuestionnairesStepsBo> getPostLoadDestinationKeys(Integer currQuestionnaireId, int seq, Integer stepId) {
+  public List<QuestionnairesStepsBo> getPostLoadDestinationKeys(Integer currQuestionnaireId,
+      int seq, Integer stepId) {
     return studyQuestionnaireDAO.getPostLoadDestinationKeys(currQuestionnaireId, seq, stepId);
   }
 
   @Override
-  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId, boolean isLive){
+  public List<QuestionnaireBo> getQuestionnairesForPiping(String queId, String studyId,
+      boolean isLive) {
     return studyQuestionnaireDAO.getQuestionnairesForPiping(queId, studyId, isLive);
   }
 
@@ -2459,7 +2503,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   public List<GroupMappingBo> getStepId(String id, String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getStepId() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
-    List<GroupMappingBo> stepId = new ArrayList<>();;
+    List<GroupMappingBo> stepId = new ArrayList<>();
     try {
       stepId = studyQuestionnaireDAO.getStepId(id, questionnaireId);
     } catch (Exception e) {
@@ -2484,22 +2528,24 @@ public String checkGroupName(String questionnaireId, String groupName, String st
   }
 
   @Override
-  public String groupFlagDisable(String id,List<GroupMappingBo> groupMappingBo, String questionnaireId) {
+  public String groupFlagDisable(String id, List<GroupMappingBo> groupMappingBo,
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
     try {
-      result = studyQuestionnaireDAO.groupFlagDisable(id,groupMappingBo, questionnaireId);
+      result = studyQuestionnaireDAO.groupFlagDisable(id, groupMappingBo, questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
     }
     logger.exit("groupFlagDisable() - Ends");
-    return result;  }
+    return result;
+  }
 
   @Override
-  public  List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId) {
-  	List<GroupMappingStepBean> groupMappingBeanss = null;
-  	groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId);
-  	return groupMappingBeanss;
+  public List<GroupMappingStepBean> getGroupsAssignedList(Integer grpId) {
+    List<GroupMappingStepBean> groupMappingBeanss = null;
+    groupMappingBeanss = studyQuestionnaireDAO.getGroupsList(grpId);
+    return groupMappingBeanss;
   }
 
   @Override
@@ -2509,7 +2555,7 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
-              studyQuestionnaireDAO.deleteGroupMaprecords(id);
+          studyQuestionnaireDAO.deleteGroupMaprecords(id);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
     }
@@ -2517,33 +2563,33 @@ public String checkGroupName(String questionnaireId, String groupName, String st
     return message;
   }
 
-@Override
-public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId) {
-	 logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
-	    String result = FdahpStudyDesignerConstants.FAILURE;
-	    try {
-	      result = studyQuestionnaireDAO.stepFlagDisable(groupMappingBo, questionnaireId);
-	    } catch (Exception e) {
-	      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
-	    }
-	    logger.exit("groupFlagDisable() - Ends");
-	    return result;
-}
+  @Override
+  public String stepFlagDisable(GroupMappingBo groupMappingBo, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - groupFlagDisable() - Starts");
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    try {
+      result = studyQuestionnaireDAO.stepFlagDisable(groupMappingBo, questionnaireId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - groupFlagDisable() - ERROR ", e);
+    }
+    logger.exit("groupFlagDisable() - Ends");
+    return result;
+  }
 
-@Override
-public String deleteStepMaprecords(String id,String questionnaireId) {
-	logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
+  @Override
+  public String deleteStepMaprecords(String id, String questionnaireId) {
+    logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Starts");
 
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
-              studyQuestionnaireDAO.deleteStepMaprecords(id,questionnaireId);
+          studyQuestionnaireDAO.deleteStepMaprecords(id, questionnaireId);
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Error", e);
     }
     logger.info("StudyQuestionnaireServiceImpl - deleteGroupMaprecords() - Ends");
     return message;
-}
+  }
 
   @Override
   public Boolean isPreloadLogicAndPipingEnabled(Integer queId) {
@@ -2554,7 +2600,7 @@ public String deleteStepMaprecords(String id,String questionnaireId) {
   public String deleteStepBasedOnStepId(String stepId) {
     logger.info("StudyQuestionnaireServiceImpl - deleteStepBasedOnStepId - Starts");
     String result = FdahpStudyDesignerConstants.FAILURE;
-    List<GroupMappingBo> groupMappingBo = new ArrayList<>();;
+    List<GroupMappingBo> groupMappingBo = new ArrayList<>();
     try {
       result = studyQuestionnaireDAO.deleteStepBasedOnStepId(stepId);
     } catch (Exception e) {
@@ -2593,14 +2639,14 @@ public String deleteStepMaprecords(String id,String questionnaireId) {
     return isGroupDvEnabled;
   } */
 
-
   public GroupsBo getGroupIdBySendingQuestionStepId(Integer questionStepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - Starts");
     GroupsBo groupsBo = null;
     try {
       groupsBo = studyQuestionnaireDAO.getGroupIdBySendingQuestionStepId(questionStepId);
     } catch (Exception e) {
-      logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ", e);
+      logger.error("StudyQuestionnaireServiceImpl - getGroupIdBySendingquestionstepId() - ERROR ",
+          e);
     }
     logger.info("getGroupIdBySendingquestionstepId() - Ends");
     return groupsBo;
@@ -2662,15 +2708,15 @@ public String deleteStepMaprecords(String id,String questionnaireId) {
   @Override
   public Integer getGroupId(String stepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupId() - Starts");
- String result = FdahpStudyDesignerConstants.FAILURE;
- Integer groupId = 0;
- try {
-   groupId = studyQuestionnaireDAO.getGroupId(stepId);
- } catch (Exception e) {
- logger.error("StudyQuestionnaireServiceImpl - getGroupId() - ERROR ", e);
- }
-logger.exit("getStepId() - Ends");
- return groupId;
+    String result = FdahpStudyDesignerConstants.FAILURE;
+    Integer groupId = 0;
+    try {
+      groupId = studyQuestionnaireDAO.getGroupId(stepId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getGroupId() - ERROR ", e);
+    }
+    logger.exit("getStepId() - Ends");
+    return groupId;
 
   }
 
@@ -2688,13 +2734,16 @@ logger.exit("getStepId() - Ends");
   }
 
   @Override
-  public List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId, Integer questionStepId) {
+  public List<GroupsBo> getGroupListBySendingQuestionStepId(String studyId, String questionnaireId,
+      Integer questionStepId) {
     logger.info("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - Starts");
     List<GroupsBo> groupsBo = null;
     try {
-      groupsBo = studyQuestionnaireDAO.getGroupListBySendingQuestionStepId(studyId, questionnaireId, questionStepId);
+      groupsBo = studyQuestionnaireDAO.getGroupListBySendingQuestionStepId(studyId, questionnaireId,
+          questionStepId);
     } catch (Exception e) {
-      logger.error("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - ERROR ", e);
+      logger.error("StudyQuestionnaireServiceImpl - getGroupListBySendingQuestionStepId() - ERROR ",
+          e);
     }
     logger.info("getResponseType() - Ends");
     return groupsBo;
@@ -2715,29 +2764,34 @@ logger.exit("getStepId() - Ends");
 
   @Override
   public String getTextChoiceSelectionStyle(Integer questionStepId) {
-  logger.info("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - Starts");
+    logger.info("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - Starts");
     String selectionStyle = null;
- try {
+    try {
       selectionStyle = studyQuestionnaireDAO.getTextChoiceSelectionStyle(questionStepId);
-      } catch (Exception e) {
-     logger.error("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - ERROR ", e);
-     }
-     logger.info("getResponseType() - Ends");
-        return selectionStyle;
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - getTextChoiceSelectionStyle() - ERROR ", e);
+    }
+    logger.info("getResponseType() - Ends");
+    return selectionStyle;
   }
 
-@Override
-public String updateGroupDefaultVisibility(Integer groupId) {
-	logger.info("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - Starts");
-	String status = null;
-	try {
-		status = studyQuestionnaireDAO.updateGroupDefaultVisibility(groupId);
-	} catch (Exception e) {
-		logger.error("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - ERROR ", e);
-	}
-	logger.info("updateGroupDefaultVisibility() - Ends");
-	return status;
-}
+  @Override
+  public String updateGroupDefaultVisibility(Integer groupId) {
+    logger.info("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - Starts");
+    String status = null;
+    try {
+      status = studyQuestionnaireDAO.updateGroupDefaultVisibility(groupId);
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireServiceImpl - updateGroupDefaultVisibility() - ERROR ", e);
+    }
+    logger.info("updateGroupDefaultVisibility() - Ends");
+    return status;
+  }
+
+  @Override
+  public Boolean isDefaultVisibilityEnabled(Integer queId) {
+    return studyQuestionnaireDAO.isDefaultVisibilityEnabled(queId);
+  }
 
 
 }

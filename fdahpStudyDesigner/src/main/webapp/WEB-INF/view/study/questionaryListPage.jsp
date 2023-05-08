@@ -14,26 +14,26 @@
       .tool-tip [disabled] {
         pointer-events: none;
       }
-      
-      .langSpecific{
-    	position: relative;
-  	  }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
+
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
+      }
     </style>
 </head>
 <!-- ============================================================== -->
@@ -45,7 +45,8 @@
     <input type="hidden" id="customStudyName" value="${fn:escapeXml(studyBo.name)}"/>
     <select id="questionnaireLangBOS" style="display: none">
         <c:forEach items="${questionnaireLangBOS}" var="questionnaireLang">
-            <option id='${questionnaireLang.questionnaireLangPK.id}' status="${questionnaireLang.status}"
+            <option id='${questionnaireLang.questionnaireLangPK.id}'
+                    status="${questionnaireLang.status}"
                     value="${questionnaireLang.title}">${questionnaireLang.title}</option>
         </c:forEach>
     </select>
@@ -118,7 +119,7 @@
                     <tr id="row${questionnaryInfo.id}" status="${questionnaryInfo.status}">
                         <td>${questionnaryInfo.createdDate}</td>
                         <td class="title dis-ellipsis "
-                                 title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}
+                            title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}
                         </td>
                         <td>${questionnaryInfo.frequency == 'Manually Schedule' ? 'Custom Schedule' :questionnaryInfo.frequency}</td>
                         <td style="width: 200px !important;"><span
@@ -141,16 +142,19 @@
         </div>
     </div>
     <!--  End body tab section -->
- <div class="modal fade" id="myModal" role="dialog">
-         <div class="modal-dialog modal-sm flr_modal">
-             <!-- Modal content-->
-             <div class="modal-content">
-                     <div class="modal-body">
-                     <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                     </div>
-             </div>
-         </div>
- </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <!-- End right Content here -->
@@ -165,7 +169,7 @@
 </form:form>
 
 <script>
-var idleTime = 0;
+  var idleTime = 0;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li.active").removeClass('active');
@@ -199,43 +203,65 @@ var idleTime = 0;
       $('[data-toggle="tooltip"]').tooltip();
     }
 
-         setInterval(function () {
-               idleTime += 1;
-                if (idleTime > 3) { // 5 minutes
-                timeOutFunction();
-                 }
-                 }, 226020);
+    parentInterval();
 
-                 $(this).mousemove(function (e) {
-                   idleTime = 0;
-                 });
-                 $(this).keypress(function (e) {
-                  idleTime = 0;
-                  });
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          clearInterval(timeOutInterval);
+          // keepAlive();
+          timeOutFunction();
+        }
+      }, 225000);
+    }
 
-                  function timeOutFunction() {
-                  $('#myModal').modal('show');
-                   let i = 14;
-                   let timeOutInterval = setInterval(function () {
-                   if (i === 0) {
-                   $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                   if ($('#myModal').hasClass('show')) {
-                   var a = document.createElement('a');
-                   a.href = "/fdahpStudyDesigner/sessionOut.do";
-                   document.body.appendChild(a).click();
-                     }
-                     clearInterval(timeOutInterval);
-                      } else {
-                      if (i === 1) {
-                     $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                       } else {
-                       $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                         }
-                         idleTime = 0;
-                         i-=1;
-                          }
-                        }, 60000);
-                      }
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+
+    var timeOutInterval;
+
+    function timeOutFunction() {
+      $('#myModal').modal('show');
+      let i = 14;
+      timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          if ($('#myModal').hasClass('show')) {
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          idleTime = 0;
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#myModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
   });
 
   function editQuestionnaires(questionnaryId) {
@@ -403,98 +429,98 @@ var idleTime = 0;
     refreshAndFetchLanguageData($('#studyLanguage').val());
   })
 
-function refreshAndFetchLanguageData(language) {
-	$.ajax({
-		url: '/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}',
-		type: "GET",
-		data: {
-			language: language
-		},
-		success: function (data) {
-          let htmlData = document.createElement('html');
-          htmlData.innerHTML = data;
-			if (language !== 'en') {
-              updateCompletionTicks(htmlData);
-              $('.tit_wrapper').text($('#mlName', htmlData).val());
-				$('#addButton').attr('disabled', true);
-				$('.sorting').css('pointer-events', 'none');
-				$('.delete ').addClass('cursor-none');
-				$('.copy ').addClass('cursor-none');
-				let mark =true;
-              $('#questionnaireLangBOS option', htmlData).each(function (index, value) {
-                let id = '#row' + value.getAttribute('id');
-                $(id).find('td.title').text(value.getAttribute('value'));
-                if (value.getAttribute('status')==="true") {
-                  let edit = $(id).find('span.editIcon');
-                  if (!edit.hasClass('edit-inc')) {
-                    edit.addClass('edit-inc');
-                  }
-                  if (edit.hasClass('edit-inc-draft')) {
-                    edit.removeClass('edit-inc-draft');
-                  }
-                }
-                else {
-                  mark =false;
-                  let edit = $(id).find('span.editIcon');
-                  if (!edit.hasClass('edit-inc-draft')) {
-                    edit.addClass('edit-inc-draft');
-                  }
-                  if (edit.hasClass('edit-inc')) {
-                    edit.removeClass('edit-inc');
-                  }
-                }
-              });
-              if (!mark) {
-                $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
-                $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
-              } else {
-                $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
-                $('#markAsTooltipId').removeAttr('data-original-title');
+  function refreshAndFetchLanguageData(language) {
+    $.ajax({
+      url: '/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}',
+      type: "GET",
+      data: {
+        language: language
+      },
+      success: function (data) {
+        let htmlData = document.createElement('html');
+        htmlData.innerHTML = data;
+        if (language !== 'en') {
+          updateCompletionTicks(htmlData);
+          $('.tit_wrapper').text($('#mlName', htmlData).val());
+          $('#addButton').attr('disabled', true);
+          $('.sorting').css('pointer-events', 'none');
+          $('.delete ').addClass('cursor-none');
+          $('.copy ').addClass('cursor-none');
+          let mark = true;
+          $('#questionnaireLangBOS option', htmlData).each(function (index, value) {
+            let id = '#row' + value.getAttribute('id');
+            $(id).find('td.title').text(value.getAttribute('value'));
+            if (value.getAttribute('status') === "true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
               }
-			} else {
-              updateCompletionTicksForEnglish();
-              $('.tit_wrapper').text($('#customStudyName', htmlData).val());
-				$('#addButton').attr('disabled', false);
-				$('.delete ').removeClass('cursor-none');
-				$('.copy ').removeClass('cursor-none');	
-				$('.sorting').removeAttr('style');
-				<c:if test="${not empty permission}">
-				$('.delete, .copy').addClass('cursor-none');
-				</c:if>
-              let mark=true;
-              $('tbody tr', htmlData).each(function (index, value) {
-                let id = '#'+value.getAttribute('id');
-                $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-                if (value.getAttribute('status')==="true") {
-                  let edit = $(id).find('span.editIcon');
-                  if (!edit.hasClass('edit-inc')) {
-                    edit.addClass('edit-inc');
-                  }
-                  if (edit.hasClass('edit-inc-draft')) {
-                    edit.removeClass('edit-inc-draft');
-                  }
-                }
-                else {
-                  mark=false;
-                  let edit = $(id).find('span.editIcon');
-                  if (!edit.hasClass('edit-inc-draft')) {
-                    edit.addClass('edit-inc-draft');
-                  }
-                  if (edit.hasClass('edit-inc')) {
-                    edit.removeClass('edit-inc');
-                  }
-                }
-              });
-              if (!mark) {
-                $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
-                $('#markAsTooltipId').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
-              } else {
-                $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
-                $('#markAsTooltipId').removeAttr('data-original-title');
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
               }
-			}
-		}
-	});
-}
+            } else {
+              mark = false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
+          });
+          if (!mark) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#markAsTooltipId').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#markAsTooltipId').removeAttr('data-original-title');
+          }
+        } else {
+          updateCompletionTicksForEnglish();
+          $('.tit_wrapper').text($('#customStudyName', htmlData).val());
+          $('#addButton').attr('disabled', false);
+          $('.delete ').removeClass('cursor-none');
+          $('.copy ').removeClass('cursor-none');
+          $('.sorting').removeAttr('style');
+          <c:if test="${not empty permission}">
+          $('.delete, .copy').addClass('cursor-none');
+          </c:if>
+          let mark = true;
+          $('tbody tr', htmlData).each(function (index, value) {
+            let id = '#' + value.getAttribute('id');
+            $(id).find('td.title').text($(id, htmlData).find('td.title').text());
+            if (value.getAttribute('status') === "true") {
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc')) {
+                edit.addClass('edit-inc');
+              }
+              if (edit.hasClass('edit-inc-draft')) {
+                edit.removeClass('edit-inc-draft');
+              }
+            } else {
+              mark = false;
+              let edit = $(id).find('span.editIcon');
+              if (!edit.hasClass('edit-inc-draft')) {
+                edit.addClass('edit-inc-draft');
+              }
+              if (edit.hasClass('edit-inc')) {
+                edit.removeClass('edit-inc');
+              }
+            }
+          });
+          if (!mark) {
+            $('#markAsCompleteBtnId').addClass('cursor-none').prop('disabled', true);
+            $('#markAsTooltipId').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+          } else {
+            $('#markAsCompleteBtnId').removeClass('cursor-none').prop('disabled', false);
+            $('#markAsTooltipId').removeAttr('data-original-title');
+          }
+        }
+      }
+    });
+  }
 </script>
 

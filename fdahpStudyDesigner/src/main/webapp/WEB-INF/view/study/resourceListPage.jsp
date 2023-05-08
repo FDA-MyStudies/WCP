@@ -145,14 +145,17 @@
     </div>
     <!--  End body tab section -->
     <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog modal-sm flr_modal">
-                <!-- Modal content-->
-                <div class="modal-content">
-                        <div class="modal-body">
-                        <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                        </div>
+        <div class="modal-dialog modal-sm flr_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="timeOutMessage" class="text-right blue_text"><span
+                            class="timerPos"><img src="../images/timer2.png"/></span>Your session
+                        expires in 15 minutes
                     </div>
                 </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- End right Content here -->
@@ -181,7 +184,7 @@
     </select>
 </form:form>
 <script type="text/javascript">
-var idleTime = 0;
+  var idleTime = 0;
   var dataTable;
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -293,42 +296,72 @@ var idleTime = 0;
         });
       }
     });
-    setInterval(function () {
-          idleTime += 1;
-           if (idleTime > 3) { // 5 minutes
-           timeOutFunction();
-            }
-            }, 226000);
 
-            $(this).mousemove(function (e) {
-              idleTime = 0;
-            });
-            $(this).keypress(function (e) {
-             idleTime = 0;
-             });
+    parentInterval();
 
-             function timeOutFunction() {
-             $('#myModal').modal('show');
-              let i = 14;
-              let timeOutInterval = setInterval(function () {
-              if (i === 0) {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-              if ($('#myModal').hasClass('show')) {
-              var a = document.createElement('a');
-              a.href = "/fdahpStudyDesigner/sessionOut.do";
-              document.body.appendChild(a).click();
-                }
-                clearInterval(timeOutInterval);
-                 } else {
-                 if (i === 1) {
-                $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-                  } else {
-                  $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-                    }
-                    i-=1;
-                     }
-                   }, 60000);
-                 }
+    function parentInterval() {
+      let timeOutInterval = setInterval(function () {
+        idleTime += 1;
+        if (idleTime > 3) { // 5 minutes
+          console.log("parent interval");
+          clearInterval(timeOutInterval);
+          // keepAlive();
+          timeOutFunction();
+        }
+      }, 225000);
+    }
+
+    $(this).mousemove(function (e) {
+      idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+      idleTime = 0;
+    });
+
+    var timeOutInterval;
+
+    function timeOutFunction() {
+      console.log("inside timeout function ");
+      $('#myModal').modal('show');
+      let i = 14;
+      console.log("starting set interval");
+      timeOutInterval = setInterval(function () {
+        if (i === 0) {
+          console.log("interval: " + i);
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+          console.log('now 0 minutes.');
+          if ($('#myModal').hasClass('show')) {
+            console.log('calling session out');
+            var a = document.createElement('a');
+            a.href = "/fdahpStudyDesigner/sessionOut.do";
+            document.body.appendChild(a).click();
+            console.log('called session out');
+          }
+          clearInterval(timeOutInterval);
+        } else {
+          if (i === 1) {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+          } else {
+            $('#timeOutMessage').html(
+                '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+                + i + ' minutes');
+          }
+          i -= 1;
+        }
+      }, 60000);
+    }
+
+    $(document).click(function (e) {
+      if ($(e.target).closest('#myModal').length) {
+        clearInterval(timeOutInterval);
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+        parentInterval();
+      }
+    });
   });
 
   function deleteResourceInfo(resourceInfoId) {
@@ -533,11 +566,11 @@ var idleTime = 0;
           $('.tit_wrapper').text($('#mlName', htmlData).val());
           $('#addResourceId').attr('disabled', true);
           $('.delete, .sorting_1').addClass('cursor-none');
-          let mark=true;
+          let mark = true;
           $('#resourceLangBOList option', htmlData).each(function (index, value) {
             let id = '#row' + value.getAttribute('id');
             $(id).find('td.title').text(value.getAttribute('value'));
-            if (value.getAttribute('status')==="true") {
+            if (value.getAttribute('status') === "true") {
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc')) {
                 edit.addClass('edit-inc');
@@ -545,9 +578,8 @@ var idleTime = 0;
               if (edit.hasClass('edit-inc-draft')) {
                 edit.removeClass('edit-inc-draft');
               }
-            }
-            else {
-              mark=false;
+            } else {
+              mark = false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -559,7 +591,8 @@ var idleTime = 0;
           });
           if (!mark) {
             $('#markAsComp').addClass('cursor-none').prop('disabled', true);
-            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+            $('#helpNote').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
           } else {
             $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');
@@ -576,11 +609,11 @@ var idleTime = 0;
           $('#addResourceId').attr('disabled', false);
           $('.delete, .sorting_1').removeClass('cursor-none');
           $('#studyProtocolId').prop('disabled', false);
-          let mark=true;
+          let mark = true;
           $('tbody tr', htmlData).each(function (index, value) {
-            let id = '#'+value.getAttribute('id');
+            let id = '#' + value.getAttribute('id');
             $(id).find('td.title').text($(id, htmlData).find('td.title').text());
-            if (value.getAttribute('status')==="true") {
+            if (value.getAttribute('status') === "true") {
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc')) {
                 edit.addClass('edit-inc');
@@ -588,9 +621,8 @@ var idleTime = 0;
               if (edit.hasClass('edit-inc-draft')) {
                 edit.removeClass('edit-inc-draft');
               }
-            }
-            else {
-              mark=false;
+            } else {
+              mark = false;
               let edit = $(id).find('span.editIcon');
               if (!edit.hasClass('edit-inc-draft')) {
                 edit.addClass('edit-inc-draft');
@@ -602,7 +634,8 @@ var idleTime = 0;
           });
           if (!mark) {
             $('#markAsComp').addClass('cursor-none').prop('disabled', true);
-            $('#helpNote').attr('data-original-title', 'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
+            $('#helpNote').attr('data-original-title',
+                'Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete.')
           } else {
             $('#markAsComp').removeClass('cursor-none').prop('disabled', false);
             $('#helpNote').removeAttr('data-original-title');

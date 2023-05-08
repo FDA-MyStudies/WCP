@@ -66,7 +66,7 @@
 
 <link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css">
 
-<style>
+<style nonce="${nonce}">
 
 /* after bootstrap from 3.3.7 to 4.6.1 migration dropdown caret icon not worked so added extra CSS here */
 
@@ -93,7 +93,7 @@
 
 
 <!-- Head Libs -->
-<script type="text/javascript" src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
+<!-- <script type="text/javascript" src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script> -->
 
 
 <!-- Vendor -->
@@ -132,7 +132,7 @@
 <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
 <script type="text/javascript" src="/fdahpStudyDesigner/vendor/dompurify/purify.min.js"></script>
 
-<script>
+<script nonce="${nonce}">
 	//       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	//       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	//       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -153,8 +153,7 @@
 </script>
 
 </head>
-<body class="loading" onload="noBack();"
-	onpageshow="if (event.persisted) noBack();" onunload="">
+<body class="loading">
 	<div id="loader">
 		<span></span>
 	</div>
@@ -191,7 +190,7 @@
 
 	<script src="/fdahpStudyDesigner/js/common.js"></script>
 
-	<script>
+	<script nonce="${nonce}">
 		window.history.forward();
 		function noBack() {
 			window.history.forward();
@@ -208,13 +207,20 @@
 					theme : "minimal-dark"
 				});
 			});
-			if ('${sessionScope.sessionObject}' != '') {
-				setTimeout(
-						function() {
-							window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
-						}, 1000 * 60 * 31);
-			}
-			setInterval('clock()', 1000);
+			// conflicting with spring security timeout and auto session out
+			<%--if ('${sessionScope.sessionObject}' != '') {--%>
+			<%--	setTimeout(--%>
+			<%--			function() {--%>
+			<%--				window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';--%>
+			<%--			}, 1000 * 60 * 31);--%>
+			<%--}--%>
+			setInterval(function () {
+				var diff = new Date().getTime() - startDate.getTime();
+				mytime = moment(
+						'<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm:ss"/>')
+						.toDate();
+				mytime.setMilliseconds(mytime.getMilliseconds() + diff);
+			}, 1000);
 		})(jQuery);
 
 		// ===== Scroll to Top ==== 

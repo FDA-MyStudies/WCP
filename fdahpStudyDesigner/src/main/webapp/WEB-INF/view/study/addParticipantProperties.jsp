@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <meta charset="UTF-8">
-    <style>
+    <style nonce="${nonce}">
       .checkBoxForm {
 
       }
@@ -48,69 +48,73 @@
         float: right;
       }
 
-      .langSpecific{
-    	position: relative;
-  	  }
+      .langSpecific {
+        position: relative;
+      }
 
-  	  .langSpecific > button::before{
-    	content: '';
-    	display: block;
-    	background-image: url("../images/global_icon.png");
-    	width: 16px;
-    	height: 14px;
-    	position: absolute;
-    	top: 9px;
-    	left: 9px;
-    	background-repeat: no-repeat;
-  	  }
+      .langSpecific > button::before {
+        content: '';
+        display: block;
+        background-image: url("../images/global_icon.png");
+        width: 16px;
+        height: 14px;
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        background-repeat: no-repeat;
+      }
 
-  	  .langSpecific > button{
+      .langSpecific > button {
         padding-left: 30px;
-  	  }
-
-  	  #autoSavedMessage{
-      width:257px;
       }
 
-       #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-         position:relative !important;
-         right:-14px !important;
-         margin-top:6% !important;
-         }
-
-      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal{
-      position:relative !important;
-      right:-14px !important;
-      margin-top:6% !important;
+      #autoSavedMessage {
+        width: 257px;
       }
 
-      .flr_modal{
-      float:right !important;
+      #timeOutModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
       }
 
-      .grey_txt{
-      color:grey;
-      font-size:15px;
-      font-weight:500;
+      #myModal .modal-dialog, #learnMyModal .modal-dialog .flr_modal {
+        position: relative !important;
+        right: -14px !important;
+        margin-top: 6% !important;
       }
 
-      .blue_text{
-      color:#007CBA !important;
-      font-size:15px;
-      font-weight:500;
+      .flr_modal {
+        float: right !important;
       }
 
-      .timerPos{
-      position:relative;
-      top:-2px;
-      right:2px !important;
+      .grey_txt {
+        color: grey;
+        font-size: 15px;
+        font-weight: 500;
       }
 
-      .bold_txt{
-      font-weight:900 !important;
-      color:#007cba !important;
-      font-size:15px;
-       }
+      .blue_text {
+        color: #007CBA !important;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .timerPos {
+        position: relative;
+        top: -2px;
+        right: 2px !important;
+      }
+
+      .bold_txt {
+        font-weight: 900 !important;
+        color: #007cba !important;
+        font-size: 15px;
+      }
+      
+      .ws-norm{
+      	white-space: normal;
+      }
     </style>
 </head>
 
@@ -125,7 +129,7 @@
             </div> -->
 
             <div class="black-md-f text-uppercase dis-line pull-left line34">
-				<span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img
+				<span class="pr-sm cur-pointer back-page"><img
                         src="../images/icons/back-b.png" class="pr-md"/></span>
                 <c:if test="${actionType eq 'add'}">Add Property</c:if>
                 <c:if test="${actionType eq 'edit'}">Edit Property</c:if>
@@ -133,7 +137,7 @@
             </div>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionType != 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <select
                             class="selectpicker aq-select aq-select-form studyLanguage langSpecific"
                             id="studyLanguage" name="studyLanguage" title="Select">
@@ -149,7 +153,7 @@
             </c:if>
 
             <c:if test="${studyBo.multiLanguageFlag eq true and actionType == 'add'}">
-                <div class="dis-line form-group mb-none mr-sm" style="width: 150px;">
+                <div class="dis-line form-group mb-none mr-sm wid-150">
                     <span class="tool-tip" id="markAsTooltipId" data-toggle="tooltip"
                           data-placement="bottom"
                           title="Language selection is available in edit screen only">
@@ -162,8 +166,8 @@
             </c:if>
 
             <div class="dis-line form-group mb-none mr-sm">
-                <button type="button" class="btn btn-default gray-btn"
-                        onclick="goToBackPage(this);">Cancel
+                <button type="button" class="btn btn-default gray-btn back-page"
+                        >Cancel
                 </button>
             </div>
 
@@ -203,7 +207,8 @@
                            value="${fn:escapeXml(actionType)}">
                     <input type="hidden" id="actionButtonType" name="actionButtonType"
                            value="">
-                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}" name="isAutoSaved"/>
+                    <input type="hidden" id="isAutoSaved" value="${isAutoSaved}"
+                           name="isAutoSaved"/>
                     <input type="hidden" id="preShortTitleId"
                            value="${fn:escapeXml(participantProperties.shortTitle)}"/>
                     <input type="hidden" id="participantId"
@@ -307,8 +312,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate"
-                             style="display: none;">
+                        <div class="col-md-4 col-lg-3 mt-xlg mb-lg useAsAnchorDate dis-none">
                                 <%-- <form:checkbox id="inlineCheckbox1" value=""
                                     path="useAsAnchorDate" />
                                 <label for="inlineCheckbox1"> Use as Anchor Date </label> --%>
@@ -365,7 +369,7 @@
                     </div> --%>
                     <div class="clearfix"></div>
 
-                    <div class="mt-lg mb-lg refresh-value" style="display: none;">
+                    <div class="mt-lg mb-lg refresh-value dis-none">
                             <%-- <form:checkbox id="inlineCheckbox2" path="refreshedValue" />
                             <label class="checkBoxForm" for="inlineCheckbox2"> Query
                                 for Refreshed Value </label> --%>
@@ -383,21 +387,20 @@
             <div class="dis-line form-group mb-none mr-sm">
                 <c:choose>
                     <c:when test="${participantProperties.live eq 1}">
-                        <div class="form-group mr-sm" style="white-space: normal;">
-                            <button type="button" class="btn btn-default red-btn-action"
-                                    id="deactivateId"
-                                    onclick="deactivateParticipantProperty(${participantProperties.id});">
+                        <div class="form-group mr-sm ws-norm">
+                            <button type="button" class="btn btn-default red-btn-action deactivateParticipantPropertyFunct"
+                                    id="deactivateId" data-id="${participantProperties.id}">
                                 Deactivate
                             </button>
+                            <%-- onclick="deactivateParticipantProperty(${participantProperties.id});" --%>
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="form-group mr-sm" style="white-space: normal;">
+                        <div class="form-group mr-sm ws-norm">
                             <button type="button"
-                                    class="btn btn-default red-btn-action
+                                    class="btn btn-default red-btn-action deleteParticipantPropertyFunct
 							<c:if test="${empty participantProperties.id}">cursor-none</c:if>"
-                                    id="deleteId"
-                                    onclick="deleteParticipantProperty(${participantProperties.id});">
+                                    id="deleteId" data-id="${participantProperties.id}">
                                 Delete
                             </button>
                         </div>
@@ -407,30 +410,34 @@
         </div>
     </div>
 </div>
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-sm flr_modal">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-                  <div id="autoSavedMessage" class="text-right">
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm flr_modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="autoSavedMessage" class="text-right">
                     <div class="blue_text">Last saved now</div>
-                    <div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt">15 minutes</span></div>
-                    </div>
-                  </div>
+                    <div class="grey_txt"><span class="timerPos"><img
+                            src="../images/timer2.png"/></span>Your session expires in <span
+                            class="bold_txt">15 minutes</span></div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-                <div class="modal fade" id="timeOutModal" role="dialog">
-                                    <div class="modal-dialog modal-sm flr_modal">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                                <div class="modal-body">
-                                                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in  15 minutes</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                            </div>
+<div class="modal fade" id="timeOutModal" role="dialog">
+    <div class="modal-dialog modal-sm flr_modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="timeOutMessage" class="text-right blue_text"><span class="timerPos"><img
+                        src="../images/timer2.png"/></span>Your session expires in 15 minutes
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div id="infoModel">
     <div>
@@ -451,7 +458,7 @@
     <input type="hidden" name="participantPropertyId"
            id="participantPropertyId" value=""/>
 </form:form>
-<script>
+<script nonce="${nonce}">
   <c:if test="${actionType == 'view'}">
   $('#participantPropertiesFormId input[type="text"]').prop('disabled', true);
   $('#participantPropertiesFormId input[type="checkbox"]').prop('disabled',
@@ -492,9 +499,9 @@
     $(".menuNav li.sixth").addClass('active');
     dataVal = $("#dataType").val();
     if (dataVal === 'date') {
-      $(".useAsAnchorDate").show();
+      $(".useAsAnchorDate").removeClass('dis-none');
     } else {
-      $(".useAsAnchorDate").hide();
+      $(".useAsAnchorDate").addClass('dis-none');
       $("#inlineCheckbox1").prop('checked', false);
     }
     propType = $('.enrollment-cls:checked').val();
@@ -507,13 +514,13 @@
 
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if ($('#inlineCheckbox1').is(':checked')) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
     if (${participantProperties.isUsedInQuestionnaire || participantProperties.isUsedInActiveTask || participantProperties.isUsedInResource}) {
@@ -532,6 +539,7 @@
     }
     /* if(
 
+
     ${actionType eq 'edit' && participantProperties.live eq 1}){
 			$("#shortTitleId").prop('disabled', true);
 			$("#inlineRadio1").prop('disabled', true);
@@ -541,6 +549,7 @@
 			$("#inlineCheckbox1").prop('disabled', true);
 		}  */
     /* if(
+
 
     ${actionType eq 'edit' && participantProperties.live eq 1}){
 			$("#shortTitleId").addClass('not-allowed')
@@ -565,13 +574,13 @@
     dataVal = $("#dataType").val();
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if (this.checked) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
   });
@@ -581,13 +590,13 @@
     dataVal = $("#dataType").val();
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if ($('#inlineCheckbox1').is(':checked')) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
   });
@@ -597,13 +606,13 @@
     dataVal = $("#dataType").val();
     if (propType === 'PostEnrollment' && dataVal === 'date') {
       if ($('#inlineCheckbox1').is(':checked')) {
-        $('.refresh-value').show();
+        $('.refresh-value').removeClass('dis-none');
       } else {
-        $('.refresh-value').hide();
+        $('.refresh-value').addClass('dis-none');
         $("#inlineCheckbox2").prop('checked', false);
       }
     } else {
-      $('.refresh-value').hide();
+      $('.refresh-value').addClass('dis-none');
       $("#inlineCheckbox2").prop('checked', false);
     }
   });
@@ -611,9 +620,9 @@
   $("#dataType").change(function () {
     dataVal = $("#dataType").val();
     if (dataVal === 'date') {
-      $(".useAsAnchorDate").show();
+      $(".useAsAnchorDate").removeClass('dis-none');
     } else {
-      $(".useAsAnchorDate").hide();
+      $(".useAsAnchorDate").addClass('dis-none');
       $("#inlineCheckbox1").prop('checked', false);
     }
   });
@@ -627,106 +636,135 @@
     autoSaveParticipantPropertyPage('manual');
   });
 
-  setInterval(function () {
-              idleTime += 1;
-              if (idleTime > 3) { // 5 minutes
-                      <c:if test="${actionType ne 'view'}">
-                      autoSaveParticipantPropertyPage('auto');
-                       </c:if>
-                      <c:if test="${actionType eq 'view'}">
-                          timeOutFunction();
-                      </c:if>
-              }
-          }, 226000); // 5 minutes
+  parentInterval();
 
-          $(this).mousemove(function (e) {
-              idleTime = 0;
-          });
-          $(this).keypress(function (e) {
-              idleTime = 0;
-          });
+  function parentInterval() {
+    let timeOutInterval = setInterval(function () {
+      idleTime += 1;
+      if (idleTime > 3) { // 5 minutes
+        <c:if test="${actionType ne 'view'}">
+      autoSaveParticipantPropertyPage('auto');
+      </c:if>
+      <c:if test="${actionType eq 'view'}">
+        clearInterval(timeOutInterval);
+        // keepAlive();
+        timeOutFunction();
+      </c:if>
+    }
+    }, 225000); // 5 minutes
+  }
 
-     function timeOutFunction() {
-      $('#timeOutModal').modal('show');
-       let i = 14;
-       let timeOutInterval = setInterval(function () {
-        if (i === 0) {
-         $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-          if ($('#timeOutModal').hasClass('show')) {
-            var a = document.createElement('a');
-            a.href = "/fdahpStudyDesigner/sessionOut.do";
-            document.body.appendChild(a).click();
-         }
-          clearInterval(timeOutInterval);
-            } else {
-              if (i === 1) {
-            $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
-              } else {
-              $('#timeOutMessage').html('<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in ' + i +' minutes');
-             }
-              idleTime = 0;
-              i-=1;
-               }
-               }, 60000);
-               }
+  $(this).mousemove(function (e) {
+    idleTime = 0;
+  });
+  $(this).keypress(function (e) {
+    idleTime = 0;
+  });
+
+  var timeOutInterval;
+
+  function timeOutFunction() {
+    $('#timeOutModal').modal('show');
+    let i = 14;
+    timeOutInterval = setInterval(function () {
+      if (i === 0) {
+        $('#timeOutMessage').html(
+            '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+            + i + ' minutes');
+        if ($('#timeOutModal').hasClass('show')) {
+          var a = document.createElement('a');
+          a.href = "/fdahpStudyDesigner/sessionOut.do";
+          document.body.appendChild(a).click();
+        }
+        clearInterval(timeOutInterval);
+      } else {
+        if (i === 1) {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 1 minute');
+        } else {
+          $('#timeOutMessage').html(
+              '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in '
+              + i + ' minutes');
+        }
+        idleTime = 0;
+        i -= 1;
+      }
+    }, 60000);
+  }
+
+  $(document).click(function (e) {
+    if ($(e.target).closest('#timeOutModal').length) {
+      clearInterval(timeOutInterval);
+      $('#timeOutMessage').html(
+          '<span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in 15 minutes');
+      parentInterval();
+    }
+  });
+
   // pop message after 15 minutes
   if ($('#isAutoSaved').val() === 'true') {
-      $('#myModal').modal('show');
-      let i = 1;
-      let j = 14;
-      let lastSavedInterval = setInterval(function () {
-           if ((i === 15) || (j === 0)) {
-              $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-              if ($('#myModal').hasClass('show')) {
-                 var a = document.createElement('a');
-                 a.href = "/fdahpStudyDesigner/sessionOut.do";
-                 document.body.appendChild(a).click();
-              }
-              clearInterval(lastSavedInterval);
-          } else {
-              if ((i === 1) || (j === 14)) {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css("fontSize", "15px");
-              }
-              else if ((i === 14) || (j === 1)) {
-              $('#autoSavedMessage').html('<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
-              }
-              else {
-                     $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> ' + j +' minutes</span></div>').css("fontSize", "15px");
-              }
-              idleTime = 0;
-              i+=1;
-              j-=1;
-          }
-      }, 60000);
+    $('#myModal').modal('show');
+    let i = 1;
+    let j = 14;
+    let lastSavedInterval = setInterval(function () {
+      if ((i === 15) || (j === 0)) {
+        $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+            + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+            + j + ' minutes</span></div>').css("fontSize", "15px");
+        if ($('#myModal').hasClass('show')) {
+          var a = document.createElement('a');
+          a.href = "/fdahpStudyDesigner/sessionOut.do";
+          document.body.appendChild(a).click();
+        }
+        clearInterval(lastSavedInterval);
+      } else {
+        if ((i === 1) || (j === 14)) {
+          $('#autoSavedMessage').html(
+              '<div class="blue_text">Last saved was 1 minute ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 14 minutes</span></div>').css(
+              "fontSize", "15px");
+        } else if ((i === 14) || (j === 1)) {
+          $('#autoSavedMessage').html(
+              '<div class="blue_text">Last saved was 14 minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> 1 minute</span></div>')
+        } else {
+          $('#autoSavedMessage').html('<div class="blue_text">Last saved was ' + i
+              + ' minutes ago</div><div class="grey_txt"><span class="timerPos"><img src="../images/timer2.png"/></span>Your session expires in <span class="bold_txt"> '
+              + j + ' minutes</span></div>').css("fontSize", "15px");
+        }
+        idleTime = 0;
+        i += 1;
+        j -= 1;
+      }
+    }, 60000);
   }
- function autoSaveParticipantPropertyPage(mode){
-      $('.required-attr').prop('required', false);
-          if (isFromValid("#participantPropertiesFormId")) {
-            $("#actionButtonType").val('save');
-            $("#short-title-id").val($("#shortTitleId").val());
-            $("#prePropertyType").val($('input[name="typeOfProperty"]:checked').val());
 
-            if ($('#inlineCheckbox1').is(':checked')) {
-              $("#preUseAsAnchorDate").val(true);
-            } else {
-              $("#preUseAsAnchorDate").val(false);
-            }
+  function autoSaveParticipantPropertyPage(mode) {
+    $('.required-attr').prop('required', false);
+    if (isFromValid("#participantPropertiesFormId")) {
+      $("#actionButtonType").val('save');
+      $("#short-title-id").val($("#shortTitleId").val());
+      $("#prePropertyType").val($('input[name="typeOfProperty"]:checked').val());
 
-            if ($('#inlineCheckbox2').is(':checked')) {
-              $("#preRefreshedValue").val(true);
-            } else {
-              $("#preRefreshedValue").val(false);
-            }
-            if (mode === 'auto') {
-            $("#isAutoSaved").val('true');
-             }
-             else{
-             $("#isAutoSaved").val('false');
-             }
-            $('#participantPropertiesFormId').submit();
-            showSucMsg("Content saved as draft.");
-          }
-     }
+      if ($('#inlineCheckbox1').is(':checked')) {
+        $("#preUseAsAnchorDate").val(true);
+      } else {
+        $("#preUseAsAnchorDate").val(false);
+      }
+
+      if ($('#inlineCheckbox2').is(':checked')) {
+        $("#preRefreshedValue").val(true);
+      } else {
+        $("#preRefreshedValue").val(false);
+      }
+      if (mode === 'auto') {
+        $("#isAutoSaved").val('true');
+      } else {
+        $("#isAutoSaved").val('false');
+      }
+      $('#participantPropertiesFormId').submit();
+      showSucMsg("Content saved as draft.");
+    }
+  }
+
   function validateShortTitle(item, callback) {
     var shortTitle = $("#shortTitleId").val();
     var thisAttr = $("#shortTitleId");
@@ -789,8 +827,8 @@
     }
   }
 
-  function goToBackPage(item) {
-    $(item).prop('disabled', true);
+  $(".back-page").on('click', function () {
+    $(".back-page").prop('disabled', true);
     <c:if test="${actionType ne 'view'}">
     bootbox
     .confirm({
@@ -807,12 +845,12 @@
       callback: function (result) {
         if (result) {
           var a = document.createElement('a');
-          let lang = ($('#studyLanguage').val()!==undefined)?$('#studyLanguage').val():'';
+          let lang = ($('#studyLanguage').val() !== undefined) ? $('#studyLanguage').val() : '';
           a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}&language="
               + lang;
           document.body.appendChild(a).click();
         } else {
-          $(item).prop('disabled', false);
+          $(".back-page").prop('disabled', false);
         }
       }
     });
@@ -822,10 +860,13 @@
     a.href = "/fdahpStudyDesigner/adminStudies/participantPropertiesPage.do?_S=${param._S}";
     document.body.appendChild(a).click();
     </c:if>
-  }
+  })
 
-  function deactivateParticipantProperty(participantPropertyId) {
-    bootbox.confirm("Are you sure you want to deactivate this Participant Property?",
+  
+  $(".deactivateParticipantPropertyFunct").on('click', function() {
+  //function deactivateParticipantProperty(participantPropertyId) {
+    let participantPropertyId = $(this).attr('data-id')
+	  bootbox.confirm("Are you sure you want to deactivate this Participant Property?",
         function (result) {
           if (result) {
             $("#participantPropertyId").val(participantPropertyId);
@@ -833,9 +874,12 @@
             showSucMsg('Participant Property successfully deactivated.');
           }
         });
-  }
+  })
 
-  function deleteParticipantProperty(participantPropertyId) {
+  
+  $(".deleteParticipantPropertyFunct").on('click', function() {
+  //function deleteParticipantProperty(participantPropertyId) {
+	  let participantPropertyId = $(this).attr('data-id')
     bootbox.confirm({
       message: "Are you sure you want to delete this Participant Property item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
       buttons: {
@@ -857,7 +901,7 @@
         }
       }
     });
-  }
+  })
 
   $('#studyLanguage').on('change', function () {
     let currLang = $('#studyLanguage').val();
@@ -898,10 +942,10 @@
       }
     });
   }
-  
-    $('#propertyName').on('keyup', function () {
-          $(this).parent().find(".help-block").empty();
-          $('.form-control').parent().removeClass("has-danger").removeClass("has-error");
-        });
-        
+
+  $('#propertyName').on('keyup', function () {
+    $(this).parent().find(".help-block").empty();
+    $('.form-control').parent().removeClass("has-danger").removeClass("has-error");
+  });
+
 </script>

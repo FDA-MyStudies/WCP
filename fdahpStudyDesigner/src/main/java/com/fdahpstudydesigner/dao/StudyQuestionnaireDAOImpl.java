@@ -624,12 +624,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
         List<QuestionReponseTypeBo> existingQuestionResponseTypeList = new ArrayList<>();
         List<QuestionReponseTypeBo> newQuestionResponseTypeList = new ArrayList<>();
-        List<GroupsBo> newGroupsList = new ArrayList<>();
-        List<GroupsBo> groupsBoList = new ArrayList();
-        List<GroupsBo> groupsBoLists = session.createQuery(
-            "From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId")
-        .setParameter("questionnaireId", questionnaireId)
-        .getResultList();
 
         query =
             session
@@ -658,13 +652,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               for (int i = 0; i < existedQuestionnairesStepsBoList.size(); i++) {
                 if (existedQuestionnairesStepsBoList.get(i).getStepId() != null
                     && destionStep.equals(existedQuestionnairesStepsBoList.get(i).getStepId())) {
-                  destinationList.add(i);
-                  break;
-                }
-              }
-              for (int i = 0; i < groupsBoLists.size(); i++) {
-                if (groupsBoLists.get(i).getId() != null
-                    && destionStep.equals(groupsBoLists.get(i).getId())) {
                   destinationList.add(i);
                   break;
                 }
@@ -1025,11 +1012,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           }
 
           //copy groups
-          groupsBoList =
-              session.createQuery("From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId")
-                  .setParameter("questionnaireId", questionnaireId).getResultList();
-          
+          List<GroupsBo> groupsBoList = session.createQuery(
+                  "From GroupsBo GBO WHERE  GBO.questionnaireId=:questionnaireId")
+              .setParameter("questionnaireId", questionnaireId)
+              .getResultList();
           if (groupsBoList != null) {
+            List<GroupsBo> newGroupsList = new ArrayList<>();
             for (GroupsBo groupsBo : groupsBoList) {
               if (groupsBo != null) {
                 GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
@@ -1148,12 +1136,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             if (destinationList.get(i) != -1) {
               desId = newQuestionnairesStepsBoList.get(destinationList.get(i)).getStepId();
             }
-            String stepOrGroup =
-                newQuestionnairesStepsBoList.get(i).getStepOrGroupPostLoad();
-            if (destinationList.get(i) != -1 && stepOrGroup != null
-                && stepOrGroup.equalsIgnoreCase("group")) {
-              desId = newGroupsList.get(destinationList.get(i)).getId();
-            }
             newQuestionnairesStepsBoList.get(i).setDestinationStep(desId);
             session.update(newQuestionnairesStepsBoList.get(i));
           }
@@ -1184,20 +1166,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   }
                 }
               }
-              if (groupsBoList != null && !groupsBoList.isEmpty()) {
-                for (GroupsBo groupsBo : groupsBoList) {
-                  if (questionResponseSubTypeBo.getDestinationStepId() != null
-                      && questionResponseSubTypeBo.getDestinationStepId()
-                          .equals(groupsBo.getId())) {
-                    for (GroupsBo grpBo : newGroupsList) {
-                      if (grpBo.getGroupId().equals(groupsBo.getGroupId())) {
-                        sequenceSubTypeList.add(grpBo.getId());
-                        break;
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
         }
@@ -1212,12 +1180,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
                 if (sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())) {
                   desId = questionnairesStepsBo.getStepId();
-                  break;
-                }
-              }
-              for (GroupsBo grpBo : newGroupsList) {
-                if (sequenceSubTypeList.get(i).equals(grpBo.getId())) {
-                  desId = grpBo.getId();
                   break;
                 }
               }

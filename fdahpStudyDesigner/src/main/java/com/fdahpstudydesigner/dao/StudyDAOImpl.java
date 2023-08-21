@@ -6373,13 +6373,6 @@ public class StudyDAOImpl implements StudyDAO {
                             break;
                           }
                         }
-                        for (int i = 0; i < groupsBoLists.size(); i++) {
-                          if (groupsBoLists.get(i).getId() != null
-                              && destionStep.equals(groupsBoLists.get(i).getId())) {
-                            destinationList.add(i);
-                            break;
-                          }
-                        }
                       }
                       destionationMapList.put(
                           questionnairesStepsBo.getSequenceNo(), questionnairesStepsBo.getStepId());
@@ -6743,9 +6736,7 @@ public class StudyDAOImpl implements StudyDAO {
                         .createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
                         .setParameter("questionnaireId", questionnaireBo.getId())
                         .setParameter("id", studyBo.getId()).list();
-                List<GroupsBo> newGroupsList = new ArrayList<>();
                 if (groupsBoList != null) {
-                 
                   for (GroupsBo groupsBo : groupsBoList) {
                     GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
                     newGroupsBo.setId(null);
@@ -6809,12 +6800,6 @@ public class StudyDAOImpl implements StudyDAO {
                         desId =
                             newQuestionnairesStepsBoList.get(destinationList.get(i)).getStepId();
                       }
-                      String stepOrGroup =
-                          newQuestionnairesStepsBoList.get(i).getStepOrGroupPostLoad();
-                      if (destinationList.get(i) != -1 && stepOrGroup != null
-                          && stepOrGroup.equalsIgnoreCase("group")) {
-                        desId = newGroupsList.get(destinationList.get(i)).getId();
-                      }
                       newQuestionnairesStepsBoList.get(i).setDestinationStep(desId);
                       session.update(newQuestionnairesStepsBoList.get(i));
                     }
@@ -6844,21 +6829,6 @@ public class StudyDAOImpl implements StudyDAO {
                             }
                           }
                         }
-                        if (groupsBoList != null && !groupsBoList.isEmpty()) {
-                          for (GroupsBo groupsBo : groupsBoList) {
-                            if (questionResponseSubTypeBo.getDestinationStepId() != null
-                                && questionResponseSubTypeBo.getDestinationStepId()
-                                    .equals(groupsBo.getId())) {
-                              for (GroupsBo grpBo : newGroupsList) {
-                                if (grpBo.getGroupId().equals(groupsBo.getGroupId())) {
-                                  sequenceSubTypeList.add(grpBo.getId());
-                                  break;
-                                }
-                              }
-
-                            }
-                          }
-                        }
                       }
                     }
                   }
@@ -6876,12 +6846,6 @@ public class StudyDAOImpl implements StudyDAO {
                               .get(i)
                               .equals(questionnairesStepsBo.getSequenceNo())) {
                             desId = questionnairesStepsBo.getStepId();
-                            break;
-                          }
-                        }
-                        for (GroupsBo grpBo : newGroupsList) {
-                          if (sequenceSubTypeList.get(i).equals(grpBo.getId())) {
-                            desId = grpBo.getId();
                             break;
                           }
                         }

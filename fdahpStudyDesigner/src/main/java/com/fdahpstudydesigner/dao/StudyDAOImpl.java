@@ -6345,15 +6345,12 @@ public class StudyDAOImpl implements StudyDAO {
                       new ArrayList<>();
                   List<QuestionResponseSubTypeBo> newQuestionResponseSubTypeList =
                       new ArrayList<>();
-                  
                   List<GroupsBo> groupsBoLists = session
                       .createQuery("from GroupsBo where studyId=:id and questionnaireId=:questionnaireId")
                       .setParameter("questionnaireId", questionnaireBo.getId())
                       .setParameter("id", studyBo.getId()).list();
-
                   List<QuestionReponseTypeBo> existingQuestionResponseTypeList = new ArrayList<>();
                   List<QuestionReponseTypeBo> newQuestionResponseTypeList = new ArrayList<>();
-
                   query =
                       session
                           .getNamedQuery("getQuestionnaireStepSequenceNo")
@@ -6748,7 +6745,7 @@ public class StudyDAOImpl implements StudyDAO {
                         .setParameter("id", studyBo.getId()).list();
                 List<GroupsBo> newGroupsList = new ArrayList<>();
                 if (groupsBoList != null) {
-                  
+
                   for (GroupsBo groupsBo : groupsBoList) {
                     GroupsBo newGroupsBo = SerializationUtils.clone(groupsBo);
                     newGroupsBo.setId(null);

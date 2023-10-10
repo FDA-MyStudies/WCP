@@ -47,7 +47,7 @@
 </div>
 
 
-<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
 
 
 <!-- Bootstrap core JavaScript -->

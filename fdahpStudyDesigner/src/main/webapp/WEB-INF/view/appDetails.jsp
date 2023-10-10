@@ -115,7 +115,7 @@
 <script src="vendor/boostrap/bootstrap.min.js"></script>
 <script src="vendor/animation/wow.min.js"></script>
 <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
-<script src="vendor/select2/bootstrap-select.min.js"></script>
+<script src="vendor/select2/bootstrap-select13.min.js"></script>
 <script src="vendor/dragula/react-dragula.min.js"></script>
 <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="js/jquery.nicescroll.min.js"></script>

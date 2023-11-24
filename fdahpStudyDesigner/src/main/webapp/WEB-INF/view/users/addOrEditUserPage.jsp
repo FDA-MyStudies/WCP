@@ -357,7 +357,7 @@
                                            stdTxt="${study.name}&nbsp;(${study.customStudyId})"
                                            <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                                     <c:if test="${actionPage ne 'VIEW_PAGE'}">
-										<span class="mr-md"><img class="imgDelete" id="${study.id}"
+										<span class="mr-md"><img class="imgDelete" data-id="${study.id}"
                                                 src="/fdahpStudyDesigner/images/icons/close.png"/></span>
                                                <%--  onclick="del(${study.id});" --%>
                                     </c:if>
@@ -845,8 +845,9 @@
   });
 
   $('.imgDelete').on('click', function() {
+	  debugger
   //function del(id) {
-    let id = $(this).attr(id);
+    let id = $(this).attr('data-id');
 	  var atxt = $('#std' + id).children().text();
 
     $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(

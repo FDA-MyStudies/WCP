@@ -845,7 +845,6 @@
   });
 
   $('.imgDelete').on('click', function() {
-	  debugger
   //function del(id) {
     let id = $(this).attr('data-id');
 	  var atxt = $('#std' + id).children().text();

@@ -517,7 +517,9 @@
       });
     }
 
-    $('#cancel').on('click', function () {
+// Unbind existing event listeners if necessary
+$('#cancel').off('click').on('click', function() {
+  //  $('#cancel').on('click', function () {
       <c:if test="${permission ne 'view' }">
       bootbox.confirm({
         closeButton: false,

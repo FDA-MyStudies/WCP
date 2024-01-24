@@ -1,18 +1,17 @@
 package com.fdahpstudydesigner.bo;
 
-import com.fdahpstudydesigner.bean.PreLoadLogicBean;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
+import com.fdahpstudydesigner.bean.PreLoadLogicBean;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 @Data
 @Entity
 @Table(name = "grouppp")

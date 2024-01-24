@@ -1,8 +1,8 @@
 package com.fdahpstudydesigner.util;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 /** @author BTC */
 public class ServletContextHolder implements ServletContextListener {

@@ -1,20 +1,22 @@
 package com.fdahpstudydesigner.bo;
 
-import com.fdahpstudydesigner.bean.StudyListBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 import org.springframework.web.multipart.MultipartFile;
+import com.fdahpstudydesigner.bean.StudyListBean;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * The persistent class for the studies database table.
@@ -151,7 +153,8 @@ public class StudyBo implements Serializable {
   @Transient private List<StudyListBean> studyPermissions = new ArrayList<>();
 
   @Column(name = "study_pre_active_flag")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean studyPreActiveFlag = false;
 
   @Transient StudySequenceBo studySequenceBo = new StudySequenceBo();
@@ -184,7 +187,8 @@ public class StudyBo implements Serializable {
   @Transient private boolean viewPermission = true;
 
   @Column(name = "enrollmentdate_as_anchordate")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean enrollmentdateAsAnchordate = false;
 
   @Column(name = "app_id")

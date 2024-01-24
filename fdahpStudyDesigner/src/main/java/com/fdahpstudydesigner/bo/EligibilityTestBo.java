@@ -1,16 +1,19 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Eligibility test question and answer of a {@link EligibilityBo} object of type "Eligibility Test"
@@ -87,7 +90,8 @@ public class EligibilityTestBo implements Serializable {
   @Transient private String type;
 
   @Column(name = "is_used")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean used = false;
 
   public Boolean getActive() {

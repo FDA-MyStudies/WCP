@@ -5,7 +5,8 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Query;
+//import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -33,7 +34,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
       query =
           session
               .createQuery("select MDBO from MasterDataBO MDBO where MDBO.type =:type")
-              .setString("type", type);
+              .setParameter("type", type);
       masterDataBO = (MasterDataBO) query.uniqueResult();
     } catch (Exception e) {
       logger.error("DashBoardAndProfileDAOImpl - getMasterData() - ERROR", e);
@@ -65,7 +66,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       queryString = "FROM UserBO where userEmail = :email";
       query = session.createQuery(queryString);
-      query.setString("email", email);
+      query.setParameter("email", email);
       user = (UserBO) query.uniqueResult();
       if (null != user) {
         message = FdahpStudyDesignerConstants.SUCCESS;
@@ -107,7 +108,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
       /*-------------------------Update FDA Admin-----------------------*/
       queryString = "from UserBO UBO where UBO.userId = :userId";
       query = session.createQuery(queryString);
-      query.setInteger("userId", userId);
+      query.setParameter("userId", userId);
       updatedUserBo = (UserBO) query.uniqueResult();
       if (updatedUserBo != null) {
         updatedUserBo.setFirstName(

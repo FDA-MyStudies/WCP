@@ -1,16 +1,19 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * The persistent class for the active_task_attrtibutes_values database table.
@@ -40,7 +43,8 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
   @Transient private boolean addToDashboard = false;
 
   @Column(name = "add_to_line_chart")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean addToLineChart = false;
 
   @Column(name = "attribute_val")
@@ -81,7 +85,8 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
   private String uploadTypeStat;
 
   @Column(name = "use_for_statistic")
-  @Type(type = "yes_no")
+ // @Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean useForStatistic = false;
 
   public Integer getActive() {

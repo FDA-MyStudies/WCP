@@ -15,8 +15,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
+//import org.hibernate.Query;
+import org.hibernate.query.Query;
+//import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -60,7 +62,7 @@ public class LoginDAOImpl implements LoginDAO {
       query =
           session
               .createQuery("SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId")
-              .setInteger("userId", userId);
+              .setParameter("userId", userId);
       adminUserBO = (UserBO) query.uniqueResult();
       if (null != adminUserBO
           && StringUtils.equals(
@@ -119,7 +121,7 @@ public class LoginDAOImpl implements LoginDAO {
             session
                 .createQuery(
                     "From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate")
-                .setInteger("userId", userId)
+                .setParameter("userId", userId)
                 .list();
       }
 
@@ -148,9 +150,9 @@ public class LoginDAOImpl implements LoginDAO {
     UserAttemptsBo attemptsBo = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      SQLQuery query =
-          session.createSQLQuery("select * from user_attempts where BINARY email_id= :email");
-      query.setString("email", userEmailId);
+      NativeQuery query =
+          session.createNativeQuery("select * from user_attempts where BINARY email_id= :email");
+      query.setParameter("email", userEmailId);
       query.addEntity(UserAttemptsBo.class);
       attemptsBo = (UserAttemptsBo) query.uniqueResult();
     } catch (Exception e) {
@@ -183,7 +185,7 @@ public class LoginDAOImpl implements LoginDAO {
           (UserBO)
               session
                   .createQuery("select UBO from UserBO UBO where UBO.securityToken =:securityToken")
-                  .setString("securityToken", securityToken)
+                  .setParameter("securityToken", securityToken)
                   .uniqueResult();
       if (null != userBO && !userBO.getSecurityToken().equals(securityToken)) {
         userBO = null;
@@ -558,7 +560,7 @@ public class LoginDAOImpl implements LoginDAO {
             session
                 .createQuery(
                     "From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate")
-                .setInteger("userId", userId)
+                .setParameter("userId", userId)
                 .list();
         if (passwordHistories != null && passwordHistories.size() > (passwordHistoryCount - 1)) {
           for (int i = 0; i < ((passwordHistories.size() - passwordHistoryCount) + 1); i++) {
@@ -601,7 +603,7 @@ public class LoginDAOImpl implements LoginDAO {
                 session
                     .createQuery(
                         "From UserPasswordHistory UPH WHERE UPH.userId =:userId ORDER BY UPH.createdDate DESC")
-                    .setInteger("userId", userId)
+                    .setParameter("userId", userId)
                     .setMaxResults(1)
                     .uniqueResult();
         passwordHistories.setUserPassword(hashedPassword);

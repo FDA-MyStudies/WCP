@@ -2,7 +2,8 @@ package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.SessionObject;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /** @author BTC */
 public interface LoginService {

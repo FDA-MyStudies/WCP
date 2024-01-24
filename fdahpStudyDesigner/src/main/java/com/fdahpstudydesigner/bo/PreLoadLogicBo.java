@@ -1,6 +1,6 @@
 package com.fdahpstudydesigner.bo;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity

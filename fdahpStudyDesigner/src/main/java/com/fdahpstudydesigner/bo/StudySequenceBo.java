@@ -1,15 +1,18 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 /**
  * The persistent class for the study_sequence database table.
@@ -32,71 +35,88 @@ public class StudySequenceBo implements Serializable {
   private static final long serialVersionUID = 3573683893623838475L;
 
   @Column(name = "actions")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean actions = false;
 
   @Column(name = "basic_info")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean basicInfo = false;
 
   @Column(name = "check_list")
-  @Type(type = "yes_no")
+ // @Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean checkList = false;
 
   @Column(name = "comprehension_test")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean comprehensionTest = false;
 
   @Column(name = "consent_edu_info")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean consentEduInfo = false;
 
   @Column(name = "e_consent")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean eConsent = false;
 
   @Column(name = "eligibility")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean eligibility = false;
 
   @Column(name = "miscellaneous_branding")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean miscellaneousBranding = false;
 
   @Column(name = "miscellaneous_notification")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean miscellaneousNotification = false;
 
   @Column(name = "miscellaneous_resources")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean miscellaneousResources = false;
 
   @Column(name = "over_view")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean overView = false;
 
   @Column(name = "setting_admins")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean settingAdmins = false;
 
   @Column(name = "study_dashboard_chart")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean studyDashboardChart = false;
 
   @Column(name = "study_dashboard_stats")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean studyDashboardStats = false;
 
   @Column(name = "study_exc_active_task")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean studyExcActiveTask = false;
 
   @Column(name = "study_exc_questionnaries")
-  @Type(type = "yes_no")
+ // @Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private boolean studyExcQuestionnaries = false;
 
   @Column(name = "participant_properties")
-  @Type(type = "yes_no")
+  //@Type(type = "yes_no")
+  @Convert(converter = YesNoConverter.class)
   private Boolean participantProperties = false;
 
   @Column(name = "study_id")

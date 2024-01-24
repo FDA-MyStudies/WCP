@@ -47,8 +47,8 @@ public class AuditLogDAOImpl implements AuditLogDAO {
                       + "(select UBO from UserBO UBO where UBO.userId = ALBO.userId) As userBO "
                       + "from AuditLogBO ALBO "
                       + "where ALBO.createdDateTime BETWEEN :stDate AND :edDate")
-              .setParameter("stDate", date + " 00:00:00")
-              .setParameter("edDate", date + " 23:59:59")
+              .setString("stDate", date + " 00:00:00")
+              .setString("edDate", date + " 23:59:59")
               .setResultTransformer(Transformers.aliasToBean(AuditLogBO.class))
               .list();
     } catch (Exception e) {
@@ -175,14 +175,14 @@ public class AuditLogDAOImpl implements AuditLogDAO {
         if (newSession != null) {
           newSession
               .createQuery(queryString)
-              .setParameter("userId", userId)
-              .setParameter("studyId", studyId)
+              .setInteger("userId", userId)
+              .setInteger("studyId", studyId)
               .executeUpdate();
         } else {
           session
               .createQuery(queryString)
-              .setParameter("userId", userId)
-              .setParameter("studyId", studyId)
+              .setInteger("userId", userId)
+              .setInteger("studyId", studyId)
               .executeUpdate();
         }
         message = FdahpStudyDesignerConstants.SUCCESS;

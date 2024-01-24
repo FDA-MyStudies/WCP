@@ -1,14 +1,11 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.hibernate.annotations.Type;
-import org.hibernate.type.YesNoConverter;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "study_sequence_lang")
@@ -17,71 +14,71 @@ public class StudySequenceLangBO implements Serializable {
   @EmbeddedId private StudySequenceLangPK studySequenceLangPK;
 
   @Column(name = "actions")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean actions = false;
 
   @Column(name = "basic_info")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean basicInfo = false;
 
   @Column(name = "check_list")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean checkList = false;
 
   @Column(name = "comprehension_test")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean comprehensionTest = false;
 
   @Column(name = "consent_edu_info")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean consentEduInfo = false;
 
   @Column(name = "e_consent")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean eConsent = false;
 
   @Column(name = "eligibility")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean eligibility = false;
 
   @Column(name = "miscellaneous_branding")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean miscellaneousBranding = false;
 
   @Column(name = "miscellaneous_notification")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean miscellaneousNotification = false;
 
   @Column(name = "miscellaneous_resources")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean miscellaneousResources = false;
 
   @Column(name = "over_view")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean overView = false;
 
   @Column(name = "setting_admins")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean settingAdmins = false;
 
   @Column(name = "study_dashboard_chart")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean studyDashboardChart = false;
 
   @Column(name = "study_dashboard_stats")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean studyDashboardStats = false;
 
   @Column(name = "study_exc_active_task")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean studyExcActiveTask = false;
 
   @Column(name = "study_exc_questionnaries")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean studyExcQuestionnaries = false;
 
   @Column(name = "participant_properties")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private Boolean participantProperties = false;
 
   public StudySequenceLangPK getStudySequenceLangPK() {

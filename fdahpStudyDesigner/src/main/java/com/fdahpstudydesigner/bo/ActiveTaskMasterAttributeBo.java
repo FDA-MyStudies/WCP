@@ -1,16 +1,13 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.hibernate.annotations.Type;
-import org.hibernate.type.YesNoConverter;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 /**
  * The persistent class for the active_task_master_attribute database table.
@@ -23,8 +20,7 @@ public class ActiveTaskMasterAttributeBo implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Column(name = "add_to_dashboard")
-  //@Type(type = "yes_no")
-  @Convert(converter = YesNoConverter.class)
+  @Type(type = "yes_no")
   private boolean addToDashboard = false;
 
   @Column(name = "attribute_data_type")

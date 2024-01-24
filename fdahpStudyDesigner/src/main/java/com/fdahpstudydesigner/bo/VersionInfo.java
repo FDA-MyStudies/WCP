@@ -2,7 +2,7 @@ package com.fdahpstudydesigner.bo;
 
 import lombok.Data;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data

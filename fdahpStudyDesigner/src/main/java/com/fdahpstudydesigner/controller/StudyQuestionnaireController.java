@@ -1,17 +1,23 @@
 package com.fdahpstudydesigner.controller;
 
+import com.fdahpstudydesigner.bean.*;
+import com.fdahpstudydesigner.bo.*;
+import com.fdahpstudydesigner.service.StudyActiveTasksService;
+import com.fdahpstudydesigner.service.StudyQuestionnaireService;
+import com.fdahpstudydesigner.service.StudyService;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.entity.ContentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -20,51 +26,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import com.fdahpstudydesigner.bean.FormulaInfoBean;
-import com.fdahpstudydesigner.bean.GroupMappingStepBean;
-import com.fdahpstudydesigner.bean.GroupsBean;
-import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
-import com.fdahpstudydesigner.bean.StepDropdownBean;
-import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
-import com.fdahpstudydesigner.bo.FormLangBO;
-import com.fdahpstudydesigner.bo.FormMappingBo;
-import com.fdahpstudydesigner.bo.GroupMappingBo;
-import com.fdahpstudydesigner.bo.GroupsBo;
-import com.fdahpstudydesigner.bo.HealthKitKeysInfo;
-import com.fdahpstudydesigner.bo.InstructionsBo;
-import com.fdahpstudydesigner.bo.InstructionsLangBO;
-import com.fdahpstudydesigner.bo.MultiLanguageCodes;
-import com.fdahpstudydesigner.bo.PreLoadLogicBo;
-import com.fdahpstudydesigner.bo.QuestionLangBO;
-import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
-import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnaireLangBO;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
-import com.fdahpstudydesigner.bo.QuestionsBo;
-import com.fdahpstudydesigner.bo.StatisticImageListBo;
-import com.fdahpstudydesigner.bo.StudyBo;
-import com.fdahpstudydesigner.bo.StudyLanguageBO;
-import com.fdahpstudydesigner.bo.StudySequenceLangBO;
-import com.fdahpstudydesigner.service.StudyActiveTasksService;
-import com.fdahpstudydesigner.service.StudyQuestionnaireService;
-import com.fdahpstudydesigner.service.StudyService;
-import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
-import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
-import com.fdahpstudydesigner.util.SessionObject;
-import com.google.gson.Gson;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 
 /**
  * @author BTC
@@ -3084,16 +3051,9 @@ public class StudyQuestionnaireController {
         String questionnaireStepInfo = request.getParameter("questionInfo");
         Iterator<String> itr = multipleRequest.getFileNames();
         HashMap<String, MultipartFile> fileMap = new HashMap<>();
-        /*
-         * while (itr.hasNext()) { CommonsMultipartFile mpf = (CommonsMultipartFile)
-         * multipleRequest.getFile(itr.next()); fileMap.put(mpf.getFileItem().getFieldName(), mpf);
-         * }
-         */
-        //StandardServletMultipartResolver mdf = (StandardServletMultipartResolver)multipleRequest.getFile(itr.next());
-		
-        MultiValueMap<String, MultipartFile> multipartFileMap = multipleRequest.getMultiFileMap();
-        for (String key : multipartFileMap.keySet()) {
-          fileMap.put(key, multipartFileMap.get(key).get(0));
+        while (itr.hasNext()) {
+          CommonsMultipartFile mpf = (CommonsMultipartFile) multipleRequest.getFile(itr.next());
+          fileMap.put(mpf.getFileItem().getFieldName(), mpf);
         }
         if (null != questionnaireStepInfo) {
           questionsBo = mapper.readValue(questionnaireStepInfo, QuestionsBo.class);
@@ -3317,17 +3277,11 @@ public class StudyQuestionnaireController {
                 request
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
-        //Iterator<String> itr = multipleRequest.getFileNames();
+        Iterator<String> itr = multipleRequest.getFileNames();
         HashMap<String, MultipartFile> fileMap = new HashMap<>();
-        /*
-         * while (itr.hasNext()) { CommonsMultipartFile mpf = (CommonsMultipartFile)
-         * multipleRequest.getFile(itr.next()); fileMap.put(mpf.getFileItem().getFieldName(), mpf);
-         * 
-         * }
-         */
-        MultiValueMap<String, MultipartFile> multipartFileMap = multipleRequest.getMultiFileMap();
-        for (String key : multipartFileMap.keySet()) {
-          fileMap.put(key, multipartFileMap.get(key).get(0));
+        while (itr.hasNext()) {
+          CommonsMultipartFile mpf = (CommonsMultipartFile) multipleRequest.getFile(itr.next());
+          fileMap.put(mpf.getFileItem().getFieldName(), mpf);
         }
         String language = request.getParameter("language");
         String studyId =

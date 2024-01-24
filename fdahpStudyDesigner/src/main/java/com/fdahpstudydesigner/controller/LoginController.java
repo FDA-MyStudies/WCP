@@ -1,8 +1,18 @@
 package com.fdahpstudydesigner.controller;
 
+import com.fdahpstudydesigner.bo.MasterDataBO;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.DashBoardAndProfileService;
+import com.fdahpstudydesigner.service.LoginServiceImpl;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,16 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import com.fdahpstudydesigner.bo.MasterDataBO;
-import com.fdahpstudydesigner.bo.UserBO;
-import com.fdahpstudydesigner.service.DashBoardAndProfileService;
-import com.fdahpstudydesigner.service.LoginServiceImpl;
-import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
-import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
-import com.fdahpstudydesigner.util.SessionObject;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * @author BTC
@@ -39,7 +39,6 @@ public class LoginController {
   @Autowired
   private DashBoardAndProfileService dashBoardAndProfileService;
 
-  @Autowired
   private LoginServiceImpl loginService;
 
   /**

@@ -1,20 +1,19 @@
 package com.fdahpstudydesigner.util;
 
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.UsersService;
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.HandlerInterceptor;
-import com.fdahpstudydesigner.bo.UserBO;
-import com.fdahpstudydesigner.service.UsersService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /** @author */
-public class FdahpStudyDesignerPreHandlerInterceptor implements HandlerInterceptor {
+public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorAdapter {
 
   private static final Logger logger =
       LogManager.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);

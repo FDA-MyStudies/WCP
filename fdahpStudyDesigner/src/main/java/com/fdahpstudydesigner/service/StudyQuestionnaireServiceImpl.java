@@ -600,14 +600,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = null;
     try {
       questionResponseTypeMasterInfoList = studyQuestionnaireDAO.getQuestionReponseTypeList();
-      int index=0;
-      for(QuestionResponseTypeMasterInfoBo list : questionResponseTypeMasterInfoList) {
-    	  index++;
-    	  if(list.getResponseType().equals("Location")) {
-    		  questionResponseTypeMasterInfoList.remove(index-1);
-    		  break;
-    	  }
-      }
+//      int index=0;
+//      for(QuestionResponseTypeMasterInfoBo list : questionResponseTypeMasterInfoList) {
+//    	  index++;
+//    	  if(list.getResponseType().equals("Location")) {
+//    		  questionResponseTypeMasterInfoList.remove(index-1);
+//    		  break;
+//    	  }
+//      }
     } catch (Exception e) {
       logger.error("StudyQuestionnaireServiceImpl - getQuestionReponseTypeList - Error", e);
     }

@@ -240,7 +240,7 @@
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-                        <p class="col-xs-12  text-center boxcenter mb-xlg white__text" style="margin: -23px 20px;">To
+                        <p class="col-xs-12  text-center boxcenter mb-xlg white__text align_prop">To
                             begin using the services on FDA and complete your account setup
                             process, kindly use the access code provided on your email and
                             set up your account password.</p>

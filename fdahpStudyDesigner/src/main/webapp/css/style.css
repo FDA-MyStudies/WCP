@@ -42,6 +42,10 @@ Version: 		1.0
 	right: 0px;
 }
 
+.align_prop{
+	margin: -23px 20px;
+}
+
 .input-field, .input-field:active, .input-field:focus, .input-field:hover
 	{
 	width: 100%;

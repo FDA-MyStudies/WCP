@@ -240,7 +240,7 @@
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-                        <p class="col-xs-12  text-center boxcenter mb-xlg white__text">To
+                        <p class="col-xs-12  text-center boxcenter mb-xlg white__text" style="margin: -23px 20px;">To
                             begin using the services on FDA and complete your account setup
                             process, kindly use the access code provided on your email and
                             set up your account password.</p>
@@ -356,8 +356,8 @@
                 </form:form>
             </div>
             <!--container-->
-            <div class="footer">
-                <span id="copyright">Copyright © 2017 FDA</span><span><a
+            <div class="footer" style="padding-left: 2%;">
+                <span id="copyright">Copyright © 2024 FDA</span><span><a
                     href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
                     id="" target="_blank">Terms</a></span><span><a
                     href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy"

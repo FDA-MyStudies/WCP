@@ -317,7 +317,7 @@
     <div class="clearfix"></div>
     <div class="footer">
         <div>
-            <span id="copyright">Copyright © 2017 FDA</span><span><a
+            <span id="copyright">Copyright © 2024 FDA</span><span><a
                 href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
                 class="" target="_blank">Terms</a></span><span><a
                 href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy"

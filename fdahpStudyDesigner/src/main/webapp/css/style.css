@@ -1016,7 +1016,7 @@ input[type=radio]:disabled+label::after {
 .boxcenter {
 	margin: 0 auto;
 	float: none;
-	top : -19px;
+	top : -21px;
 }
 
 .overview-panel .panel-default {

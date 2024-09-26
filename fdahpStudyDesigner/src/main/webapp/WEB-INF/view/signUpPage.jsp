@@ -351,18 +351,18 @@
                     </div> -->
                     </div>
                     <input type="hidden" name="securityToken" value="${securityToken}"/>
-                    <input type="password" name="password" id="hidePass"
-                           style="display: none;"/>
+                   
                 </form:form>
             </div>
             <!--container-->
             <div class="footer" style="padding-left: 2%;">
-                <span id="copyright">Copyright © 2024 FDA</span><span><a
-                    href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
-                    id="" target="_blank">Terms</a></span><span><a
+  <span>Copyright © 2024 FDA</span>
+	<span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
+                    id="" target="_blank">Terms</a></span>
+	<span><a
                     href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy"
                     id="" target="_blank">Privacy Policy</a></span>
-            </div>
+</div>
         </div>
     </div>
 

@@ -1016,7 +1016,7 @@ input[type=radio]:disabled+label::after {
 .boxcenter {
 	margin: 0 auto;
 	float: none;
-	top : -21px;
+	top : -12px;
 }
 
 .overview-panel .panel-default {
@@ -2448,6 +2448,15 @@ option {
 	color: #007cba;
 }
 
+#lg-container .footersign {
+	position: absolute;
+	bottom: 0;
+	left: 600px;
+	right: 250px;
+	margin: auto;
+	padding-bottom: 36px;
+	color : white;
+}
 #lg-container .footer {
 	position: absolute;
 	bottom: 0;

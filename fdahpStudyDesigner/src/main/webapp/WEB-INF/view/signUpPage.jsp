@@ -355,13 +355,14 @@
                 </form:form>
             </div>
             <!--container-->
-            <div class="footer" style="padding-left: 2%;">
+            <div class="footer" id="footersign">
   <span>Copyright © 2024 FDA</span>
 	<span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
-                    id="" target="_blank">Terms</a></span>
+                    id="" target="_blank"class="footer-links">Terms</a></span>
+                  
 	<span><a
                     href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy"
-                    id="" target="_blank">Privacy Policy</a></span>
+                    id="" target="_blank" class="footer-links">Privacy Policy</a></span>
 </div>
         </div>
     </div>

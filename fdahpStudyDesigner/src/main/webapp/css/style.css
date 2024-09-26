@@ -1016,8 +1016,9 @@ input[type=radio]:disabled+label::after {
 .boxcenter {
 	margin: 0 auto;
 	float: none;
-	top : -12px;
+	top : -23px;
 }
+
 
 .overview-panel .panel-default {
 	padding: 0px 15px;
@@ -2448,19 +2449,22 @@ option {
 	color: #007cba;
 }
 
-#lg-container .footersign {
+#lg-container #footersign {
 	position: absolute;
 	bottom: 0;
-	left: 600px;
-	right: 250px;
+	left: 100px;
 	margin: auto;
-	padding-bottom: 36px;
+	padding-bottom: 30px;
 	color : white;
+	top:630px;
+}
+#lg-container .footer-links {
+    color: white;
 }
 #lg-container .footer {
 	position: absolute;
 	bottom: 0;
-	left: 0;
+	left: 0px;
 	right: 0;
 	margin: auto;
 	padding-bottom: 46px;

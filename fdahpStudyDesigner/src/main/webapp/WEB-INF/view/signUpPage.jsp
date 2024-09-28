@@ -317,7 +317,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12">
-                            <div class="mb-lg form-group" id="space">
+                            <div class="mb-lg form-group">
 										<span class="checkbox checkbox-inline"> <input
                                                 type="checkbox" id="inlineCheckbox" value="option1"
                                                 required="required"> <label for="inlineCheckbox">
@@ -351,14 +351,15 @@
                     </div> -->
                     </div>
                     <input type="hidden" name="securityToken" value="${securityToken}"/>
-                   
+                   <input type="password" name="password" id="hidePass"
+                           style="display: none;"/>
                 </form:form>
             </div>
             <!--container-->
-            <div class="footer" id="footersign">
+            <div class="footer">
   <span>Copyright © 2024 FDA</span>
 	<span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
-                    id="" target="_blank"class="footer-links">Terms</a></span>
+                    id="" target="_blank">Terms</a></span>
                   
 	<span><a
                     href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy"

@@ -155,12 +155,13 @@
                 <c:if test="${isDeactivateUser}"><p class="passwordExp"><i
                         class="fa fa-exclamation-circle" aria-hidden="true"></i>Your account has
                     been deactivated.</p></c:if>
+                    
                 <c:if test="${not isDeactivateUser && not isValidToken}"><p class="passwordExp"><i
                         class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset
                     Link is either expired or invalid.</p></c:if>
                 <div>
                     <a id="login" class="gray-link backToLogin white__text"
-                       href="javascript:void(0)">Back to Sign in</a>
+                       href="/fdahpStudyDesigner/login.do">Back to Sign in</a>
                 </div>
                 </div>
                 <input type="hidden" name="securityToken" value="${securityToken}"/>

@@ -356,7 +356,7 @@
                 </form:form>
             </div>
             <!--container-->
-            <div class="footer">
+            <div class="footer" id="footersign">
   <span>Copyright © 2024 FDA</span>
 	<span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/"
                     id="" target="_blank">Terms</a></span>

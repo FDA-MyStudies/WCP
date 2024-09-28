@@ -2452,6 +2452,24 @@ option {
 	padding-bottom: 46px;
 }
 
+.white__text1{
+	position: relative;
+	color: #fff;
+	top : 0px;
+	transform: translateY(-25px);
+	justify-content: center;
+}
+
+#lg-container #footersign{
+	position: absolute;
+	bottom: 0;
+	left: 0px;
+	margin: auto;
+	padding-bottom: 30px;
+	color : white;
+	top:630px;
+}
+
 #lg-container .footer span, #lg-container .foot span {
 	color: #fff;
 }

@@ -165,7 +165,7 @@
                 </div>
                 </div>
                 <input type="hidden" name="securityToken" value="${securityToken}"/>
-                <!-- <input type="password" name="password" id="hidePass" style="display: none;"/> -->
+                <input type="password" name="password" id="hidePass" style="display: none;"/>
             </form:form>
         </div>
 
